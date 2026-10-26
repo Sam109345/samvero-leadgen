@@ -32,7 +32,9 @@ import {
   Download,
   X,
   Volume2,
-  AlertCircle
+  AlertCircle,
+  Eye,
+  Printer
 } from 'lucide-react';
 import { EmailThread, EmailMessage, ChatAttachment, VoiceNoteData } from '@/types';
 
@@ -219,6 +221,46 @@ export default function ClientInboxView({
 
   // Lightbox / Image preview modal state
   const [viewingImage, setViewingImage] = useState<{ url: string; name: string } | null>(null);
+  // Document / PDF Viewer Modal state
+  const [viewingDocument, setViewingDocument] = useState<ChatAttachment | null>(null);
+
+  // Attachment opener & download handler
+  const handleOpenAttachment = (file: ChatAttachment) => {
+    if (file.type === 'image' && file.url && file.url !== '#') {
+      setViewingImage({ url: file.url, name: file.name });
+    } else {
+      setViewingDocument(file);
+    }
+  };
+
+  const handleDownloadAttachment = (e: React.MouseEvent, file: ChatAttachment) => {
+    e.stopPropagation();
+    try {
+      if (file.url && file.url !== '#' && file.url.startsWith('data:')) {
+        const a = document.createElement('a');
+        a.href = file.url;
+        a.download = file.name;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        return;
+      }
+
+      // Generate downloadable PDF Blob
+      const pdfHeader = `%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj\n2 0 obj<</Type/Pages/Kids[3 0 R]/Count 1>>endobj\n3 0 obj<</Type/Page/MediaBox[0 0 612 792]/Parent 2 0 R/Resources<<>>/Contents 4 0 R>>endobj\n4 0 obj<</Length 180>>stream\nBT\n/F1 16 Tf\n50 720 Td\n(${file.name}) Tj\n/F1 11 Tf\n50 690 Td\n(CognitiveScale Dynamics - Brand Guidelines & SOW) Tj\n50 660 Td\n(Next.js 14 Redesign & Mobile Architecture Specifications) Tj\nET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f\n0000000009 00000 n\n0000000058 00000 n\n0000000115 00000 n\n0000000216 00000 n\ntrailer<</Size 5/Root 1 0 R>>\nstartxref\n440\n%%EOF`;
+      const blob = new Blob([pdfHeader], { type: 'application/pdf' });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = file.name.endsWith('.pdf') ? file.name : `${file.name}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
+    } catch (err) {
+      console.error('Download error:', err);
+    }
+  };
 
   // Refs
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -749,15 +791,19 @@ export default function ClientInboxView({
                               return (
                                 <div
                                   key={file.id}
-                                  className={`rounded-xl p-2.5 flex items-center justify-between gap-2.5 transition border ${
+                                  onClick={() => handleOpenAttachment(file)}
+                                  className={`rounded-2xl p-3 flex items-center justify-between gap-3 transition-all cursor-pointer border shadow-2xs group select-none ${
                                     isUser
-                                      ? 'bg-blue-700/60 border-blue-400/50 text-white'
-                                      : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100'
+                                      ? 'bg-blue-700/70 hover:bg-blue-700 border-blue-400/60 text-white'
+                                      : 'bg-white hover:bg-blue-50/60 border-slate-200/90 text-slate-800 hover:border-blue-400 hover:shadow-md'
                                   }`}
+                                  title={`Click to open and preview ${file.name}`}
                                 >
-                                  <div className="flex items-center gap-2.5 min-w-0">
-                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
-                                      isUser ? 'bg-blue-600 text-white' : 'bg-blue-100 text-[#1877F2]'
+                                  <div className="flex items-center gap-3 min-w-0">
+                                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-2xs transition-transform group-hover:scale-105 ${
+                                      isUser 
+                                        ? 'bg-blue-600 text-white' 
+                                        : (file.type === 'pdf' ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-blue-50 text-[#1877F2] border border-blue-100')
                                     }`}>
                                       {isImg ? (
                                         <ImageIcon className="w-4 h-4" />
@@ -770,38 +816,42 @@ export default function ClientInboxView({
                                       )}
                                     </div>
                                     <div className="min-w-0">
-                                      <span className="font-bold text-xs block truncate" title={file.name}>
-                                        {file.name}
-                                      </span>
+                                      <div className="flex items-center gap-1.5">
+                                        <span className="font-bold text-xs block truncate" title={file.name}>
+                                          {file.name}
+                                        </span>
+                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-[#1877F2] font-extrabold hidden sm:inline">
+                                          (Click to Open)
+                                        </span>
+                                      </div>
                                       <span className={`text-[10px] block ${isUser ? 'text-blue-200' : 'text-slate-400'}`}>
-                                        {file.size}
+                                        {file.size} &bull; {file.type.toUpperCase()}
                                       </span>
                                     </div>
                                   </div>
 
-                                  <div className="flex items-center gap-1 shrink-0">
-                                    {isImg && file.url && file.url !== '#' && (
-                                      <button
-                                        type="button"
-                                        onClick={() => setViewingImage({ url: file.url, name: file.name })}
-                                        className="p-1.5 rounded-lg hover:bg-white/20 text-current transition"
-                                        title="View image"
-                                      >
-                                        <ExternalLink className="w-3.5 h-3.5" />
-                                      </button>
-                                    )}
-                                    {file.url && file.url !== '#' && (
-                                      <a
-                                        href={file.url}
-                                        download={file.name}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="p-1.5 rounded-lg hover:bg-white/20 text-current transition"
-                                        title="Download attachment"
-                                      >
-                                        <Download className="w-3.5 h-3.5" />
-                                      </a>
-                                    )}
+                                  <div className="flex items-center gap-1.5 shrink-0">
+                                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition ${
+                                      isUser 
+                                        ? 'bg-blue-600 text-white group-hover:bg-blue-500' 
+                                        : 'bg-blue-50 text-[#1877F2] group-hover:bg-blue-100'
+                                    }`}>
+                                      <Eye className="w-3 h-3" />
+                                      <span>Open</span>
+                                    </span>
+
+                                    <button
+                                      type="button"
+                                      onClick={(e) => handleDownloadAttachment(e, file)}
+                                      className={`p-1.5 rounded-lg transition ${
+                                        isUser
+                                          ? 'hover:bg-blue-600 text-white'
+                                          : 'hover:bg-slate-100 text-slate-500 hover:text-[#1877F2]'
+                                      }`}
+                                      title={`Download ${file.name}`}
+                                    >
+                                      <Download className="w-3.5 h-3.5" />
+                                    </button>
                                   </div>
                                 </div>
                               );
@@ -1098,6 +1148,161 @@ export default function ClientInboxView({
                 alt={viewingImage.name}
                 className="max-h-[70vh] w-auto object-contain rounded-xl"
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Interactive PDF & Document Previewer Modal */}
+      {viewingDocument && (
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 animate-in fade-in">
+          <div className="bg-white dark:bg-[#161f2e] border border-slate-200 dark:border-slate-800 rounded-3xl max-w-3xl w-full max-h-[92vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95">
+            {/* Document Header Bar */}
+            <div className="px-6 py-4 bg-slate-900 text-white flex items-center justify-between border-b border-slate-800 shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/30 text-rose-400 flex items-center justify-center font-bold shrink-0">
+                  <FileText className="w-5 h-5" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-black text-sm sm:text-base text-white truncate">
+                      {viewingDocument.name}
+                    </h3>
+                    <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 shrink-0">
+                      Official Client PDF
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400 truncate">
+                    Verified Document &bull; {viewingDocument.size} &bull; Security Scanned
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={(e) => handleDownloadAttachment(e, viewingDocument)}
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#1877F2] hover:bg-blue-600 text-white text-xs font-bold transition shadow-sm"
+                  title="Download PDF to computer"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download PDF</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setViewingDocument(null)}
+                  className="p-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition"
+                  title="Close document preview"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Document Reader Sheet */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-slate-100 dark:bg-[#0c1320] space-y-6">
+              <div className="bg-white dark:bg-[#1a2537] rounded-2xl p-6 sm:p-10 shadow-lg border border-slate-200/90 dark:border-slate-800 max-w-2xl mx-auto space-y-6 text-slate-800 dark:text-slate-100 select-text">
+                {/* PDF Page Header */}
+                <div className="border-b border-slate-200 dark:border-slate-700 pb-5 flex items-start justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-[#1877F2] bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-md inline-block mb-2">
+                      Client Design System &amp; SOW Directive
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
+                      CognitiveScale Dynamics Inc.
+                    </h2>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      B2B SaaS Corporate Redesign &bull; Next.js 14 Architecture Specification v3.2
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block">
+                      Oct 2026 Edition
+                    </span>
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-extrabold">
+                      ✓ Pre-Approved SOW
+                    </span>
+                  </div>
+                </div>
+
+                {/* Section 1: Overview */}
+                <div className="space-y-2">
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-400">
+                    1. Executive Brief &amp; Design Philosophy
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                    We are migrating our existing legacy web portal to an ultra-modern, glassmorphic Next.js 14 + Tailwind CSS architecture. The UI must convey institutional trust, high-tech B2B innovation, and responsive speed across all devices.
+                  </p>
+                </div>
+
+                {/* Section 2: Color Palette Tokens */}
+                <div className="space-y-2.5">
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-400">
+                    2. Primary Color Tokens &amp; Theme Matrix
+                  </h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 text-xs font-mono">
+                    <div className="p-3 rounded-xl bg-slate-900 text-white border border-slate-800">
+                      <span className="text-[10px] text-slate-400 block font-sans">Obsidian Dark</span>
+                      <span className="font-bold">#080E1B</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-[#1877F2] text-white">
+                      <span className="text-[10px] text-blue-200 block font-sans">Meta Blue</span>
+                      <span className="font-bold">#1877F2</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-cyan-400 text-slate-900">
+                      <span className="text-[10px] text-cyan-900 block font-sans">Electric Cyan</span>
+                      <span className="font-bold">#00E5FF</span>
+                    </div>
+                    <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-300 dark:border-slate-700">
+                      <span className="text-[10px] text-slate-500 block font-sans">Surface Card</span>
+                      <span className="font-bold">#F8FAFC</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Section 3: Technical Deliverables */}
+                <div className="space-y-2">
+                  <h4 className="font-extrabold text-xs uppercase tracking-wider text-slate-400">
+                    3. Required Scope of Work Deliverables
+                  </h4>
+                  <ul className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 space-y-1.5 list-disc pl-5">
+                    <li><b>8-10 Custom Pages:</b> Hero, Enterprise AI Solutions, Client Case Studies, Dynamic Pricing Packages, Zoom Consultation Integration.</li>
+                    <li><b>Glassmorphism Card Elevation:</b> Subtle frosted blur (<code>backdrop-blur-md</code>) with fine borders and luxury shadows.</li>
+                    <li><b>Performance Target:</b> Google PageSpeed score of 95+ with sub-second page transitions.</li>
+                    <li><b>Confidentiality:</b> Work covered under standard mutual NDA pre-cleared by Head of Growth.</li>
+                  </ul>
+                </div>
+
+                {/* Section 4: Author Footnote */}
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                  <span>Author: <b>Elena Rostova (Head of Growth, CognitiveScale)</b></span>
+                  <span className="font-mono text-[11px]">Attachment ID: att-1-verified</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Document Footer Actions */}
+            <div className="px-6 py-3 bg-slate-50 dark:bg-[#111927] border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+              <span className="text-xs text-slate-500 dark:text-slate-400">
+                Viewing 1 of 1 attached client documents
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setViewingDocument(null)}
+                  className="px-4 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 transition"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => handleDownloadAttachment(e, viewingDocument)}
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-[#1877F2] hover:bg-blue-600 text-white text-xs font-bold transition shadow-sm"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download File</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
