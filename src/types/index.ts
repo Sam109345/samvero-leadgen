@@ -125,6 +125,19 @@ export interface LeadNotification {
   read: boolean;
 }
 
+export interface ChatAttachment {
+  id: string;
+  name: string;
+  size: string;
+  type: string; // 'image' | 'pdf' | 'doc' | 'archive' | 'file'
+  url: string; // Data URL or public link
+}
+
+export interface VoiceNoteData {
+  url: string; // Audio Data URL or Blob URL
+  durationSeconds: number;
+}
+
 export interface EmailMessage {
   id: string;
   sender: 'user' | 'client';
@@ -135,6 +148,8 @@ export interface EmailMessage {
   timestamp: string;
   previewUrl?: string;
   sentiment?: 'positive' | 'pricing' | 'booking' | 'neutral';
+  attachments?: ChatAttachment[];
+  voiceNote?: VoiceNoteData;
 }
 
 export interface EmailThread {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Mail, 
   MessageSquare, 
@@ -14,17 +14,185 @@ import {
   Flame, 
   DollarSign, 
   Calendar, 
-  RefreshCw,
-  Search,
-  Check,
-  ChevronRight,
-  ShieldCheck
+  RefreshCw, 
+  Search, 
+  Check, 
+  ChevronRight, 
+  ShieldCheck,
+  Paperclip,
+  Mic,
+  Square,
+  Trash2,
+  Play,
+  Pause,
+  FileText,
+  FileArchive,
+  File as FileIcon,
+  Image as ImageIcon,
+  Download,
+  X,
+  Volume2,
+  AlertCircle
 } from 'lucide-react';
-import { EmailThread, EmailMessage } from '@/types';
+import { EmailThread, EmailMessage, ChatAttachment, VoiceNoteData } from '@/types';
 
 interface ClientInboxViewProps {
   onOpenWebsitePreview: (previewUrl: string) => void;
   onClientReplyReceived?: (clientName: string, snippet: string) => void;
+}
+
+// Custom Voice Note Player Component
+function VoiceNotePlayer({ 
+  voiceNote, 
+  isUser 
+}: { 
+  voiceNote: VoiceNoteData; 
+  isUser: boolean; 
+}) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(voiceNote.durationSeconds || 15);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (audioRef.current && voiceNote.url) {
+      audioRef.current.src = voiceNote.url;
+    }
+  }, [voiceNote.url]);
+
+  const togglePlay = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.warn('Playback error or blocked by autoplay policy:', err);
+          setIsPlaying(false);
+        });
+    }
+  };
+
+  const handleTimeUpdate = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current && audioRef.current.duration && !isNaN(audioRef.current.duration)) {
+      setDuration(Math.round(audioRef.current.duration));
+    }
+  };
+
+  const handleEnded = () => {
+    setIsPlaying(false);
+    setCurrentTime(0);
+  };
+
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = parseFloat(e.target.value);
+    setCurrentTime(time);
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+    }
+  };
+
+  const formatSecs = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m}:${s < 10 ? '0' : ''}${s}`;
+  };
+
+  // Fixed visualizer heights for waveform representation
+  const barHeights = [28, 45, 70, 35, 60, 85, 40, 65, 95, 50, 75, 40, 80, 55, 30, 60, 90, 45, 65, 35];
+
+  return (
+    <div className={`mt-2.5 p-3 rounded-2xl flex flex-col gap-2 transition-all ${
+      isUser 
+        ? 'bg-blue-600/90 text-white border border-blue-400/40 shadow-sm' 
+        : 'bg-slate-100 text-slate-800 border border-slate-200/90 shadow-sm'
+    }`}>
+      <audio
+        ref={audioRef}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleLoadedMetadata}
+        onEnded={handleEnded}
+        preload="metadata"
+      />
+
+      <div className="flex items-center justify-between text-[11px] font-bold opacity-90">
+        <span className="flex items-center gap-1.5">
+          <Mic className="w-3.5 h-3.5 text-amber-400" />
+          <span>Voice Message</span>
+        </span>
+        <span className="font-mono text-[10px]">
+          {formatSecs(currentTime)} / {formatSecs(duration)}
+        </span>
+      </div>
+
+      <div className="flex items-center gap-3">
+        {/* Play/Pause Button */}
+        <button
+          type="button"
+          onClick={togglePlay}
+          className={`w-9 h-9 rounded-full flex items-center justify-center shrink-0 shadow-sm transition active:scale-95 ${
+            isUser
+              ? 'bg-white text-[#1877F2] hover:bg-slate-100'
+              : 'bg-[#1877F2] text-white hover:bg-blue-600'
+          }`}
+          title={isPlaying ? 'Pause' : 'Play voice message'}
+        >
+          {isPlaying ? (
+            <Pause className="w-4 h-4 fill-current" />
+          ) : (
+            <Play className="w-4 h-4 fill-current ml-0.5" />
+          )}
+        </button>
+
+        {/* Dynamic Waveform Visualizer & Scrubber */}
+        <div className="flex-1 flex flex-col justify-center gap-1.5">
+          <div className="flex items-center gap-0.5 h-6 px-1">
+            {barHeights.map((h, i) => {
+              const progress = duration > 0 ? (currentTime / duration) : 0;
+              const barProgress = i / barHeights.length;
+              const hasPassed = barProgress <= progress;
+
+              return (
+                <div
+                  key={i}
+                  className={`flex-1 rounded-full transition-all duration-150 ${
+                    isPlaying 
+                      ? 'animate-pulse' 
+                      : ''
+                  } ${
+                    isUser
+                      ? (hasPassed ? 'bg-white' : 'bg-blue-300/60')
+                      : (hasPassed ? 'bg-[#1877F2]' : 'bg-slate-300')
+                  }`}
+                  style={{
+                    height: `${isPlaying ? Math.max(20, (h * (0.6 + Math.random() * 0.5))) : h}%`,
+                  }}
+                />
+              );
+            })}
+          </div>
+
+          <input
+            type="range"
+            min={0}
+            max={duration || 1}
+            step={0.1}
+            value={currentTime}
+            onChange={handleSeek}
+            className="w-full h-1 bg-transparent cursor-pointer appearance-none accent-white"
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function ClientInboxView({
@@ -35,10 +203,30 @@ export default function ClientInboxView({
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'unread' | 'booking' | 'pricing'>('all');
   const [search, setSearch] = useState('');
+  
+  // Composer states
   const [replyText, setReplyText] = useState('');
+  const [attachments, setAttachments] = useState<ChatAttachment[]>([]);
   const [sendingReply, setSendingReply] = useState(false);
   const [simulating, setSimulating] = useState(false);
   const [replySentSuccess, setReplySentSuccess] = useState(false);
+
+  // Voice recording states
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingDuration, setRecordingDuration] = useState(0);
+  const [recordedVoiceNote, setRecordedVoiceNote] = useState<VoiceNoteData | null>(null);
+  const [micError, setMicError] = useState<string | null>(null);
+
+  // Lightbox / Image preview modal state
+  const [viewingImage, setViewingImage] = useState<{ url: string; name: string } | null>(null);
+
+  // Refs
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioStreamRef = useRef<MediaStream | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const recordingIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch threads
   const loadThreads = async (markReadId?: string) => {
@@ -66,6 +254,9 @@ export default function ClientInboxView({
   const handleSelectThread = (id: string) => {
     setSelectedThreadId(id);
     loadThreads(id);
+    setRecordedVoiceNote(null);
+    setAttachments([]);
+    setReplyText('');
   };
 
   // Filter threads
@@ -84,10 +275,163 @@ export default function ClientInboxView({
     return true;
   });
 
-  // Handle Send Reply
-  const handleSendReply = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedThreadId || !replyText.trim()) return;
+  // Handle File Input Selection
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const fileList = Array.from(files);
+
+    fileList.forEach((file) => {
+      // Determine file category
+      let category = 'file';
+      if (file.type.startsWith('image/')) category = 'image';
+      else if (file.type.includes('pdf')) category = 'pdf';
+      else if (file.type.includes('word') || file.type.includes('document') || file.name.endsWith('.docx') || file.name.endsWith('.doc')) category = 'doc';
+      else if (file.type.includes('zip') || file.type.includes('tar') || file.type.includes('compressed')) category = 'archive';
+
+      // Format size
+      const sizeStr = file.size > 1024 * 1024 
+        ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
+        : `${Math.max(1, Math.round(file.size / 1024))} KB`;
+
+      // Read as Data URL
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const dataUrl = event.target?.result as string;
+        const newAttachment: ChatAttachment = {
+          id: `att-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          name: file.name,
+          size: sizeStr,
+          type: category,
+          url: dataUrl || '#',
+        };
+
+        setAttachments((prev) => [...prev, newAttachment]);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Reset input so user can pick same file again if desired
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
+
+  const removeAttachment = (id: string) => {
+    setAttachments((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  // Voice Recording Implementation
+  const startRecording = async () => {
+    setMicError(null);
+    setRecordedVoiceNote(null);
+
+    if (typeof window === 'undefined' || !navigator.mediaDevices?.getUserMedia) {
+      setMicError('Audio recording is not supported in this browser.');
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioStreamRef.current = stream;
+      audioChunksRef.current = [];
+
+      const options = MediaRecorder.isTypeSupported('audio/webm;codecs=opus')
+        ? { mimeType: 'audio/webm;codecs=opus' }
+        : MediaRecorder.isTypeSupported('audio/webm')
+        ? { mimeType: 'audio/webm' }
+        : undefined;
+
+      const mediaRecorder = new MediaRecorder(stream, options);
+      mediaRecorderRef.current = mediaRecorder;
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data && event.data.size > 0) {
+          audioChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const audioBlob = new Blob(audioChunksRef.current, { type: mediaRecorder.mimeType || 'audio/webm' });
+        
+        // Convert Blob to Data URL so it is fully self-contained and durable
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64Audio = reader.result as string;
+          setRecordedVoiceNote({
+            url: base64Audio,
+            durationSeconds: Math.max(1, recordingDuration),
+          });
+        };
+        reader.readAsDataURL(audioBlob);
+
+        // Stop all tracks
+        if (audioStreamRef.current) {
+          audioStreamRef.current.getTracks().forEach((track) => track.stop());
+          audioStreamRef.current = null;
+        }
+      };
+
+      mediaRecorder.start(200); // Collect data every 200ms
+      setIsRecording(true);
+      setRecordingDuration(0);
+
+      // Start timer
+      recordingIntervalRef.current = setInterval(() => {
+        setRecordingDuration((prev) => prev + 1);
+      }, 1000);
+
+    } catch (err: any) {
+      console.error('Microphone access denied or failed:', err);
+      setMicError(err?.message || 'Microphone access denied. Please allow microphone permissions.');
+    }
+  };
+
+  const stopRecording = () => {
+    if (recordingIntervalRef.current) {
+      clearInterval(recordingIntervalRef.current);
+      recordingIntervalRef.current = null;
+    }
+
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+
+    setIsRecording(false);
+  };
+
+  const cancelRecording = () => {
+    if (recordingIntervalRef.current) {
+      clearInterval(recordingIntervalRef.current);
+      recordingIntervalRef.current = null;
+    }
+
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+
+    if (audioStreamRef.current) {
+      audioStreamRef.current.getTracks().forEach((track) => track.stop());
+      audioStreamRef.current = null;
+    }
+
+    audioChunksRef.current = [];
+    setIsRecording(false);
+    setRecordingDuration(0);
+    setRecordedVoiceNote(null);
+  };
+
+  // Handle Send Reply (Text + Attachments + Voice Note)
+  const handleSendReply = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!selectedThreadId) return;
+
+    const hasText = replyText.trim().length > 0;
+    const hasAttachments = attachments.length > 0;
+    const hasVoice = !!recordedVoiceNote;
+
+    if (!hasText && !hasAttachments && !hasVoice) return;
 
     try {
       setSendingReply(true);
@@ -96,16 +440,25 @@ export default function ClientInboxView({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           threadId: selectedThreadId,
-          replyText,
+          replyText: replyText.trim(),
+          attachments: hasAttachments ? attachments : undefined,
+          voiceNote: hasVoice ? recordedVoiceNote : undefined,
         }),
       });
 
       const data = await res.json();
       if (data.success) {
         setReplyText('');
+        setAttachments([]);
+        setRecordedVoiceNote(null);
         setReplySentSuccess(true);
-        setTimeout(() => setReplySentSuccess(false), 3000);
-        loadThreads();
+        setTimeout(() => setReplySentSuccess(false), 3500);
+        await loadThreads();
+
+        // Scroll to bottom
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
       }
     } catch (e) {
       console.error('Failed to send reply:', e);
@@ -131,7 +484,7 @@ export default function ClientInboxView({
 
       const data = await res.json();
       if (data.success) {
-        loadThreads();
+        await loadThreads();
         if (onClientReplyReceived && data.thread) {
           onClientReplyReceived(data.thread.contactPerson, data.thread.lastMessageSnippet);
         }
@@ -148,8 +501,15 @@ export default function ClientInboxView({
     setReplyText(text);
   };
 
+  // Helper for formatting duration
+  const formatTimer = (sec: number) => {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+  };
+
   return (
-    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col h-[82vh]">
+    <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col h-[82vh] relative">
       {/* Top Header */}
       <div className="px-6 py-4 border-b border-slate-200/90 flex flex-wrap items-center justify-between gap-3 bg-slate-50/70">
         <div className="flex items-center gap-3">
@@ -198,7 +558,7 @@ export default function ClientInboxView({
       {/* 2-Pane Inbox Body */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left Pane: Conversations List */}
-        <div className="w-full sm:w-80 md:w-96 border-r border-slate-200/90 flex flex-col bg-slate-50/40">
+        <div className="w-full sm:w-80 md:w-96 border-r border-slate-200/90 flex flex-col bg-slate-50/40 shrink-0">
           {/* Search & Filter pills */}
           <div className="p-3 border-b border-slate-200/80 space-y-2">
             <div className="relative">
@@ -361,13 +721,94 @@ export default function ClientInboxView({
                     </div>
 
                     <div
-                      className={`max-w-2xl rounded-2xl p-4 shadow-xs text-xs sm:text-sm leading-relaxed whitespace-pre-line ${
+                      className={`max-w-2xl rounded-2xl p-4 shadow-xs text-xs sm:text-sm leading-relaxed ${
                         isUser
                           ? 'bg-[#1877F2] text-white rounded-br-xs'
                           : 'bg-white border border-slate-200 text-slate-800 rounded-bl-xs'
                       }`}
                     >
-                      {msg.content}
+                      {/* Message Content */}
+                      {msg.content && (
+                        <p className="whitespace-pre-line leading-relaxed">{msg.content}</p>
+                      )}
+
+                      {/* Voice Note Audio Player */}
+                      {msg.voiceNote && (
+                        <VoiceNotePlayer voiceNote={msg.voiceNote} isUser={isUser} />
+                      )}
+
+                      {/* File Attachments Grid */}
+                      {msg.attachments && msg.attachments.length > 0 && (
+                        <div className="mt-3 space-y-2">
+                          <span className={`text-[10px] font-bold block ${isUser ? 'text-blue-100' : 'text-slate-400'}`}>
+                            Attached Files ({msg.attachments.length}):
+                          </span>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {msg.attachments.map((file) => {
+                              const isImg = file.type === 'image';
+                              return (
+                                <div
+                                  key={file.id}
+                                  className={`rounded-xl p-2.5 flex items-center justify-between gap-2.5 transition border ${
+                                    isUser
+                                      ? 'bg-blue-700/60 border-blue-400/50 text-white'
+                                      : 'bg-slate-50 border-slate-200 text-slate-800 hover:bg-slate-100'
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2.5 min-w-0">
+                                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
+                                      isUser ? 'bg-blue-600 text-white' : 'bg-blue-100 text-[#1877F2]'
+                                    }`}>
+                                      {isImg ? (
+                                        <ImageIcon className="w-4 h-4" />
+                                      ) : file.type === 'pdf' ? (
+                                        <FileText className="w-4 h-4 text-rose-500" />
+                                      ) : file.type === 'archive' ? (
+                                        <FileArchive className="w-4 h-4 text-amber-500" />
+                                      ) : (
+                                        <FileIcon className="w-4 h-4" />
+                                      )}
+                                    </div>
+                                    <div className="min-w-0">
+                                      <span className="font-bold text-xs block truncate" title={file.name}>
+                                        {file.name}
+                                      </span>
+                                      <span className={`text-[10px] block ${isUser ? 'text-blue-200' : 'text-slate-400'}`}>
+                                        {file.size}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex items-center gap-1 shrink-0">
+                                    {isImg && file.url && file.url !== '#' && (
+                                      <button
+                                        type="button"
+                                        onClick={() => setViewingImage({ url: file.url, name: file.name })}
+                                        className="p-1.5 rounded-lg hover:bg-white/20 text-current transition"
+                                        title="View image"
+                                      >
+                                        <ExternalLink className="w-3.5 h-3.5" />
+                                      </button>
+                                    )}
+                                    {file.url && file.url !== '#' && (
+                                      <a
+                                        href={file.url}
+                                        download={file.name}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="p-1.5 rounded-lg hover:bg-white/20 text-current transition"
+                                        title="Download attachment"
+                                      >
+                                        <Download className="w-3.5 h-3.5" />
+                                      </a>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
 
                       {/* Attached Live Website Pill if present */}
                       {msg.previewUrl && (
@@ -394,6 +835,7 @@ export default function ClientInboxView({
                   </div>
                 );
               })}
+              <div ref={messagesEndRef} />
             </div>
 
             {/* Quick Closing Templates Bar */}
@@ -425,40 +867,200 @@ export default function ClientInboxView({
               </button>
             </div>
 
-            {/* Reply Input Form */}
-            <form onSubmit={handleSendReply} className="p-4 border-t border-slate-200 bg-white space-y-2">
-              <div className="relative">
-                <textarea
-                  rows={3}
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  placeholder={`Write reply to ${selectedThread.contactPerson}...`}
-                  className="w-full bg-slate-50 border border-slate-200 text-xs sm:text-sm rounded-xl p-3 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 font-sans"
-                />
-              </div>
+            {/* Hidden File Input for Multiple Uploads */}
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileInputChange}
+              multiple
+              accept="image/*,.pdf,.doc,.docx,.txt,.zip,.rar"
+              className="hidden"
+            />
 
-              <div className="flex items-center justify-between">
-                {replySentSuccess ? (
-                  <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 animate-in fade-in">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Reply sent to client successfully!</span>
-                  </span>
-                ) : (
-                  <span className="text-[11px] text-slate-400">
-                    Dispatches directly to {selectedThread.clientEmail} via SMTP/Resend
-                  </span>
-                )}
+            {/* Composer Container */}
+            <div className="p-4 border-t border-slate-200 bg-white space-y-2">
+              {/* Mic Error Banner */}
+              {micError && (
+                <div className="flex items-center justify-between p-2.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs">
+                  <div className="flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                    <span>{micError}</span>
+                  </div>
+                  <button onClick={() => setMicError(null)} className="p-1 hover:bg-rose-100 rounded-md">
+                    <X className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
 
-                <button
-                  type="submit"
-                  disabled={sendingReply || !replyText.trim()}
-                  className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#1877F2] hover:bg-blue-600 text-white font-bold text-xs transition shadow-sm disabled:opacity-50"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>{sendingReply ? 'Sending...' : 'Send Client Reply'}</span>
-                </button>
-              </div>
-            </form>
+              {/* Attachments Preview Tray */}
+              {attachments.length > 0 && (
+                <div className="flex items-center gap-2 overflow-x-auto pb-1">
+                  {attachments.map((file) => (
+                    <div
+                      key={file.id}
+                      className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold shrink-0"
+                    >
+                      {file.type === 'image' ? (
+                        <ImageIcon className="w-3.5 h-3.5 text-blue-500" />
+                      ) : (
+                        <FileText className="w-3.5 h-3.5 text-rose-500" />
+                      )}
+                      <span className="truncate max-w-[120px]">{file.name}</span>
+                      <span className="text-[10px] text-slate-400 font-normal">({file.size})</span>
+                      <button
+                        type="button"
+                        onClick={() => removeAttachment(file.id)}
+                        className="p-0.5 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="text-[11px] font-bold text-[#1877F2] hover:underline px-2 shrink-0"
+                  >
+                    + Add more
+                  </button>
+                </div>
+              )}
+
+              {/* Recorded Voice Note Preview Badge before sending */}
+              {recordedVoiceNote && !isRecording && (
+                <div className="p-2.5 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2 text-xs font-bold text-blue-900">
+                    <div className="w-6 h-6 rounded-full bg-[#1877F2] text-white flex items-center justify-center">
+                      <Mic className="w-3 h-3" />
+                    </div>
+                    <span>Voice Memo Recorded ({formatTimer(recordedVoiceNote.durationSeconds)})</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setRecordedVoiceNote(null)}
+                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
+                      title="Discard Voice Note"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Recording Active Mode Strip */}
+              {isRecording ? (
+                <div className="p-3 rounded-2xl bg-slate-900 text-white flex items-center justify-between gap-4 border border-slate-800 shadow-md animate-in fade-in">
+                  <div className="flex items-center gap-3">
+                    <div className="relative flex items-center justify-center w-5 h-5">
+                      <span className="w-3 h-3 rounded-full bg-rose-500 animate-ping absolute" />
+                      <span className="w-3 h-3 rounded-full bg-rose-600 relative" />
+                    </div>
+                    <span className="font-mono text-sm font-bold tracking-wider text-rose-400">
+                      REC {formatTimer(recordingDuration)}
+                    </span>
+                  </div>
+
+                  {/* Simulated Dynamic Soundwave */}
+                  <div className="flex items-center gap-1 h-6">
+                    {[12, 24, 40, 18, 30, 48, 20, 36, 16, 28, 44, 22].map((h, i) => (
+                      <span
+                        key={i}
+                        className="w-1 bg-blue-400 rounded-full animate-pulse"
+                        style={{
+                          height: `${Math.max(6, (h * (0.5 + Math.random() * 0.5)))}px`,
+                          animationDelay: `${i * 75}ms`,
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={cancelRecording}
+                      className="p-2 rounded-xl bg-slate-800 hover:bg-rose-950/80 text-slate-300 hover:text-rose-400 transition"
+                      title="Cancel and discard recording"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={stopRecording}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition"
+                      title="Stop and preview voice message"
+                    >
+                      <Check className="w-3.5 h-3.5" />
+                      <span>Finish</span>
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                /* Regular Textarea Form */
+                <form onSubmit={handleSendReply} className="space-y-2">
+                  <div className="relative">
+                    <textarea
+                      rows={3}
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      placeholder={`Write message to ${selectedThread.contactPerson}...`}
+                      className="w-full bg-slate-50 border border-slate-200 text-xs sm:text-sm rounded-xl p-3 pr-24 text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 font-sans resize-none"
+                    />
+
+                    {/* Integrated Quick Media Action Buttons inside Textarea */}
+                    <div className="absolute right-2.5 bottom-3 flex items-center gap-1.5 bg-slate-50/90 pl-1.5 rounded-lg">
+                      {/* Attachment Trigger */}
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="p-2 rounded-lg text-slate-500 hover:text-[#1877F2] hover:bg-blue-50 transition"
+                        title="Upload file (Images, PDF, Documents, Archives)"
+                      >
+                        <Paperclip className="w-4 h-4" />
+                      </button>
+
+                      {/* Microphone Voice Note Trigger */}
+                      <button
+                        type="button"
+                        onClick={startRecording}
+                        className="p-2 rounded-lg text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition"
+                        title="Record Voice Note / Voice Message"
+                      >
+                        <Mic className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Bottom Bar: Status + Send Button */}
+                  <div className="flex items-center justify-between">
+                    {replySentSuccess ? (
+                      <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 animate-in fade-in">
+                        <CheckCircle2 className="w-4 h-4" />
+                        <span>Reply &amp; media sent to client successfully!</span>
+                      </span>
+                    ) : (
+                      <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                        <span>Dispatches to {selectedThread.clientEmail}</span>
+                        {(attachments.length > 0 || recordedVoiceNote) && (
+                          <span className="font-bold text-blue-600">
+                            &bull; Includes {attachments.length > 0 ? `${attachments.length} attachment(s)` : ''} {recordedVoiceNote ? '+ 1 Voice Memo' : ''}
+                          </span>
+                        )}
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={sendingReply || (!replyText.trim() && attachments.length === 0 && !recordedVoiceNote)}
+                      className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#1877F2] hover:bg-blue-600 text-white font-bold text-xs transition shadow-sm disabled:opacity-50 active:scale-95"
+                    >
+                      <Send className="w-3.5 h-3.5" />
+                      <span>{sendingReply ? 'Sending...' : 'Send Client Reply'}</span>
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
         ) : (
           <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
@@ -466,6 +1068,40 @@ export default function ClientInboxView({
           </div>
         )}
       </div>
+
+      {/* Image Lightbox Modal */}
+      {viewingImage && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-3xl max-h-[90vh] overflow-hidden flex flex-col shadow-2xl animate-in zoom-in-95">
+            <div className="px-5 py-3 border-b border-slate-800 flex items-center justify-between text-white">
+              <span className="text-xs font-bold truncate max-w-md">{viewingImage.name}</span>
+              <div className="flex items-center gap-2">
+                <a
+                  href={viewingImage.url}
+                  download={viewingImage.name}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
+                  title="Download Image"
+                >
+                  <Download className="w-4 h-4" />
+                </a>
+                <button
+                  onClick={() => setViewingImage(null)}
+                  className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div className="p-4 flex items-center justify-center bg-black/40 overflow-auto">
+              <img
+                src={viewingImage.url}
+                alt={viewingImage.name}
+                className="max-h-[70vh] w-auto object-contain rounded-xl"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

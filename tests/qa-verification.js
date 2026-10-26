@@ -126,6 +126,38 @@ async function runQA() {
     console.error('Settings test failed:', err);
   }
 
+  // 3.5. Inbox Media & Voice Note Functionality Verification
+  try {
+    const inboxRes = await fetchUrl('http://localhost:3000/api/inbox');
+    assert(inboxRes.status === 200, 'API /api/inbox responds with 200 OK');
+    const inboxData = JSON.parse(inboxRes.body);
+    assert(inboxData.success === true && Array.isArray(inboxData.threads), 'Inbox threads loaded properly');
+    
+    // Check voice note and attachment support
+    const hasVoiceNoteInSample = inboxData.threads.some(t => t.messages.some(m => m.voiceNote && m.voiceNote.durationSeconds > 0));
+    assert(hasVoiceNoteInSample, 'Sample thread contains interactive Voice Note audio memo');
+
+    const hasAttachmentInSample = inboxData.threads.some(t => t.messages.some(m => m.attachments && m.attachments.length > 0));
+    assert(hasAttachmentInSample, 'Sample thread contains attached files (PDF/Docs)');
+
+    // Test sending reply with attachment and voice note
+    const replyRes = await fetchUrl('http://localhost:3000/api/inbox/reply', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        threadId: 'thread-pk-101',
+        replyText: 'QA test reply with attachment and voice note',
+        attachments: [{ id: 'test-att-1', name: 'Contract_Agreement.pdf', size: '540 KB', type: 'pdf', url: '#' }],
+        voiceNote: { url: 'data:audio/webm;base64,GkXfo59ChoEBQveBAULygQ8=', durationSeconds: 6 }
+      })
+    });
+    const replyData = JSON.parse(replyRes.body);
+    assert(replyData.success === true, 'API /api/inbox/reply dispatches reply with voiceNote and attachments');
+    assert(replyData.sentMessage && replyData.sentMessage.voiceNote && replyData.sentMessage.attachments.length === 1, 'Sent message correctly encapsulates voiceNote and attachments payload');
+  } catch (err) {
+    console.error('Inbox media test failed:', err);
+  }
+
   // 4. Standalone Preview Page Test (UAE Lead uae-gmb-401)
   try {
     const previewRes = await fetchUrl('http://localhost:3000/preview/uae-gmb-401');

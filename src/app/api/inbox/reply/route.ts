@@ -6,16 +6,18 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { threadId, replyText } = body;
+    const { threadId, replyText, attachments, voiceNote } = body;
 
-    if (!threadId || !replyText) {
+    const hasContent = (replyText && replyText.trim().length > 0) || (attachments && attachments.length > 0) || voiceNote;
+
+    if (!threadId || !hasContent) {
       return NextResponse.json(
-        { success: false, error: 'threadId and replyText are required' },
+        { success: false, error: 'threadId and at least one message element (text, attachment, or voiceNote) are required' },
         { status: 400 }
       );
     }
 
-    const result = sendReplyToClient(threadId, replyText);
+    const result = sendReplyToClient(threadId, replyText || '', attachments, voiceNote);
 
     if (result.success) {
       return NextResponse.json({

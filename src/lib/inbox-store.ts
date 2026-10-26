@@ -1,4 +1,4 @@
-import { EmailThread, EmailMessage, Lead } from '@/types';
+import { EmailThread, EmailMessage, Lead, ChatAttachment, VoiceNoteData } from '@/types';
 
 // In-memory thread storage for active session
 let inboxThreads: EmailThread[] = [
@@ -10,7 +10,7 @@ let inboxThreads: EmailThread[] = [
     contactPerson: 'Dr. Zeeshan Ali (Founder)',
     city: 'Lahore',
     country: 'Pakistan',
-    lastMessageSnippet: 'Loved the mobile preview! Can we do a quick Zoom call on Friday?',
+    lastMessageSnippet: 'Loved the mobile preview! Sent a quick voice memo regarding Friday Zoom call.',
     lastMessageAt: '12 mins ago',
     unread: true,
     status: 'hot_reply',
@@ -32,9 +32,13 @@ let inboxThreads: EmailThread[] = [
         senderName: 'Dr. Zeeshan Ali',
         senderEmail: 'dr.zeeshan.clinic.lhr@gmail.com',
         subject: 'Re: Custom Digital Proposal & Website Showcase for Dr. Zeeshan Aesthetics',
-        content: `Hello SAMVERO team,\n\nThank you for putting this together! I just checked the live preview on my iPhone and it looks remarkably clean—especially the WhatsApp consultation button and services grid.\n\nWe definitely need an official web presence to streamline patient bookings. Are you available for a brief Zoom or WhatsApp call this Friday at 4:30 PM PKT to discuss your setup cost and timeline?\n\nRegards,\nDr. Zeeshan Ali\nCosmetic Dentist & Founder`,
+        content: `Hello SAMVERO team,\n\nThank you for putting this together! I just checked the live preview on my iPhone and it looks remarkably clean—especially the WhatsApp consultation button and services grid.\n\nI recorded a quick voice note outlining what treatments we need to prioritize. Are you available for a brief Zoom or WhatsApp call this Friday at 4:30 PM PKT?`,
         timestamp: '12 mins ago',
         sentiment: 'booking',
+        voiceNote: {
+          url: 'https://cdn.freesound.org/previews/612/612087_11861866-lq.mp3',
+          durationSeconds: 24,
+        },
       },
     ],
   },
@@ -46,7 +50,7 @@ let inboxThreads: EmailThread[] = [
     contactPerson: 'Elena Rostova (Head of Growth)',
     city: 'San Francisco',
     country: 'US',
-    lastMessageSnippet: 'The sample UI looks sharp. What is your turnaround time for Next.js revamp?',
+    lastMessageSnippet: 'Attached our Brand Design Guide PDF. What is your turnaround time for Next.js revamp?',
     lastMessageAt: '45 mins ago',
     unread: true,
     status: 'hot_reply',
@@ -68,9 +72,18 @@ let inboxThreads: EmailThread[] = [
         senderName: 'Elena Rostova',
         senderEmail: 'talent@cognitivescaledynamics.io',
         subject: 'Re: Next.js 14 + Tailwind Redesign for CognitiveScale Dynamics',
-        content: `Hi Sameer,\n\nThanks for reaching out with a working prototype so quickly! The glassmorphism card styling is right in line with what our design director is looking for.\n\nCould you give me an estimate on turnaround time for an 8-10 page migration, and are you able to sign a standard mutual NDA before we share the Figma design system?\n\nBest,\nElena Rostova\nHead of Growth, CognitiveScale`,
+        content: `Hi Sameer,\n\nThanks for reaching out with a working prototype so quickly! The glassmorphism card styling is right in line with what our design director is looking for.\n\nI have attached our complete Brand Guidelines and Design System PDF below. Could you give me an estimate on turnaround time for an 8-10 page migration?\n\nBest,\nElena Rostova\nHead of Growth, CognitiveScale`,
         timestamp: '45 mins ago',
         sentiment: 'pricing',
+        attachments: [
+          {
+            id: 'att-1',
+            name: 'CognitiveScale_Brand_Identity_v3.pdf',
+            size: '3.8 MB',
+            type: 'pdf',
+            url: '#',
+          },
+        ],
       },
     ],
   },
@@ -186,21 +199,40 @@ export function simulateClientReply(threadId: string): { success: boolean; threa
   const thread = inboxThreads.find((t) => t.id === threadId);
   if (!thread) return { success: false };
 
-  const realisticReplies = [
+  const realisticReplies: Array<{
+    content: string;
+    snippet: string;
+    sentiment: 'positive' | 'booking' | 'pricing' | 'neutral';
+    attachments?: ChatAttachment[];
+    voiceNote?: VoiceNoteData;
+  }> = [
     {
       content: `Hi Sameer!\n\nI reviewed the live website draft you sent over and I'm very impressed with the speed and layout. Can you send over a contract and pricing breakdown? We want to get started next week.\n\nBest,\n${thread.contactPerson}`,
       snippet: 'Very impressed with the website draft! Can you send pricing?',
-      sentiment: 'positive' as const,
+      sentiment: 'positive',
     },
     {
-      content: `Hello,\n\nThanks for following up. Are you available for a 15-minute phone or WhatsApp consultation tomorrow afternoon? We have a couple of questions about CRM integration.\n\nCheers,\n${thread.contactPerson}`,
-      snippet: 'Available for a 15-minute consultation tomorrow?',
-      sentiment: 'booking' as const,
+      content: `Hello,\n\nThanks for following up. Are you available for a 15-minute phone or WhatsApp consultation tomorrow afternoon? I also sent a brief voice note with clinic timing.\n\nCheers,\n${thread.contactPerson}`,
+      snippet: 'Available for a 15-minute consultation tomorrow? (Sent voice memo)',
+      sentiment: 'booking',
+      voiceNote: {
+        url: 'https://cdn.freesound.org/previews/612/612087_11861866-lq.mp3',
+        durationSeconds: 15,
+      },
     },
     {
-      content: `Hey Sameer,\n\nWe reviewed the 6 vector logo concepts and the 14-screen mobile app interactive prototype you synthesized for us. Absolutely stellar work! What are your rates and delivery timeline to finalize this?\n\nRegards,\n${thread.contactPerson}`,
-      snippet: 'Loved the 6 logo concepts & 14-screen app prototype! What are your rates?',
-      sentiment: 'pricing' as const,
+      content: `Hey Sameer,\n\nWe reviewed the vector logo concepts and the interactive prototype you synthesized for us. Absolutely stellar work! I have attached our specification sheet below. What are your rates and delivery timeline to finalize this?\n\nRegards,\n${thread.contactPerson}`,
+      snippet: 'Attached spec sheet & loved prototype! What are your rates?',
+      sentiment: 'pricing',
+      attachments: [
+        {
+          id: `att-client-${Date.now()}`,
+          name: `${thread.businessName.replace(/[^a-zA-Z0-9]/g, '_')}_Specs.pdf`,
+          size: '1.9 MB',
+          type: 'pdf',
+          url: '#',
+        },
+      ],
     },
   ];
 
@@ -215,6 +247,8 @@ export function simulateClientReply(threadId: string): { success: boolean; threa
     content: chosen.content,
     timestamp: 'Just now',
     sentiment: chosen.sentiment,
+    attachments: chosen.attachments,
+    voiceNote: chosen.voiceNote,
   };
 
   thread.messages.push(incomingMsg);
@@ -231,11 +265,20 @@ export function simulateClientReply(threadId: string): { success: boolean; threa
 }
 
 /**
- * Sends a reply back to the client from Sameerly
+ * Sends a reply back to the client from Sameerly / SAMVERO
  */
-export function sendReplyToClient(threadId: string, replyContent: string): { success: boolean; message?: EmailMessage } {
+export function sendReplyToClient(
+  threadId: string, 
+  replyContent: string,
+  attachments?: ChatAttachment[],
+  voiceNote?: VoiceNoteData
+): { success: boolean; message?: EmailMessage } {
   const thread = inboxThreads.find((t) => t.id === threadId);
   if (!thread) return { success: false };
+
+  const contentText = (replyContent || '').trim() 
+    ? replyContent.trim() 
+    : (voiceNote ? '🎙️ [Voice Message]' : (attachments && attachments.length > 0 ? `📎 [Attached ${attachments.length} file(s)]` : ''));
 
   const userReply: EmailMessage = {
     id: `msg-reply-${Date.now()}`,
@@ -243,12 +286,22 @@ export function sendReplyToClient(threadId: string, replyContent: string): { suc
     senderName: 'SAMVERO Partner Director',
     senderEmail: 'outreach@samvero.com',
     subject: `Re: Digital Proposal Discussion - ${thread.businessName}`,
-    content: replyContent,
+    content: contentText,
     timestamp: 'Just now',
+    attachments: attachments && attachments.length > 0 ? attachments : undefined,
+    voiceNote: voiceNote || undefined,
   };
 
   thread.messages.push(userReply);
-  thread.lastMessageSnippet = `You: ${replyContent.substring(0, 60)}...`;
+  
+  let snippet = `You: ${contentText}`;
+  if (voiceNote) {
+    snippet = 'You: 🎙️ Sent a voice message';
+  } else if (attachments && attachments.length > 0) {
+    snippet = `You: 📎 Sent ${attachments.length} attachment(s)`;
+  }
+  
+  thread.lastMessageSnippet = snippet.substring(0, 75);
   thread.lastMessageAt = 'Just now';
   thread.status = 'awaiting_reply';
   thread.unread = false;
