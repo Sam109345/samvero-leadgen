@@ -1,48 +1,40 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Lock, Shield, Eye, EyeOff, ArrowRight, Sparkles, AlertCircle, Key, CheckCircle2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  Lock, 
+  Shield, 
+  Eye, 
+  EyeOff, 
+  ArrowRight, 
+  Sparkles, 
+  AlertCircle, 
+  Key, 
+  CheckCircle2,
+  Crown,
+  Briefcase,
+  Monitor
+} from 'lucide-react';
 import SamveroBrandLogo from './SamveroBrandLogo';
+import { AuthProvider, useAuth } from '@/lib/auth-context';
 
 interface PortalAuthGateProps {
   children: React.ReactNode;
 }
 
-export default function PortalAuthGate({ children }: PortalAuthGateProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+function AuthGateContent({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, role, userName, login } = useAuth();
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   const [shake, setShake] = useState(false);
-
-  // Check auth on load from localStorage and server cookie
-  useEffect(() => {
-    const localAuth = localStorage.getItem('samvero_portal_session');
-    if (localAuth === 'active') {
-      setIsAuthenticated(true);
-      return;
-    }
-
-    fetch('/api/auth/verify')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.authenticated) {
-          localStorage.setItem('samvero_portal_session', 'active');
-          setIsAuthenticated(true);
-        } else {
-          setIsAuthenticated(false);
-        }
-      })
-      .catch(() => {
-        setIsAuthenticated(false);
-      });
-  }, []);
+  const [successRole, setSuccessRole] = useState<'admin' | 'employer' | null>(null);
 
   const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!password.trim()) {
-      setErrorMsg('Please enter your portal access key');
+      setErrorMsg('Please enter your authorization password');
       return;
     }
 
@@ -50,23 +42,16 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
     setErrorMsg('');
 
     try {
-      const res = await fetch('/api/auth/verify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password }),
-      });
+      const result = await login(password.trim());
 
-      const data = await res.json();
-
-      if (data.success) {
-        localStorage.setItem('samvero_portal_session', 'active');
-        setIsAuthenticated(true);
+      if (result.success && result.role) {
+        setSuccessRole(result.role as 'admin' | 'employer');
       } else {
-        setErrorMsg(data.error || 'Invalid access key. Access denied.');
+        setErrorMsg(result.error || 'Invalid credentials. Access denied.');
         setShake(true);
         setTimeout(() => setShake(false), 600);
       }
-    } catch (err: any) {
+    } catch {
       setErrorMsg('Network error. Please try again.');
     } finally {
       setLoading(false);
@@ -85,12 +70,12 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
     );
   }
 
-  // If authenticated, render normal children (full dashboard)
+  // If authenticated, render full application dashboard
   if (isAuthenticated) {
     return <>{children}</>;
   }
 
-  // Otherwise, render the luxury restricted access lock screen
+  // Otherwise, render the dual-access luxury lock screen
   return (
     <div className="min-h-screen bg-[#060b14] text-white flex flex-col justify-between relative overflow-hidden select-none font-sans">
       {/* Background Ambient Glow Effects */}
@@ -102,7 +87,7 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
         <SamveroBrandLogo size="md" showText={true} tagline={false} />
         <div className="flex items-center gap-2 bg-slate-900/80 border border-slate-800/80 rounded-full px-3.5 py-1 text-xs text-slate-400">
           <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="font-mono text-[11px] font-bold text-slate-300">SYSTEM SECURE</span>
+          <span className="font-mono text-[11px] font-bold text-slate-300">ROLE-GATED TERMINAL</span>
         </div>
       </header>
 
@@ -125,24 +110,44 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
             </div>
 
             <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1 rounded-full inline-block mb-2">
-                Restricted Terminal
-              </span>
+              <div className="flex items-center justify-center gap-1.5 mb-2">
+                <span className="text-[10px] font-black uppercase tracking-widest text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full">
+                  Executive Admin &amp; Staff Gateway
+                </span>
+              </div>
               <h1 className="text-xl sm:text-2xl font-black text-white tracking-tight">
-                SAMVERO Portal Gate
+                SAMVERO Portal Security
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                Enter your master authorization key to unlock executive lead tools &amp; deliverables.
+                Enter your access password to login as Executive Admin or Employer Staff.
               </p>
             </div>
           </div>
 
+          {/* Quick Dual Role Helper Hint */}
+          <div className="mt-5 grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+            <div className="p-2 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-1.5">
+              <Crown className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <div>
+                <span className="font-bold text-slate-200 block">Super Admin</span>
+                <span className="text-[9px] text-slate-500">Full Audit &amp; Team Tracking</span>
+              </div>
+            </div>
+            <div className="p-2 rounded-xl bg-slate-900/60 border border-slate-800 flex items-center gap-1.5">
+              <Briefcase className="w-3.5 h-3.5 text-blue-400 shrink-0" />
+              <div>
+                <span className="font-bold text-slate-200 block">Employer Staff</span>
+                <span className="text-[9px] text-slate-500">Standard Lead Operations</span>
+              </div>
+            </div>
+          </div>
+
           {/* Password Form */}
-          <form onSubmit={handleUnlock} className="mt-7 space-y-4">
+          <form onSubmit={handleUnlock} className="mt-6 space-y-4">
             <div className="space-y-1.5">
               <label className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 flex items-center justify-between">
-                <span>Access Key</span>
-                <span className="text-[10px] text-slate-500 font-normal">Encrypted Session</span>
+                <span>Access Password</span>
+                <span className="text-[10px] text-cyan-400 font-mono">Role Detected On Login</span>
               </label>
 
               <div className="relative">
@@ -153,7 +158,7 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
                   type={showPassword ? 'text' : 'password'}
                   autoFocus
                   required
-                  placeholder="Enter Portal Master Key..."
+                  placeholder="Enter Admin or Employer Password..."
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-[#080e1b] border border-slate-700/80 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/20 rounded-xl pl-10 pr-11 py-3 text-sm text-white placeholder-slate-500 transition-all outline-none font-mono"
@@ -176,6 +181,13 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
               </div>
             )}
 
+            {successRole && (
+              <div className="p-3 bg-emerald-950/60 border border-emerald-800 rounded-xl text-emerald-300 text-xs flex items-center gap-2 animate-in fade-in">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span>Authenticated as <b>{successRole === 'admin' ? 'Super Executive Admin' : 'Employer Staff'}</b>! Redirecting...</span>
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
@@ -184,7 +196,7 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
               {loading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  <span>Verifying Authorization...</span>
+                  <span>Verifying Authorization &amp; Device...</span>
                 </>
               ) : (
                 <>
@@ -201,7 +213,7 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
               <Shield className="w-3.5 h-3.5 text-cyan-400" />
               <span>AES-256 Vault Protection</span>
             </span>
-            <span className="font-mono text-[10px] text-slate-400">v2.4 Production</span>
+            <span className="font-mono text-[10px] text-slate-400">v2.5 Role-Gated</span>
           </div>
         </div>
       </main>
@@ -211,5 +223,13 @@ export default function PortalAuthGate({ children }: PortalAuthGateProps) {
         <span>SAMVERO &bull; AI-Powered Lead Generation &amp; Client Acquisition Platform</span>
       </footer>
     </div>
+  );
+}
+
+export default function PortalAuthGate({ children }: PortalAuthGateProps) {
+  return (
+    <AuthProvider>
+      <AuthGateContent>{children}</AuthGateContent>
+    </AuthProvider>
   );
 }

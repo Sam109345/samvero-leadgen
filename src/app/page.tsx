@@ -17,6 +17,7 @@ import ApiSettingsModal from '@/components/ApiSettingsModal';
 import CreateLeadModal from '@/components/CreateLeadModal';
 import JobScopeAnalyzerModal from '@/components/JobScopeAnalyzerModal';
 import PortalAuthGate from '@/components/PortalAuthGate';
+import AdminAuditDashboard from '@/components/AdminAuditDashboard';
 
 import { Lead, LeadNotification, PipelineStage } from '@/types';
 import { generateNextIncomingLead } from '@/lib/lead-stream';
@@ -28,8 +29,8 @@ export default function HomePage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Active view: 'feed' (Classic Freelancer.com 3-column) | 'kanban' | 'analytics' | 'inbox' | 'gmb'
-  const [activeView, setActiveView] = useState<'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox'>('feed');
+  // Active view: 'feed' (Classic Freelancer.com 3-column) | 'kanban' | 'analytics' | 'inbox' | 'gmb' | 'audit'
+  const [activeView, setActiveView] = useState<'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox' | 'audit'>('feed');
 
   // Filters state
   const [selectedPipelineFilter, setSelectedPipelineFilter] = useState('all');
@@ -562,6 +563,11 @@ export default function HomePage() {
             onGenerateWebsite={handleOpenWebsiteModal}
             onOpenOutreach={(l) => handleOpenEmailModal(l)}
           />
+        )}
+
+        {/* VIEW 6: Executive Admin Security & Staff Attribution Center */}
+        {activeView === 'audit' && (
+          <AdminAuditDashboard />
         )}
 
       </main>

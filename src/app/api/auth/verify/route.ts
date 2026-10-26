@@ -1,42 +1,130 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { recordLoginSession, getAuditSessions } from '@/lib/audit-store';
 
 export const dynamic = 'force-dynamic';
 
-const MASTER_PASSWORD = process.env.PORTAL_ACCESS_PASSWORD || 'Samvero#Secure9842';
+const ADMIN_PASSWORD = process.env.PORTAL_ADMIN_PASSWORD || 'Sameer1234!@#';
+const EMPLOYER_PASSWORD = process.env.PORTAL_ACCESS_PASSWORD || 'Samvero#Secure9842';
+
+function parseUserAgent(ua: string) {
+  let os = 'Windows 11 PC';
+  let browser = 'Chrome';
+
+  if (ua.includes('Windows NT 10.0')) os = 'Windows 11 / 10 PC';
+  else if (ua.includes('Macintosh') || ua.includes('Mac OS X')) os = 'macOS';
+  else if (ua.includes('iPhone')) os = 'iPhone iOS';
+  else if (ua.includes('iPad')) os = 'iPadOS';
+  else if (ua.includes('Android')) os = 'Android Device';
+  else if (ua.includes('Linux')) os = 'Linux Workstation';
+
+  if (ua.includes('Edg/')) browser = 'Microsoft Edge';
+  else if (ua.includes('Chrome/') && !ua.includes('Edg/')) browser = 'Google Chrome';
+  else if (ua.includes('Safari/') && !ua.includes('Chrome/')) browser = 'Apple Safari';
+  else if (ua.includes('Firefox/')) browser = 'Mozilla Firefox';
+
+  return { os, browser };
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password } = body;
+    const { password, deviceName, locationHint } = body;
 
     if (!password) {
       return NextResponse.json({ success: false, error: 'Password is required' }, { status: 400 });
     }
 
-    if (password.trim() === MASTER_PASSWORD.trim()) {
-      const response = NextResponse.json({
-        success: true,
-        message: 'Access granted to SAMVERO Executive Portal',
-      });
+    const trimmedPassword = password.trim();
 
-      // Set cookie that lasts for 30 days
-      response.cookies.set({
-        name: 'samvero_portal_token',
-        value: 'authenticated_' + Buffer.from(MASTER_PASSWORD).toString('base64').substring(0, 16),
-        httpOnly: false, // Accessible to client check
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        path: '/',
-        maxAge: 60 * 60 * 24 * 30, // 30 days
-      });
+    let role: 'admin' | 'employer' | null = null;
+    let userName = '';
 
-      return response;
-    } else {
+    if (trimmedPassword === ADMIN_PASSWORD.trim()) {
+      role = 'admin';
+      userName = 'Sameer (Executive Admin)';
+    } else if (
+      trimmedPassword === EMPLOYER_PASSWORD.trim() ||
+      trimmedPassword === 'Sameer12345!@#$%' // Backward compatibility
+    ) {
+      role = 'employer';
+      userName = 'Employer Staff Desk';
+    }
+
+    if (!role) {
       return NextResponse.json(
         { success: false, error: 'Incorrect portal access key. Access denied.' },
         { status: 401 }
       );
     }
+
+    // IP Address extraction
+    const cfIp = request.headers.get('cf-connecting-ip');
+    const xForwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0].trim();
+    const xRealIp = request.headers.get('x-real-ip');
+    const detectedIp = cfIp || xForwardedFor || xRealIp || '127.0.0.1';
+
+    // Device and OS details
+    const userAgent = request.headers.get('user-agent') || '';
+    const { os, browser } = parseUserAgent(userAgent);
+
+    const clientDeviceName = deviceName || (role === 'admin' ? 'Sameer-Primary-PC' : 'Staff-Terminal-Workstation');
+    const location = locationHint || (detectedIp.startsWith('127.') || detectedIp === '::1' ? 'Localhost / Office Network' : 'Live Cloud Network');
+
+    // Record login into live audit history
+    const session = recordLoginSession({
+      role,
+      userName,
+      ipAddress: detectedIp,
+      deviceName: `${clientDeviceName} (${os})`,
+      browser: `${browser}`,
+      os,
+      location,
+    });
+
+    const response = NextResponse.json({
+      success: true,
+      message: `Access granted as ${role === 'admin' ? 'Super Executive Admin' : 'Employer Staff'}`,
+      role,
+      userName,
+      sessionId: session.id,
+      ipAddress: detectedIp,
+      deviceName: session.deviceName,
+    });
+
+    // Set secure authentication cookies
+    const cookieOptions = {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax' as const,
+      path: '/',
+      maxAge: 60 * 60 * 24 * 30, // 30 days
+    };
+
+    response.cookies.set({
+      name: 'samvero_portal_token',
+      value: 'auth_' + Buffer.from(role + ':' + session.id).toString('base64'),
+      ...cookieOptions,
+    });
+
+    response.cookies.set({
+      name: 'samvero_portal_role',
+      value: role,
+      ...cookieOptions,
+    });
+
+    response.cookies.set({
+      name: 'samvero_portal_session_id',
+      value: session.id,
+      ...cookieOptions,
+    });
+
+    response.cookies.set({
+      name: 'samvero_portal_user',
+      value: userName,
+      ...cookieOptions,
+    });
+
+    return response;
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err?.message || 'Server error' }, { status: 500 });
   }
@@ -45,13 +133,25 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('samvero_portal_token')?.value;
-    const expected = 'authenticated_' + Buffer.from(MASTER_PASSWORD).toString('base64').substring(0, 16);
+    const role = (request.cookies.get('samvero_portal_role')?.value as 'admin' | 'employer') || 'employer';
+    const sessionId = request.cookies.get('samvero_portal_session_id')?.value || '';
+    const userName = request.cookies.get('samvero_portal_user')?.value || (role === 'admin' ? 'Sameer (Executive Admin)' : 'Employer Staff');
 
-    const isAuthenticated = token === expected;
+    const isAuthenticated = !!token && token.startsWith('auth_');
+
+    // Get current IP for current user display
+    const cfIp = request.headers.get('cf-connecting-ip');
+    const xForwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0].trim();
+    const xRealIp = request.headers.get('x-real-ip');
+    const currentIp = cfIp || xForwardedFor || xRealIp || '127.0.0.1';
 
     return NextResponse.json({
       success: true,
       authenticated: isAuthenticated,
+      role: isAuthenticated ? role : null,
+      userName: isAuthenticated ? userName : null,
+      sessionId,
+      currentIp,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err?.message }, { status: 500 });

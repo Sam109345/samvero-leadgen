@@ -158,6 +158,57 @@ async function runQA() {
     console.error('Inbox media test failed:', err);
   }
 
+  // 3.6. Dual Role Authentication & Session Device Audit Verification
+  try {
+    // 3.6.1 Test Admin Password (Sameer1234!@#)
+    const adminLoginRes = await fetchUrl('http://localhost:3000/api/auth/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-forwarded-for': '182.185.142.92', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/129.0' },
+      body: JSON.stringify({ password: 'Sameer1234!@#', deviceName: 'Sameer-Primary-PC' })
+    });
+    assert(adminLoginRes.status === 200, 'Admin login with Sameer1234!@# responds with 200 OK');
+    const adminData = JSON.parse(adminLoginRes.body);
+    assert(adminData.success === true && adminData.role === 'admin', 'Admin password correctly assigns role: admin');
+    assert(adminData.ipAddress === '182.185.142.92', 'Client IP address successfully captured in session');
+    assert(adminData.deviceName.includes('Sameer-Primary-PC'), 'Client PC hostname recognized in audit session');
+
+    // 3.6.2 Test Employer Password (Samvero#Secure9842)
+    const empLoginRes = await fetchUrl('http://localhost:3000/api/auth/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-forwarded-for': '110.39.24.118', 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+      body: JSON.stringify({ password: 'Samvero#Secure9842', deviceName: 'Staff-Desk-Terminal' })
+    });
+    assert(empLoginRes.status === 200, 'Employer login with Samvero#Secure9842 responds with 200 OK');
+    const empData = JSON.parse(empLoginRes.body);
+    assert(empData.success === true && empData.role === 'employer', 'Employer password correctly assigns role: employer');
+
+    // 3.6.3 Test Invalid Password Rejection
+    const invalidLoginRes = await fetchUrl('http://localhost:3000/api/auth/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: 'WrongPassword999' })
+    });
+    assert(invalidLoginRes.status === 401, 'Invalid password correctly rejected with 401 Unauthorized');
+
+    // 3.6.4 Test Admin Audit API (/api/admin/audit) without admin role
+    const auditUnauthorizedRes = await fetchUrl('http://localhost:3000/api/admin/audit');
+    assert(auditUnauthorizedRes.status === 403, 'Admin Audit API correctly denies access without admin privileges (403)');
+
+    // 3.6.5 Test Admin Audit API with Admin privileges
+    const auditRes = await fetchUrl('http://localhost:3000/api/admin/audit', {
+      headers: { 'x-portal-role': 'admin' }
+    });
+    assert(auditRes.status === 200, 'Admin Audit API responds with 200 OK for super admin');
+    const auditData = JSON.parse(auditRes.body);
+    assert(auditData.success === true, 'Audit API returns success: true');
+    assert(Array.isArray(auditData.sessions) && auditData.sessions.length > 0, 'Audit sessions list returned with active & past devices');
+    assert(Array.isArray(auditData.staff) && auditData.staff.length >= 4, 'Staff members performance loaded (kis bandy ne kitni reach ki)');
+    assert(Array.isArray(auditData.outreachRecords) && auditData.outreachRecords.length > 0, 'Chronological staff outreach attribution records loaded');
+    assert(auditData.summary && auditData.summary.totalOutreachCount > 0, 'Executive summary stats calculated');
+  } catch (err) {
+    console.error('Audit verification test failed:', err);
+  }
+
   // 4. Standalone Preview Page Test (UAE Lead uae-gmb-401)
   try {
     const previewRes = await fetchUrl('http://localhost:3000/preview/uae-gmb-401');

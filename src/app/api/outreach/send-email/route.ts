@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendOutreachEmail } from '@/lib/mailer';
+import { recordStaffOutreach } from '@/lib/audit-store';
 
 export const dynamic = 'force-dynamic';
 
@@ -51,6 +52,23 @@ export async function POST(request: NextRequest) {
         { status: 429 }
       );
     }
+
+    // Automatically attribute this outreach action to the active staff operator
+    const portalRole = request.cookies.get('samvero_portal_role')?.value;
+    const isExecutive = portalRole === 'admin';
+
+    recordStaffOutreach({
+      staffId: isExecutive ? 'staff-sameer' : 'staff-employer',
+      staffName: isExecutive ? 'Sameer (Lead Director)' : 'Employer Staff Desk',
+      leadId: `lead-${Date.now()}`,
+      businessName,
+      category: discipline || 'Digital Growth & Web',
+      country: country || 'Global',
+      recipientEmail: to,
+      channel: result.provider === 'smtp' ? 'Custom SMTP' : 'Resend API',
+      subject: subject || `Digital Proposal for ${businessName}`,
+      previewUrl: previewUrl || '',
+    });
 
     return NextResponse.json({
       success: true,

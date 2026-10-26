@@ -23,10 +23,13 @@ import {
   ExternalLink,
   Flame,
   Globe2,
-  Lock
+  Lock,
+  Crown,
+  Shield
 } from 'lucide-react';
 import { LeadNotification, Lead } from '@/types';
 import SamveroBrandLogo from '@/components/SamveroBrandLogo';
+import { useAuth } from '@/lib/auth-context';
 
 interface FreelancerNavbarProps {
   notifications: LeadNotification[];
@@ -45,7 +48,7 @@ interface FreelancerNavbarProps {
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
   activeView: string;
-  setActiveView: (view: 'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox') => void;
+  setActiveView: (view: 'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox' | 'audit') => void;
   onSearch: (q: string) => void;
   searchQuery: string;
 }
@@ -71,6 +74,7 @@ export default function FreelancerNavbar({
   onSearch,
   searchQuery,
 }: FreelancerNavbarProps) {
+  const { role, userName, logout } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -175,6 +179,22 @@ export default function FreelancerNavbar({
               <Zap className="w-4 h-4" />
               Funnel
             </button>
+
+            {/* ONLY VISIBLE TO SUPER ADMIN */}
+            {role === 'admin' && (
+              <button
+                onClick={() => setActiveView('audit')}
+                className={`px-3 py-2 text-sm font-extrabold rounded-md transition-all flex items-center gap-1.5 border shadow-2xs ${
+                  activeView === 'audit'
+                    ? 'bg-amber-500/20 text-amber-500 dark:text-amber-300 border-amber-400 dark:border-amber-500/50'
+                    : 'bg-amber-50/60 dark:bg-amber-950/20 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-900/50 hover:bg-amber-100 dark:hover:bg-amber-900/40'
+                }`}
+                title="Super Admin Only: Staff Lead Outreach Attribution & Device IP Security Monitor"
+              >
+                <Crown className="w-4 h-4 text-amber-500 fill-current" />
+                <span>Executive Audit</span>
+              </button>
+            )}
           </nav>
         </div>
 
@@ -339,27 +359,31 @@ export default function FreelancerNavbar({
             Post Project
           </button>
 
-          {/* User Profile Avatar */}
+          {/* User Profile Avatar with Dual Role Indicator */}
           <div className="hidden sm:flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-[#24334a]">
             <div className="relative">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#007FED] to-indigo-600 flex items-center justify-center text-xs font-bold text-white shadow-inner">
-                S
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-white shadow-inner ${
+                role === 'admin' 
+                  ? 'bg-gradient-to-tr from-amber-500 via-orange-500 to-amber-600 ring-2 ring-amber-400/50' 
+                  : 'bg-gradient-to-tr from-[#007FED] to-indigo-600'
+              }`}>
+                {role === 'admin' ? '👑' : 'S'}
               </div>
               <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-[#161f2e]"></span>
             </div>
             <div className="hidden xl:flex flex-col text-left">
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-200">SAMVERO Partner</span>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">$48,500 Pool</span>
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+                <span>{role === 'admin' ? 'Sameer (Admin)' : (userName || 'Employer Staff')}</span>
+              </span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">
+                {role === 'admin' ? '👑 Executive Mode' : '$48,500 Pool'}
+              </span>
             </div>
 
-            {/* Lock Terminal Action */}
+            {/* Lock Terminal Action (Log Out & Switch Role) */}
             <button
-              onClick={() => {
-                localStorage.removeItem('samvero_portal_session');
-                document.cookie = 'samvero_portal_token=; Max-Age=0; path=/;';
-                window.location.reload();
-              }}
-              title="Lock Operating Terminal (Sign Out)"
+              onClick={logout}
+              title="Lock Operating Terminal (Switch Role / Sign Out)"
               className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors ml-1"
             >
               <Lock className="w-4 h-4" />

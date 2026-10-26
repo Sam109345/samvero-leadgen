@@ -31,7 +31,7 @@ interface FreelancerSubNavProps {
   sortBy: string;
   onSelectSortBy: (s: string) => void;
   activeView: string;
-  setActiveView: (view: 'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox') => void;
+  setActiveView: (view: 'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox' | 'audit') => void;
   onOpenInbox: () => void;
 }
 
