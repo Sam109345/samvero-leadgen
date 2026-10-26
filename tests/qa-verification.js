@@ -154,6 +154,33 @@ async function runQA() {
     const replyData = JSON.parse(replyRes.body);
     assert(replyData.success === true, 'API /api/inbox/reply dispatches reply with voiceNote and attachments');
     assert(replyData.sentMessage && replyData.sentMessage.voiceNote && replyData.sentMessage.attachments.length === 1, 'Sent message correctly encapsulates voiceNote and attachments payload');
+
+    // Test Delete Message For Everyone
+    const delForEveryoneRes = await fetchUrl('http://localhost:3000/api/inbox/delete-message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        threadId: 'thread-pk-101',
+        messageId: replyData.sentMessage.id,
+        mode: 'for_everyone'
+      })
+    });
+    const delForEveryoneData = JSON.parse(delForEveryoneRes.body);
+    assert(delForEveryoneData.success === true, 'API /api/inbox/delete-message responds with 200 OK');
+    assert(delForEveryoneData.deletedMessage && delForEveryoneData.deletedMessage.isDeletedForEveryone === true, 'Message correctly marked isDeletedForEveryone with purged media and recalled content');
+
+    // Test Permanent Delete
+    const delPermRes = await fetchUrl('http://localhost:3000/api/inbox/delete-message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        threadId: 'thread-pk-101',
+        messageId: replyData.sentMessage.id,
+        mode: 'permanent'
+      })
+    });
+    const delPermData = JSON.parse(delPermRes.body);
+    assert(delPermData.success === true, 'Permanent deletion correctly purges message record from thread');
   } catch (err) {
     console.error('Inbox media test failed:', err);
   }

@@ -23,6 +23,7 @@ import {
   Mic,
   Square,
   Trash2,
+  Ban,
   Play,
   Pause,
   FileText,
@@ -315,6 +316,76 @@ export default function ClientInboxView({
       setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
     } catch (err) {
       console.error('Download error:', err);
+    }
+  };
+
+  // Message deletion & recall states
+  const [deletingMessage, setDeletingMessage] = useState<{ threadId: string; message: EmailMessage } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteToast, setDeleteToast] = useState<string | null>(null);
+
+  // Handle Delete for Everyone / Permanent Delete
+  const handleDeleteMessage = async (threadId: string, messageId: string, mode: 'for_everyone' | 'permanent') => {
+    try {
+      setIsDeleting(true);
+
+      // Optimistic state update for instant UI feedback
+      setThreads((prevThreads) =>
+        prevThreads.map((thread) => {
+          if (thread.id !== threadId) return thread;
+          if (mode === 'permanent') {
+            const updatedMsgs = thread.messages.filter((m) => m.id !== messageId);
+            return {
+              ...thread,
+              messages: updatedMsgs,
+              lastMessageSnippet: updatedMsgs.length > 0 ? (updatedMsgs[updatedMsgs.length - 1].content || 'Message removed') : 'No messages',
+            };
+          } else {
+            return {
+              ...thread,
+              messages: thread.messages.map((m) => {
+                if (m.id !== messageId) return m;
+                return {
+                  ...m,
+                  isDeletedForEveryone: true,
+                  deletedAt: 'Just now',
+                  deletedBy: m.sender === 'user' ? 'You' : m.senderName,
+                  content: '🚫 This message was deleted for everyone',
+                  attachments: undefined,
+                  voiceNote: undefined,
+                  previewUrl: undefined,
+                };
+              }),
+            };
+          }
+        })
+      );
+
+      const res = await fetch('/api/inbox/delete-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          threadId,
+          messageId,
+          mode,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setDeleteToast(
+          mode === 'for_everyone'
+            ? 'Message recalled & deleted for everyone'
+            : 'Message permanently removed from chat'
+        );
+        setTimeout(() => setDeleteToast(null), 3500);
+        await loadThreads();
+      }
+    } catch (err) {
+      console.error('Failed to delete message:', err);
+    } finally {
+      setIsDeleting(false);
+      setDeletingMessage(null);
     }
   };
 
@@ -810,157 +881,209 @@ export default function ClientInboxView({
                 return (
                   <div
                     key={msg.id}
-                    className={`flex flex-col ${isUser ? 'items-end' : 'items-start'}`}
+                    className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} group/msg relative`}
                   >
                     <div className="flex items-center gap-2 mb-1 text-[11px] text-slate-400">
                       <span className="font-bold text-slate-700">{msg.senderName}</span>
                       <span>&bull;</span>
                       <span>{msg.timestamp}</span>
+                      {msg.isDeletedForEveryone && (
+                        <span className="text-[10px] text-rose-500 font-bold bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200 flex items-center gap-1">
+                          <Ban className="w-2.5 h-2.5" /> Recalled
+                        </span>
+                      )}
                     </div>
 
-                    <div
-                      className={`max-w-2xl rounded-2xl p-4 shadow-xs text-xs sm:text-sm leading-relaxed ${
-                        isUser
-                          ? 'bg-[#1877F2] text-white rounded-br-xs'
-                          : 'bg-white border border-slate-200 text-slate-800 rounded-bl-xs'
-                      }`}
-                    >
-                      {/* Message Content */}
-                      {msg.content && (
-                        <p className="whitespace-pre-line leading-relaxed">{msg.content}</p>
-                      )}
-
-                      {/* Voice Note Audio Player */}
-                      {msg.voiceNote && (
-                        <VoiceNotePlayer voiceNote={msg.voiceNote} isUser={isUser} />
-                      )}
-
-                      {/* File Attachments Grid */}
-                      {msg.attachments && msg.attachments.length > 0 && (
-                        <div className="mt-3 space-y-2">
-                          <span className={`text-[10px] font-bold block ${isUser ? 'text-blue-100' : 'text-slate-400'}`}>
-                            Attached Files ({msg.attachments.length}):
-                          </span>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            {msg.attachments.map((file) => {
-                              const isImg = file.type === 'image';
-                              return (
-                                <div
-                                  key={file.id}
-                                  onClick={() => handleOpenAttachment(file)}
-                                  className={`rounded-2xl p-3 flex items-center justify-between gap-3 transition-all cursor-pointer border shadow-2xs group select-none ${
-                                    isUser
-                                      ? 'bg-blue-700/70 hover:bg-blue-700 border-blue-400/60 text-white'
-                                      : 'bg-white hover:bg-blue-50/60 border-slate-200/90 text-slate-800 hover:border-blue-400 hover:shadow-md'
-                                  }`}
-                                  title={`Click to open and preview ${file.name}`}
-                                >
-                                  <div className="flex items-center gap-3 min-w-0">
-                                    <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-2xs transition-transform group-hover:scale-105 ${
-                                      isUser 
-                                        ? 'bg-blue-600 text-white' 
-                                        : (file.type === 'pdf' ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-blue-50 text-[#1877F2] border border-blue-100')
-                                    }`}>
-                                      {isImg ? (
-                                        <ImageIcon className="w-4 h-4" />
-                                      ) : file.type === 'pdf' ? (
-                                        <FileText className="w-4 h-4 text-rose-500" />
-                                      ) : file.type === 'archive' ? (
-                                        <FileArchive className="w-4 h-4 text-amber-500" />
-                                      ) : (
-                                        <FileIcon className="w-4 h-4" />
-                                      )}
-                                    </div>
-                                    <div className="min-w-0">
-                                      <div className="flex items-center gap-1.5">
-                                        <span className="font-bold text-xs block truncate" title={file.name}>
-                                          {file.name}
-                                        </span>
-                                        <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-[#1877F2] font-extrabold hidden sm:inline">
-                                          (Click to Open)
-                                        </span>
-                                      </div>
-                                      <span className={`text-[10px] block ${isUser ? 'text-blue-200' : 'text-slate-400'}`}>
-                                        {file.size} &bull; {file.type.toUpperCase()}
-                                      </span>
-                                    </div>
-                                  </div>
-
-                                  <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
-                                    {/* Direct Native PDF / Doc Open link in New Tab */}
-                                    <a
-                                      href={file.url && file.url !== '#' ? file.url : `/docs/${file.name}`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-2xs transition active:scale-95 ${
-                                        isUser 
-                                          ? 'bg-blue-600 hover:bg-blue-500 text-white border border-blue-400/50' 
-                                          : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
-                                      }`}
-                                      title="Open PDF in new browser tab"
-                                    >
-                                      <ExternalLink className="w-3.5 h-3.5" />
-                                      <span>Open PDF</span>
-                                    </a>
-
-                                    {/* Modal Preview Button */}
-                                    <button
-                                      type="button"
-                                      onClick={() => handleOpenAttachment(file)}
-                                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-2xs transition active:scale-95 ${
-                                        isUser 
-                                          ? 'bg-blue-500 hover:bg-blue-400 text-white' 
-                                          : 'bg-blue-50 hover:bg-blue-100 text-[#1877F2] border border-blue-200'
-                                      }`}
-                                      title="Preview in App Reader"
-                                    >
-                                      <Eye className="w-3.5 h-3.5" />
-                                      <span>Preview</span>
-                                    </button>
-
-                                    {/* Direct Download Button */}
-                                    <button
-                                      type="button"
-                                      onClick={(e) => handleDownloadAttachment(e, file)}
-                                      className={`p-1.5 rounded-lg transition ${
-                                        isUser
-                                          ? 'hover:bg-blue-600 text-white'
-                                          : 'hover:bg-slate-100 text-slate-500 hover:text-[#1877F2]'
-                                      }`}
-                                      title={`Download ${file.name}`}
-                                    >
-                                      <Download className="w-4 h-4" />
-                                    </button>
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
+                    {msg.isDeletedForEveryone ? (
+                      /* Recalled / Deleted for Everyone Bubble State */
+                      <div
+                        className={`max-w-md rounded-2xl px-4 py-3 text-xs leading-relaxed border transition-all shadow-2xs ${
+                          isUser
+                            ? 'bg-blue-50/70 border-blue-200/70 text-slate-500 rounded-br-xs'
+                            : 'bg-slate-100/80 border-slate-200 text-slate-500 rounded-bl-xs'
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 italic">
+                          <Ban className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                          <span className="font-semibold text-slate-600">This message was deleted for everyone</span>
                         </div>
-                      )}
-
-                      {/* Attached Live Website Pill if present */}
-                      {msg.previewUrl && (
+                        <div className="flex items-center justify-between text-[10px] text-slate-400 mt-1.5 not-italic border-t border-slate-200/60 pt-1">
+                          <span>Recalled by {msg.deletedBy || (isUser ? 'You' : 'Client')} {msg.deletedAt ? `• ${msg.deletedAt}` : ''}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteMessage(selectedThread.id, msg.id, 'permanent')}
+                            className="text-slate-400 hover:text-rose-600 transition underline font-medium ml-2"
+                            title="Remove trace completely from portal"
+                          >
+                            Remove trace
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      /* Active Chat Bubble with Hover Action Trigger */
+                      <div className="relative group/bubble">
+                        {/* Hover Action: Delete for everyone */}
                         <div
-                          onClick={() => onOpenWebsitePreview(msg.previewUrl!)}
-                          className={`mt-3 p-2.5 rounded-xl cursor-pointer flex items-center justify-between gap-2 border transition ${
+                          className={`absolute -top-3.5 ${
+                            isUser ? 'right-2' : 'left-2'
+                          } opacity-0 group-hover/bubble:opacity-100 group-hover/msg:opacity-100 transition-all duration-150 flex items-center gap-1 z-10`}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => setDeletingMessage({ threadId: selectedThread.id, message: msg })}
+                            className="px-2.5 py-0.5 rounded-full bg-white text-rose-600 hover:bg-rose-50 hover:text-rose-700 border border-slate-200 shadow-md text-[10px] font-extrabold flex items-center gap-1 active:scale-95 transition"
+                            title="Delete for everyone (Revoke text, voice memo & attachments)"
+                          >
+                            <Trash2 className="w-3 h-3 text-rose-500" />
+                            <span>Delete for everyone</span>
+                          </button>
+                        </div>
+
+                        <div
+                          className={`max-w-2xl rounded-2xl p-4 shadow-xs text-xs sm:text-sm leading-relaxed ${
                             isUser
-                              ? 'bg-blue-600/80 border-blue-400 text-white hover:bg-blue-600'
-                              : 'bg-purple-50 border-purple-200 text-purple-900 hover:bg-purple-100'
+                              ? 'bg-[#1877F2] text-white rounded-br-xs'
+                              : 'bg-white border border-slate-200 text-slate-800 rounded-bl-xs'
                           }`}
                         >
-                          <div className="flex items-center gap-2">
-                            <Sparkles className="w-4 h-4 text-amber-300" />
-                            <span className="font-bold text-xs">
-                              Interactive Website Preview Attached
-                            </span>
-                          </div>
-                          <span className="text-[11px] underline flex items-center gap-0.5">
-                            Open <ExternalLink className="w-3 h-3" />
-                          </span>
+                          {/* Message Content */}
+                          {msg.content && (
+                            <p className="whitespace-pre-line leading-relaxed">{msg.content}</p>
+                          )}
+
+                          {/* Voice Note Audio Player */}
+                          {msg.voiceNote && (
+                            <VoiceNotePlayer voiceNote={msg.voiceNote} isUser={isUser} />
+                          )}
+
+                          {/* File Attachments Grid */}
+                          {msg.attachments && msg.attachments.length > 0 && (
+                            <div className="mt-3 space-y-2">
+                              <span className={`text-[10px] font-bold block ${isUser ? 'text-blue-100' : 'text-slate-400'}`}>
+                                Attached Files ({msg.attachments.length}):
+                              </span>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                {msg.attachments.map((file) => {
+                                  const isImg = file.type === 'image';
+                                  return (
+                                    <div
+                                      key={file.id}
+                                      onClick={() => handleOpenAttachment(file)}
+                                      className={`rounded-2xl p-3 flex items-center justify-between gap-3 transition-all cursor-pointer border shadow-2xs group select-none ${
+                                        isUser
+                                          ? 'bg-blue-700/70 hover:bg-blue-700 border-blue-400/60 text-white'
+                                          : 'bg-white hover:bg-blue-50/60 border-slate-200/90 text-slate-800 hover:border-blue-400 hover:shadow-md'
+                                      }`}
+                                      title={`Click to open and preview ${file.name}`}
+                                    >
+                                      <div className="flex items-center gap-3 min-w-0">
+                                        <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 shadow-2xs transition-transform group-hover:scale-105 ${
+                                          isUser 
+                                            ? 'bg-blue-600 text-white' 
+                                            : (file.type === 'pdf' ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-blue-50 text-[#1877F2] border border-blue-100')
+                                        }`}>
+                                          {isImg ? (
+                                            <ImageIcon className="w-4 h-4" />
+                                          ) : file.type === 'pdf' ? (
+                                            <FileText className="w-4 h-4 text-rose-500" />
+                                          ) : file.type === 'archive' ? (
+                                            <FileArchive className="w-4 h-4 text-amber-500" />
+                                          ) : (
+                                            <FileIcon className="w-4 h-4" />
+                                          )}
+                                        </div>
+                                        <div className="min-w-0">
+                                          <div className="flex items-center gap-1.5">
+                                            <span className="font-bold text-xs block truncate" title={file.name}>
+                                              {file.name}
+                                            </span>
+                                            <span className="opacity-0 group-hover:opacity-100 transition-opacity text-[10px] text-[#1877F2] font-extrabold hidden sm:inline">
+                                              (Click to Open)
+                                            </span>
+                                          </div>
+                                          <span className={`text-[10px] block ${isUser ? 'text-blue-200' : 'text-slate-400'}`}>
+                                            {file.size} &bull; {file.type.toUpperCase()}
+                                          </span>
+                                        </div>
+                                      </div>
+
+                                      <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+                                        {/* Direct Native PDF / Doc Open link in New Tab */}
+                                        <a
+                                          href={file.url && file.url !== '#' ? file.url : `/docs/${file.name}`}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-2xs transition active:scale-95 ${
+                                            isUser 
+                                              ? 'bg-blue-600 hover:bg-blue-500 text-white border border-blue-400/50' 
+                                              : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                                          }`}
+                                          title="Open PDF in new browser tab"
+                                        >
+                                          <ExternalLink className="w-3.5 h-3.5" />
+                                          <span>Open PDF</span>
+                                        </a>
+
+                                        {/* Modal Preview Button */}
+                                        <button
+                                          type="button"
+                                          onClick={() => handleOpenAttachment(file)}
+                                          className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-2xs transition active:scale-95 ${
+                                            isUser 
+                                              ? 'bg-blue-500 hover:bg-blue-400 text-white' 
+                                              : 'bg-blue-50 hover:bg-blue-100 text-[#1877F2] border border-blue-200'
+                                          }`}
+                                          title="Preview in App Reader"
+                                        >
+                                          <Eye className="w-3.5 h-3.5" />
+                                          <span>Preview</span>
+                                        </button>
+
+                                        {/* Direct Download Button */}
+                                        <button
+                                          type="button"
+                                          onClick={(e) => handleDownloadAttachment(e, file)}
+                                          className={`p-1.5 rounded-lg transition ${
+                                            isUser
+                                              ? 'hover:bg-blue-600 text-white'
+                                              : 'hover:bg-slate-100 text-slate-500 hover:text-[#1877F2]'
+                                          }`}
+                                          title={`Download ${file.name}`}
+                                        >
+                                          <Download className="w-4 h-4" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Attached Live Website Pill if present */}
+                          {msg.previewUrl && (
+                            <div
+                              onClick={() => onOpenWebsitePreview(msg.previewUrl!)}
+                              className={`mt-3 p-2.5 rounded-xl cursor-pointer flex items-center justify-between gap-2 border transition ${
+                                isUser
+                                  ? 'bg-blue-600/80 border-blue-400 text-white hover:bg-blue-600'
+                                  : 'bg-purple-50 border-purple-200 text-purple-900 hover:bg-purple-100'
+                              }`}
+                            >
+                              <div className="flex items-center gap-2">
+                                <Sparkles className="w-4 h-4 text-amber-300" />
+                                <span className="font-bold text-xs">
+                                  Interactive Website Preview Attached
+                                </span>
+                              </div>
+                              <span className="text-[11px] underline flex items-center gap-0.5">
+                                Open <ExternalLink className="w-3 h-3" />
+                              </span>
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
@@ -1383,6 +1506,133 @@ export default function ClientInboxView({
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Message Confirmation Modal */}
+      {deletingMessage && (
+        <div 
+          className="fixed inset-0 z-[120] bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in"
+          onClick={() => !isDeleting && setDeletingMessage(null)}
+        >
+          <div 
+            className="bg-white rounded-3xl shadow-2xl border border-slate-200 w-full max-w-md overflow-hidden animate-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-5 pb-4 bg-gradient-to-r from-rose-50 via-amber-50/50 to-rose-50 border-b border-rose-100 flex items-start gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-600/20">
+                <Trash2 className="w-5 h-5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-base font-black text-slate-900 tracking-tight">
+                    Delete Message?
+                  </h3>
+                  <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">
+                    Client Recall
+                  </span>
+                </div>
+                <p className="text-xs text-slate-600 mt-0.5">
+                  Wrongly sent message ko client ke chat se recall / delete karein.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setDeletingMessage(null)}
+                disabled={isDeleting}
+                className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition disabled:opacity-50"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Message Preview */}
+            <div className="p-5 space-y-3.5">
+              <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 text-xs text-slate-700">
+                <div className="flex items-center justify-between text-[10px] text-slate-400 mb-1.5 font-bold uppercase tracking-wider">
+                  <span>{deletingMessage.message.sender === 'user' ? 'Sent by You' : deletingMessage.message.senderName}</span>
+                  <span>{deletingMessage.message.timestamp}</span>
+                </div>
+                {deletingMessage.message.content && (
+                  <p className="line-clamp-3 italic text-slate-800 font-medium leading-relaxed">
+                    "{deletingMessage.message.content}"
+                  </p>
+                )}
+                {deletingMessage.message.voiceNote && (
+                  <div className="flex items-center gap-1.5 text-blue-600 font-bold text-xs mt-2 bg-blue-50/70 p-2 rounded-xl border border-blue-100">
+                    <Mic className="w-3.5 h-3.5" />
+                    <span>Voice Memo ({deletingMessage.message.voiceNote.durationSeconds}s) will be revoked from client</span>
+                  </div>
+                )}
+                {deletingMessage.message.attachments && deletingMessage.message.attachments.length > 0 && (
+                  <div className="flex items-center gap-1.5 text-rose-600 font-bold text-xs mt-2 bg-rose-50/70 p-2 rounded-xl border border-rose-100">
+                    <Paperclip className="w-3.5 h-3.5" />
+                    <span>{deletingMessage.message.attachments.length} attached file(s) will be revoked</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-xl bg-amber-50 border border-amber-200/80 p-3 text-xs text-amber-900 leading-relaxed flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <span>
+                  <strong>Delete for Everyone</strong> karne se client ke pass se text, audio voice note, aur attached files foran gayab ho jayengi aur chat me sirf <em>"This message was deleted"</em> reh jayega.
+                </span>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-2 flex flex-col gap-2">
+                {/* Primary Option: Delete for everyone */}
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => handleDeleteMessage(deletingMessage.threadId, deletingMessage.message.id, 'for_everyone')}
+                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-rose-600/25 active:scale-98 transition disabled:opacity-50"
+                >
+                  {isDeleting ? (
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Ban className="w-4 h-4" />
+                  )}
+                  <span>Delete for Everyone (Recall Message)</span>
+                </button>
+
+                {/* Secondary Option: Permanent Delete */}
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => handleDeleteMessage(deletingMessage.threadId, deletingMessage.message.id, 'permanent')}
+                  className="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 active:scale-98 transition disabled:opacity-50"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Delete Permanently (Remove from chat)</span>
+                </button>
+
+                {/* Cancel */}
+                <button
+                  type="button"
+                  disabled={isDeleting}
+                  onClick={() => setDeletingMessage(null)}
+                  className="w-full py-2 rounded-xl text-slate-500 hover:text-slate-800 font-medium text-xs transition"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Floating Status Notification Toast */}
+      {deleteToast && (
+        <div className="fixed bottom-6 right-6 z-[130] bg-slate-900/95 backdrop-blur-md text-white px-4 py-3 rounded-2xl shadow-2xl border border-slate-700/80 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-3 duration-200">
+          <div className="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+            <CheckCircle2 className="w-4 h-4" />
+          </div>
+          <div className="text-xs">
+            <p className="font-bold text-white">{deleteToast}</p>
+            <p className="text-[11px] text-slate-400">Media, voice memo &amp; text revoked from client's chat history.</p>
           </div>
         </div>
       )}

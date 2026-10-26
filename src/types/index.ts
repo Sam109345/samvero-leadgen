@@ -150,6 +150,9 @@ export interface EmailMessage {
   sentiment?: 'positive' | 'pricing' | 'booking' | 'neutral';
   attachments?: ChatAttachment[];
   voiceNote?: VoiceNoteData;
+  isDeletedForEveryone?: boolean;
+  deletedAt?: string;
+  deletedBy?: string;
 }
 
 export interface EmailThread {

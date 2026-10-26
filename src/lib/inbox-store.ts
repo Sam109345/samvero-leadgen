@@ -308,3 +308,54 @@ export function sendReplyToClient(
 
   return { success: true, message: userReply };
 }
+
+/**
+ * Deletes or recalls a message from a thread ("Delete for everyone" or "Permanent delete")
+ */
+export function deleteMessageFromThread(
+  threadId: string,
+  messageId: string,
+  mode: 'for_everyone' | 'permanent' = 'for_everyone'
+): { success: boolean; thread?: EmailThread; message?: EmailMessage; error?: string } {
+  const thread = inboxThreads.find((t) => t.id === threadId);
+  if (!thread) return { success: false, error: 'Thread not found' };
+
+  const msgIndex = thread.messages.findIndex((m) => m.id === messageId);
+  if (msgIndex === -1) return { success: false, error: 'Message not found' };
+
+  const targetMsg = thread.messages[msgIndex];
+
+  if (mode === 'permanent') {
+    thread.messages.splice(msgIndex, 1);
+  } else {
+    // Delete for everyone: recall text and revoke files/audio/links
+    targetMsg.isDeletedForEveryone = true;
+    targetMsg.deletedAt = 'Just now';
+    targetMsg.deletedBy = targetMsg.sender === 'user' ? 'You' : targetMsg.senderName;
+    targetMsg.content = '🚫 This message was deleted for everyone';
+    targetMsg.attachments = undefined;
+    targetMsg.voiceNote = undefined;
+    targetMsg.previewUrl = undefined;
+  }
+
+  // Recalculate lastMessageSnippet
+  if (thread.messages.length === 0) {
+    thread.lastMessageSnippet = 'No messages in conversation';
+    thread.lastMessageAt = 'Just now';
+  } else {
+    const lastMsg = thread.messages[thread.messages.length - 1];
+    if (lastMsg.isDeletedForEveryone) {
+      thread.lastMessageSnippet = '🚫 This message was deleted for everyone';
+    } else if (lastMsg.voiceNote) {
+      thread.lastMessageSnippet = lastMsg.sender === 'user' ? 'You: 🎙️ Sent a voice message' : '🎙️ Sent a voice message';
+    } else if (lastMsg.attachments && lastMsg.attachments.length > 0) {
+      thread.lastMessageSnippet = lastMsg.sender === 'user' ? `You: 📎 Sent ${lastMsg.attachments.length} attachment(s)` : `📎 Sent ${lastMsg.attachments.length} attachment(s)`;
+    } else {
+      const prefix = lastMsg.sender === 'user' ? 'You: ' : '';
+      thread.lastMessageSnippet = `${prefix}${lastMsg.content || ''}`.substring(0, 75);
+    }
+    thread.lastMessageAt = lastMsg.timestamp || 'Just now';
+  }
+
+  return { success: true, thread, message: targetMsg };
+}
