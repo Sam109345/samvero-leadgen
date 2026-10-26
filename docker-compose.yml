@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  sameerly-leadgen:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sameerly-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_NAME=Sameerly
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      - GOOGLE_PLACES_API_KEY=${GOOGLE_PLACES_API_KEY}
+      - SERPAPI_API_KEY=${SERPAPI_API_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+    env_file:
+      - .env.local

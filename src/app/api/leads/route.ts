@@ -1,0 +1,113 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { fetchGmbLeads } from '@/lib/gmb-service';
+import { fetchFreelanceJobs } from '@/lib/jobs-service';
+import { getLeadsFromSupabase } from '@/lib/supabase';
+import { Lead } from '@/types';
+
+export const dynamic = 'force-dynamic';
+
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const country = searchParams.get('country') || 'all';
+    const category = searchParams.get('category') || 'all';
+    const businessAge = searchParams.get('businessAge') || 'all';
+    const platform = searchParams.get('platform') || 'all';
+    const type = searchParams.get('type') || 'all'; // 'gmb', 'job', 'all'
+    const query = searchParams.get('q') || '';
+    const hasWebsite = searchParams.get('hasWebsite') || 'all';
+
+    let allLeads: Lead[] = [];
+
+    // 1. Check if Supabase PostgreSQL database is connected and populated
+    const supabaseLeads = await getLeadsFromSupabase();
+    if (supabaseLeads && supabaseLeads.length > 0) {
+      allLeads = supabaseLeads;
+    } else {
+      // 2. Fetch from active services & aggregator engine
+      if (type === 'gmb') {
+        allLeads = await fetchGmbLeads({ query, country, category });
+      } else if (type === 'job') {
+        allLeads = await fetchFreelanceJobs({ query, country, category, platform });
+      } else {
+        const [gmbLeads, jobLeads] = await Promise.all([
+          fetchGmbLeads({ query, country, category }),
+          fetchFreelanceJobs({ query, country, category, platform }),
+        ]);
+        allLeads = [...gmbLeads, ...jobLeads];
+      }
+    }
+
+    // Apply country filter
+    if (country !== 'all') {
+      allLeads = allLeads.filter((l) => l.country.toLowerCase() === country.toLowerCase());
+    }
+
+    // Apply category filter
+    if (category !== 'all') {
+      allLeads = allLeads.filter((l) => l.category.toLowerCase().includes(category.toLowerCase()));
+    }
+
+    // Apply platform filter
+    if (platform !== 'all') {
+      allLeads = allLeads.filter((l) => l.platform.toLowerCase() === platform.toLowerCase());
+    }
+
+    // Apply business age filter
+    if (businessAge !== 'all') {
+      if (businessAge === 'new') {
+        allLeads = allLeads.filter((l) => l.businessAge.isNew);
+      } else if (businessAge === '1-3') {
+        allLeads = allLeads.filter((l) => l.businessAge.years >= 1 && l.businessAge.years <= 3);
+      } else if (businessAge === '3-5') {
+        allLeads = allLeads.filter((l) => l.businessAge.years > 3 && l.businessAge.years <= 5);
+      } else if (businessAge === '5+') {
+        allLeads = allLeads.filter((l) => l.businessAge.years > 5);
+      }
+    }
+
+    // Apply website presence filter
+    if (hasWebsite === 'no-site') {
+      allLeads = allLeads.filter((l) => !l.contact.hasWebsite);
+    } else if (hasWebsite === 'has-site') {
+      allLeads = allLeads.filter((l) => l.contact.hasWebsite);
+    }
+
+    // Strict de-duplication: Ensure ZERO duplicate leads by ID or Business/Title
+    const seenKeys = new Set<string>();
+    const deduplicatedLeads: Lead[] = [];
+
+    for (const lead of allLeads) {
+      const primaryKey = lead.id.trim().toLowerCase();
+      const contentKey = `${(lead.businessName || lead.title || '').trim().toLowerCase()}::${(lead.city || '').trim().toLowerCase()}`;
+      
+      if (!seenKeys.has(primaryKey) && !seenKeys.has(contentKey)) {
+        seenKeys.add(primaryKey);
+        seenKeys.add(contentKey);
+        deduplicatedLeads.push(lead);
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      total: deduplicatedLeads.length,
+      leads: deduplicatedLeads,
+      stats: {
+        totalGmb: deduplicatedLeads.filter((l) => l.type === 'gmb').length,
+        totalJobs: deduplicatedLeads.filter((l) => l.type === 'job').length,
+        newBusinesses: deduplicatedLeads.filter((l) => l.businessAge.isNew).length,
+        noWebsiteOpportunity: deduplicatedLeads.filter((l) => !l.contact.hasWebsite).length,
+        uaeLeads: deduplicatedLeads.filter((l) => l.country === 'UAE').length,
+        pakistanLeads: deduplicatedLeads.filter((l) => l.country === 'Pakistan').length,
+        usLeads: deduplicatedLeads.filter((l) => l.country === 'US').length,
+        ukLeads: deduplicatedLeads.filter((l) => l.country === 'UK').length,
+      },
+    });
+  } catch (error: any) {
+    console.error('Error in /api/leads route:', error);
+    return NextResponse.json(
+      { success: false, error: error?.message || 'Failed to fetch leads' },
+      { status: 500 }
+    );
+  }
+}
