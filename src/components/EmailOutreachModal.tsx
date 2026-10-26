@@ -52,12 +52,13 @@ export default function EmailOutreachModal({
   }, []);
 
   useEffect(() => {
-    if (lead) {
+    if (isOpen && lead) {
       setToEmail(lead.contact.email || '');
       setRecipientName(lead.contact.contactPerson || 'Business Owner');
       applyTemplate('website', lead, previewUrl);
+      setResult(null);
     }
-  }, [lead, previewUrl]);
+  }, [isOpen, lead, previewUrl]);
 
   const applyTemplate = (type: 'website' | 'mobile' | 'branding', targetLead: Lead, pUrl?: string) => {
     setTemplate(type);
@@ -394,37 +395,38 @@ export default function EmailOutreachModal({
 
             {/* Actions */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-slate-100 dark:border-[#24334a]">
-              <div className="flex items-center gap-2">
-                <a
-                  href={gmailComposeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[11px] text-[#007FED] hover:underline font-semibold flex items-center gap-1"
-                  title="Open directly in your Gmail inbox in browser"
-                >
-                  <Mail className="w-3 h-3" />
-                  <span>Open in Gmail (1-Click)</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-                <span className="text-slate-300 dark:text-slate-700">&bull;</span>
-                <span className="text-[11px] text-slate-400">
-                  Delivers with luxury SAMVERO template
-                </span>
+              <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400">
+                <span>Sending to:</span>
+                <span className="font-mono font-bold text-slate-800 dark:text-slate-200">{toEmail || 'No email provided'}</span>
               </div>
 
-              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto justify-end">
                 <button
                   type="button"
                   onClick={onClose}
-                  className="freelancer-btn-secondary text-xs py-2 px-4 bg-white dark:bg-[#1a2638] border border-slate-300 dark:border-[#2e415d] hover:bg-slate-50 dark:hover:bg-[#24354d] text-slate-700 dark:text-slate-200 dark:hover:text-white rounded-md"
+                  className="freelancer-btn-secondary text-xs py-2 px-3.5 bg-white dark:bg-[#1a2638] border border-slate-300 dark:border-[#2e415d] hover:bg-slate-50 dark:hover:bg-[#24354d] text-slate-700 dark:text-slate-200 dark:hover:text-white rounded-md"
                 >
                   Cancel
                 </button>
 
+                {/* 1-Click Direct Gmail Compose (100% Reliable, Zero Block) */}
+                <a
+                  href={gmailComposeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 rounded-md bg-[#EA4335] hover:bg-[#d93025] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                  title="Opens directly in your browser Gmail with everything pre-filled. 100% real delivery!"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Send via Gmail (1-Click)</span>
+                  <ExternalLink className="w-3 h-3 opacity-80" />
+                </a>
+
+                {/* Background Server SMTP Send */}
                 <button
                   type="submit"
-                  disabled={sending}
-                  className="freelancer-btn-primary text-xs py-2 px-5 flex items-center gap-1.5"
+                  disabled={sending || !toEmail}
+                  className="freelancer-btn-primary text-xs py-2 px-4 flex items-center gap-1.5"
                 >
                   {sending ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
                   <span>{sending ? 'Dispatching...' : 'Send Server Proposal'}</span>

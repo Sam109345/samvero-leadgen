@@ -144,7 +144,20 @@ export async function sendOutreachEmail(payload: EmailPayload): Promise<EmailSen
         statusMessage: `Dispatched live to ${to} via Gmail SMTP (${info.messageId})`,
       };
     } catch (err: any) {
-      console.warn('SMTP transport error, falling back to simulated dispatch:', err?.message);
+      console.error('SMTP transport error:', err?.message);
+      const isBadAuth = 
+        err?.message?.includes('535') || 
+        err?.message?.includes('BadCredentials') || 
+        err?.message?.includes('Username and Password not accepted') ||
+        err?.message?.includes('Application-specific password required');
+
+      return {
+        success: false,
+        provider: 'smtp',
+        error: isBadAuth
+          ? 'Google Gmail Blocked: Google does not accept your regular Gmail account password for SMTP. Google strictly requires a 16-character Google App Password from https://myaccount.google.com/apppasswords. Alternatively, click "Send via Gmail (1-Click)" to dispatch directly from your browser with zero setup!'
+          : `SMTP Transport Error: ${err?.message || 'Failed to communicate with mail server'}`,
+      };
     }
   }
 

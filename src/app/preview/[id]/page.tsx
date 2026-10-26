@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { INITIAL_LEADS } from '@/lib/mock-data';
+import { getLeadById } from '@/lib/lead-store';
 import { generateDeliverablesPackage } from '@/lib/deliverables-generator';
 import { compileStandaloneHtml } from '@/lib/website-generator';
 import { 
@@ -56,39 +57,66 @@ export default function WebsitePreviewPage({ params }: Props) {
   const [logoBgMode, setLogoBgMode] = useState<'dark' | 'light'>('dark');
   const [copiedSvgId, setCopiedSvgId] = useState<string | null>(null);
 
-  // Find lead by id or generate fallback
-  let lead = INITIAL_LEADS.find((l) => l.id.toLowerCase() === id.toLowerCase());
+  // Find lead by id in global registry or verified dataset
+  const initialLead = getLeadById(id) || INITIAL_LEADS.find((l) => l.id.toLowerCase() === id.toLowerCase());
+  const [lead, setLead] = useState<Lead>(() => {
+    if (initialLead) return initialLead;
 
-  if (!lead) {
-    const cleanName = id.replace(/^site-/, '').replace(/-/g, ' ');
-    lead = {
+    // Check if UAE lead pattern
+    const isUae = id.toLowerCase().includes('uae') || id.toLowerCase().includes('dubai');
+    const isUk = id.toLowerCase().includes('uk') || id.toLowerCase().includes('london');
+    const isUs = id.toLowerCase().includes('us') || id.toLowerCase().includes('austin');
+
+    const cleanName = id.replace(/^(site-|stream-lead-|custom-)/, '').replace(/-/g, ' ');
+    const formattedName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+    const domain = formattedName.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    return {
       id,
-      title: cleanName.toUpperCase(),
-      businessName: cleanName.charAt(0).toUpperCase() + cleanName.slice(1),
+      title: `${formattedName} Bespoke Digital Architecture`,
+      businessName: formattedName,
       type: 'gmb',
       platform: 'Google My Business',
       category: 'Local Business',
-      country: 'Pakistan',
-      city: 'Lahore',
-      address: 'Main Boulevard, Gulberg, Lahore',
+      country: isUae ? 'UAE' : isUk ? 'UK' : isUs ? 'US' : 'Pakistan',
+      city: isUae ? 'Dubai' : isUk ? 'London' : isUs ? 'Austin' : 'Lahore',
+      address: isUae ? 'Jumeirah 1, Dubai, UAE' : isUk ? 'Mayfair, London, UK' : isUs ? 'Downtown, Austin, TX' : 'DHA Phase 5, Lahore, Pakistan',
       businessAge: {
         years: 2,
         months: 0,
-        isNew: false,
-        label: 'Established (~2 yrs)',
-        badgeColor: 'blue',
+        isNew: true,
+        label: '✨ Newly Opened',
+        badgeColor: 'emerald',
       },
-      description: 'Exclusive local business offering top tier services.',
+      description: `Premier client showcase synthesized for ${formattedName}. Complete 9-section responsive digital presence with booking portal.`,
       postedAt: 'Today',
       contact: {
-        email: `contact@${id}.com`,
-        phone: '+92 321 0000000',
+        email: `concierge@${domain || 'clientbrand'}.com`,
+        phone: isUae ? '+971 4 344 8920' : isUk ? '+44 20 7493 8810' : isUs ? '+1 (512) 892-4410' : '+92 321 4455890',
+        whatsapp: isUae ? '+971508920144' : isUk ? '+442074938810' : isUs ? '+15128924410' : '+923214455890',
         hasWebsite: false,
+        contactPerson: 'Managing Director & Founder',
       },
-      tags: ['Verified', 'High Growth'],
+      tags: ['Verified Partner', 'High Growth', 'Custom Prototype'],
       verified: true,
     };
-  }
+  });
+
+  // Client-side hydration lookup from active state
+  useEffect(() => {
+    if (typeof window !== 'undefined' && !initialLead) {
+      try {
+        const cached = localStorage.getItem('samvero_active_leads');
+        if (cached) {
+          const list: Lead[] = JSON.parse(cached);
+          const found = list.find((l) => l.id.toLowerCase() === id.toLowerCase());
+          if (found) {
+            setLead(found);
+          }
+        }
+      } catch (e) {}
+    }
+  }, [id, initialLead]);
 
   const deliverables = generateDeliverablesPackage(lead);
   const site = deliverables.website;

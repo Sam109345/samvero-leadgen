@@ -168,7 +168,19 @@ export default function HomePage() {
   const handleAddCustomLead = (newLead: Lead) => {
     setLeads((prev) => [newLead, ...prev]);
     setLatestLead(newLead);
+    try {
+      localStorage.setItem('samvero_active_leads', JSON.stringify([newLead, ...leads]));
+    } catch (e) {}
   };
+
+  // Sync leads cache to localStorage whenever leads update
+  useEffect(() => {
+    if (leads.length > 0) {
+      try {
+        localStorage.setItem('samvero_active_leads', JSON.stringify(leads));
+      } catch (e) {}
+    }
+  }, [leads]);
 
   // Modals helpers
   const handleOpenWebsiteModal = (lead: Lead) => {

@@ -1,6 +1,7 @@
 import { Lead } from '@/types';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
+import { registerLead } from './lead-store';
 
 const incomingLeadTemplates = [
   {
@@ -213,8 +214,11 @@ export function generateNextIncomingLead(): Lead {
     incomingAt: Date.now(),
   };
 
-  return {
+  const fullLead: Lead = {
     ...baseLead,
     generatedWebsite: generateClientWebsite(baseLead),
   };
+
+  registerLead(fullLead);
+  return fullLead;
 }
