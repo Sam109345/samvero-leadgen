@@ -1,0 +1,101 @@
+%PDF-1.4
+1 0 obj
+<<
+  /Type /Catalog
+  /Pages 2 0 R
+>>
+endobj
+2 0 obj
+<<
+  /Type /Pages
+  /Kids [3 0 R]
+  /Count 1
+>>
+endobj
+3 0 obj
+<<
+  /Type /Page
+  /Parent 2 0 R
+  /MediaBox [0 0 612 792]
+  /Resources <<
+    /Font <<
+      /F1 4 0 R
+      /F2 5 0 R
+    >>
+  >>
+  /Contents 6 0 R
+>>
+endobj
+4 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica-Bold
+>>
+endobj
+5 0 obj
+<<
+  /Type /Font
+  /Subtype /Type1
+  /BaseFont /Helvetica
+>>
+endobj
+6 0 obj
+<< /Length 650 >>
+stream
+BT
+/F1 20 Tf
+50 720 Td
+(COGNITIVESCALE DYNAMICS INC. - BRAND SPECIFICATIONS) Tj
+/F2 13 Tf
+0 -30 Td
+(B2B SaaS Corporate Redesign & Next.js 14 Technical Architecture) Tj
+/F1 11 Tf
+0 -26 Td
+(Client: Elena Rostova - Head of Growth (talent@cognitivescaledynamics.io)) Tj
+0 -18 Td
+(Status: Approved Design System Document v3.2 - October 2026) Tj
+/F1 12 Tf
+0 -36 Td
+(1. Color Matrix:) Tj
+/F2 11 Tf
+0 -20 Td
+(   - Primary Obsidian: #080E1B  |  Meta Indigo: #1877F2  |  Electric Cyan: #00E5FF) Tj
+/F1 12 Tf
+0 -28 Td
+(2. Scope of Work Deliverables Demanded:) Tj
+/F2 11 Tf
+0 -20 Td
+(   - 8 to 10 Bespoke Responsive Pages with Glassmorphism Card Elevation) Tj
+0 -18 Td
+(   - Native Interactive Zoom Booking Flow + WhatsApp Direct CTA) Tj
+0 -18 Td
+(   - Google PageSpeed Performance Score > 95 with sub-300ms transitions) Tj
+/F1 12 Tf
+0 -28 Td
+(3. Commercial Terms & SLA:) Tj
+/F2 11 Tf
+0 -20 Td
+(   - Delivery Timeline: 7-10 Business Days) Tj
+0 -18 Td
+(   - Standard Mutual Non-Disclosure Agreement (NDA) Pre-Cleared) Tj
+ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000068 00000 n 
+0000000135 00000 n 
+0000000318 00000 n 
+0000000408 00000 n 
+0000000493 00000 n 
+trailer
+<<
+  /Size 7
+  /Root 1 0 R
+>>
+startxref
+1195
+%%EOF

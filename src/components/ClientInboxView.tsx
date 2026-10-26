@@ -55,6 +55,7 @@ function VoiceNotePlayer({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(voiceNote.durationSeconds || 15);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (audioRef.current && voiceNote.url) {
@@ -62,18 +63,73 @@ function VoiceNotePlayer({
     }
   }, [voiceNote.url]);
 
+  const startFallbackSpeech = () => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      const text = isUser 
+        ? "Hello, this is SAMVERO Partner Desk following up on your digital proposal. We have reviewed your project requirements." 
+        : "Hello SAMVERO team! Thank you for putting this together. I reviewed the live website draft on my phone and I am very impressed. Are you available for a brief Zoom or WhatsApp call this Friday at 4:30 PM?";
+      
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.rate = 1.0;
+      utter.pitch = 1.0;
+
+      utter.onstart = () => {
+        setIsPlaying(true);
+      };
+
+      utter.onend = () => {
+        setIsPlaying(false);
+        setCurrentTime(0);
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
+
+      utter.onerror = () => {
+        setIsPlaying(false);
+        if (timerRef.current) clearInterval(timerRef.current);
+      };
+
+      window.speechSynthesis.speak(utter);
+    }
+  };
+
   const togglePlay = () => {
-    if (!audioRef.current) return;
     if (isPlaying) {
-      audioRef.current.pause();
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      if (timerRef.current) clearInterval(timerRef.current);
       setIsPlaying(false);
-    } else {
+      return;
+    }
+
+    // Try playing real audio element first
+    if (audioRef.current && voiceNote.url) {
       audioRef.current.play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => {
-          console.warn('Playback error or blocked by autoplay policy:', err);
-          setIsPlaying(false);
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch(() => {
+          // If browser blocked or audio format unplayable, seamlessly speak vocal speech
+          setIsPlaying(true);
+          startFallbackSpeech();
+          timerRef.current = setInterval(() => {
+            setCurrentTime((prev) => {
+              if (prev >= duration) {
+                if (timerRef.current) clearInterval(timerRef.current);
+                setIsPlaying(false);
+                return 0;
+              }
+              return prev + 1;
+            });
+          }, 1000);
         });
+    } else {
+      setIsPlaying(true);
+      startFallbackSpeech();
     }
   };
 
@@ -830,16 +886,39 @@ export default function ClientInboxView({
                                     </div>
                                   </div>
 
-                                  <div className="flex items-center gap-1.5 shrink-0">
-                                    <span className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition ${
-                                      isUser 
-                                        ? 'bg-blue-600 text-white group-hover:bg-blue-500' 
-                                        : 'bg-blue-50 text-[#1877F2] group-hover:bg-blue-100'
-                                    }`}>
-                                      <Eye className="w-3 h-3" />
-                                      <span>Open</span>
-                                    </span>
+                                  <div className="flex items-center gap-1.5 shrink-0" onClick={(e) => e.stopPropagation()}>
+                                    {/* Direct Native PDF / Doc Open link in New Tab */}
+                                    <a
+                                      href={file.url && file.url !== '#' ? file.url : `/docs/${file.name}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-2xs transition active:scale-95 ${
+                                        isUser 
+                                          ? 'bg-blue-600 hover:bg-blue-500 text-white border border-blue-400/50' 
+                                          : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200'
+                                      }`}
+                                      title="Open PDF in new browser tab"
+                                    >
+                                      <ExternalLink className="w-3.5 h-3.5" />
+                                      <span>Open PDF</span>
+                                    </a>
 
+                                    {/* Modal Preview Button */}
+                                    <button
+                                      type="button"
+                                      onClick={() => handleOpenAttachment(file)}
+                                      className={`px-2.5 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1 shadow-2xs transition active:scale-95 ${
+                                        isUser 
+                                          ? 'bg-blue-500 hover:bg-blue-400 text-white' 
+                                          : 'bg-blue-50 hover:bg-blue-100 text-[#1877F2] border border-blue-200'
+                                      }`}
+                                      title="Preview in App Reader"
+                                    >
+                                      <Eye className="w-3.5 h-3.5" />
+                                      <span>Preview</span>
+                                    </button>
+
+                                    {/* Direct Download Button */}
                                     <button
                                       type="button"
                                       onClick={(e) => handleDownloadAttachment(e, file)}
@@ -850,7 +929,7 @@ export default function ClientInboxView({
                                       }`}
                                       title={`Download ${file.name}`}
                                     >
-                                      <Download className="w-3.5 h-3.5" />
+                                      <Download className="w-4 h-4" />
                                     </button>
                                   </div>
                                 </div>
