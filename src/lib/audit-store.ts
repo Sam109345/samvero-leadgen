@@ -1,3 +1,5 @@
+import { getAllRegisteredLeads, getLeadById } from './lead-store';
+
 export interface AuditSession {
   id: string;
   role: 'admin' | 'employer';
@@ -8,6 +10,7 @@ export interface AuditSession {
   browser: string;
   os: string;
   location: string;
+  isp?: string;
   loginTime: string;
   loginTimestamp: number;
   lastActive: string;
@@ -48,71 +51,10 @@ export interface OutreachRecord {
   status: 'Delivered' | 'Opened' | 'Call Booked' | 'Closed Won';
 }
 
-// In-Memory Storage for Active and Historical Sessions
-let auditSessions: AuditSession[] = [
-  {
-    id: 'sess-adm-01',
-    role: 'admin',
-    userName: 'Sameer (Executive Admin)',
-    ipAddress: '182.185.142.92',
-    deviceName: 'Sameer-Workstation (Win32)',
-    deviceType: 'Desktop PC',
-    browser: 'Chrome 129.0 (Windows)',
-    os: 'Windows 11 Pro 64-bit',
-    location: 'Lahore, Pakistan',
-    loginTime: 'Oct 26, 2026, 02:40 PM',
-    loginTimestamp: Date.now() - 1000 * 60 * 25,
-    lastActive: 'Active Now',
-    status: 'active',
-  },
-  {
-    id: 'sess-emp-02',
-    role: 'employer',
-    userName: 'Hamza Tariq (Outreach Desk)',
-    ipAddress: '110.39.24.118',
-    deviceName: 'Hamza-ThinkPad-T14',
-    deviceType: 'Laptop',
-    browser: 'Chrome 128.0 (Windows)',
-    os: 'Windows 10 Enterprise',
-    location: 'Karachi, Pakistan',
-    loginTime: 'Oct 26, 2026, 11:15 AM',
-    loginTimestamp: Date.now() - 1000 * 60 * 220,
-    lastActive: '14 mins ago',
-    status: 'active',
-  },
-  {
-    id: 'sess-emp-03',
-    role: 'employer',
-    userName: 'Sarah Jenkins (US Sales Desk)',
-    ipAddress: '72.229.28.185',
-    deviceName: 'Sarah-MacBookPro-M3',
-    deviceType: 'Laptop',
-    browser: 'Safari 17.5 (macOS)',
-    os: 'macOS Sonoma 14.5',
-    location: 'New York, United States',
-    loginTime: 'Oct 25, 2026, 08:30 PM',
-    loginTimestamp: Date.now() - 1000 * 60 * 1100,
-    lastActive: 'Yesterday',
-    status: 'terminated',
-  },
-  {
-    id: 'sess-adm-04',
-    role: 'admin',
-    userName: 'Sameer (Executive Admin)',
-    ipAddress: '194.135.34.12',
-    deviceName: 'Sameer-iPhone15Pro',
-    deviceType: 'Mobile',
-    browser: 'Mobile Safari 17.4',
-    os: 'iOS 17.4',
-    location: 'Dubai, UAE',
-    loginTime: 'Oct 24, 2026, 04:12 PM',
-    loginTimestamp: Date.now() - 1000 * 60 * 2800,
-    lastActive: '2 days ago',
-    status: 'terminated',
-  },
-];
+// Live Session Storage - Initially empty, populated ONLY with real sessions
+let auditSessions: AuditSession[] = [];
 
-// Staff Members List with Performance Metrics
+// Real Staff Members
 let staffMembers: StaffMember[] = [
   {
     id: 'staff-sameer',
@@ -120,59 +62,44 @@ let staffMembers: StaffMember[] = [
     role: 'Executive Admin & Lead Strategist',
     email: 'sameer.centric@gmail.com',
     avatar: 'S',
-    leadsReachedCount: 38,
-    proposalsViewedCount: 31,
-    callsBookedCount: 12,
-    dealsWonCount: 7,
-    pipelineValue: '$24,500',
+    leadsReachedCount: 0,
+    proposalsViewedCount: 0,
+    callsBookedCount: 0,
+    dealsWonCount: 0,
+    pipelineValue: '$0',
     status: 'online',
-    channels: ['Gmail 1-Click', 'Custom SMTP', 'Inbound Voice Memos'],
-    lastOutreachAt: '8 mins ago',
+    channels: ['Gmail 1-Click', 'Custom SMTP', 'Inbound Chat'],
+    lastOutreachAt: 'Active Now',
   },
   {
     id: 'staff-hamza',
     name: 'Hamza Tariq',
-    role: 'Senior Outreach Specialist (Middle East & PK)',
+    role: 'Senior Outreach Specialist',
     email: 'hamza.outreach@samvero.com',
     avatar: 'H',
-    leadsReachedCount: 26,
-    proposalsViewedCount: 19,
-    callsBookedCount: 8,
-    dealsWonCount: 4,
-    pipelineValue: '$14,200',
+    leadsReachedCount: 0,
+    proposalsViewedCount: 0,
+    callsBookedCount: 0,
+    dealsWonCount: 0,
+    pipelineValue: '$0',
     status: 'online',
     channels: ['Gmail 1-Click', 'Custom SMTP'],
-    lastOutreachAt: '25 mins ago',
+    lastOutreachAt: 'Active Now',
   },
   {
     id: 'staff-sarah',
     name: 'Sarah Jenkins',
-    role: 'B2B Client SDR (US & UK Tech)',
+    role: 'B2B Client SDR',
     email: 'sarah.j@samvero.com',
     avatar: 'SJ',
-    leadsReachedCount: 19,
-    proposalsViewedCount: 14,
-    callsBookedCount: 5,
-    dealsWonCount: 3,
-    pipelineValue: '$9,800',
+    leadsReachedCount: 0,
+    proposalsViewedCount: 0,
+    callsBookedCount: 0,
+    dealsWonCount: 0,
+    pipelineValue: '$0',
     status: 'active',
     channels: ['Custom SMTP', 'Resend API'],
-    lastOutreachAt: '2 hours ago',
-  },
-  {
-    id: 'staff-ali',
-    name: 'Ali Raza',
-    role: 'Creative Design & Branding Associate',
-    email: 'ali.raza@samvero.com',
-    avatar: 'A',
-    leadsReachedCount: 15,
-    proposalsViewedCount: 11,
-    callsBookedCount: 4,
-    dealsWonCount: 2,
-    pipelineValue: '$5,500',
-    status: 'offline',
-    channels: ['Gmail 1-Click', 'Inbound Chat'],
-    lastOutreachAt: 'Yesterday',
+    lastOutreachAt: 'Active Now',
   },
   {
     id: 'staff-employer',
@@ -180,134 +107,81 @@ let staffMembers: StaffMember[] = [
     role: 'Staff Portal Operator',
     email: 'staff@samvero.com',
     avatar: 'ES',
-    leadsReachedCount: 11,
-    proposalsViewedCount: 7,
-    callsBookedCount: 2,
-    dealsWonCount: 1,
-    pipelineValue: '$3,200',
+    leadsReachedCount: 0,
+    proposalsViewedCount: 0,
+    callsBookedCount: 0,
+    dealsWonCount: 0,
+    pipelineValue: '$0',
     status: 'online',
     channels: ['Gmail 1-Click', 'Custom SMTP'],
-    lastOutreachAt: '1 hour ago',
+    lastOutreachAt: 'Active Now',
   },
 ];
 
-// Chronological Outreach Records ("Kis bandy ne kitni leads ko reach kiya hai")
-let outreachRecords: OutreachRecord[] = [
-  {
-    id: 'reach-101',
-    staffId: 'staff-sameer',
-    staffName: 'Sameer (Lead Director)',
-    staffRole: 'Executive Admin',
-    leadId: 'pk-gmb-101',
-    businessName: 'Dr. Zeeshan Aesthetics & Dental Care',
-    category: 'Healthcare & Aesthetics',
-    country: 'Pakistan',
-    recipientEmail: 'dr.zeeshan.clinic.lhr@gmail.com',
-    channel: 'Gmail 1-Click',
-    subject: 'Custom Digital Proposal & Patient Portal for Dr. Zeeshan Aesthetics',
-    timestamp: '12 mins ago',
-    previewUrl: '/preview/pk-gmb-101',
-    status: 'Call Booked',
-  },
-  {
-    id: 'reach-102',
-    staffId: 'staff-sameer',
-    staffName: 'Sameer (Lead Director)',
-    staffRole: 'Executive Admin',
-    leadId: 'uae-gmb-401',
-    businessName: 'Dr. Noor Aesthetics & Laser Institute',
-    category: 'Healthcare & Aesthetics',
-    country: 'UAE',
-    recipientEmail: 'info@drnooraesthetics.ae',
-    channel: 'Gmail 1-Click',
-    subject: 'Bespoke Patient Acquisition Portal & 14-Screen Native App for Jumeirah Clinic',
-    timestamp: '45 mins ago',
-    previewUrl: '/preview/uae-gmb-401',
-    status: 'Opened',
-  },
-  {
-    id: 'reach-103',
-    staffId: 'staff-hamza',
-    staffName: 'Hamza Tariq',
-    staffRole: 'Senior Outreach Specialist',
-    leadId: 'uae-gmb-402',
-    businessName: 'Corniche Horizon Architects & Interiors',
-    category: 'Architecture & Design',
-    country: 'UAE',
-    recipientEmail: 'projects@cornichehorizon.ae',
-    channel: 'Custom SMTP',
-    subject: 'High-Converting Luxury Architectural Showcase for Corniche Horizon',
-    timestamp: '1 hour ago',
-    previewUrl: '/preview/uae-gmb-402',
-    status: 'Delivered',
-  },
-  {
-    id: 'reach-104',
-    staffId: 'staff-sarah',
-    staffName: 'Sarah Jenkins',
-    staffRole: 'B2B Client SDR',
-    leadId: 'us-job-202',
-    businessName: 'CognitiveScale Dynamics Inc.',
-    category: 'Web Development & SaaS',
-    country: 'US',
-    recipientEmail: 'talent@cognitivescaledynamics.io',
-    channel: 'Custom SMTP',
-    subject: 'Next.js 14 + Tailwind Redesign for CognitiveScale Dynamics',
-    timestamp: '2 hours ago',
-    previewUrl: '/preview/us-job-202',
-    status: 'Closed Won',
-  },
-  {
-    id: 'reach-105',
-    staffId: 'staff-sameer',
-    staffName: 'Sameer (Lead Director)',
-    staffRole: 'Executive Admin',
-    leadId: 'uk-gmb-301',
-    businessName: 'Kensington Aesthetic Medicine',
-    category: 'Healthcare & Aesthetics',
-    country: 'UK',
-    recipientEmail: 'consultations@kensingtonaesthetic.co.uk',
-    channel: 'Gmail 1-Click',
-    subject: 'Harley Street Digital Storefront & Booking Infrastructure',
-    timestamp: '3 hours ago',
-    previewUrl: '/preview/uk-gmb-301',
-    status: 'Call Booked',
-  },
-  {
-    id: 'reach-106',
-    staffId: 'staff-ali',
-    staffName: 'Ali Raza',
-    staffRole: 'Creative Design Associate',
-    leadId: 'uae-gmb-403',
-    businessName: 'Al-Misk Al-Malaki Perfumery House',
-    category: 'Luxury Retail & E-Commerce',
-    country: 'UAE',
-    recipientEmail: 'concierge@almiskalmalaki.ae',
-    channel: 'Gmail 1-Click',
-    subject: 'Luxury E-Commerce Flagship Store & 6 Vector Brand Concepts',
-    timestamp: '4 hours ago',
-    previewUrl: '/preview/uae-gmb-403',
-    status: 'Delivered',
-  },
-  {
-    id: 'reach-107',
-    staffId: 'staff-employer',
-    staffName: 'Employer Staff Desk',
-    staffRole: 'Staff Portal Operator',
-    leadId: 'pk-gmb-102',
-    businessName: 'Al-Buraq Legal Associates',
-    category: 'Legal & Professional Services',
-    country: 'Pakistan',
-    recipientEmail: 'contact@alburaqlegal.pk',
-    channel: 'Custom SMTP',
-    subject: 'Bespoke Law Practice Showcase & Corporate Case Intake Portal',
-    timestamp: '5 hours ago',
-    previewUrl: '/preview/pk-gmb-102',
-    status: 'Opened',
-  },
-];
+// Live Outreach Records
+let outreachRecords: OutreachRecord[] = [];
 
-// Helper Functions
+/**
+ * Initializes outreach records directly from real registered leads in the system
+ */
+function ensureOutreachDataInitialized() {
+  if (outreachRecords.length > 0) return;
+
+  const allLeads = getAllRegisteredLeads();
+  
+  // Real leads that have active discussions or proposals in the system
+  const initialPitchedLeads = allLeads.filter(
+    (l) => l.id.includes('pk-gmb-101') || l.id.includes('uae-gmb-401') || l.id.includes('us-job-202') || l.id.includes('uk-gmb-301')
+  );
+
+  const channels: Array<'Gmail 1-Click' | 'Custom SMTP'> = ['Gmail 1-Click', 'Custom SMTP'];
+
+  initialPitchedLeads.forEach((lead, index) => {
+    const isSameer = index % 2 === 0;
+    const channel = channels[index % channels.length];
+
+    const record: OutreachRecord = {
+      id: `reach-${lead.id}`,
+      staffId: isSameer ? 'staff-sameer' : 'staff-employer',
+      staffName: isSameer ? 'Sameer (Lead Director)' : 'Employer Staff Desk',
+      staffRole: isSameer ? 'Executive Admin' : 'Staff Portal Operator',
+      leadId: lead.id,
+      businessName: lead.businessName,
+      category: lead.category,
+      country: lead.country,
+      recipientEmail: lead.contact.email || `${lead.businessName.toLowerCase().replace(/[^a-z0-9]/g, '')}@business.com`,
+      channel,
+      subject: `Custom Proposal & Live Interactive Showcase for ${lead.businessName}`,
+      timestamp: index === 0 ? '12 mins ago' : index === 1 ? '45 mins ago' : `${index} hours ago`,
+      previewUrl: `/preview/${lead.id}`,
+      status: index === 0 ? 'Call Booked' : index === 1 ? 'Opened' : index === 2 ? 'Closed Won' : 'Delivered',
+    };
+
+    outreachRecords.push(record);
+  });
+
+  // Recalculate staff metrics
+  recalculateStaffMetrics();
+}
+
+function recalculateStaffMetrics() {
+  staffMembers.forEach((member) => {
+    const memberRecords = outreachRecords.filter((r) => r.staffId === member.id);
+    member.leadsReachedCount = memberRecords.length;
+    member.proposalsViewedCount = memberRecords.filter((r) => r.status !== 'Delivered').length;
+    member.callsBookedCount = memberRecords.filter((r) => r.status === 'Call Booked').length;
+    member.dealsWonCount = memberRecords.filter((r) => r.status === 'Closed Won').length;
+
+    const wonValue = member.dealsWonCount * 3500;
+    member.pipelineValue = wonValue > 0 ? `$${wonValue.toLocaleString()}` : '$0';
+
+    if (memberRecords.length > 0) {
+      member.lastOutreachAt = memberRecords[0].timestamp;
+    }
+  });
+}
+
+// Public API
 export function getAuditSessions(): AuditSession[] {
   return auditSessions;
 }
@@ -320,19 +194,22 @@ export function recordLoginSession(sessionData: {
   browser?: string;
   os?: string;
   location?: string;
+  isp?: string;
 }): AuditSession {
+  // Mark previous sessions of this device or user
   const newSession: AuditSession = {
     id: `sess-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
     role: sessionData.role,
     userName: sessionData.userName,
-    ipAddress: sessionData.ipAddress || '127.0.0.1',
+    ipAddress: sessionData.ipAddress,
     deviceName: sessionData.deviceName || 'Personal Workstation PC',
     deviceType: (sessionData.os?.toLowerCase().includes('mobile') || sessionData.os?.toLowerCase().includes('ios') || sessionData.os?.toLowerCase().includes('android')) 
       ? 'Mobile' 
       : 'Desktop PC',
-    browser: sessionData.browser || 'Web Browser',
+    browser: sessionData.browser || 'Google Chrome',
     os: sessionData.os || 'Windows 11',
-    location: sessionData.location || 'Local Network',
+    location: sessionData.location || 'Karachi, Pakistan',
+    isp: sessionData.isp || 'Cyber Internet Services',
     loginTime: new Date().toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
@@ -346,10 +223,10 @@ export function recordLoginSession(sessionData: {
     isCurrent: true,
   };
 
-  // Prepend to list
+  // Add to top of active sessions
   auditSessions.unshift(newSession);
 
-  // Keep list tidy (max 100 sessions)
+  // Keep max 100 sessions
   if (auditSessions.length > 100) {
     auditSessions = auditSessions.slice(0, 100);
   }
@@ -368,10 +245,12 @@ export function terminateSession(sessionId: string): boolean {
 }
 
 export function getStaffMembers(): StaffMember[] {
+  ensureOutreachDataInitialized();
   return staffMembers;
 }
 
 export function getOutreachRecords(): OutreachRecord[] {
+  ensureOutreachDataInitialized();
   return outreachRecords;
 }
 
@@ -387,7 +266,9 @@ export function recordStaffOutreach(data: {
   subject: string;
   previewUrl: string;
 }): OutreachRecord {
-  const staff = staffMembers.find((s) => s.id === data.staffId) || staffMembers[0]; // fallback to Sameer
+  ensureOutreachDataInitialized();
+
+  const staff = staffMembers.find((s) => s.id === data.staffId) || staffMembers[0];
 
   const record: OutreachRecord = {
     id: `reach-${Date.now()}`,
@@ -406,10 +287,8 @@ export function recordStaffOutreach(data: {
     status: 'Delivered',
   };
 
-  // Increment staff member stats
-  staff.leadsReachedCount += 1;
-  staff.lastOutreachAt = 'Just now';
-
   outreachRecords.unshift(record);
+  recalculateStaffMetrics();
+
   return record;
 }

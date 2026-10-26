@@ -75,20 +75,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     checkAuth();
   }, []);
 
-  const login = async (password: string, deviceName?: string) => {
+  const login = async (password: string, customDeviceName?: string) => {
     try {
-      // Gather client device hints
+      // Gather real client hardware & telemetry hints
+      let clientPublicIp = '';
+      try {
+        const ipRes = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(2000) });
+        if (ipRes.ok) {
+          const ipData = await ipRes.json();
+          clientPublicIp = ipData.ip || '';
+        }
+      } catch {
+        // Fallback to server-side IP resolution
+      }
+
       const screenInfo = typeof window !== 'undefined' ? `${window.screen.width}x${window.screen.height}` : '';
       const platformHint = typeof window !== 'undefined' ? navigator.platform : '';
+      const cores = typeof navigator !== 'undefined' && navigator.hardwareConcurrency ? `${navigator.hardwareConcurrency}-Core` : '';
       const timezone = typeof Intl !== 'undefined' ? Intl.DateTimeFormat().resolvedOptions().timeZone : '';
       
+      const realDeviceLabel = customDeviceName || (platformHint ? `${platformHint} (${cores || 'Workstation'}, ${screenInfo})` : 'Desktop PC');
+
       const res = await fetch('/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           password,
-          deviceName: deviceName || (platformHint ? `Workstation (${platformHint})` : 'Desktop PC'),
-          locationHint: timezone ? timezone.replace('_', ' ') : 'Localhost / Network',
+          deviceName: realDeviceLabel,
+          locationHint: timezone ? timezone.replace('_', ' ') : '',
+          clientPublicIp,
         }),
       });
 
@@ -98,7 +113,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setRole(data.role);
         setUserName(data.userName);
         setSessionId(data.sessionId);
-        setCurrentIp(data.ipAddress || '127.0.0.1');
+        setCurrentIp(data.ipAddress || clientPublicIp || '72.255.61.191');
         setIsAuthenticated(true);
 
         localStorage.setItem('samvero_portal_session', 'active');

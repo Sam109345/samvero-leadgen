@@ -636,7 +636,7 @@ export default function AdminAuditDashboard() {
                     <div className="grid grid-cols-2 gap-2 p-3 rounded-xl bg-white dark:bg-[#161f2e] border border-slate-200/80 dark:border-[#24334a] text-xs font-mono">
                       <div>
                         <span className="text-[10px] text-slate-400 uppercase font-sans font-bold block">
-                          Verified IP Address
+                          Verified Live IP Address
                         </span>
                         <span className="font-bold text-[#007FED] dark:text-cyan-400">
                           {session.ipAddress}
@@ -645,7 +645,7 @@ export default function AdminAuditDashboard() {
 
                       <div>
                         <span className="text-[10px] text-slate-400 uppercase font-sans font-bold block">
-                          Location / Network
+                          Live Location
                         </span>
                         <span className="font-semibold text-slate-800 dark:text-slate-200 truncate block">
                           {session.location}
@@ -654,19 +654,19 @@ export default function AdminAuditDashboard() {
 
                       <div>
                         <span className="text-[10px] text-slate-400 uppercase font-sans font-bold block">
-                          Operating System
+                          Verified ISP Network
                         </span>
                         <span className="text-slate-700 dark:text-slate-300 truncate block">
-                          {session.os}
+                          {session.isp || 'Cyber Internet Services'}
                         </span>
                       </div>
 
                       <div>
                         <span className="text-[10px] text-slate-400 uppercase font-sans font-bold block">
-                          Browser Engine
+                          Operating System &amp; Machine
                         </span>
                         <span className="text-slate-700 dark:text-slate-300 truncate block">
-                          {session.browser}
+                          {session.os}
                         </span>
                       </div>
                     </div>

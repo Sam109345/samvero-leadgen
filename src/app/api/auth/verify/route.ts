@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { recordLoginSession, getAuditSessions } from '@/lib/audit-store';
+import { recordLoginSession } from '@/lib/audit-store';
+import { getLivePublicIp, resolveIpDetails } from '@/lib/geo-ip';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,10 +12,10 @@ function parseUserAgent(ua: string) {
   let browser = 'Chrome';
 
   if (ua.includes('Windows NT 10.0')) os = 'Windows 11 / 10 PC';
-  else if (ua.includes('Macintosh') || ua.includes('Mac OS X')) os = 'macOS';
-  else if (ua.includes('iPhone')) os = 'iPhone iOS';
-  else if (ua.includes('iPad')) os = 'iPadOS';
-  else if (ua.includes('Android')) os = 'Android Device';
+  else if (ua.includes('Macintosh') || ua.includes('Mac OS X')) os = 'macOS Workstation';
+  else if (ua.includes('iPhone')) os = 'Apple iPhone iOS';
+  else if (ua.includes('iPad')) os = 'Apple iPadOS';
+  else if (ua.includes('Android')) os = 'Android Mobile';
   else if (ua.includes('Linux')) os = 'Linux Workstation';
 
   if (ua.includes('Edg/')) browser = 'Microsoft Edge';
@@ -28,7 +29,7 @@ function parseUserAgent(ua: string) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password, deviceName, locationHint } = body;
+    const { password, deviceName, locationHint, clientPublicIp } = body;
 
     if (!password) {
       return NextResponse.json({ success: false, error: 'Password is required' }, { status: 400 });
@@ -57,28 +58,35 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // IP Address extraction
+    // Live Public IP Detection
     const cfIp = request.headers.get('cf-connecting-ip');
     const xForwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0].trim();
     const xRealIp = request.headers.get('x-real-ip');
-    const detectedIp = cfIp || xForwardedFor || xRealIp || '127.0.0.1';
+    const headerIp = cfIp || xForwardedFor || xRealIp;
+
+    // Use client public IP hint if provided, or resolve live public IP
+    const targetIp = clientPublicIp || (headerIp && !headerIp.startsWith('127.') && headerIp !== '::1' ? headerIp : await getLivePublicIp(headerIp || undefined));
+
+    // Resolve real live geolocation & ISP
+    const geo = await resolveIpDetails(targetIp);
 
     // Device and OS details
     const userAgent = request.headers.get('user-agent') || '';
     const { os, browser } = parseUserAgent(userAgent);
 
-    const clientDeviceName = deviceName || (role === 'admin' ? 'Sameer-Primary-PC' : 'Staff-Terminal-Workstation');
-    const location = locationHint || (detectedIp.startsWith('127.') || detectedIp === '::1' ? 'Localhost / Office Network' : 'Live Cloud Network');
+    const clientDeviceName = deviceName || (role === 'admin' ? `${os} (Executive Workstation)` : `${os} (Staff Terminal)`);
+    const location = `${geo.city}, ${geo.country}`;
 
     // Record login into live audit history
     const session = recordLoginSession({
       role,
       userName,
-      ipAddress: detectedIp,
-      deviceName: `${clientDeviceName} (${os})`,
-      browser: `${browser}`,
+      ipAddress: geo.ip,
+      deviceName: clientDeviceName,
+      browser,
       os,
       location,
+      isp: geo.isp,
     });
 
     const response = NextResponse.json({
@@ -87,7 +95,9 @@ export async function POST(request: NextRequest) {
       role,
       userName,
       sessionId: session.id,
-      ipAddress: detectedIp,
+      ipAddress: geo.ip,
+      location,
+      isp: geo.isp,
       deviceName: session.deviceName,
     });
 
@@ -139,11 +149,14 @@ export async function GET(request: NextRequest) {
 
     const isAuthenticated = !!token && token.startsWith('auth_');
 
-    // Get current IP for current user display
+    // Get live public IP
     const cfIp = request.headers.get('cf-connecting-ip');
     const xForwardedFor = request.headers.get('x-forwarded-for')?.split(',')[0].trim();
     const xRealIp = request.headers.get('x-real-ip');
-    const currentIp = cfIp || xForwardedFor || xRealIp || '127.0.0.1';
+    const headerIp = cfIp || xForwardedFor || xRealIp;
+
+    const publicIp = await getLivePublicIp(headerIp || undefined);
+    const geo = await resolveIpDetails(publicIp);
 
     return NextResponse.json({
       success: true,
@@ -151,7 +164,9 @@ export async function GET(request: NextRequest) {
       role: isAuthenticated ? role : null,
       userName: isAuthenticated ? userName : null,
       sessionId,
-      currentIp,
+      currentIp: geo.ip,
+      location: `${geo.city}, ${geo.country}`,
+      isp: geo.isp,
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err?.message }, { status: 500 });
