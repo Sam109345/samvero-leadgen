@@ -16,6 +16,7 @@ import EmailOutreachModal from '@/components/EmailOutreachModal';
 import ApiSettingsModal from '@/components/ApiSettingsModal';
 import CreateLeadModal from '@/components/CreateLeadModal';
 import JobScopeAnalyzerModal from '@/components/JobScopeAnalyzerModal';
+import PortalAuthGate from '@/components/PortalAuthGate';
 
 import { Lead, LeadNotification, PipelineStage } from '@/types';
 import { generateNextIncomingLead } from '@/lib/lead-stream';
@@ -269,7 +270,8 @@ export default function HomePage() {
   const pitchedCount = leads.filter((l) => l.pipelineStage === 'pending').length;
 
   return (
-    <div className="min-h-screen bg-[#F0F2F5] dark:bg-[#0b111a] text-slate-800 dark:text-slate-100 flex flex-col font-sans antialiased transition-colors duration-200">
+    <PortalAuthGate>
+      <div className="min-h-screen bg-[#F0F2F5] dark:bg-[#0b111a] text-slate-800 dark:text-slate-100 flex flex-col font-sans antialiased transition-colors duration-200">
       
       {/* 1. Classic Freelancer.com Navbar (Dark Navy / Slate) */}
       <FreelancerNavbar
@@ -596,6 +598,7 @@ export default function HomePage() {
         onAddLead={handleAddCustomLead}
       />
 
-    </div>
+      </div>
+    </PortalAuthGate>
   );
 }

@@ -22,7 +22,8 @@ import {
   CheckCircle2,
   ExternalLink,
   Flame,
-  Globe2
+  Globe2,
+  Lock
 } from 'lucide-react';
 import { LeadNotification, Lead } from '@/types';
 import SamveroBrandLogo from '@/components/SamveroBrandLogo';
@@ -350,6 +351,19 @@ export default function FreelancerNavbar({
               <span className="text-xs font-bold text-slate-800 dark:text-slate-200">SAMVERO Partner</span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">$48,500 Pool</span>
             </div>
+
+            {/* Lock Terminal Action */}
+            <button
+              onClick={() => {
+                localStorage.removeItem('samvero_portal_session');
+                document.cookie = 'samvero_portal_token=; Max-Age=0; path=/;';
+                window.location.reload();
+              }}
+              title="Lock Operating Terminal (Sign Out)"
+              className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded-lg transition-colors ml-1"
+            >
+              <Lock className="w-4 h-4" />
+            </button>
           </div>
 
         </div>
