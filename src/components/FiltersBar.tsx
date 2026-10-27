@@ -168,12 +168,39 @@ export default function FiltersBar({
             onChange={(e) => setPlatform(e.target.value)}
             className="w-full bg-slate-50 dark:bg-[#0d141e] border border-slate-200/90 dark:border-[#24334a] text-xs font-semibold rounded-xl px-2.5 py-2 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-[#007FED] transition"
           >
-            <option value="all">🌐 All Channels</option>
-            <option value="Google My Business">Google My Business</option>
-            <option value="Upwork">Upwork</option>
-            <option value="Bark">Bark</option>
-            <option value="LinkedIn">LinkedIn</option>
-            <option value="DesignBoard">DesignBoard</option>
+            <option value="all">🌐 All Channels ({'20+ Platforms'})</option>
+            <optgroup label="Main Freelancing Platforms">
+              <option value="Upwork">Upwork</option>
+              <option value="Fiverr">Fiverr</option>
+              <option value="Freelancer.com">Freelancer.com</option>
+              <option value="PeoplePerHour">PeoplePerHour</option>
+              <option value="Guru">Guru</option>
+              <option value="Contra">Contra</option>
+            </optgroup>
+            <optgroup label="Direct Client & Remote Platforms">
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Wellfound">Wellfound (AngelList)</option>
+              <option value="We Work Remotely">We Work Remotely</option>
+              <option value="Remote OK">Remote OK</option>
+            </optgroup>
+            <optgroup label="Design & Creative Platforms">
+              <option value="Dribbble">Dribbble</option>
+              <option value="Behance">Behance</option>
+              <option value="99designs">99designs</option>
+            </optgroup>
+            <optgroup label="Specialized Developer Networks">
+              <option value="Toptal">Toptal</option>
+              <option value="Codeable">Codeable</option>
+              <option value="Truelancer">Truelancer</option>
+            </optgroup>
+            <optgroup label="Local Business & Regional Portals">
+              <option value="Google My Business">Google My Business</option>
+              <option value="Bark">Bark</option>
+              <option value="Thumbtack">Thumbtack</option>
+              <option value="Rozee.pk">Rozee.pk (Pakistan)</option>
+              <option value="Bayt">Bayt (GCC/Middle East)</option>
+              <option value="Dubizzle">Dubizzle (UAE)</option>
+            </optgroup>
           </select>
         </div>
       </div>

@@ -1,8 +1,36 @@
 export type LeadSource = 
   | 'Google My Business'
   | 'Upwork'
-  | 'LinkedIn'
+  | 'Fiverr'
+  | 'Freelancer.com'
+  | 'PeoplePerHour'
+  | 'Guru'
+  | 'Contra'
   | 'Bark'
+  | 'LinkedIn'
+  | 'Wellfound'
+  | 'Dribbble'
+  | 'Behance'
+  | '99designs'
+  | 'Truelancer'
+  | 'Workana'
+  | 'DesignCrowd'
+  | 'Toptal'
+  | 'Gun.io'
+  | 'Arc'
+  | 'Lemon.io'
+  | 'Braintrust'
+  | 'Mayple'
+  | 'Codeable'
+  | 'We Work Remotely'
+  | 'Remote OK'
+  | 'Remotive'
+  | 'Jooble'
+  | 'Indeed'
+  | 'Rozee.pk'
+  | 'Bayt'
+  | 'Dubizzle'
+  | 'Thumbtack'
   | 'DesignBoard'
   | 'Freelancer';
 
@@ -111,6 +139,27 @@ export interface Lead {
   status?: 'new' | 'contacted' | 'pitch_sent' | 'closed';
   incomingAt?: number; // timestamp
   requirementSpec?: JobRequirementSpec;
+  // Assignment & Staff Allocation
+  assignedToUserId?: string;
+  assignedToUserName?: string;
+  assignedAt?: string;
+}
+
+export interface PortalUser {
+  id: string;
+  username: string;
+  name: string;
+  email: string;
+  password?: string;
+  role: 'admin' | 'staff' | 'global_user';
+  isGlobalUser: boolean; // If true: sees ALL leads across all platforms & countries
+  status: 'active' | 'suspended';
+  createdAt: string;
+  assignedLeadIds: string[];
+  avatar: string;
+  department?: string;
+  leadsReachedCount?: number;
+  notes?: string;
 }
 
 export interface LeadNotification {

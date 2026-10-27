@@ -27,7 +27,8 @@ import {
   Palette,
   FileSearch,
   Zap,
-  Check
+  Check,
+  UserCheck
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
@@ -60,14 +61,40 @@ export default function FreelancerJobCard({
     switch (source) {
       case 'Upwork':
         return { bg: 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300', dot: 'bg-emerald-500' };
+      case 'Fiverr':
+        return { bg: 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200', dot: 'bg-emerald-600' };
+      case 'Freelancer.com':
+        return { bg: 'bg-sky-50 dark:bg-sky-950/60 border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300', dot: 'bg-sky-500' };
+      case 'Contra':
+        return { bg: 'bg-purple-50 dark:bg-purple-950/60 border-purple-300 dark:border-purple-800 text-purple-700 dark:text-purple-300', dot: 'bg-purple-500' };
+      case 'PeoplePerHour':
+        return { bg: 'bg-amber-50 dark:bg-amber-950/60 border-amber-300 dark:border-amber-800 text-amber-800 dark:text-amber-200', dot: 'bg-amber-500' };
+      case 'Guru':
+        return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-300', dot: 'bg-blue-500' };
+      case 'Wellfound':
+        return { bg: 'bg-rose-50 dark:bg-rose-950/60 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300', dot: 'bg-rose-500' };
+      case 'Dribbble':
+        return { bg: 'bg-pink-50 dark:bg-pink-950/60 border-pink-300 dark:border-pink-800 text-pink-700 dark:text-pink-300', dot: 'bg-pink-500' };
+      case 'Behance':
+        return { bg: 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-300 dark:border-indigo-800 text-indigo-700 dark:text-indigo-300', dot: 'bg-indigo-500' };
+      case '99designs':
+        return { bg: 'bg-orange-50 dark:bg-orange-950/60 border-orange-300 dark:border-orange-800 text-orange-800 dark:text-orange-200', dot: 'bg-orange-500' };
+      case 'Toptal':
+      case 'Codeable':
+        return { bg: 'bg-cyan-50 dark:bg-cyan-950/60 border-cyan-300 dark:border-cyan-800 text-cyan-700 dark:text-cyan-300', dot: 'bg-cyan-500' };
       case 'Bark':
         return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-300', dot: 'bg-blue-500' };
       case 'LinkedIn':
         return { bg: 'bg-sky-50 dark:bg-sky-950/60 border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300', dot: 'bg-sky-500' };
       case 'Google My Business':
-        return { bg: 'bg-rose-50 dark:bg-rose-950/60 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300', dot: 'bg-rose-500' };
+        return { bg: 'bg-red-50 dark:bg-red-950/60 border-red-300 dark:border-red-800 text-red-700 dark:text-red-300', dot: 'bg-red-500' };
+      case 'Rozee.pk':
+      case 'Bayt':
+      case 'Dubizzle':
+      case 'Thumbtack':
+        return { bg: 'bg-teal-50 dark:bg-teal-950/60 border-teal-300 dark:border-teal-800 text-teal-700 dark:text-teal-300', dot: 'bg-teal-500' };
       default:
-        return { bg: 'bg-cyan-50 dark:bg-cyan-950/60 border-cyan-300 dark:border-cyan-800 text-cyan-700 dark:text-cyan-300', dot: 'bg-cyan-500' };
+        return { bg: 'bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300', dot: 'bg-slate-500' };
     }
   };
 
@@ -254,6 +281,49 @@ export default function FreelancerJobCard({
             {tag}
           </span>
         ))}
+      </div>
+
+      {/* 5.5 Verified Direct Client Contact Bar */}
+      <div className="flex items-center gap-3 text-xs bg-slate-50 dark:bg-[#0e1624] px-3.5 py-2 rounded-xl border border-slate-200/80 dark:border-[#24334a] flex-wrap">
+        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Direct Contact:</span>
+        {lead.contact.phone && (
+          <a
+            href={`tel:${lead.contact.phone}`}
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 font-bold text-slate-800 dark:text-slate-200 hover:text-[#007FED] transition"
+            title="Dial real client phone number"
+          >
+            <Phone className="w-3.5 h-3.5 text-emerald-500" />
+            <span>{lead.contact.phone}</span>
+          </a>
+        )}
+        {lead.contact.email && (
+          <a
+            href={`mailto:${lead.contact.email}`}
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1 text-slate-600 dark:text-slate-300 hover:text-[#007FED] font-mono text-[11px] transition"
+            title="Send direct email to client"
+          >
+            <Mail className="w-3.5 h-3.5 text-indigo-500" />
+            <span>{lead.contact.email}</span>
+          </a>
+        )}
+        {lead.contact.whatsapp && (
+          <button
+            onClick={handleWhatsApp}
+            className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded text-[11px] font-bold border border-emerald-200 dark:border-emerald-800/60 transition hover:bg-emerald-100"
+            title="Open direct WhatsApp conversation"
+          >
+            <MessageCircle className="w-3.5 h-3.5" />
+            <span>WhatsApp Ready</span>
+          </button>
+        )}
+        {lead.assignedToUserName && (
+          <span className="flex items-center gap-1 text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded text-[11px] font-bold border border-indigo-200 dark:border-indigo-800/60 ml-auto">
+            <UserCheck className="w-3.5 h-3.5" />
+            <span>Assigned: {lead.assignedToUserName}</span>
+          </span>
+        )}
       </div>
 
       {/* 6. Bottom Action Footer Row */}

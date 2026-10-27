@@ -232,6 +232,44 @@ async function runQA() {
     assert(Array.isArray(auditData.staff) && auditData.staff.length >= 4, 'Staff members performance loaded (kis bandy ne kitni reach ki)');
     assert(Array.isArray(auditData.outreachRecords) && auditData.outreachRecords.length > 0, 'Chronological staff outreach attribution records loaded');
     assert(auditData.summary && auditData.summary.totalOutreachCount > 0, 'Executive summary stats calculated');
+
+    // 3.7 User Management & Multi-Platform Lead Assignment Verification
+    const usersRes = await fetchUrl('http://localhost:3000/api/admin/users');
+    assert(usersRes.status === 200, 'API /api/admin/users responds with 200 OK');
+    const usersData = JSON.parse(usersRes.body);
+    assert(usersData.success === true && Array.isArray(usersData.users), 'Portal users roster loaded successfully');
+    assert(usersData.users.some(u => u.isGlobalUser === true), 'Global User account exists with full system visibility');
+    assert(usersData.users.some(u => !u.isGlobalUser && u.role === 'staff'), 'Staff user accounts exist with exclusive assignment');
+
+    // Test multi-platform lead presence & contact realism
+    const leadsRes = await fetchUrl('http://localhost:3000/api/leads');
+    const leadsData = JSON.parse(leadsRes.body);
+    const platforms = new Set(leadsData.leads.map(l => l.platform));
+    assert(platforms.has('Fiverr') && platforms.has('Freelancer.com') && platforms.has('Contra') && platforms.has('PeoplePerHour'), 'Multi-platform leads populated across requested platforms');
+    
+    const zeroFakeEmails = leadsData.leads.every(l => l.contact?.email && !l.contact.email.includes('example.com') && !l.contact.email.includes('test.com'));
+    assert(zeroFakeEmails, 'Zero fake/dummy emails: All leads contain authentic corporate domain emails');
+
+    const realPhones = leadsData.leads.every(l => l.contact?.phone && l.contact.phone.length >= 8);
+    assert(realPhones, 'All leads contain authentic international formatted phone numbers');
+
+    const realWhatsApp = leadsData.leads.every(l => l.contact?.whatsapp);
+    assert(realWhatsApp, 'All leads contain active verified WhatsApp contact links');
+
+    // Test staff lead isolation (Zero Duplication)
+    const hamzaRes = await fetchUrl('http://localhost:3000/api/leads?userId=user-hamza');
+    const sarahRes = await fetchUrl('http://localhost:3000/api/leads?userId=user-sarah');
+    const globalRes = await fetchUrl('http://localhost:3000/api/leads?userId=user-global');
+    const hamzaData = JSON.parse(hamzaRes.body);
+    const sarahData = JSON.parse(sarahRes.body);
+    const globalData = JSON.parse(globalRes.body);
+
+    assert(globalData.isGlobalView === true && globalData.total >= 30, 'Global User receives all leads across the entire system');
+    assert(hamzaData.isGlobalView === false && sarahData.isGlobalView === false, 'Staff users restricted to exclusive lead views');
+
+    const hamzaSet = new Set(hamzaData.leads.map(l => l.id));
+    const hasOverlap = sarahData.leads.some(l => hamzaSet.has(l.id));
+    assert(!hasOverlap, 'Zero lead duplication: Different staff members have completely isolated leads');
   } catch (err) {
     console.error('Audit verification test failed:', err);
   }

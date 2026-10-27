@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { recordLoginSession } from '@/lib/audit-store';
 import { getLivePublicIp, resolveIpDetails } from '@/lib/geo-ip';
+import { getPortalUsers } from '@/lib/user-store';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,7 +30,7 @@ function parseUserAgent(ua: string) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password, deviceName, locationHint, clientPublicIp } = body;
+    const { password, username, deviceName, clientPublicIp } = body;
 
     if (!password) {
       return NextResponse.json({ success: false, error: 'Password is required' }, { status: 400 });
@@ -39,16 +40,41 @@ export async function POST(request: NextRequest) {
 
     let role: 'admin' | 'employer' | null = null;
     let userName = '';
+    let userId = '';
+    let isGlobalUser = false;
 
+    // 1. Direct Super Admin Master Key
     if (trimmedPassword === ADMIN_PASSWORD.trim()) {
       role = 'admin';
       userName = 'Sameer (Executive Admin)';
-    } else if (
+      userId = 'user-sameer';
+      isGlobalUser = true;
+    } 
+    // 2. Direct Employer Master Key
+    else if (
       trimmedPassword === EMPLOYER_PASSWORD.trim() ||
       trimmedPassword === 'Sameer12345!@#$%' // Backward compatibility
     ) {
       role = 'employer';
       userName = 'Employer Staff Desk';
+      userId = 'user-employer';
+      isGlobalUser = false;
+    }
+    // 3. Custom Staff Users created by Admin
+    else {
+      const allUsers = getPortalUsers();
+      const matchedUser = allUsers.find(
+        (u) =>
+          u.password === trimmedPassword &&
+          (!username || u.username.toLowerCase() === username.trim().toLowerCase())
+      );
+
+      if (matchedUser) {
+        role = matchedUser.role === 'admin' ? 'admin' : 'employer';
+        userName = matchedUser.name;
+        userId = matchedUser.id;
+        isGlobalUser = matchedUser.isGlobalUser;
+      }
     }
 
     if (!role) {
@@ -91,19 +117,21 @@ export async function POST(request: NextRequest) {
 
     const response = NextResponse.json({
       success: true,
-      message: `Access granted as ${role === 'admin' ? 'Super Executive Admin' : 'Employer Staff'}`,
+      message: `Access granted as ${role === 'admin' ? 'Super Executive Admin' : 'Staff Operator'}`,
       role,
       userName,
+      userId,
+      isGlobalUser,
       sessionId: session.id,
       ipAddress: geo.ip,
       location,
       isp: geo.isp,
-      deviceName: session.deviceName,
+      deviceName: clientDeviceName,
     });
 
     // Set secure authentication cookies
     const cookieOptions = {
-      httpOnly: false,
+      httpOnly: false, // Accessible to client-side scripts
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax' as const,
       path: '/',
@@ -119,6 +147,18 @@ export async function POST(request: NextRequest) {
     response.cookies.set({
       name: 'samvero_portal_role',
       value: role,
+      ...cookieOptions,
+    });
+
+    response.cookies.set({
+      name: 'samvero_user_id',
+      value: userId,
+      ...cookieOptions,
+    });
+
+    response.cookies.set({
+      name: 'samvero_is_global',
+      value: isGlobalUser ? 'true' : 'false',
       ...cookieOptions,
     });
 
@@ -144,6 +184,8 @@ export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('samvero_portal_token')?.value;
     const role = (request.cookies.get('samvero_portal_role')?.value as 'admin' | 'employer') || 'employer';
+    const userId = request.cookies.get('samvero_user_id')?.value || (role === 'admin' ? 'user-sameer' : 'user-employer');
+    const isGlobalUser = request.cookies.get('samvero_is_global')?.value === 'true' || role === 'admin';
     const sessionId = request.cookies.get('samvero_portal_session_id')?.value || '';
     const userName = request.cookies.get('samvero_portal_user')?.value || (role === 'admin' ? 'Sameer (Executive Admin)' : 'Employer Staff');
 
@@ -162,6 +204,8 @@ export async function GET(request: NextRequest) {
       success: true,
       authenticated: isAuthenticated,
       role: isAuthenticated ? role : null,
+      userId: isAuthenticated ? userId : null,
+      isGlobalUser: isAuthenticated ? isGlobalUser : false,
       userName: isAuthenticated ? userName : null,
       sessionId,
       currentIp: geo.ip,

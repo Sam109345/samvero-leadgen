@@ -3,6 +3,7 @@ import { fetchGmbLeads } from '@/lib/gmb-service';
 import { fetchFreelanceJobs } from '@/lib/jobs-service';
 import { getLeadsFromSupabase } from '@/lib/supabase';
 import { Lead } from '@/types';
+import { getPortalUserById, getLeadAssignedUser } from '@/lib/user-store';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +17,8 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type') || 'all'; // 'gmb', 'job', 'all'
     const query = searchParams.get('q') || '';
     const hasWebsite = searchParams.get('hasWebsite') || 'all';
+    const requestedUserId = searchParams.get('userId') || request.cookies.get('samvero_user_id')?.value;
+    const requestedScope = searchParams.get('scope'); // 'all' | 'mine'
 
     let allLeads: Lead[] = [];
 
@@ -36,6 +39,35 @@ export async function GET(request: NextRequest) {
         ]);
         allLeads = [...gmbLeads, ...jobLeads];
       }
+    }
+
+    // Attach real assigned user attribution to each lead
+    allLeads = allLeads.map((lead) => {
+      const assignedUser = getLeadAssignedUser(lead.id);
+      return {
+        ...lead,
+        assignedToUserId: assignedUser?.id,
+        assignedToUserName: assignedUser?.name,
+      };
+    });
+
+    // 3. User Permission & Role Check
+    const portalRole = request.cookies.get('samvero_portal_role')?.value;
+    const isGlobalCookie = request.cookies.get('samvero_is_global')?.value === 'true';
+
+    const activeUser = requestedUserId ? getPortalUserById(requestedUserId) : undefined;
+    const isSuperAdminOrGlobal = 
+      requestedScope === 'all' ||
+      !activeUser || 
+      activeUser.isGlobalUser || 
+      activeUser.role === 'admin' || 
+      activeUser.role === 'global_user' ||
+      portalRole === 'admin' ||
+      isGlobalCookie;
+
+    // If staff user and NOT global: strictly filter to ONLY their assigned leads!
+    if (!isSuperAdminOrGlobal && activeUser) {
+      allLeads = allLeads.filter((l) => l.assignedToUserId === activeUser.id);
     }
 
     // Apply country filter
@@ -92,6 +124,9 @@ export async function GET(request: NextRequest) {
       success: true,
       total: deduplicatedLeads.length,
       leads: deduplicatedLeads,
+      isGlobalView: isSuperAdminOrGlobal,
+      activeUserId: activeUser?.id || (isSuperAdminOrGlobal ? 'global_all' : null),
+      activeUserName: activeUser?.name || 'All Leads Master Pool',
       stats: {
         totalGmb: deduplicatedLeads.filter((l) => l.type === 'gmb').length,
         totalJobs: deduplicatedLeads.filter((l) => l.type === 'job').length,
