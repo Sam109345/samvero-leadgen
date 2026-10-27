@@ -118,6 +118,7 @@ const incomingLeadTemplates = [
     contact: {
       email: 'design-talent@neuropulsehealth.ai',
       phone: '+1 (415) 890-5512',
+      whatsapp: '+14158905512',
       hasWebsite: true,
       website: 'https://neuropulsehealth.ai',
       contactPerson: 'Dr. Evelyn Carter (Founder)',

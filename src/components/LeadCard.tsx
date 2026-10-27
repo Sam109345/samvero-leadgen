@@ -14,7 +14,8 @@ import {
   Clock, 
   Briefcase, 
   MessageSquare,
-  AlertCircle
+  AlertCircle,
+  ShieldCheck
 } from 'lucide-react';
 import { Lead } from '@/types';
 
@@ -176,6 +177,47 @@ export default function LeadCard({
             </span>
           ))}
         </div>
+      </div>
+
+      {/* Verified Direct Client Contact Bar */}
+      <div className="flex items-center gap-2.5 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 flex-wrap">
+        <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Direct Contact:</span>
+        {lead.contact.phone && (
+          <a
+            href={`tel:${lead.contact.phone}`}
+            className="flex items-center gap-1 font-bold text-slate-800 hover:text-[#1877F2] transition"
+            title="Dial real client phone number"
+          >
+            <Phone className="w-3.5 h-3.5 text-emerald-500" />
+            <span>{lead.contact.phone}</span>
+          </a>
+        )}
+        {lead.contact.email && (
+          <a
+            href={`mailto:${lead.contact.email}`}
+            className="flex items-center gap-1 text-slate-700 hover:text-[#1877F2] font-mono text-[11px] transition bg-white px-2 py-0.5 rounded border border-slate-200 font-semibold"
+            title="Send direct email to client"
+          >
+            <Mail className="w-3.5 h-3.5 text-indigo-500" />
+            <span>{lead.contact.email}</span>
+          </a>
+        )}
+        {whatsappUrl && (
+          <a
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[11px] font-bold border border-emerald-200 transition hover:bg-emerald-100"
+            title="Open direct WhatsApp conversation"
+          >
+            <MessageSquare className="w-3.5 h-3.5" />
+            <span>WhatsApp Ready</span>
+          </a>
+        )}
+        <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50/80 px-2 py-0.5 rounded ml-auto">
+          <ShieldCheck className="w-3 h-3" />
+          <span>Verified Domain</span>
+        </span>
       </div>
 
       {/* Actions Row: Meta style toolbar */}

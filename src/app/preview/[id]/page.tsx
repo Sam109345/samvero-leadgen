@@ -91,7 +91,7 @@ export default function WebsitePreviewPage({ params }: Props) {
       description: `Premier client showcase synthesized for ${formattedName}. Complete 9-section responsive digital presence with booking portal.`,
       postedAt: 'Today',
       contact: {
-        email: `concierge@${domain || 'clientbrand'}.com`,
+        email: isUae ? `info@${domain || 'business'}.ae` : isUk ? `contact@${domain || 'business'}.co.uk` : isUs ? `info@${domain || 'business'}.com` : `info@${domain || 'business'}.pk`,
         phone: isUae ? '+971 4 344 8920' : isUk ? '+44 20 7493 8810' : isUs ? '+1 (512) 892-4410' : '+92 321 4455890',
         whatsapp: isUae ? '+971508920144' : isUk ? '+442074938810' : isUs ? '+15128924410' : '+923214455890',
         hasWebsite: false,

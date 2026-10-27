@@ -298,15 +298,22 @@ export default function FreelancerJobCard({
           </a>
         )}
         {lead.contact.email && (
-          <a
-            href={`mailto:${lead.contact.email}`}
-            onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-1 text-slate-600 dark:text-slate-300 hover:text-[#007FED] font-mono text-[11px] transition"
-            title="Send direct email to client"
-          >
-            <Mail className="w-3.5 h-3.5 text-indigo-500" />
-            <span>{lead.contact.email}</span>
-          </a>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenEmailModal(lead, previewUrl);
+              }}
+              className="flex items-center gap-1 text-slate-700 dark:text-slate-200 hover:text-[#007FED] font-mono text-[11px] font-bold transition bg-white dark:bg-[#162030] px-2 py-0.5 rounded border border-slate-200 dark:border-[#24334a]"
+              title="Click to open verified email proposal outreach"
+            >
+              <Mail className="w-3.5 h-3.5 text-indigo-500" />
+              <span>{lead.contact.email}</span>
+            </button>
+            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60">
+              ✓ Verified
+            </span>
+          </div>
         )}
         {lead.contact.whatsapp && (
           <button

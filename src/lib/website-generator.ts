@@ -1,4 +1,5 @@
 import { Lead, GeneratedWebsiteData } from '@/types';
+import { resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 
 /**
  * SAMVERO Luxury Website Generator
@@ -9,8 +10,19 @@ export function generateClientWebsite(lead: Lead): GeneratedWebsiteData {
   const slug = `site-${businessName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
   const city = lead.city || 'Metropolis';
   const country = lead.country || 'Global';
-  const phone = lead.contact?.phone || '+971 4 344 8920';
-  const email = lead.contact?.email || 'contact@clientportal.com';
+
+  // Resolve authentic business contact details
+  const fallbackContact = resolveLegitimateBusinessEmail({
+    businessName,
+    website: lead.contact?.website,
+    country: lead.country,
+    city: lead.city,
+    category: lead.category,
+    phone: lead.contact?.phone,
+  });
+
+  const phone = lead.contact?.phone || fallbackContact.phone;
+  const email = lead.contact?.email || fallbackContact.email;
   const address = lead.address || `${city}, ${country}`;
 
   const titleLower = lead.title?.toLowerCase() || '';

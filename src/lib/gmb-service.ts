@@ -2,6 +2,7 @@ import { Lead } from '@/types';
 import { checkAndIncrementQuota } from './rate-limiter';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
+import { resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { INITIAL_LEADS } from './mock-data';
 
 interface GmbSearchParams {
@@ -38,6 +39,15 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
             const hasWebsite = Boolean(place.website);
             const leadCity = city || (place.formatted_address ? place.formatted_address.split(',')[1]?.trim() : 'Local');
 
+            const resolvedContact = resolveLegitimateBusinessEmail({
+              businessName: place.name,
+              website: place.website,
+              country: (country as any) || 'Pakistan',
+              city: leadCity || 'Lahore',
+              category: (category as any) || 'Local Business',
+              phone: place.formatted_phone_number,
+            });
+
             const base: Lead = {
               id: `gmb-live-${place.place_id || index}`,
               title: place.name,
@@ -54,10 +64,13 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
               description: `Google Business listing with ${place.rating || 4.5} rating. ${hasWebsite ? 'Current website requires modernization.' : 'Has NO active website detected.'}`,
               postedAt: 'Just now (Live GMB)',
               contact: {
-                phone: place.formatted_phone_number || '+92 300 0000000',
+                email: resolvedContact.email,
+                phone: resolvedContact.phone,
+                whatsapp: resolvedContact.whatsapp,
                 website: place.website,
                 hasWebsite,
                 gmbUrl: `https://www.google.com/maps/place/?q=place_id:${place.place_id}`,
+                contactPerson: `${place.name} Management`,
               },
               rating: place.rating || 4.5,
               reviewCount: place.user_ratings_total || 12,
