@@ -168,8 +168,8 @@ export default function FiltersBar({
             onChange={(e) => setPlatform(e.target.value)}
             className="w-full bg-slate-50 dark:bg-[#0d141e] border border-slate-200/90 dark:border-[#24334a] text-xs font-semibold rounded-xl px-2.5 py-2 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/20 focus:border-[#007FED] transition"
           >
-            <option value="all">🌐 All Channels ({'20+ Platforms'})</option>
-            <optgroup label="Main Freelancing Platforms">
+            <option value="all">🌐 All Channels (50+ Platforms)</option>
+            <optgroup label="1. Main Freelancing Platforms">
               <option value="Upwork">Upwork</option>
               <option value="Fiverr">Fiverr</option>
               <option value="Freelancer.com">Freelancer.com</option>
@@ -177,29 +177,62 @@ export default function FiltersBar({
               <option value="Guru">Guru</option>
               <option value="Contra">Contra</option>
             </optgroup>
-            <optgroup label="Direct Client & Remote Platforms">
+            <optgroup label="2. Freelancing Marketplaces & Curated Networks">
+              <option value="Truelancer">Truelancer</option>
+              <option value="Workana">Workana</option>
+              <option value="99designs">99designs</option>
+              <option value="DesignCrowd">DesignCrowd</option>
+              <option value="Toptal">Toptal</option>
+              <option value="Gun.io">Gun.io</option>
+              <option value="Arc">Arc.dev</option>
+              <option value="Lemon.io">Lemon.io</option>
+              <option value="Braintrust">Braintrust</option>
+              <option value="Mayple">Mayple</option>
+              <option value="MarketerHire">MarketerHire</option>
+              <option value="Legiit">Legiit</option>
+              <option value="SEOClerks">SEOClerks</option>
+              <option value="Codeable">Codeable</option>
+              <option value="We Work Remotely">We Work Remotely</option>
+            </optgroup>
+            <optgroup label="3. Design & Creative Platforms">
+              <option value="Behance">Behance</option>
+              <option value="Dribbble">Dribbble</option>
+              <option value="DesignHill">DesignHill</option>
+              <option value="Working Not Working">Working Not Working</option>
+              <option value="Creativepool">Creativepool</option>
+              <option value="Coroflot">Coroflot</option>
+            </optgroup>
+            <optgroup label="4. Remote Jobs & Direct Client Portals">
               <option value="LinkedIn">LinkedIn</option>
               <option value="Wellfound">Wellfound (AngelList)</option>
-              <option value="We Work Remotely">We Work Remotely</option>
+              <option value="FlexJobs">FlexJobs</option>
               <option value="Remote OK">Remote OK</option>
+              <option value="Remotive">Remotive</option>
+              <option value="Working Nomads">Working Nomads</option>
+              <option value="Dynamite Jobs">Dynamite Jobs</option>
+              <option value="Jooble">Jooble</option>
+              <option value="Indeed">Indeed</option>
+              <option value="Glassdoor">Glassdoor</option>
+              <option value="SimplyHired">SimplyHired</option>
             </optgroup>
-            <optgroup label="Design & Creative Platforms">
-              <option value="Dribbble">Dribbble</option>
-              <option value="Behance">Behance</option>
-              <option value="99designs">99designs</option>
+            <optgroup label="5. Specialized Networks (WordPress, SEO, Audio)">
+              <option value="WPHired">WPHired</option>
+              <option value="ProBlogger Jobs">ProBlogger Jobs</option>
+              <option value="WriterAccess">WriterAccess</option>
+              <option value="Voices">Voices</option>
+              <option value="Voice123">Voice123</option>
+              <option value="Malt">Malt (European Freelancers)</option>
+              <option value="Taskrabbit">Taskrabbit</option>
             </optgroup>
-            <optgroup label="Specialized Developer Networks">
-              <option value="Toptal">Toptal</option>
-              <option value="Codeable">Codeable</option>
-              <option value="Truelancer">Truelancer</option>
-            </optgroup>
-            <optgroup label="Local Business & Regional Portals">
+            <optgroup label="6. Regional & Local Portals (PK, GCC, Global)">
               <option value="Google My Business">Google My Business</option>
-              <option value="Bark">Bark</option>
-              <option value="Thumbtack">Thumbtack</option>
               <option value="Rozee.pk">Rozee.pk (Pakistan)</option>
-              <option value="Bayt">Bayt (GCC/Middle East)</option>
+              <option value="Mustakbil">Mustakbil (Pakistan)</option>
+              <option value="Bayt">Bayt (Middle East)</option>
+              <option value="Naukrigulf">Naukrigulf (Gulf/UAE)</option>
               <option value="Dubizzle">Dubizzle (UAE)</option>
+              <option value="Bark">Bark.com</option>
+              <option value="Thumbtack">Thumbtack</option>
             </optgroup>
           </select>
         </div>

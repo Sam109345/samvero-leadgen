@@ -24,6 +24,8 @@ interface FreelancerFiltersSidebarProps {
   onSearchChange: (q: string) => void;
   selectedCountry: string;
   onCountryChange: (c: string) => void;
+  selectedPlatform?: string;
+  onPlatformChange?: (p: string) => void;
   businessAgeFilter: string;
   onBusinessAgeChange: (age: string) => void;
   hasWebsiteFilter: string;
@@ -39,6 +41,8 @@ export default function FreelancerFiltersSidebar({
   onSearchChange,
   selectedCountry,
   onCountryChange,
+  selectedPlatform = 'all',
+  onPlatformChange,
   businessAgeFilter,
   onBusinessAgeChange,
   hasWebsiteFilter,
@@ -86,7 +90,98 @@ export default function FreelancerFiltersSidebar({
         </div>
       </div>
 
-      {/* 2. Country / Territory (UAE added) */}
+      {/* 1.5. Lead Source Platform (50+ Platforms) */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="text-[11px] font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+            <Layers className="w-3.5 h-3.5 text-[#007FED]" strokeWidth={1.75} />
+            Lead Source Platform
+          </label>
+          {selectedPlatform !== 'all' && (
+            <button
+              onClick={() => onPlatformChange && onPlatformChange('all')}
+              className="text-[10px] text-[#007FED] hover:underline font-bold"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        <select
+          value={selectedPlatform}
+          onChange={(e) => onPlatformChange && onPlatformChange(e.target.value)}
+          className="w-full bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] text-xs font-semibold rounded-xl px-2.5 py-2 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[#007FED] transition"
+        >
+          <option value="all">🌐 All Channels (50+ Platforms)</option>
+          <optgroup label="Main Freelancing Platforms">
+            <option value="Upwork">Upwork</option>
+            <option value="Fiverr">Fiverr</option>
+            <option value="Freelancer.com">Freelancer.com</option>
+            <option value="PeoplePerHour">PeoplePerHour</option>
+            <option value="Guru">Guru</option>
+            <option value="Contra">Contra</option>
+          </optgroup>
+          <optgroup label="Freelancing Marketplaces">
+            <option value="Truelancer">Truelancer</option>
+            <option value="Workana">Workana</option>
+            <option value="99designs">99designs</option>
+            <option value="DesignCrowd">DesignCrowd</option>
+            <option value="Toptal">Toptal</option>
+            <option value="Gun.io">Gun.io</option>
+            <option value="Arc">Arc.dev</option>
+            <option value="Lemon.io">Lemon.io</option>
+            <option value="Braintrust">Braintrust</option>
+            <option value="Mayple">Mayple</option>
+            <option value="MarketerHire">MarketerHire</option>
+            <option value="Legiit">Legiit</option>
+            <option value="SEOClerks">SEOClerks</option>
+            <option value="Codeable">Codeable</option>
+            <option value="We Work Remotely">We Work Remotely</option>
+          </optgroup>
+          <optgroup label="Design & Creative Platforms">
+            <option value="Behance">Behance</option>
+            <option value="Dribbble">Dribbble</option>
+            <option value="DesignHill">DesignHill</option>
+            <option value="Working Not Working">Working Not Working</option>
+            <option value="Creativepool">Creativepool</option>
+            <option value="Coroflot">Coroflot</option>
+          </optgroup>
+          <optgroup label="Remote Jobs & Direct Clients">
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Wellfound">Wellfound</option>
+            <option value="FlexJobs">FlexJobs</option>
+            <option value="Remote OK">Remote OK</option>
+            <option value="Remotive">Remotive</option>
+            <option value="Working Nomads">Working Nomads</option>
+            <option value="Dynamite Jobs">Dynamite Jobs</option>
+            <option value="Jooble">Jooble</option>
+            <option value="Indeed">Indeed</option>
+            <option value="Glassdoor">Glassdoor</option>
+            <option value="SimplyHired">SimplyHired</option>
+          </optgroup>
+          <optgroup label="Specialized Platforms">
+            <option value="WPHired">WPHired</option>
+            <option value="ProBlogger Jobs">ProBlogger Jobs</option>
+            <option value="WriterAccess">WriterAccess</option>
+            <option value="Voices">Voices</option>
+            <option value="Voice123">Voice123</option>
+            <option value="Malt">Malt</option>
+            <option value="Taskrabbit">Taskrabbit</option>
+          </optgroup>
+          <optgroup label="Regional & Local Portals">
+            <option value="Google My Business">Google My Business</option>
+            <option value="Rozee.pk">Rozee.pk (Pakistan)</option>
+            <option value="Mustakbil">Mustakbil (Pakistan)</option>
+            <option value="Bayt">Bayt (Middle East)</option>
+            <option value="Naukrigulf">Naukrigulf (Gulf/UAE)</option>
+            <option value="Dubizzle">Dubizzle (UAE)</option>
+            <option value="Bark">Bark.com</option>
+            <option value="Thumbtack">Thumbtack</option>
+          </optgroup>
+        </select>
+      </div>
+
+      {/* 2. Country / Territory */}
       <div className="space-y-2">
         <label className="text-[11px] font-extrabold text-slate-700 dark:text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
           <Globe2 className="w-3.5 h-3.5 text-slate-400" strokeWidth={1.75} />
@@ -94,11 +189,11 @@ export default function FreelancerFiltersSidebar({
         </label>
         <div className="space-y-1 text-xs">
           {[
-            { id: 'all', label: 'All Global Markets', count: '19' },
-            { id: 'UAE', label: '🇦🇪 United Arab Emirates (Dubai, Abu Dhabi)', count: '6' },
-            { id: 'Pakistan', label: '🇵🇰 Pakistan Local (LHR, KHI, ISB)', count: '5' },
-            { id: 'US', label: '🇺🇸 United States (SF, Austin, Miami)', count: '4' },
-            { id: 'UK', label: '🇬🇧 United Kingdom (London, Manchester)', count: '4' },
+            { id: 'all', label: 'All Global Markets' },
+            { id: 'UAE', label: '🇦🇪 United Arab Emirates (Dubai, Abu Dhabi)' },
+            { id: 'Pakistan', label: '🇵🇰 Pakistan Local (LHR, KHI, ISB)' },
+            { id: 'US', label: '🇺🇸 United States (SF, Austin, Miami)' },
+            { id: 'UK', label: '🇬🇧 United Kingdom (London, Manchester)' },
           ].map((item) => (
             <label
               key={item.id}
@@ -118,7 +213,6 @@ export default function FreelancerFiltersSidebar({
                 />
                 <span>{item.label}</span>
               </div>
-              <span className="text-[10px] text-slate-400 font-mono">({item.count})</span>
             </label>
           ))}
         </div>
@@ -175,8 +269,8 @@ export default function FreelancerFiltersSidebar({
         <div className="space-y-1 text-xs">
           {[
             { id: 'all', label: 'All Listings' },
-            { id: 'no', label: '🔥 Missing Website (Instant Pitch)', count: '10' },
-            { id: 'yes', label: '🌐 Has Website (Redesign & SOW)', count: '9' },
+            { id: 'no', label: '🔥 Missing Website (Instant Pitch)' },
+            { id: 'yes', label: '🌐 Has Website (Redesign & SOW)' },
           ].map((item) => (
             <label
               key={item.id}
@@ -196,9 +290,6 @@ export default function FreelancerFiltersSidebar({
                 />
                 <span>{item.label}</span>
               </div>
-              {item.count && (
-                <span className="text-[10px] text-slate-400 font-mono">({item.count})</span>
-              )}
             </label>
           ))}
         </div>

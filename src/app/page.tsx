@@ -346,6 +346,8 @@ export default function HomePage() {
               onSearchChange={setSearchQuery}
               selectedCountry={selectedCountry}
               onCountryChange={setSelectedCountry}
+              selectedPlatform={platformFilter}
+              onPlatformChange={setPlatformFilter}
               businessAgeFilter={businessAgeFilter}
               onBusinessAgeChange={setBusinessAgeFilter}
               hasWebsiteFilter={hasWebsiteFilter}
@@ -379,10 +381,15 @@ export default function HomePage() {
                   {[
                     { id: 'all', label: 'All Sources' },
                     { id: 'Upwork', label: '🟢 Upwork' },
-                    { id: 'Bark', label: '🔵 Bark.com' },
+                    { id: 'Fiverr', label: '🟢 Fiverr' },
+                    { id: 'Freelancer.com', label: '🟡 Freelancer' },
                     { id: 'Google My Business', label: '🔴 GMB Radar' },
                     { id: 'LinkedIn', label: '🔷 LinkedIn' },
-                    { id: 'Freelancer', label: '🟡 Freelancer' },
+                    { id: 'Bark', label: '🔵 Bark' },
+                    { id: 'Truelancer', label: '⚡ Truelancer' },
+                    { id: 'Wellfound', label: '🦄 Wellfound' },
+                    { id: 'Rozee.pk', label: '🇵🇰 Rozee.pk' },
+                    { id: 'Bayt', label: '🇦🇪 Bayt' },
                   ].map((item) => (
                     <button
                       key={item.id}
@@ -396,6 +403,58 @@ export default function HomePage() {
                       {item.label}
                     </button>
                   ))}
+
+                  {/* Dropdown for All 50+ Platforms */}
+                  <select
+                    value={platformFilter}
+                    onChange={(e) => setPlatformFilter(e.target.value)}
+                    className="bg-slate-100 dark:bg-[#1a2638] border border-slate-200 dark:border-[#2e415d] text-slate-700 dark:text-slate-200 rounded-md px-2 py-1 text-xs font-semibold focus:outline-none focus:border-[#007FED] ml-auto"
+                  >
+                    <option value="all">More Platforms (50+ Total)...</option>
+                    <option value="Contra">Contra</option>
+                    <option value="PeoplePerHour">PeoplePerHour</option>
+                    <option value="Guru">Guru</option>
+                    <option value="Workana">Workana</option>
+                    <option value="99designs">99designs</option>
+                    <option value="DesignCrowd">DesignCrowd</option>
+                    <option value="Toptal">Toptal</option>
+                    <option value="Gun.io">Gun.io</option>
+                    <option value="Arc">Arc.dev</option>
+                    <option value="Lemon.io">Lemon.io</option>
+                    <option value="Braintrust">Braintrust</option>
+                    <option value="Mayple">Mayple</option>
+                    <option value="MarketerHire">MarketerHire</option>
+                    <option value="Legiit">Legiit</option>
+                    <option value="SEOClerks">SEOClerks</option>
+                    <option value="Codeable">Codeable</option>
+                    <option value="We Work Remotely">We Work Remotely</option>
+                    <option value="Behance">Behance</option>
+                    <option value="Dribbble">Dribbble</option>
+                    <option value="DesignHill">DesignHill</option>
+                    <option value="Working Not Working">Working Not Working</option>
+                    <option value="Creativepool">Creativepool</option>
+                    <option value="Coroflot">Coroflot</option>
+                    <option value="FlexJobs">FlexJobs</option>
+                    <option value="Remote OK">Remote OK</option>
+                    <option value="Remotive">Remotive</option>
+                    <option value="Working Nomads">Working Nomads</option>
+                    <option value="Dynamite Jobs">Dynamite Jobs</option>
+                    <option value="Jooble">Jooble</option>
+                    <option value="Indeed">Indeed</option>
+                    <option value="Glassdoor">Glassdoor</option>
+                    <option value="SimplyHired">SimplyHired</option>
+                    <option value="WPHired">WPHired</option>
+                    <option value="ProBlogger Jobs">ProBlogger Jobs</option>
+                    <option value="WriterAccess">WriterAccess</option>
+                    <option value="Voices">Voices</option>
+                    <option value="Voice123">Voice123</option>
+                    <option value="Malt">Malt</option>
+                    <option value="Taskrabbit">Taskrabbit</option>
+                    <option value="Mustakbil">Mustakbil</option>
+                    <option value="Naukrigulf">Naukrigulf</option>
+                    <option value="Dubizzle">Dubizzle</option>
+                    <option value="Thumbtack">Thumbtack</option>
+                  </select>
                 </div>
 
                 {/* Row 2: Job Discipline Demanded */}
