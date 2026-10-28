@@ -87,6 +87,10 @@ export default function FreelancerJobCard({
         return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-300', dot: 'bg-blue-500' };
       case 'LinkedIn':
         return { bg: 'bg-sky-50 dark:bg-sky-950/60 border-sky-300 dark:border-sky-800 text-sky-700 dark:text-sky-300', dot: 'bg-sky-500' };
+      case 'Meta Ads':
+      case 'Facebook Ads':
+      case 'Instagram Ads':
+        return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-700 text-blue-700 dark:text-blue-300', dot: 'bg-blue-600' };
       case 'Google My Business':
         return { bg: 'bg-red-50 dark:bg-red-950/60 border-red-300 dark:border-red-800 text-red-700 dark:text-red-300', dot: 'bg-red-500' };
       case 'Rozee.pk':

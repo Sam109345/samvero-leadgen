@@ -12,6 +12,75 @@ export function getJobRequirementSpec(lead: Lead): JobRequirementSpec {
   const platform = lead.platform || 'Google My Business';
   const isGmb = lead.type === 'gmb' || platform === 'Google My Business';
 
+  // 0A. WordPress & WooCommerce Development
+  if (
+    category.includes('wordpress') || 
+    category.includes('woocommerce') || 
+    lead.title.toLowerCase().includes('wordpress') || 
+    lead.title.toLowerCase().includes('woocommerce') || 
+    lead.tags?.some(t => t.toLowerCase().includes('wordpress') || t.toLowerCase().includes('woocommerce') || t.toLowerCase().includes('gutenberg'))
+  ) {
+    return {
+      discipline: 'WordPress Website Development',
+      platformSource: platform,
+      jobId: `WP-${lead.id.toUpperCase()}`,
+      clientExperienceLevel: 'Expert Client',
+      urgency: 'Immediate Start (< 48 hrs)',
+      primaryGoal: 'Architect high-speed bespoke WordPress & WooCommerce online portal with custom Gutenberg blocks, payment gateway integration, and 95+ PageSpeed score.',
+      deliverablesDemanded: [
+        'Bespoke WordPress Theme / Full-Site Editing Gutenberg Block Architecture',
+        'WooCommerce Store Setup, Dynamic Multi-Currency & Local Checkout Gateways',
+        'Advanced Custom Fields (ACF Pro) Custom Post Types & Admin Dashboard',
+        'Core Web Vitals Optimization (Sub-1s LCP, 95+ Mobile Google PageSpeed)',
+        'Automated Database Backups, Security Hardening & SSL Setup'
+      ],
+      painPoints: [
+        'Existing site uses bloated visual builders that take 6+ seconds to load',
+        'High mobile cart abandonment due to clunky default checkout',
+        'Plugin conflicts causing fatal errors during peak traffic surges'
+      ],
+      techStackPreference: ['WordPress 6.7+', 'WooCommerce', 'PHP 8.3', 'ACF Pro', 'MySQL', 'WP Rocket', 'Tailwind CSS'],
+      matchScore: 99,
+      bidStatus: lead.pipelineStage === 'pending' ? 'pitched' : 'unpitched',
+    };
+  }
+
+  // 0B. Meta Ads (Facebook & Instagram Ads) & Paid Social Funnels
+  if (
+    platform.includes('Meta') || 
+    platform.includes('Facebook') || 
+    platform.includes('Instagram') || 
+    category.includes('meta') || 
+    lead.title.toLowerCase().includes('meta') || 
+    lead.title.toLowerCase().includes('facebook ads') || 
+    lead.title.toLowerCase().includes('roas') || 
+    lead.tags?.some(t => t.toLowerCase().includes('meta ads') || t.toLowerCase().includes('facebook ads') || t.toLowerCase().includes('roas') || t.toLowerCase().includes('capi'))
+  ) {
+    return {
+      discipline: 'Meta Ads & Paid Social',
+      platformSource: platform,
+      jobId: `META-${lead.id.toUpperCase()}`,
+      clientExperienceLevel: 'Intermediate',
+      urgency: 'Immediate Start (< 48 hrs)',
+      primaryGoal: 'Deploy scalable Meta Ads (Facebook & Instagram) acquisition campaign with Conversions API (CAPI), high-ROAS creative testing, and automated lead capture.',
+      deliverablesDemanded: [
+        'Meta Ads Manager Full Setup: Pixel, Conversions API (CAPI) & Server-Side Event Tracking',
+        'High-Converting Ad Creative Angles (Reels Video Hooks, UGC & Feed Carousels)',
+        'Audience Targeting Architecture (Lookalike 1-3%, High-Intent Interest & Warm Retargeting)',
+        'Automated WhatsApp Direct Lead Capture & Instant CRM Webhook Integration',
+        'Weekly Performance Dashboard (ROAS, CPA, CPL & Conversion Dropoff Metrics)'
+      ],
+      painPoints: [
+        'High Cost-Per-Lead (CPL) and low ROAS from unoptimized broad targeting',
+        'iOS 14.5+ tracking loss causing underreported sales and broken retargeting',
+        'Ad creative fatigue causing customer acquisition costs to spike'
+      ],
+      techStackPreference: ['Meta Ads Manager', 'Facebook Pixel & CAPI', 'Canva / Figma Creative Kit', 'Zapier Webhooks', 'Google Analytics 4'],
+      matchScore: 98,
+      bidStatus: lead.pipelineStage === 'pending' ? 'pitched' : 'unpitched',
+    };
+  }
+
   // 1. Mobile App Development
   if (category.includes('mobile') || lead.title.toLowerCase().includes('mobile') || lead.title.toLowerCase().includes('app') || lead.tags?.some(t => t.toLowerCase().includes('mobile') || t.toLowerCase().includes('ios') || t.toLowerCase().includes('flutter'))) {
     return {

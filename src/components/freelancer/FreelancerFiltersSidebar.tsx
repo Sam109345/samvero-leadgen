@@ -178,6 +178,11 @@ export default function FreelancerFiltersSidebar({
             <option value="Bark">Bark.com</option>
             <option value="Thumbtack">Thumbtack</option>
           </optgroup>
+          <optgroup label="Paid Social & Ad Networks">
+            <option value="Meta Ads">Meta Ads (Facebook & Instagram)</option>
+            <option value="Facebook Ads">Facebook Ads Manager</option>
+            <option value="Instagram Ads">Instagram Sponsored Ads</option>
+          </optgroup>
         </select>
       </div>
 
@@ -305,6 +310,8 @@ export default function FreelancerFiltersSidebar({
           {[
             { id: 'all', label: 'All Categories' },
             { id: 'web', label: '💻 Web Development (Next.js)' },
+            { id: 'wordpress', label: '🌐 WordPress & WooCommerce' },
+            { id: 'meta-ads', label: '📢 Meta Ads & Social Funnels' },
             { id: 'mobile', label: '📱 Mobile Apps (14-Screen UI)' },
             { id: 'graphic', label: '🎨 Brand Identity & 6 SVG Logos' },
             { id: 'software', label: '⚙️ Software SOW & Architecture' },

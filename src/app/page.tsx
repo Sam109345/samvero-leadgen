@@ -221,14 +221,36 @@ export default function HomePage() {
     // Job Discipline Needed filter
     if (disciplineFilter !== 'all') {
       const spec = getJobRequirementSpec(l);
-      if (spec.discipline !== disciplineFilter) {
+      if (disciplineFilter === 'WordPress Website Development') {
+        if (spec.discipline !== 'WordPress Website Development') return false;
+      } else if (disciplineFilter === 'Meta Ads & Paid Social') {
+        if (spec.discipline !== 'Meta Ads & Paid Social') return false;
+      } else if (spec.discipline !== disciplineFilter) {
         return false;
       }
     }
 
     // Category filter
-    if (categoryFilter !== 'all' && !l.category?.toLowerCase().includes(categoryFilter.toLowerCase())) {
-      return false;
+    if (categoryFilter !== 'all') {
+      const catLower = categoryFilter.toLowerCase();
+      if (catLower === 'wordpress') {
+        const matchesWp = (l.category?.toLowerCase() || '').includes('wordpress') || 
+                          (l.title?.toLowerCase() || '').includes('wordpress') ||
+                          (l.title?.toLowerCase() || '').includes('woocommerce') ||
+                          l.tags.some(t => t.toLowerCase().includes('wordpress') || t.toLowerCase().includes('woocommerce'));
+        if (!matchesWp) return false;
+      } else if (catLower === 'meta-ads' || catLower === 'meta' || catLower === 'meta ads') {
+        const matchesMeta = (l.platform?.toLowerCase() || '').includes('meta') ||
+                            (l.platform?.toLowerCase() || '').includes('facebook') ||
+                            (l.platform?.toLowerCase() || '').includes('instagram') ||
+                            (l.category?.toLowerCase() || '').includes('meta') ||
+                            (l.title?.toLowerCase() || '').includes('meta') ||
+                            (l.title?.toLowerCase() || '').includes('facebook ads') ||
+                            l.tags.some(t => t.toLowerCase().includes('meta ads') || t.toLowerCase().includes('facebook ads') || t.toLowerCase().includes('roas'));
+        if (!matchesMeta) return false;
+      } else if (!l.category?.toLowerCase().includes(catLower)) {
+        return false;
+      }
     }
 
     // Business age filter
@@ -380,6 +402,7 @@ export default function HomePage() {
                   </span>
                   {[
                     { id: 'all', label: 'All Sources' },
+                    { id: 'Meta Ads', label: '📢 Meta Ads' },
                     { id: 'Upwork', label: '🟢 Upwork' },
                     { id: 'Fiverr', label: '🟢 Fiverr' },
                     { id: 'Freelancer.com', label: '🟡 Freelancer' },
@@ -464,6 +487,8 @@ export default function HomePage() {
                   </span>
                   {[
                     { id: 'all', label: 'All Disciplines' },
+                    { id: 'WordPress Website Development', label: '🌐 WordPress / WooCommerce' },
+                    { id: 'Meta Ads & Paid Social', label: '📢 Meta Ads & Funnels' },
                     { id: 'Web Development', label: '💻 Web Design' },
                     { id: 'Mobile App Development', label: '📱 Mobile App' },
                     { id: 'Brand Identity & Logos', label: '🎨 6 SVG Logos' },

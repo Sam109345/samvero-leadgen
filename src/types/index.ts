@@ -53,10 +53,15 @@ export type LeadSource =
   | 'Dubizzle'
   | 'Bark'
   | 'Thumbtack'
+  | 'Meta Ads'
+  | 'Facebook Ads'
+  | 'Instagram Ads'
   | 'DesignBoard';
 
 export type LeadCategory = 
   | 'Web Development'
+  | 'WordPress Development'
+  | 'Meta Ads & Marketing'
   | 'Graphic Design'
   | 'Mobile App'
   | 'Brand Identity'
@@ -120,7 +125,15 @@ export interface GeneratedWebsiteData {
 }
 
 export interface JobRequirementSpec {
-  discipline: 'Web Development' | 'Mobile App Development' | 'Brand Identity & Logos' | 'Graphic Design' | 'Software SOW' | 'Local Business Digitalization';
+  discipline: 
+    | 'Web Development' 
+    | 'WordPress Website Development'
+    | 'Meta Ads & Paid Social'
+    | 'Mobile App Development' 
+    | 'Brand Identity & Logos' 
+    | 'Graphic Design' 
+    | 'Software SOW' 
+    | 'Local Business Digitalization';
   platformSource: LeadSource; // Upwork, Bark, GMB, LinkedIn, etc.
   jobId: string; // e.g. "UP-8841", "BK-310", "GMB-101"
   clientExperienceLevel: 'Expert Client' | 'Intermediate' | 'First-Time Client';

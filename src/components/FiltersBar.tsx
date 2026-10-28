@@ -133,6 +133,8 @@ export default function FiltersBar({
           >
             <option value="all">⚡ All Categories</option>
             <option value="Web Development">💻 Web Development (Next.js)</option>
+            <option value="WordPress Development">🌐 WordPress & WooCommerce</option>
+            <option value="Meta Ads">📢 Meta Ads & Social Advertising</option>
             <option value="Graphic Design">🎨 Brand Identity & 6 SVG Logos</option>
             <option value="Mobile App">📱 Mobile App (14 Screens)</option>
             <option value="Software Architecture">⚙️ Software SOW & Specs</option>
@@ -233,6 +235,11 @@ export default function FiltersBar({
               <option value="Dubizzle">Dubizzle (UAE)</option>
               <option value="Bark">Bark.com</option>
               <option value="Thumbtack">Thumbtack</option>
+            </optgroup>
+            <optgroup label="7. Paid Social & Ad Networks">
+              <option value="Meta Ads">Meta Ads (Facebook & Instagram)</option>
+              <option value="Facebook Ads">Facebook Ads Manager</option>
+              <option value="Instagram Ads">Instagram Sponsored Ads</option>
             </optgroup>
           </select>
         </div>
