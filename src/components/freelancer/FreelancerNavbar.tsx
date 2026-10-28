@@ -25,7 +25,8 @@ import {
   Globe2,
   Lock,
   Crown,
-  Shield
+  Shield,
+  RotateCcw
 } from 'lucide-react';
 import { LeadNotification, Lead } from '@/types';
 import SamveroBrandLogo from '@/components/SamveroBrandLogo';
@@ -51,6 +52,8 @@ interface FreelancerNavbarProps {
   setActiveView: (view: 'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox' | 'audit') => void;
   onSearch: (q: string) => void;
   searchQuery: string;
+  onRefreshLiveLeads?: () => void;
+  isRefreshingLive?: boolean;
 }
 
 export default function FreelancerNavbar({
@@ -73,6 +76,8 @@ export default function FreelancerNavbar({
   setActiveView,
   onSearch,
   searchQuery,
+  onRefreshLiveLeads,
+  isRefreshingLive = false,
 }: FreelancerNavbarProps) {
   const { role, userName, logout } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -223,6 +228,20 @@ export default function FreelancerNavbar({
         {/* Right: 10s Timer Pill, Sound, Notifications, Theme & Action Button */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           
+          {/* Live Web Fetch Button */}
+          {onRefreshLiveLeads && (
+            <button
+              onClick={onRefreshLiveLeads}
+              disabled={isRefreshingLive}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-xs transition active:scale-95 disabled:opacity-75 cursor-pointer"
+              title="Query real-time Google Places & Marketplace Live Feeds right now"
+            >
+              <RotateCcw className={`w-3.5 h-3.5 ${isRefreshingLive ? 'animate-spin' : ''}`} />
+              <span className="hidden sm:inline">{isRefreshingLive ? 'Fetching Live...' : 'Scan Live Leads'}</span>
+              <span className="w-2 h-2 rounded-full bg-white animate-ping inline-block" />
+            </button>
+          )}
+
           {/* 10-Second Live Stream Status Pill */}
           <div 
             onClick={onToggleStreaming}

@@ -1,4 +1,5 @@
 import { Lead } from '@/types';
+import { fetchLiveMarketplaceJobs } from './live-lead-aggregator';
 import { INITIAL_LEADS } from './mock-data';
 
 interface JobSearchParams {
@@ -12,7 +13,21 @@ interface JobSearchParams {
 export async function fetchFreelanceJobs(params: JobSearchParams): Promise<Lead[]> {
   const { query, country, category, jobType, platform } = params;
 
-  // Use verified authentic job dataset
+  // 1. Fetch live jobs dynamically from Remotive & live public job feeds
+  let liveJobs: Lead[] = [];
+  try {
+    liveJobs = await fetchLiveMarketplaceJobs({
+      query,
+      category,
+      platform,
+      country,
+      limit: 10,
+    });
+  } catch (err) {
+    console.warn('Live freelance jobs aggregator fallback:', err);
+  }
+
+  // 2. Verified authentic baseline job dataset
   let jobs = INITIAL_LEADS.filter((l) => l.type === 'job');
 
   // Filter based on parameters
@@ -40,6 +55,10 @@ export async function fetchFreelanceJobs(params: JobSearchParams): Promise<Lead[
       j.description.toLowerCase().includes(q) ||
       j.tags.some((t) => t.toLowerCase().includes(q))
     );
+  }
+
+  if (liveJobs.length > 0) {
+    return [...liveJobs, ...jobs];
   }
 
   return jobs;

@@ -185,6 +185,14 @@ export default function FreelancerJobCard({
                 NEW
               </span>
             )}
+
+            {/* Live Verified Online Data Indicator */}
+            {(lead.tags?.includes('🟢 Live Verified Data') || lead.id.startsWith('live-') || lead.postedAt?.includes('Live verified')) && (
+              <span className="inline-flex items-center gap-1 bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded shadow-2xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+                <span>LIVE ONLINE</span>
+              </span>
+            )}
           </div>
 
           {/* Business Info Row (Freelancer Client Meta Row) */}

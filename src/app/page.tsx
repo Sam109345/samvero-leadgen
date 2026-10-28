@@ -85,11 +85,18 @@ export default function HomePage() {
     setJobScopeModalOpen(true);
   };
 
+  const [isRefreshingLive, setIsRefreshingLive] = useState(false);
+
   // Fetch initial leads
-  const fetchInitialLeads = useCallback(async () => {
+  const fetchInitialLeads = useCallback(async (forceLive = false) => {
     try {
-      setLoading(true);
-      const res = await fetch('/api/leads');
+      if (forceLive) {
+        setIsRefreshingLive(true);
+      } else {
+        setLoading(true);
+      }
+      const url = forceLive ? '/api/leads?refresh=live' : '/api/leads';
+      const res = await fetch(url);
       const data = await res.json();
       if (data.success && Array.isArray(data.leads)) {
         const enriched: Lead[] = data.leads.map((l: Lead, i: number) => ({
@@ -111,6 +118,7 @@ export default function HomePage() {
       console.error('Error fetching leads:', e);
     } finally {
       setLoading(false);
+      setIsRefreshingLive(false);
     }
   }, []);
 
@@ -332,6 +340,8 @@ export default function HomePage() {
         setActiveView={setActiveView}
         onSearch={setSearchQuery}
         searchQuery={searchQuery}
+        onRefreshLiveLeads={() => fetchInitialLeads(true)}
+        isRefreshingLive={isRefreshingLive}
       />
 
       {/* 2. Freelancer Sub-Navigation Bar */}

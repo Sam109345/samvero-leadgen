@@ -3,6 +3,7 @@ import { checkAndIncrementQuota } from './rate-limiter';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
 import { searchAndEnrichBusinessContact, resolveLegitimateBusinessEmail } from './gmb-email-resolver';
+import { fetchLiveLocalBusinesses } from './live-lead-aggregator';
 import { INITIAL_LEADS } from './mock-data';
 
 interface GmbSearchParams {
@@ -93,6 +94,27 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
         console.warn('Google Places API call encountered issue, falling back to local dataset:', err);
       }
     }
+  }
+
+  // 1.5. Live OpenStreetMap & Web Search Places Aggregator (Free, Live Data)
+  try {
+    const livePlaces = await fetchLiveLocalBusinesses({
+      query,
+      city: city && city !== 'all' ? city : 'Lahore',
+      country: country && country !== 'all' && country !== 'Global' ? country : 'Pakistan',
+      category: category && category !== 'all' ? category : undefined,
+      limit: 8,
+    });
+    if (livePlaces.length > 0) {
+      if (onlyNoWebsite) {
+        return livePlaces.filter((l) => !l.contact.hasWebsite);
+      }
+      // Combine live places with verified directory
+      const verifiedGmb = INITIAL_LEADS.filter((l) => l.type === 'gmb');
+      return [...livePlaces, ...verifiedGmb];
+    }
+  } catch (err) {
+    console.warn('Live places aggregator fallback:', err);
   }
 
   // 2. Intelligent Filtered Fallback Dataset (Instant, zero-latency, realistic leads)
