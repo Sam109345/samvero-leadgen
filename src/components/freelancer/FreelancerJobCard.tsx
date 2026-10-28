@@ -32,6 +32,7 @@ import {
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface FreelancerJobCardProps {
   lead: Lead;
@@ -103,8 +104,8 @@ export default function FreelancerJobCard({
   // WhatsApp click handler
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!lead.contact.phone) return;
-    const cleanPhone = lead.contact.phone.replace(/[^0-9+]/g, '');
+    const cleanPhone = cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country);
+    if (!cleanPhone) return;
     const text = encodeURIComponent(
       `Hello ${lead.contact.contactPerson || lead.businessName}, I saw your business requirement for "${lead.title}". We have prepared an interactive digital proposal & mobile app preview for you: ${typeof window !== 'undefined' ? window.location.origin : ''}${previewUrl}`
     );

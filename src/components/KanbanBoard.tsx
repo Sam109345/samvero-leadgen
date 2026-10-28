@@ -18,6 +18,7 @@ import {
   Star
 } from 'lucide-react';
 import { Lead, PipelineStage } from '@/types';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface KanbanBoardProps {
   leads: Lead[];
@@ -108,7 +109,7 @@ export default function KanbanBoard({
             <div className="space-y-3 overflow-y-auto pr-1 flex-1">
               {colLeads.length > 0 ? (
                 colLeads.map((lead) => {
-                  const cleanPhone = lead.contact.phone?.replace(/[^0-9]/g, '');
+                  const cleanPhone = cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country);
                   const whatsappUrl = cleanPhone ? `https://wa.me/${cleanPhone}` : undefined;
 
                   return (

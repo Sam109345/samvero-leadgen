@@ -11,9 +11,11 @@ import {
   Sparkles, 
   Layers, 
   CheckCircle2,
-  Phone
+  Phone,
+  MessageCircle
 } from 'lucide-react';
 import { Lead } from '@/types';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface JobsExplorerProps {
   leads: Lead[];
@@ -167,6 +169,19 @@ export default function JobsExplorer({
                     >
                       <Phone className="w-3.5 h-3.5 text-emerald-600" />
                       <span>Call Client</span>
+                    </a>
+                  )}
+
+                  {cleanWhatsAppDigits(job.contact.whatsapp || job.contact.phone, job.country) && (
+                    <a
+                      href={`https://wa.me/${cleanWhatsAppDigits(job.contact.whatsapp || job.contact.phone, job.country)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition"
+                      title="Open WhatsApp chat"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>WhatsApp</span>
                     </a>
                   )}
 

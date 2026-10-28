@@ -18,6 +18,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { Lead } from '@/types';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface LeadCardProps {
   lead: Lead;
@@ -49,7 +50,7 @@ export default function LeadCard({
   const countryFlag = lead.country === 'Pakistan' ? '🇵🇰' : lead.country === 'US' ? '🇺🇸' : lead.country === 'UK' ? '🇬🇧' : '🌍';
 
   // WhatsApp link generator
-  const cleanPhone = lead.contact.phone?.replace(/[^0-9]/g, '');
+  const cleanPhone = cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country);
   const whatsappUrl = cleanPhone ? `https://wa.me/${cleanPhone}` : undefined;
 
   return (

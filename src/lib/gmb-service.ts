@@ -2,7 +2,7 @@ import { Lead } from '@/types';
 import { checkAndIncrementQuota } from './rate-limiter';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
-import { resolveLegitimateBusinessEmail } from './gmb-email-resolver';
+import { searchAndEnrichBusinessContact, resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { INITIAL_LEADS } from './mock-data';
 
 interface GmbSearchParams {
@@ -30,23 +30,24 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
         const data = await res.json();
 
         if (data.status === 'OK' && Array.isArray(data.results)) {
-          const liveLeads: Lead[] = data.results.slice(0, 10).map((place: any, index: number) => {
-            // Estimate founding year from user_ratings_total or random realistic delta
-            const estYears = Math.min(15, Math.max(0, Math.floor((place.user_ratings_total || 10) / 20)));
-            const foundedYear = new Date().getFullYear() - estYears;
-            const businessAge = calculateBusinessAge(foundedYear);
+          const liveLeads: Lead[] = await Promise.all(
+            data.results.slice(0, 10).map(async (place: any, index: number) => {
+              // Estimate founding year from user_ratings_total or random realistic delta
+              const estYears = Math.min(15, Math.max(0, Math.floor((place.user_ratings_total || 10) / 20)));
+              const foundedYear = new Date().getFullYear() - estYears;
+              const businessAge = calculateBusinessAge(foundedYear);
 
-            const hasWebsite = Boolean(place.website);
-            const leadCity = city || (place.formatted_address ? place.formatted_address.split(',')[1]?.trim() : 'Local');
+              const hasWebsite = Boolean(place.website);
+              const leadCity = city || (place.formatted_address ? place.formatted_address.split(',')[1]?.trim() : 'Local');
 
-            const resolvedContact = resolveLegitimateBusinessEmail({
-              businessName: place.name,
-              website: place.website,
-              country: (country as any) || 'Pakistan',
-              city: leadCity || 'Lahore',
-              category: (category as any) || 'Local Business',
-              phone: place.formatted_phone_number,
-            });
+              const resolvedContact = await searchAndEnrichBusinessContact({
+                businessName: place.name,
+                website: place.website,
+                country: (country as any) || 'Pakistan',
+                city: leadCity || 'Lahore',
+                category: (category as any) || 'Local Business',
+                phone: place.formatted_phone_number,
+              });
 
             const base: Lead = {
               id: `gmb-live-${place.place_id || index}`,
@@ -83,7 +84,8 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
               ...base,
               generatedWebsite: generateClientWebsite(base),
             };
-          });
+            })
+          );
 
           return liveLeads;
         }

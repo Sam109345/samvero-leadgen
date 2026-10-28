@@ -21,6 +21,7 @@ import {
 import { Lead } from '@/types';
 import { generateSamveroEmailTemplate } from '@/lib/email-template';
 import { resolveLegitimateBusinessEmail, extractCleanDomain, slugifyBusinessName } from '@/lib/gmb-email-resolver';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface EmailOutreachModalProps {
   lead: Lead | null;
@@ -175,14 +176,14 @@ export default function EmailOutreachModal({
 
   const defaultMailtoUrl = `mailto:${encodeURIComponent(toEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBodyWithLink)}`;
 
-  const rawPhone = lead ? (lead.contact.whatsapp || lead.contact.phone || '').replace(/[^0-9]/g, '') : '';
+  const rawPhone = lead ? cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country) : '';
   const whatsappPitchUrl = rawPhone ? `https://wa.me/${rawPhone}?text=${encodeURIComponent(
     `Hello ${recipientName || lead?.businessName},\n\nI hope this message finds you well. We reviewed ${lead?.businessName} in ${lead?.city} and designed a tailored interactive live digital proposal and prototype exclusively for your brand:\n\n${resolvedPreviewUrl}\n\nWould you be open to a quick 5-minute chat to discuss activating this?\n\nBest regards,\nSAMVERO Technology Team`
   )}` : undefined;
 
   const cleanDomain = lead?.contact?.website 
     ? extractCleanDomain(lead.contact.website)
-    : (lead ? `${slugifyBusinessName(lead.businessName)}${lead.country === 'Pakistan' ? '.pk' : lead.country === 'UAE' ? '.ae' : lead.country === 'UK' ? '.co.uk' : '.com'}` : '');
+    : (lead?.contact?.email ? lead.contact.email.split('@')[1] : '');
 
   const suggestedEmailPills = lead && cleanDomain ? Array.from(new Set([
     lead.contact.email,

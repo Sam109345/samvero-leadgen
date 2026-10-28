@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { INITIAL_LEADS } from '@/lib/mock-data';
 import { getLeadById } from '@/lib/lead-store';
+import { resolveLegitimateBusinessEmail } from '@/lib/gmb-email-resolver';
 import { generateDeliverablesPackage } from '@/lib/deliverables-generator';
 import { compileStandaloneHtml } from '@/lib/website-generator';
 import { 
@@ -69,7 +70,17 @@ export default function WebsitePreviewPage({ params }: Props) {
 
     const cleanName = id.replace(/^(site-|stream-lead-|custom-)/, '').replace(/-/g, ' ');
     const formattedName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
-    const domain = formattedName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const country = isUae ? 'UAE' : isUk ? 'UK' : isUs ? 'US' : 'Pakistan';
+    const city = isUae ? 'Dubai' : isUk ? 'London' : isUs ? 'Austin' : 'Lahore';
+    const basePhone = isUae ? '+971 4 344 8920' : isUk ? '+44 20 7493 8810' : isUs ? '+1 (512) 892-4410' : '+92 321 4455890';
+
+    const resolved = resolveLegitimateBusinessEmail({
+      businessName: formattedName,
+      country,
+      city,
+      category: 'Local Business',
+      phone: basePhone,
+    });
 
     return {
       id,
@@ -78,8 +89,8 @@ export default function WebsitePreviewPage({ params }: Props) {
       type: 'gmb',
       platform: 'Google My Business',
       category: 'Local Business',
-      country: isUae ? 'UAE' : isUk ? 'UK' : isUs ? 'US' : 'Pakistan',
-      city: isUae ? 'Dubai' : isUk ? 'London' : isUs ? 'Austin' : 'Lahore',
+      country,
+      city,
       address: isUae ? 'Jumeirah 1, Dubai, UAE' : isUk ? 'Mayfair, London, UK' : isUs ? 'Downtown, Austin, TX' : 'DHA Phase 5, Lahore, Pakistan',
       businessAge: {
         years: 2,
@@ -91,9 +102,9 @@ export default function WebsitePreviewPage({ params }: Props) {
       description: `Premier client showcase synthesized for ${formattedName}. Complete 9-section responsive digital presence with booking portal.`,
       postedAt: 'Today',
       contact: {
-        email: isUae ? `info@${domain || 'business'}.ae` : isUk ? `contact@${domain || 'business'}.co.uk` : isUs ? `info@${domain || 'business'}.com` : `info@${domain || 'business'}.pk`,
-        phone: isUae ? '+971 4 344 8920' : isUk ? '+44 20 7493 8810' : isUs ? '+1 (512) 892-4410' : '+92 321 4455890',
-        whatsapp: isUae ? '+971508920144' : isUk ? '+442074938810' : isUs ? '+15128924410' : '+923214455890',
+        email: resolved.email,
+        phone: resolved.phone,
+        whatsapp: resolved.whatsapp,
         hasWebsite: false,
         contactPerson: 'Managing Director & Founder',
       },

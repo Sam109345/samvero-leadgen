@@ -5,6 +5,8 @@ import { X, Plus, Sparkles, Building2, MapPin, Globe, Phone, Mail } from 'lucide
 import { Lead, PipelineStage } from '@/types';
 import { calculateBusinessAge } from '@/lib/gmb-age-calculator';
 import { generateClientWebsite } from '@/lib/website-generator';
+import { resolveLegitimateBusinessEmail } from '@/lib/gmb-email-resolver';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface CreateLeadModalProps {
   isOpen: boolean;
@@ -37,6 +39,19 @@ export default function CreateLeadModal({
     const age = calculateBusinessAge(foundedYear);
     const id = `custom-lead-${Date.now()}`;
 
+    const resolved = resolveLegitimateBusinessEmail({
+      businessName,
+      website: hasWebsite ? website : undefined,
+      country,
+      city,
+      category,
+      phone: phone || undefined,
+    });
+
+    const finalPhone = phone || resolved.phone;
+    const finalEmail = email || resolved.email;
+    const finalWhatsApp = cleanWhatsAppDigits(finalPhone, country);
+
     const baseLead: Lead = {
       id,
       title: `${businessName} Showcase & Client Lead`,
@@ -53,8 +68,9 @@ export default function CreateLeadModal({
       description: `Target prospect in ${city}. ${hasWebsite ? 'Existing website needs modernization.' : 'Has NO active website detected - high conversion target.'}`,
       postedAt: 'Just now',
       contact: {
-        phone: phone || '+92 321 0000000',
-        email: email || `contact@${businessName.toLowerCase().replace(/[^a-z0-9]/g, '') || 'biz'}.com`,
+        phone: finalPhone,
+        email: finalEmail,
+        whatsapp: finalWhatsApp,
         hasWebsite,
         website: hasWebsite ? website : undefined,
         contactPerson: 'Business Owner',

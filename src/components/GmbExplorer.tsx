@@ -18,6 +18,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { Lead } from '@/types';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface GmbExplorerProps {
   leads: Lead[];
@@ -231,7 +232,7 @@ export default function GmbExplorer({
                 )}
                 {lead.contact.whatsapp && (
                   <a
-                    href={`https://wa.me/${lead.contact.whatsapp.replace(/[^0-9]/g, '')}`}
+                    href={`https://wa.me/${cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-1 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded text-[11px] font-bold border border-emerald-200 dark:border-emerald-800/60 transition hover:bg-emerald-100"

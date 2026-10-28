@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface JobScopeAnalyzerModalProps {
   lead: Lead | null;
@@ -397,9 +398,9 @@ export default function JobScopeAnalyzerModal({
           {/* Left: Contact Icons */}
           <div className="flex items-center gap-2 text-xs text-slate-500">
             <span>Direct Reach:</span>
-            {lead.contact.phone && (
+            {cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country) && (
               <a
-                href={`https://wa.me/${lead.contact.phone.replace(/[^0-9+]/g, '')}`}
+                href={`https://wa.me/${cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country)}`}
                 target="_blank"
                 rel="noreferrer"
                 className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded"
