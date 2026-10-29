@@ -312,6 +312,7 @@ export default function FreelancerFiltersSidebar({
             { id: 'web', label: '💻 Web Development (Next.js)' },
             { id: 'wordpress', label: '🌐 WordPress & WooCommerce' },
             { id: 'meta-ads', label: '📢 Meta Ads & Social Funnels' },
+            { id: 'social', label: '📱 Social Media & Reels Creation' },
             { id: 'mobile', label: '📱 Mobile Apps (14-Screen UI)' },
             { id: 'graphic', label: '🎨 Brand Identity & 6 SVG Logos' },
             { id: 'software', label: '⚙️ Software SOW & Architecture' },

@@ -135,6 +135,7 @@ export default function FiltersBar({
             <option value="Web Development">💻 Web Development (Next.js)</option>
             <option value="WordPress Development">🌐 WordPress & WooCommerce</option>
             <option value="Meta Ads">📢 Meta Ads & Social Advertising</option>
+            <option value="Social Media Management">📱 Social Media & Reels Creation</option>
             <option value="Graphic Design">🎨 Brand Identity & 6 SVG Logos</option>
             <option value="Mobile App">📱 Mobile App (14 Screens)</option>
             <option value="Software Architecture">⚙️ Software SOW & Specs</option>

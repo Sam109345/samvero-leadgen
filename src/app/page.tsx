@@ -233,6 +233,8 @@ export default function HomePage() {
         if (spec.discipline !== 'WordPress Website Development') return false;
       } else if (disciplineFilter === 'Meta Ads & Paid Social') {
         if (spec.discipline !== 'Meta Ads & Paid Social') return false;
+      } else if (disciplineFilter === 'Social Media & Content Creation') {
+        if (spec.discipline !== 'Social Media & Content Creation') return false;
       } else if (spec.discipline !== disciplineFilter) {
         return false;
       }
@@ -256,6 +258,20 @@ export default function HomePage() {
                             (l.title?.toLowerCase() || '').includes('facebook ads') ||
                             l.tags.some(t => t.toLowerCase().includes('meta ads') || t.toLowerCase().includes('facebook ads') || t.toLowerCase().includes('roas'));
         if (!matchesMeta) return false;
+      } else if (catLower === 'social' || catLower.includes('social media') || catLower.includes('reels') || catLower.includes('thumbnail')) {
+        const matchesSocial = (l.category?.toLowerCase() || '').includes('social') || 
+                              (l.category?.toLowerCase() || '').includes('content') ||
+                              (l.title?.toLowerCase() || '').includes('social media') ||
+                              (l.title?.toLowerCase() || '').includes('reels') ||
+                              (l.title?.toLowerCase() || '').includes('thumbnail') ||
+                              (l.title?.toLowerCase() || '').includes('posting') ||
+                              l.tags.some(t => 
+                                t.toLowerCase().includes('social media') || 
+                                t.toLowerCase().includes('reels') || 
+                                t.toLowerCase().includes('thumbnail') ||
+                                t.toLowerCase().includes('youtube thumbnail')
+                              );
+        if (!matchesSocial) return false;
       } else if (!l.category?.toLowerCase().includes(catLower)) {
         return false;
       }
@@ -497,6 +513,7 @@ export default function HomePage() {
                   </span>
                   {[
                     { id: 'all', label: 'All Disciplines' },
+                    { id: 'Social Media & Content Creation', label: '📱 Social Media & Reels' },
                     { id: 'WordPress Website Development', label: '🌐 WordPress / WooCommerce' },
                     { id: 'Meta Ads & Paid Social', label: '📢 Meta Ads & Funnels' },
                     { id: 'Web Development', label: '💻 Web Design' },

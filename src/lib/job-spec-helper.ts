@@ -45,7 +45,50 @@ export function getJobRequirementSpec(lead: Lead): JobRequirementSpec {
     };
   }
 
-  // 0B. Meta Ads (Facebook & Instagram Ads) & Paid Social Funnels
+  // 0B. Social Media Management, Reels & Content Creation
+  if (
+    category.includes('social') || 
+    category.includes('content') || 
+    lead.title.toLowerCase().includes('social media') || 
+    lead.title.toLowerCase().includes('reels') || 
+    lead.title.toLowerCase().includes('thumbnail') || 
+    lead.title.toLowerCase().includes('content creation') || 
+    lead.title.toLowerCase().includes('posting') || 
+    lead.tags?.some(t => 
+      t.toLowerCase().includes('social media') || 
+      t.toLowerCase().includes('reels') || 
+      t.toLowerCase().includes('thumbnail') || 
+      t.toLowerCase().includes('content creation') || 
+      t.toLowerCase().includes('youtube thumbnail')
+    )
+  ) {
+    return {
+      discipline: 'Social Media & Content Creation',
+      platformSource: platform,
+      jobId: `SMM-${lead.id.toUpperCase()}`,
+      clientExperienceLevel: 'Intermediate',
+      urgency: 'Immediate Start (< 48 hrs)',
+      primaryGoal: 'Execute monthly recurring social media management, daily creative post publishing, viral Instagram Reels / TikTok creation, and high-CTR YouTube / social thumbnails.',
+      deliverablesDemanded: [
+        'Monthly Recurring Content Calendar (30 High-Engagement Posts + Copywriting + Hashtags)',
+        'Short-Form Video & Reels Creation (Hook ideation, 9:16 vertical editing, captions & audio sync)',
+        'High-CTR YouTube Thumbnail & Social Feed Post Creation (Figma / Photoshop custom graphics)',
+        'Multi-Platform Publishing Schedule (Instagram, Facebook, LinkedIn, TikTok & YouTube Shorts)',
+        'Monthly Performance & Analytics Audit (Reach, Profile Visits, Engagement Rate & Follower Growth)'
+      ],
+      painPoints: [
+        'Inconsistent posting schedule causing algorithm reach and follower growth to plummet',
+        'Low click-through rates (CTR) on YouTube videos due to generic non-custom thumbnails',
+        'No dedicated in-house team to produce daily short-form Reels and high-retention video hooks',
+        'Competitors publishing daily high-aesthetic content and capturing the target audience'
+      ],
+      techStackPreference: ['Figma', 'Adobe Photoshop', 'CapCut Pro', 'Premiere Pro', 'Canva Pro', 'Meta Business Suite', 'Buffer / Hootsuite'],
+      matchScore: 97,
+      bidStatus: lead.pipelineStage === 'pending' ? 'pitched' : 'unpitched',
+    };
+  }
+
+  // 0C. Meta Ads (Facebook & Instagram Ads) & Paid Social Funnels
   if (
     platform.includes('Meta') || 
     platform.includes('Facebook') || 

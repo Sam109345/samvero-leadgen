@@ -229,6 +229,31 @@ const incomingLeadTemplates = [
     reviewCount: 88,
     tags: ['Meta Ads', 'Facebook Ads', 'Instagram Ads', 'Conversions API', 'High ROAS'],
   },
+  {
+    title: 'Monthly Recurring Social Media Management, Reels & High-CTR YouTube Thumbnails',
+    businessName: 'Sapphire Retail Limited',
+    type: 'job' as const,
+    platform: 'Instagram Ads' as const,
+    category: 'Social Media Management' as const,
+    country: 'Pakistan' as const,
+    city: 'Lahore',
+    address: '1.5 KM Defence Road, Off Raiwind Road, Lahore, Pakistan',
+    foundedDate: '2014-12-01',
+    budget: 'PKR 180,000 / month',
+    jobType: 'Contract' as const,
+    description: 'Premier Pakistani lifestyle & fast-fashion retail powerhouse. Seeking an experienced creative strategist & agency partner for monthly recurring social media management, daily creative posting, vertical Reels/TikTok editing, and high-CTR YouTube thumbnails.',
+    contact: {
+      email: 'care@sapphireonline.pk',
+      phone: '+92 42 111 738 245',
+      whatsapp: '9242111738245',
+      hasWebsite: true,
+      website: 'https://pk.sapphireonline.pk',
+      contactPerson: 'Zainab Nabeel (Head of Digital Marketing)',
+    },
+    rating: 4.9,
+    reviewCount: 76,
+    tags: ['Social Media Management', 'Instagram Reels', 'Monthly Recurring', 'YouTube Thumbnails', 'Content Creation'],
+  },
 ];
 
 let streamCounter = 0;
