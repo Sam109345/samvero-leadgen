@@ -94,10 +94,14 @@ export async function fetchLiveMarketplaceJobs(options: LiveSearchOptions = {}):
         platform = 'Wellfound';
       }
 
-      const domainGuess = companyName.toLowerCase().replace(/[^a-z0-9]/g, '') + '.com';
-      const email = `hiring@${domainGuess}`;
-      const phone = country === 'US' ? '+1 (415) 890-4421' : country === 'UK' ? '+44 20 7946 0912' : '+92 300 1234567';
-      const whatsapp = cleanWhatsAppDigits(phone, country);
+      const resolved = resolveLegitimateBusinessEmail({
+        businessName: companyName,
+        website: job.url && !job.url.includes('remotive') ? job.url : undefined,
+        country,
+      });
+      const email = resolved.email;
+      const phone = resolved.phone;
+      const whatsapp = cleanWhatsAppDigits(resolved.whatsapp || phone, country);
 
       const base: Lead = {
         id: `live-job-${job.id || idx}`,
@@ -118,8 +122,8 @@ export async function fetchLiveMarketplaceJobs(options: LiveSearchOptions = {}):
           email,
           phone,
           whatsapp,
-          hasWebsite: true,
-          website: job.url || `https://${domainGuess}`,
+          hasWebsite: Boolean(job.url),
+          website: job.url,
           contactPerson: `${companyName} Hiring Desk`,
         },
         rating: 4.9,
@@ -173,7 +177,8 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
       const name = place.name || place.display_name.split(',')[0].trim();
       const fullAddress = place.display_name || `${city}, ${country}`;
       const hasWebsite = Boolean(place.extratags?.website);
-      const rawWebsite = place.extratags?.website || `https://${name.toLowerCase().replace(/[^a-z0-9]/g, '')}.com`;
+      const rawWebsite = place.extratags?.website;
+      const osmEmail = place.extratags?.email || place.extratags?.['contact:email'];
 
       const resolved = resolveLegitimateBusinessEmail({
         businessName: name,
@@ -183,6 +188,8 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         category,
         phone: place.extratags?.phone || place.extratags?.['contact:phone'],
       });
+
+      const finalEmail = osmEmail || resolved.email;
 
       const base: Lead = {
         id: `live-osm-${place.place_id || idx}`,
@@ -200,7 +207,7 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         description: `Verified operational business at ${fullAddress}. ${hasWebsite ? 'Current website requires Next.js redesign & mobile modernization.' : 'Has NO active website detected on local registry. High-value conversion opportunity.'}`,
         postedAt: 'Live verified (Just now)',
         contact: {
-          email: resolved.email,
+          email: finalEmail,
           phone: resolved.phone,
           whatsapp: cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country),
           website: hasWebsite ? rawWebsite : undefined,

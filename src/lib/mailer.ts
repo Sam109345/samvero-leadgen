@@ -136,6 +136,14 @@ export async function sendOutreachEmail(payload: EmailPayload): Promise<EmailSen
         html: htmlContent,
       });
 
+      if (info.rejected && info.rejected.length > 0 && (!info.accepted || info.accepted.length === 0)) {
+        return {
+          success: false,
+          provider: 'smtp',
+          error: `Recipient Mailbox Rejected (550 5.1.1): Your SMTP configuration is fully working and authenticated! The recipient address "${to}" was rejected by the mail server because it does not exist. Switch to a verified corporate address (e.g. info@, contact@) or click "🧪 Test My SMTP" to dispatch safely to your own inbox.`,
+        };
+      }
+
       return {
         success: true,
         messageId: info.messageId,
@@ -151,12 +159,26 @@ export async function sendOutreachEmail(payload: EmailPayload): Promise<EmailSen
         err?.message?.includes('Username and Password not accepted') ||
         err?.message?.includes('Application-specific password required');
 
+      const isNoSuchUser =
+        err?.message?.includes('550') ||
+        err?.message?.includes('5.1.1') ||
+        err?.message?.includes('NoSuchUser') ||
+        err?.message?.includes('does not exist') ||
+        err?.message?.includes('User unknown') ||
+        err?.message?.includes("couldn't be found") ||
+        err?.responseCode === 550;
+
+      let errorMessage = `SMTP Transport Error: ${err?.message || 'Failed to communicate with mail server'}`;
+      if (isBadAuth) {
+        errorMessage = 'Google Gmail Blocked: Google does not accept your regular Gmail account password for SMTP. Google strictly requires a 16-character Google App Password from https://myaccount.google.com/apppasswords. Alternatively, click "Send via Gmail (1-Click)" to dispatch directly from your browser with zero setup!';
+      } else if (isNoSuchUser) {
+        errorMessage = `Recipient Mailbox Not Found (550 5.1.1): Your SMTP configuration is fully working and authenticated! The recipient address "${to}" does not exist on the destination mail server. Switch to a verified corporate address (e.g. info@, contact@) or click "🧪 Test My SMTP" to dispatch safely to your own inbox.`;
+      }
+
       return {
         success: false,
         provider: 'smtp',
-        error: isBadAuth
-          ? 'Google Gmail Blocked: Google does not accept your regular Gmail account password for SMTP. Google strictly requires a 16-character Google App Password from https://myaccount.google.com/apppasswords. Alternatively, click "Send via Gmail (1-Click)" to dispatch directly from your browser with zero setup!'
-          : `SMTP Transport Error: ${err?.message || 'Failed to communicate with mail server'}`,
+        error: errorMessage,
       };
     }
   }

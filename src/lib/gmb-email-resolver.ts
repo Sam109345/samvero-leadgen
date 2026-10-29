@@ -18,96 +18,104 @@ interface BusinessInfo {
 }
 
 export interface ResolvedContact {
-  email: string;
+  email?: string;
   phone: string;
   whatsapp: string;
   domain: string;
   isDomainVerified: boolean;
-  emailType: 'scraped_website' | 'official_domain' | 'verified_business' | 'web_search_enriched';
+  emailType?: 'scraped_website' | 'official_domain' | 'verified_business' | 'web_search_enriched';
   sourceLabel: string;
 }
 
 // Curated verified corporate domains with active DNS MX records across primary markets
 const VERIFIED_DIRECTORY: Record<string, { domain: string; defaultEmailPrefix: string; phone: string }> = {
   // Pakistan
-  chughtai: { domain: 'chughtailab.com', defaultEmailPrefix: 'info', phone: '+92 321 4455890' },
-  alfatah: { domain: 'alfatah.pk', defaultEmailPrefix: 'sales', phone: '+92 300 8291044' },
-  habitt: { domain: 'habitt.com', defaultEmailPrefix: 'corporate', phone: '+92 333 5192837' },
-  daraz: { domain: 'daraz.pk', defaultEmailPrefix: 'engineering', phone: '+92 312 9081234' },
-  crescent: { domain: 'crescent.com.pk', defaultEmailPrefix: 'exports', phone: '+92 42 3575 8890' },
-  sapphire: { domain: 'sapphireonline.pk', defaultEmailPrefix: 'commercial', phone: '+92 41 890 2233' },
-  pakwheels: { domain: 'pakwheels.com', defaultEmailPrefix: 'support', phone: '+92 300 9988112' },
-  rozee: { domain: 'rozee.pk', defaultEmailPrefix: 'careers', phone: '+92 42 3890 1122' },
-  khaadi: { domain: 'khaadi.com', defaultEmailPrefix: 'marketing', phone: '+92 333 4109822' },
+  stile: { domain: 'stile.com.pk', defaultEmailPrefix: 'info', phone: '+92 21 111 000 375' },
+  shabbir: { domain: 'stile.com.pk', defaultEmailPrefix: 'info', phone: '+92 21 111 000 375' },
+  riaa: { domain: 'riaabarkergillette.com', defaultEmailPrefix: 'islamabad', phone: '+92 51 281 4050' },
+  barker: { domain: 'riaabarkergillette.com', defaultEmailPrefix: 'islamabad', phone: '+92 51 281 4050' },
+  chughtai: { domain: 'chughtailab.com', defaultEmailPrefix: 'info', phone: '+92 311 1456789' },
+  alfatah: { domain: 'alfatah.pk', defaultEmailPrefix: 'info', phone: '+92 42 111 253 282' },
+  habitt: { domain: 'habitt.com', defaultEmailPrefix: 'info', phone: '+92 21 111 422 488' },
+  daraz: { domain: 'daraz.pk', defaultEmailPrefix: 'customer.pk', phone: '+92 21 111 132 729' },
+  crescent: { domain: 'crescent.com.pk', defaultEmailPrefix: 'info', phone: '+92 41 878 0121' },
+  sapphire: { domain: 'sapphireonline.pk', defaultEmailPrefix: 'wecare', phone: '+92 42 111 738 245' },
+  pakwheels: { domain: 'pakwheels.com', defaultEmailPrefix: 'support', phone: '+92 42 111 943 357' },
+  rozee: { domain: 'rozee.pk', defaultEmailPrefix: 'support', phone: '+92 42 111 769 332' },
+  khaadi: { domain: 'khaadi.com', defaultEmailPrefix: 'customercare', phone: '+92 21 111 542 234' },
   systems: { domain: 'systems.ltd', defaultEmailPrefix: 'info', phone: '+92 42 111 797 836' },
   arbisoft: { domain: 'arbisoft.com', defaultEmailPrefix: 'contact', phone: '+92 42 3594 4850' },
+  gulahmed: { domain: 'gulahmedshop.com', defaultEmailPrefix: 'complaints', phone: '+92 21 111 485 485' },
 
   // UAE
-  mediclinic: { domain: 'mediclinic.ae', defaultEmailPrefix: 'consultations', phone: '+971 4 344 8920' },
-  dubaimarina: { domain: 'dubaimarinayachts.ae', defaultEmailPrefix: 'charters', phone: '+971 52 918 3340' },
+  mediclinic: { domain: 'mediclinic.ae', defaultEmailPrefix: 'info', phone: '+971 4 435 9999' },
+  xclusive: { domain: 'xclusiveyachts.com', defaultEmailPrefix: 'charters', phone: '+971 4 457 3185' },
+  dubaimarina: { domain: 'xclusiveyachts.com', defaultEmailPrefix: 'charters', phone: '+971 4 457 3185' },
   noon: { domain: 'noon.com', defaultEmailPrefix: 'partnerships', phone: '+971 4 362 7000' },
-  alfuttaim: { domain: 'al-futtaim.com', defaultEmailPrefix: 'ops', phone: '+971 50 789 2210' },
-  chalhoub: { domain: 'chalhoubgroup.com', defaultEmailPrefix: 'atelier', phone: '+971 6 568 9012' },
-  dubaiholding: { domain: 'dubaiholding.com', defaultEmailPrefix: 'projects', phone: '+971 2 681 4455' },
-  propertyfinder: { domain: 'propertyfinder.ae', defaultEmailPrefix: 'contracts', phone: '+971 4 362 8110' },
-  landmark: { domain: 'landmarkgroup.com', defaultEmailPrefix: 'tenders', phone: '+971 2 445 7712' },
-  emaar: { domain: 'emaar.com', defaultEmailPrefix: 'director', phone: '+971 4 288 9410' },
-  damac: { domain: 'damacproperties.com', defaultEmailPrefix: 'investments', phone: '+971 4 890 1100' },
-  emirates: { domain: 'emirates.com', defaultEmailPrefix: 'branding', phone: '+971 4 890 2211' },
-  alshaya: { domain: 'alshaya.com', defaultEmailPrefix: 'ops', phone: '+971 4 890 4455' },
-  bayut: { domain: 'bayut.com', defaultEmailPrefix: 'investments', phone: '+971 4 890 7788' },
-  dubizzle: { domain: 'dubizzle.com', defaultEmailPrefix: 'corporate', phone: '+971 4 890 3344' },
+  alfuttaim: { domain: 'al-futtaim.com', defaultEmailPrefix: 'contact', phone: '+971 4 208 5000' },
+  chalhoub: { domain: 'chalhoubgroup.com', defaultEmailPrefix: 'contact', phone: '+971 4 804 5000' },
+  dubaiholding: { domain: 'dubaiholding.com', defaultEmailPrefix: 'contact', phone: '+971 4 362 2000' },
+  propertyfinder: { domain: 'propertyfinder.ae', defaultEmailPrefix: 'info', phone: '+971 4 556 0300' },
+  landmark: { domain: 'landmarkgroup.com', defaultEmailPrefix: 'info', phone: '+971 4 517 4000' },
+  emaar: { domain: 'emaar.com', defaultEmailPrefix: 'enquiry', phone: '+971 4 367 3333' },
+  damac: { domain: 'damacproperties.com', defaultEmailPrefix: 'customerrelations', phone: '+971 4 373 1000' },
+  emirates: { domain: 'emirates.com', defaultEmailPrefix: 'media.relations', phone: '+971 600 555 555' },
+  alshaya: { domain: 'alshaya.com', defaultEmailPrefix: 'info', phone: '+971 4 409 6000' },
+  bayut: { domain: 'bayut.com', defaultEmailPrefix: 'support', phone: '+971 4 429 8888' },
+  dubizzle: { domain: 'dubizzle.com', defaultEmailPrefix: 'support', phone: '+971 4 429 8888' },
 
   // UK
-  smilepod: { domain: 'smilepod.co.uk', defaultEmailPrefix: 'consultations', phone: '+44 20 7946 0912' },
-  monzo: { domain: 'monzo.com', defaultEmailPrefix: 'partners', phone: '+44 20 7183 4529' },
-  cotswold: { domain: 'cotswoldinteriors.co.uk', defaultEmailPrefix: 'dev', phone: '+44 161 832 9901' },
-  savills: { domain: 'savills.com', defaultEmailPrefix: 'marketing', phone: '+44 131 496 0773' },
-  pixelcraft: { domain: 'pixelcraftstudios.co.uk', defaultEmailPrefix: 'orders', phone: '+44 20 7946 0882' },
-  foxtons: { domain: 'foxtons.co.uk', defaultEmailPrefix: 'marketing', phone: '+44 20 7235 4410' },
-  harrods: { domain: 'harrods.com', defaultEmailPrefix: 'creative', phone: '+44 20 7193 8814' },
-  barclays: { domain: 'barclays.co.uk', defaultEmailPrefix: 'brand', phone: '+44 20 7946 0773' },
-  monolith: { domain: 'monolitharchitecture.co.uk', defaultEmailPrefix: 'studio', phone: '+44 20 8901 4455' },
-  asos: { domain: 'asos.com', defaultEmailPrefix: 'growth', phone: '+44 161 890 3341' },
-  deliveroo: { domain: 'deliveroo.co.uk', defaultEmailPrefix: 'audit', phone: '+44 121 890 1199' },
-  revolut: { domain: 'revolut.com', defaultEmailPrefix: 'engineering', phone: '+44 117 890 2233' },
-  knightfrank: { domain: 'knightfrank.com', defaultEmailPrefix: 'it', phone: '+44 113 890 5566' },
-  selfridges: { domain: 'selfridges.com', defaultEmailPrefix: 'estates', phone: '+44 131 890 7711' },
-  cliffordchance: { domain: 'cliffordchance.com', defaultEmailPrefix: 'info', phone: '+44 20 8902 3344' },
-  boohoo: { domain: 'boohoo.com', defaultEmailPrefix: 'orders', phone: '+44 1782 890 122' },
-  bbc: { domain: 'bbc.co.uk', defaultEmailPrefix: 'audio', phone: '+44 20 8903 5511' },
-  cambridge: { domain: 'cambridge.org', defaultEmailPrefix: 'digital', phone: '+44 1223 760 120' },
+  smilepod: { domain: 'smilepod.co.uk', defaultEmailPrefix: 'info', phone: '+44 20 7836 6866' },
+  monzo: { domain: 'monzo.com', defaultEmailPrefix: 'help', phone: '+44 20 3872 0620' },
+  cotswold: { domain: 'cotswoldco.com', defaultEmailPrefix: 'care', phone: '+44 333 200 1725' },
+  savills: { domain: 'savills.com', defaultEmailPrefix: 'info', phone: '+44 20 7499 8644' },
+  pentagram: { domain: 'pentagram.com', defaultEmailPrefix: 'info', phone: '+44 20 7229 3477' },
+  foxtons: { domain: 'foxtons.co.uk', defaultEmailPrefix: 'enquiries', phone: '+44 20 7893 6000' },
+  harrods: { domain: 'harrods.com', defaultEmailPrefix: 'customer.service', phone: '+44 20 7730 1234' },
+  barclays: { domain: 'barclays.co.uk', defaultEmailPrefix: 'wealth', phone: '+44 20 7116 1000' },
+  foster: { domain: 'fosterandpartners.com', defaultEmailPrefix: 'mail', phone: '+44 20 7738 0455' },
+  asos: { domain: 'asos.com', defaultEmailPrefix: 'press', phone: '+44 20 7756 1000' },
+  deliveroo: { domain: 'deliveroo.co.uk', defaultEmailPrefix: 'support', phone: '+44 20 3699 9977' },
+  revolut: { domain: 'revolut.com', defaultEmailPrefix: 'feedback', phone: '+44 20 3322 8352' },
+  knightfrank: { domain: 'knightfrank.com', defaultEmailPrefix: 'enquiries', phone: '+44 20 7629 8171' },
+  selfridges: { domain: 'selfridges.com', defaultEmailPrefix: 'customerservices', phone: '+44 20 7160 6222' },
+  cliffordchance: { domain: 'cliffordchance.com', defaultEmailPrefix: 'info', phone: '+44 20 7006 1000' },
+  boohoo: { domain: 'boohooplc.com', defaultEmailPrefix: 'corporate', phone: '+44 161 236 5656' },
+  bbc: { domain: 'bbc.co.uk', defaultEmailPrefix: 'corporate.enquiries', phone: '+44 20 8743 8000' },
+  cambridge: { domain: 'cambridge.org', defaultEmailPrefix: 'information', phone: '+44 1223 358 331' },
+  bupa: { domain: 'bupa.co.uk', defaultEmailPrefix: 'customerrelations', phone: '+44 345 609 0111' },
 
   // US & Global
-  austin: { domain: 'austindentalcare.com', defaultEmailPrefix: 'dr.harris', phone: '+1 (512) 892-4410' },
-  stripe: { domain: 'stripe.com', defaultEmailPrefix: 'talent', phone: '+1 (415) 604-9831' },
-  hubspot: { domain: 'hubspot.com', defaultEmailPrefix: 'vance', phone: '+1 (305) 914-7720' },
-  centimark: { domain: 'centimark.com', defaultEmailPrefix: 'estimates', phone: '+1 (720) 419-6502' },
-  studiovespera: { domain: 'studiovespera.com', defaultEmailPrefix: 'projects', phone: '+1 (718) 834-9201' },
-  epic: { domain: 'epic.com', defaultEmailPrefix: 'founders', phone: '+1 (617) 492-3105' },
-  cloudflare: { domain: 'cloudflare.com', defaultEmailPrefix: 'infrastructure', phone: '+1 (415) 890-4421' },
-  fastly: { domain: 'fastly.com', defaultEmailPrefix: 'devops', phone: '+1 (512) 890-1120' },
-  digitalocean: { domain: 'digitalocean.com', defaultEmailPrefix: 'contracts', phone: '+1 (206) 890-3345' },
-  tesla: { domain: 'tesla.com', defaultEmailPrefix: 'solar', phone: '+1 (512) 890-5566' },
-  citadel: { domain: 'citadel.com', defaultEmailPrefix: 'quant', phone: '+1 (212) 890-4400' },
-  omniflow: { domain: 'omniflowlogistics.com', defaultEmailPrefix: 'engineering', phone: '+1 (512) 890-7714' },
-  illumina: { domain: 'illumina.com', defaultEmailPrefix: 'founders', phone: '+1 (415) 890-1290' },
-  synapse: { domain: 'synapsecoretech.com', defaultEmailPrefix: 'contracts', phone: '+1 (206) 890-6621' },
-  apexcapital: { domain: 'apexcapitallending.com', defaultEmailPrefix: 'marketing', phone: '+1 (312) 890-4411' },
-  semrush: { domain: 'semrush.com', defaultEmailPrefix: 'seo', phone: '+1 (305) 890-5544' },
-  webflow: { domain: 'webflow.com', defaultEmailPrefix: 'hiring', phone: '+1 (512) 890-3320' },
-  figma: { domain: 'figma.com', defaultEmailPrefix: 'director', phone: '+1 (212) 890-9988' },
-  postman: { domain: 'postman.com', defaultEmailPrefix: 'design', phone: '+1 (503) 890-1122' },
-  datadog: { domain: 'datadoghq.com', defaultEmailPrefix: 'careers', phone: '+1 (720) 890-3344' },
-  voxmedia: { domain: 'voxmedia.com', defaultEmailPrefix: 'publishing', phone: '+1 (415) 890-7788' },
-  theverge: { domain: 'theverge.com', defaultEmailPrefix: 'editors', phone: '+1 (415) 890-7788' },
-  insight: { domain: 'insightpartners.com', defaultEmailPrefix: 'partners', phone: '+1 (512) 890-8899' },
-  nature: { domain: 'nature.com', defaultEmailPrefix: 'editors', phone: '+1 (212) 890-3355' },
-  biogen: { domain: 'biogen.com', defaultEmailPrefix: 'investors', phone: '+1 (617) 890-6677' },
-  spotify: { domain: 'spotify.com', defaultEmailPrefix: 'production', phone: '+1 (310) 890-4499' },
-  maisonsainthonore: { domain: 'maisonsainthonore.fr', defaultEmailPrefix: 'concierge', phone: '+33 1 89 02 44 11' },
-  taskrabbit: { domain: 'taskrabbit.com', defaultEmailPrefix: 'dispatch', phone: '+1 (214) 890-5522' },
-  dribbble: { domain: 'dribbble.com', defaultEmailPrefix: 'brand', phone: '+1 (415) 890-9912' },
+  austin: { domain: 'austindentalcare.com', defaultEmailPrefix: 'info', phone: '+1 512 377 9780' },
+  interstate: { domain: 'interstateroof.com', defaultEmailPrefix: 'info', phone: '+1 303 763 9114' },
+  stripe: { domain: 'stripe.com', defaultEmailPrefix: 'media', phone: '+1 888 926 2289' },
+  hubspot: { domain: 'hubspot.com', defaultEmailPrefix: 'info', phone: '+1 888 482 7768' },
+  rwguild: { domain: 'rwguild.com', defaultEmailPrefix: 'info', phone: '+1 212 852 9097' },
+  epic: { domain: 'epic.com', defaultEmailPrefix: 'info', phone: '+1 608 271 9000' },
+  cloudflare: { domain: 'cloudflare.com', defaultEmailPrefix: 'info', phone: '+1 888 993 5273' },
+  fastly: { domain: 'fastly.com', defaultEmailPrefix: 'support', phone: '+1 844 432 7859' },
+  digitalocean: { domain: 'digitalocean.com', defaultEmailPrefix: 'contact', phone: '+1 646 397 8051' },
+  tesla: { domain: 'tesla.com', defaultEmailPrefix: 'energysupport', phone: '+1 888 518 3752' },
+  citadel: { domain: 'citadelsecurities.com', defaultEmailPrefix: 'media', phone: '+1 312 395 2100' },
+  flexport: { domain: 'flexport.com', defaultEmailPrefix: 'sales', phone: '+1 855 353 9872' },
+  illumina: { domain: 'illumina.com', defaultEmailPrefix: 'info', phone: '+1 858 202 4500' },
+  morningstar: { domain: 'morningstar.com', defaultEmailPrefix: 'support', phone: '+1 312 696 6000' },
+  semrush: { domain: 'semrush.com', defaultEmailPrefix: 'mail', phone: '+1 800 815 9959' },
+  webflow: { domain: 'webflow.com', defaultEmailPrefix: 'contact', phone: '+1 415 964 0555' },
+  figma: { domain: 'figma.com', defaultEmailPrefix: 'support', phone: '+1 800 344 6220' },
+  postman: { domain: 'postman.com', defaultEmailPrefix: 'help', phone: '+1 415 655 1090' },
+  datadog: { domain: 'datadoghq.com', defaultEmailPrefix: 'info', phone: '+1 866 328 2364' },
+  voxmedia: { domain: 'voxmedia.com', defaultEmailPrefix: 'contact', phone: '+1 212 284 7500' },
+  theverge: { domain: 'theverge.com', defaultEmailPrefix: 'contact', phone: '+1 212 284 7500' },
+  insight: { domain: 'insightpartners.com', defaultEmailPrefix: 'contact', phone: '+1 212 230 9200' },
+  nature: { domain: 'nature.com', defaultEmailPrefix: 'nature', phone: '+1 212 726 9200' },
+  biogen: { domain: 'biogen.com', defaultEmailPrefix: 'investor.relations', phone: '+1 617 679 2000' },
+  spotify: { domain: 'spotify.com', defaultEmailPrefix: 'support', phone: '+1 917 565 3894' },
+  loewe: { domain: 'loewe.com', defaultEmailPrefix: 'clientservice', phone: '+34 91 577 6056' },
+  cartier: { domain: 'cartier.com', defaultEmailPrefix: 'relationclientele', phone: '+33 1 42 18 43 83' },
+  taskrabbit: { domain: 'taskrabbit.com', defaultEmailPrefix: 'support', phone: '+1 844 340 8275' },
+  wpengine: { domain: 'wpengine.com', defaultEmailPrefix: 'sales', phone: '+1 512 273 3145' },
+  shopify: { domain: 'shopify.com', defaultEmailPrefix: 'support', phone: '+1 888 746 7439' },
 };
 
 /**
@@ -282,8 +290,19 @@ export async function queryWebSearchForBusiness(query: string): Promise<{ domain
  */
 export async function searchAndEnrichBusinessContact(info: BusinessInfo): Promise<ResolvedContact> {
   const { businessName, website, country = 'Pakistan', city = 'Lahore', category = '', phone } = info;
-  const cleanPhone = phone || (country === 'Pakistan' ? '+92 321 4455890' : country === 'UAE' ? '+971 4 344 8920' : country === 'UK' ? '+44 20 7946 0912' : '+1 (512) 892-4410');
-  const whatsappDigits = cleanWhatsAppDigits(cleanPhone, country);
+  
+  // Check directory first for verified record if business matches
+  const nameLower = (businessName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  let directoryMatch: { domain: string; defaultEmailPrefix: string; phone: string } | undefined;
+  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
+    if (nameLower.includes(key)) {
+      directoryMatch = record;
+      break;
+    }
+  }
+
+  const cleanPhone = phone || directoryMatch?.phone || '';
+  const whatsappDigits = cleanPhone ? cleanWhatsAppDigits(cleanPhone, country) : '';
 
   // 1. If explicit website is provided, attempt live website email scraping
   if (website) {
@@ -303,19 +322,16 @@ export async function searchAndEnrichBusinessContact(info: BusinessInfo): Promis
   }
 
   // 2. Search against curated active MX corporate directory
-  const nameLower = (businessName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
-    if (nameLower.includes(key)) {
-      return {
-        email: `${record.defaultEmailPrefix}@${record.domain}`,
-        phone: phone || record.phone,
-        whatsapp: cleanWhatsAppDigits(phone || record.phone, country),
-        domain: record.domain,
-        isDomainVerified: true,
-        emailType: 'web_search_enriched',
-        sourceLabel: `Web Search Enriched (${record.domain})`,
-      };
-    }
+  if (directoryMatch) {
+    return {
+      email: `${directoryMatch.defaultEmailPrefix}@${directoryMatch.domain}`,
+      phone: cleanPhone,
+      whatsapp: whatsappDigits,
+      domain: directoryMatch.domain,
+      isDomainVerified: true,
+      emailType: 'web_search_enriched',
+      sourceLabel: `Web Search Enriched (${directoryMatch.domain})`,
+    };
   }
 
   // 3. Automated live web search enrichment when no direct contact or domain is in directory
@@ -362,8 +378,19 @@ export async function searchAndEnrichBusinessContact(info: BusinessInfo): Promis
 export function resolveLegitimateBusinessEmail(info: BusinessInfo): ResolvedContact {
   const { businessName, website, country = 'Pakistan', city = 'Lahore', category = '', phone } = info;
   const domain = extractCleanDomain(website);
-  const cleanPhone = phone || (country === 'Pakistan' ? '+92 300 8291044' : country === 'UAE' ? '+971 50 789 2210' : country === 'UK' ? '+44 20 7946 0912' : '+1 (512) 892-4410');
-  const whatsappDigits = cleanWhatsAppDigits(cleanPhone, country);
+
+  // Check directory first for verified record if business matches
+  const nameLower = (businessName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  let directoryMatch: { domain: string; defaultEmailPrefix: string; phone: string } | undefined;
+  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
+    if (nameLower.includes(key)) {
+      directoryMatch = record;
+      break;
+    }
+  }
+
+  const cleanPhone = phone || directoryMatch?.phone || '';
+  const whatsappDigits = cleanPhone ? cleanWhatsAppDigits(cleanPhone, country) : '';
 
   // 1. If legitimate website exists, construct authentic domain-level company email
   if (domain) {
@@ -394,34 +421,26 @@ export function resolveLegitimateBusinessEmail(info: BusinessInfo): ResolvedCont
   }
 
   // 2. Check curated active MX corporate directory
-  const nameLower = (businessName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
-    if (nameLower.includes(key)) {
-      return {
-        email: `${record.defaultEmailPrefix}@${record.domain}`,
-        phone: cleanPhone,
-        whatsapp: whatsappDigits,
-        domain: record.domain,
-        isDomainVerified: true,
-        emailType: 'official_domain',
-        sourceLabel: `Official Corporate Registry (${record.domain})`,
-      };
-    }
+  if (directoryMatch) {
+    return {
+      email: `${directoryMatch.defaultEmailPrefix}@${directoryMatch.domain}`,
+      phone: cleanPhone,
+      whatsapp: whatsappDigits,
+      domain: directoryMatch.domain,
+      isDomainVerified: true,
+      emailType: 'official_domain',
+      sourceLabel: `Official Corporate Registry (${directoryMatch.domain})`,
+    };
   }
 
-  // 3. For local GMB listings without a website:
-  // Use legitimate Google Workspace business email (@gmail.com) with active Google MX records
-  const slug = slugifyBusinessName(businessName);
-  const citySlug = city.toLowerCase().replace(/[^a-z]/g, '').slice(0, 4);
-  const email = `${slug.slice(0, 14)}.${citySlug}@gmail.com`;
-
+  // 3. For local GMB listings without an official domain or website:
+  // If an email cannot be verified or found, leave email undefined and guide outreach through real verified phone / WhatsApp
   return {
-    email,
+    email: undefined,
     phone: cleanPhone,
     whatsapp: whatsappDigits,
-    domain: 'gmail.com',
-    isDomainVerified: true,
-    emailType: 'verified_business',
-    sourceLabel: `Verified Business Listing (Google Workspace)`,
+    domain: '',
+    isDomainVerified: false,
+    sourceLabel: 'Direct Phone / WhatsApp Outreach (No Public Email)',
   };
 }

@@ -72,14 +72,11 @@ export default function WebsitePreviewPage({ params }: Props) {
     const formattedName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
     const country = isUae ? 'UAE' : isUk ? 'UK' : isUs ? 'US' : 'Pakistan';
     const city = isUae ? 'Dubai' : isUk ? 'London' : isUs ? 'Austin' : 'Lahore';
-    const basePhone = isUae ? '+971 4 344 8920' : isUk ? '+44 20 7493 8810' : isUs ? '+1 (512) 892-4410' : '+92 321 4455890';
-
     const resolved = resolveLegitimateBusinessEmail({
       businessName: formattedName,
       country,
       city,
       category: 'Local Business',
-      phone: basePhone,
     });
 
     return {

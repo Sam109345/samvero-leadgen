@@ -242,10 +242,17 @@ export default function GmbExplorer({
                     <span>WhatsApp Ready</span>
                   </a>
                 )}
-                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/40 px-2 py-0.5 rounded ml-auto">
-                  <ShieldCheck className="w-3 h-3" />
-                  <span>Domain Verified</span>
-                </span>
+                {lead.contact.hasWebsite ? (
+                  <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50/80 dark:bg-emerald-950/40 px-2 py-0.5 rounded ml-auto">
+                    <ShieldCheck className="w-3 h-3" />
+                    <span>Domain Verified</span>
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-1 text-[10px] font-bold text-amber-600 dark:text-amber-400 bg-amber-50/80 dark:bg-amber-950/40 px-2 py-0.5 rounded ml-auto">
+                    <AlertCircle className="w-3 h-3" />
+                    <span>Missing Website (Hot Pitch)</span>
+                  </span>
+                )}
               </div>
 
               {/* Actions Footer */}

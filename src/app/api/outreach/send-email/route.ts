@@ -47,9 +47,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (!result.success) {
+      const isQuota = result.error?.includes('quota');
       return NextResponse.json(
         { success: false, error: result.error || 'Failed to dispatch email' },
-        { status: 429 }
+        { status: isQuota ? 429 : 400 }
       );
     }
 

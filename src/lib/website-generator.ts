@@ -22,7 +22,7 @@ export function generateClientWebsite(lead: Lead): GeneratedWebsiteData {
   });
 
   const phone = lead.contact?.phone || fallbackContact.phone;
-  const email = lead.contact?.email || fallbackContact.email;
+  const email = lead.contact?.email || fallbackContact.email || '';
   const address = lead.address || `${city}, ${country}`;
 
   const titleLower = lead.title?.toLowerCase() || '';

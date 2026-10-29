@@ -16,12 +16,99 @@ import {
   MessageCircle,
   ShieldCheck,
   Copy,
-  Check
+  Check,
+  Phone,
+  PhoneCall
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { generateSamveroEmailTemplate } from '@/lib/email-template';
 import { resolveLegitimateBusinessEmail, extractCleanDomain, slugifyBusinessName } from '@/lib/gmb-email-resolver';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
+
+export const TEST_SMTP_EMAIL = 'sameer.centric@gmail.com';
+
+export interface RecipientStatus {
+  type: 'test' | 'corporate' | 'webmail' | 'personal_warning' | 'neutral';
+  label: string;
+  badgeClass: string;
+  advisory?: string;
+  recommendation?: string;
+}
+
+export function getEmailStatus(email: string, targetDomain: string): RecipientStatus {
+  const clean = (email || '').trim().toLowerCase();
+  if (!clean) {
+    return {
+      type: 'neutral',
+      label: 'No Public Email Listed',
+      badgeClass: 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800',
+      advisory: 'This business has no public email listed on their official channels. Reaching out via verified WhatsApp or direct phone call provides the highest response rate.',
+    };
+  }
+
+  if (clean === TEST_SMTP_EMAIL.toLowerCase()) {
+    return {
+      type: 'test',
+      label: '🧪 Test Mode (Verified Safe)',
+      badgeClass: 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800',
+      advisory: 'Dispatches straight to your authenticated Gmail (sameer.centric@gmail.com) to verify SMTP delivery and styling with zero bounce risk.',
+    };
+  }
+
+  const parts = clean.split('@');
+  const prefix = parts[0] || '';
+  const domain = parts[1] || targetDomain;
+
+  const freeProviders = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com', 'aol.com', 'live.com'];
+  if (freeProviders.includes(domain)) {
+    return {
+      type: 'webmail',
+      label: '⚠️ Unverified Webmail',
+      badgeClass: 'bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border-amber-200 dark:border-amber-800',
+      advisory: 'Free webmail addresses from automated listings may bounce if the mailbox does not exist. Use WhatsApp or Phone outreach for guaranteed client contact.',
+    };
+  }
+
+  const corporatePrefixes = [
+    'info', 'contact', 'consultations', 'sales', 'support', 'careers',
+    'hello', 'team', 'office', 'admin', 'marketing', 'corporate',
+    'engineering', 'director', 'charters', 'creative', 'tenders', 'contracts', 'dev',
+    'talent', 'estimates', 'orders', 'partners', 'partnerships', 'founders', 'infrastructure',
+    'devops', 'solar', 'quant', 'projects', 'ops', 'atelier', 'brand', 'branding',
+    'exports', 'commercial', 'audit', 'growth', 'concierge', 'hiring', 'publishing',
+    'dispatch', 'investors', 'production', 'editors', 'digital', 'studio', 'it',
+    'estates', 'audio', 'reservations', 'events', 'ecom', 'admedia', 'agency',
+    'media', 'qa', 'performance', 'acquisition', 'leads', 'legal', 'press', 'inquiries',
+    'help', 'billing', 'accounts', 'tech', 'security', 'compliance'
+  ];
+
+  const isPersonalDoctor = prefix.startsWith('dr.') || prefix.startsWith('dr_') || prefix.startsWith('dr-');
+  const tokens = prefix.split(/[._-]/);
+  const isCorporate = !isPersonalDoctor && (
+    corporatePrefixes.includes(prefix) ||
+    corporatePrefixes.some(p => prefix.startsWith(`${p}.`) || prefix.startsWith(`${p}-`) || prefix.startsWith(`${p}_`)) ||
+    tokens.some(t => corporatePrefixes.includes(t))
+  );
+
+  if (isCorporate) {
+    return {
+      type: 'corporate',
+      label: '✓ Verified Corporate Inbox',
+      badgeClass: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
+      advisory: 'Standard corporate distribution inbox with active mail delivery and minimal bounce risk.',
+    };
+  }
+
+  // Personal prefix on a custom domain (e.g. dr.zeeshan, dr.harris, vance)
+  const fallbackDomain = domain || targetDomain || 'company.com';
+  return {
+    type: 'personal_warning',
+    label: '⚠️ Synthetic Personal Prefix (550 Risk)',
+    badgeClass: 'bg-rose-50 text-rose-700 dark:bg-rose-950/60 dark:text-rose-300 border-rose-200 dark:border-rose-800',
+    advisory: `Individual prefix "${prefix}@" may not exist in ${fallbackDomain}'s directory (triggers Google "550 5.1.1 NoSuchUser" bounce). Switching to info@${fallbackDomain} or contact@${fallbackDomain} is recommended.`,
+    recommendation: `info@${fallbackDomain}`,
+  };
+}
 
 interface EmailOutreachModalProps {
   lead: Lead | null;
@@ -67,7 +154,7 @@ export default function EmailOutreachModal({
         category: lead.category,
         phone: lead.contact.phone,
       });
-      const initialEmail = lead.contact.email || resolved.email;
+      const initialEmail = lead.contact.email || resolved.email || '';
       setToEmail(initialEmail);
       setRecipientName(lead.contact.contactPerson || `${lead.businessName} Owner`);
       applyTemplate('website', lead, previewUrl);
@@ -185,13 +272,17 @@ export default function EmailOutreachModal({
     ? extractCleanDomain(lead.contact.website)
     : (lead?.contact?.email ? lead.contact.email.split('@')[1] : '');
 
-  const suggestedEmailPills = lead && cleanDomain ? Array.from(new Set([
-    lead.contact.email,
+  const isFreeDomain = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'icloud.com'].includes(cleanDomain);
+
+  const suggestedEmailPills = lead && cleanDomain && !isFreeDomain ? Array.from(new Set([
+    lead.contact.email && !['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com'].includes(lead.contact.email.split('@')[1]) ? lead.contact.email : null,
     `info@${cleanDomain}`,
     `contact@${cleanDomain}`,
-    lead.category?.toLowerCase().includes('clinic') || lead.category?.toLowerCase().includes('dental') ? `consultations@${cleanDomain}` : null,
+    lead.category?.toLowerCase().includes('clinic') || lead.category?.toLowerCase().includes('dental') || lead.category?.toLowerCase().includes('aesthetic') || lead.category?.toLowerCase().includes('health') ? `consultations@${cleanDomain}` : null,
     lead.category?.toLowerCase().includes('marble') || lead.category?.toLowerCase().includes('roofing') ? `sales@${cleanDomain}` : null,
   ].filter(Boolean))) as string[] : [];
+
+  const recipientStatus = getEmailStatus(toEmail, cleanDomain);
 
   // Generate preview of the HTML email template
   const previewHtml = generateSamveroEmailTemplate({
@@ -265,6 +356,54 @@ export default function EmailOutreachModal({
         {viewMode === 'edit' ? (
           <form onSubmit={handleSend} className="p-6 space-y-4 overflow-y-auto flex-1">
             
+            {/* Graceful Guidance Banner when No Public Email Exists */}
+            {!toEmail && (
+              <div className="p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/40 dark:to-orange-950/40 border border-amber-200 dark:border-amber-900/60 shadow-sm space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg shrink-0 mt-0.5">
+                    <MessageCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                  </div>
+                  <div className="space-y-1 text-xs">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-bold text-amber-950 dark:text-amber-100 text-sm">
+                        No Public Email Listed &bull; Direct WhatsApp / Call Recommended
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-200/80 dark:bg-amber-900/80 text-amber-800 dark:text-amber-200 font-bold">
+                        High Response Rate
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-amber-800/90 dark:text-amber-300/90 leading-relaxed">
+                      <strong>{lead.businessName}</strong> does not publish a verified corporate email inbox. Local businesses have a <strong>10x higher response rate via direct WhatsApp messages and verified phone calls</strong>.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-amber-200/70 dark:border-amber-900/60">
+                  {whatsappPitchUrl && (
+                    <a
+                      href={whatsappPitchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-2 shadow-sm active:scale-95"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Pitch on WhatsApp Now</span>
+                      <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                    </a>
+                  )}
+                  {lead.contact.phone && (
+                    <a
+                      href={`tel:${lead.contact.phone.replace(/[^0-9+]/g, '')}`}
+                      className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-2 shadow-sm active:scale-95"
+                    >
+                      <Phone className="w-4 h-4 text-emerald-400" />
+                      <span>Call {lead.contact.phone}</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Strategy Pills */}
             <div>
               <label className="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
@@ -362,6 +501,90 @@ export default function EmailOutreachModal({
               </div>
             </div>
 
+            {/* When No Email: Direct Outreach Banner for WhatsApp & Phone Call */}
+            {!toEmail && (
+              <div className="p-4 rounded-xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-blue-500/10 border border-amber-300 dark:border-amber-700/80 shadow-xs space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 border border-amber-300 dark:border-amber-600 font-bold">
+                    <PhoneCall className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                        No Public Email Listed – Pitch Directly via WhatsApp or Phone
+                      </span>
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+                        Recommended Channel
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
+                      {lead.businessName} handles client inquiries directly via telephone and WhatsApp. Reaching out through direct call or WhatsApp delivers instantaneous responses compared to cold email.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2.5 pt-1">
+                  {whatsappPitchUrl && (
+                    <a
+                      href={whatsappPitchUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                      title="Direct WhatsApp Message with pre-filled pitch & showcase link"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Pitch via WhatsApp (Pre-Filled)</span>
+                      <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                    </a>
+                  )}
+
+                  {lead.contact.phone && (
+                    <a
+                      href={`tel:${lead.contact.phone}`}
+                      className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                      title={`Call ${lead.contact.phone}`}
+                    >
+                      <Phone className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Call {lead.contact.phone}</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* SMTP Test & Deliverability Quick-Action */}
+            <div className="p-3 rounded-xl bg-gradient-to-r from-indigo-50/90 via-sky-50/50 to-indigo-50/90 dark:from-[#151c2d] dark:via-[#111927] dark:to-[#151c2d] border border-indigo-200/90 dark:border-indigo-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+              <div className="flex items-start sm:items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-indigo-600 text-white flex items-center justify-center text-sm font-bold shadow-sm shrink-0">
+                  🧪
+                </div>
+                <div className="text-xs">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-bold text-indigo-950 dark:text-indigo-200">
+                      Verify Your SMTP Pipeline
+                    </span>
+                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-indigo-100 dark:bg-indigo-900/70 text-indigo-700 dark:text-indigo-300 font-semibold font-mono">
+                      {TEST_SMTP_EMAIL}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400 pt-0.5 leading-tight">
+                    Confirm your Gmail App Password & SMTP setup by dispatching a live test email to your own inbox without bounces.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setToEmail(TEST_SMTP_EMAIL);
+                  setRecipientName('Sameer (SMTP Verification Test)');
+                }}
+                className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm active:scale-95 shrink-0 self-stretch sm:self-auto"
+                title="Populate recipient with sameer.centric@gmail.com to test SMTP delivery without bounces"
+              >
+                <span>🧪 Test My SMTP ({TEST_SMTP_EMAIL})</span>
+              </button>
+            </div>
+
             {/* Email & Recipient */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               <div className="space-y-1">
@@ -369,40 +592,85 @@ export default function EmailOutreachModal({
                   <label className="font-bold text-slate-700 dark:text-slate-300 block">
                     Client Email Address:
                   </label>
-                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
-                    <ShieldCheck className="w-3 h-3" />
-                    Verified Domain Contact
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded border flex items-center gap-1 ${recipientStatus.badgeClass}`}>
+                    {recipientStatus.type === 'corporate' && <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />}
+                    {recipientStatus.type === 'personal_warning' && <AlertCircle className="w-3 h-3 text-rose-600 dark:text-rose-400" />}
+                    {recipientStatus.type === 'webmail' && <AlertCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />}
+                    {recipientStatus.type === 'neutral' && <MessageCircle className="w-3 h-3 text-amber-600 dark:text-amber-400" />}
+                    {recipientStatus.type === 'test' && <Sparkles className="w-3 h-3 text-indigo-600 dark:text-indigo-400" />}
+                    {recipientStatus.label}
                   </span>
                 </div>
                 <input
                   type="email"
-                  required
+                  required={Boolean(toEmail)}
                   value={toEmail}
                   onChange={(e) => setToEmail(e.target.value)}
-                  placeholder="client@business.com"
+                  placeholder={!toEmail ? "No public email – enter one if known, or pitch via WhatsApp/Phone above" : "client@business.com"}
                   className="w-full bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-lg p-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#007FED] font-mono font-bold"
                 />
 
-                {/* Suggested Domain Email Chips */}
-                {suggestedEmailPills.length > 0 && (
-                  <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    <span className="text-[10px] text-slate-400">Available:</span>
-                    {suggestedEmailPills.map((em) => (
-                      <button
-                        key={em}
-                        type="button"
-                        onClick={() => setToEmail(em)}
-                        className={`text-[10px] px-2 py-0.5 rounded font-mono border transition ${
-                          toEmail.toLowerCase() === em.toLowerCase()
-                            ? 'bg-[#007FED] text-white border-[#007FED]'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-[#007FED]'
-                        }`}
-                      >
-                        {em}
-                      </button>
-                    ))}
+                {/* Dynamic Recipient Advisory Banner */}
+                {recipientStatus.advisory && (
+                  <div className={`mt-1.5 p-2 rounded-lg text-[11px] leading-relaxed flex items-start gap-1.5 ${
+                    recipientStatus.type === 'personal_warning' 
+                      ? 'bg-rose-50 text-rose-800 border border-rose-200 dark:bg-rose-950/40 dark:text-rose-300 dark:border-rose-900/60'
+                      : recipientStatus.type === 'webmail' || recipientStatus.type === 'neutral'
+                      ? 'bg-amber-50 text-amber-800 border border-amber-200 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-900/60'
+                      : recipientStatus.type === 'test'
+                      ? 'bg-indigo-50 text-indigo-800 border border-indigo-200 dark:bg-indigo-950/40 dark:text-indigo-300 dark:border-indigo-900/60'
+                      : 'bg-emerald-50 text-emerald-800 border border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-900/60'
+                  }`}>
+                    <span className="shrink-0 mt-0.5">
+                      {recipientStatus.type === 'personal_warning' ? '⚠️' : recipientStatus.type === 'webmail' ? '💡' : recipientStatus.type === 'neutral' ? '📞' : recipientStatus.type === 'test' ? '🧪' : '✓'}
+                    </span>
+                    <div className="flex-1">
+                      <span>{recipientStatus.advisory}</span>
+                      {recipientStatus.recommendation && (
+                        <button
+                          type="button"
+                          onClick={() => setToEmail(recipientStatus.recommendation!)}
+                          className="ml-1.5 font-bold underline hover:opacity-80 transition inline-block text-rose-700 dark:text-rose-300"
+                        >
+                          Switch to {recipientStatus.recommendation} &rarr;
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
+
+                {/* Suggested Email Chips with Test Pill */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1.5">
+                  <span className="text-[10px] font-semibold text-slate-400">Quick Fill:</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setToEmail(TEST_SMTP_EMAIL);
+                      setRecipientName('Sameer (Owner Test)');
+                    }}
+                    className={`text-[10px] px-2 py-0.5 rounded font-mono border transition flex items-center gap-1 ${
+                      toEmail.toLowerCase() === TEST_SMTP_EMAIL.toLowerCase()
+                        ? 'bg-indigo-600 text-white border-indigo-600 font-bold shadow-sm'
+                        : 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-800 hover:border-indigo-400'
+                    }`}
+                  >
+                    <span>🧪 Fill My Email (Test)</span>
+                  </button>
+                  {suggestedEmailPills.map((em) => (
+                    <button
+                      key={em}
+                      type="button"
+                      onClick={() => setToEmail(em)}
+                      className={`text-[10px] px-2 py-0.5 rounded font-mono border transition ${
+                        toEmail.toLowerCase() === em.toLowerCase()
+                          ? 'bg-[#007FED] text-white border-[#007FED] font-bold shadow-sm'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-[#007FED]'
+                      }`}
+                    >
+                      {em}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div className="space-y-1">
@@ -552,28 +820,60 @@ export default function EmailOutreachModal({
                   Cancel
                 </button>
 
-                {/* 1-Click Direct Gmail Compose (100% Reliable, Zero Block) */}
-                <a
-                  href={gmailComposeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2 rounded-md bg-[#EA4335] hover:bg-[#d93025] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
-                  title="Opens directly in your browser Gmail with everything pre-filled. 100% real delivery!"
-                >
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>Send via Gmail (1-Click)</span>
-                  <ExternalLink className="w-3 h-3 opacity-80" />
-                </a>
+                {/* When No Email: Highlight WhatsApp Direct Outreach and Direct Phone Call */}
+                {!toEmail ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    {lead.contact.phone && (
+                      <a
+                        href={`tel:${lead.contact.phone}`}
+                        className="px-3.5 py-2 rounded-md bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                        title={`Direct phone call to ${lead.contact.phone}`}
+                      >
+                        <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+                        <span>Call ({lead.contact.phone})</span>
+                      </a>
+                    )}
 
-                {/* Background Server SMTP Send */}
-                <button
-                  type="submit"
-                  disabled={sending || !toEmail}
-                  className="freelancer-btn-primary text-xs py-2 px-4 flex items-center gap-1.5"
-                >
-                  {sending ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
-                  <span>{sending ? 'Dispatching...' : 'Send Server Proposal'}</span>
-                </button>
+                    {whatsappPitchUrl && (
+                      <a
+                        href={whatsappPitchUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-md bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                        title="Direct WhatsApp Message with prefilled pitch"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5" />
+                        <span>Pitch via WhatsApp (Recommended)</span>
+                        <ExternalLink className="w-3 h-3 opacity-80" />
+                      </a>
+                    )}
+                  </div>
+                ) : (
+                  <>
+                    {/* 1-Click Direct Gmail Compose (100% Reliable, Zero Block) */}
+                    <a
+                      href={gmailComposeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-4 py-2 rounded-md bg-[#EA4335] hover:bg-[#d93025] text-white text-xs font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95"
+                      title="Opens directly in your browser Gmail with everything pre-filled. 100% real delivery!"
+                    >
+                      <Mail className="w-3.5 h-3.5" />
+                      <span>Send via Gmail (1-Click)</span>
+                      <ExternalLink className="w-3 h-3 opacity-80" />
+                    </a>
+
+                    {/* Background Server SMTP Send */}
+                    <button
+                      type="submit"
+                      disabled={sending || !toEmail}
+                      className="freelancer-btn-primary text-xs py-2 px-4 flex items-center gap-1.5"
+                    >
+                      {sending ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Send className="w-3.5 h-3.5" />}
+                      <span>{sending ? 'Dispatching...' : 'Send Server Proposal'}</span>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
 

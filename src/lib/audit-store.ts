@@ -149,7 +149,7 @@ function ensureOutreachDataInitialized() {
       businessName: lead.businessName,
       category: lead.category,
       country: lead.country,
-      recipientEmail: lead.contact.email || `${lead.businessName.toLowerCase().replace(/[^a-z0-9]/g, '')}@business.com`,
+      recipientEmail: lead.contact.email || (lead.contact.phone ? `Phone / WhatsApp: ${lead.contact.phone}` : 'Direct Outreach'),
       channel,
       subject: `Custom Proposal & Live Interactive Showcase for ${lead.businessName}`,
       timestamp: index === 0 ? '12 mins ago' : index === 1 ? '45 mins ago' : `${index} hours ago`,
