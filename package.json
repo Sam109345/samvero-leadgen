@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:phone": "node tests/test-phone-sanitizer.js",
+    "test:upgrade": "node tests/test-production-upgrade.js",
+    "test:contacts": "node tests/audit-contacts.js",
+    "test:saas": "node tests/test-saas-complete.js",
+    "test:qa": "node tests/qa-verification.js",
+    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js"
   },
   "keywords": [],
   "author": "",

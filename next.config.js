@@ -3,8 +3,17 @@ const path = require('path');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  webpack: (config) => {
+  webpack: (config, { isServer }) => {
     config.resolve.alias['@'] = path.resolve(__dirname, 'src');
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        dns: false,
+        net: false,
+        tls: false,
+        fs: false,
+      };
+    }
     return config;
   },
   images: {

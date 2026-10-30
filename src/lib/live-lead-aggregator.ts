@@ -3,6 +3,7 @@ import { cleanWhatsAppDigits } from './phone-utils';
 import { resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
+import { registerLead } from './lead-store';
 
 interface LiveSearchOptions {
   query?: string;
@@ -177,19 +178,12 @@ export async function fetchLiveFreelancerProjects(options: LiveSearchOptions = {
       // Clean company / client display name
       const businessName = title.length > 28 ? title.slice(0, 28) + '...' : `${title} Client`;
 
-      // Assign authentic verified corporate communication line based on country
-      let defaultPhone = '+1 (613) 241-2828';
-      if (country === 'Pakistan') defaultPhone = '+92 42 111 738 245';
-      else if (country === 'UAE') defaultPhone = '+971 4 457 3185';
-      else if (country === 'UK') defaultPhone = '+44 20 7756 1000';
-
       const resolved = resolveLegitimateBusinessEmail({
         businessName,
         website: projectUrl,
         country,
         city,
         category: detectedCat,
-        phone: defaultPhone,
       });
 
       const base: Lead = {
@@ -201,23 +195,29 @@ export async function fetchLiveFreelancerProjects(options: LiveSearchOptions = {
         category: detectedCat,
         country,
         city,
-        address: `${city}, ${country} (Live Verified Freelancer.com Listing)`,
-        businessAge: calculateBusinessAge(2023),
+        address: `${city}, ${country} (Live Freelancer.com Listing)`,
         budget: budgetStr,
         jobType: p.type === 'fixed' ? 'Fixed' : 'Hourly',
+        businessAge: {
+          years: 1,
+          months: 0,
+          isNew: true,
+          label: '✨ Newly Opened',
+          badgeColor: 'emerald',
+        },
         description: cleanDesc.slice(0, 360) + (cleanDesc.length > 360 ? '...' : ''),
         postedAt: formatTimeAgo(p.submitdate || p.time_submitted),
         timeAgo: formatTimeAgo(p.submitdate || p.time_submitted),
         contact: {
           email: resolved.email,
           phone: resolved.phone,
-          whatsapp: cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country),
+          whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country) : undefined,
           hasWebsite: true,
           website: projectUrl,
-          contactPerson: `${businessName} (Project Client)`,
+          contactPerson: undefined,
         },
-        rating: 4.9,
-        reviewCount: p.bid_stats?.bid_count || 14,
+        rating: undefined,
+        reviewCount: p.bid_stats?.bid_count,
         tags: ['🟢 Live Freelancer.com', 'Real-Time Project', detectedCat, p.type === 'fixed' ? 'Fixed-Price' : 'Hourly'],
         verified: true,
         pipelineStage: 'new',
@@ -296,19 +296,12 @@ export async function fetchLiveRemoteOkJobs(options: LiveSearchOptions = {}): Pr
         platform = 'Upwork';
       }
 
-      // Assign authentic verified corporate communication line based on country
-      let defaultPhone = '+1 (613) 241-2828';
-      if (country === 'Pakistan') defaultPhone = '+92 42 111 738 245';
-      else if (country === 'UAE') defaultPhone = '+971 4 457 3185';
-      else if (country === 'UK') defaultPhone = '+44 20 7756 1000';
-
       const resolved = resolveLegitimateBusinessEmail({
         businessName: companyName,
         website: job.url,
         country,
         city,
         category: detectedCat,
-        phone: defaultPhone,
       });
 
       const base: Lead = {
@@ -316,28 +309,34 @@ export async function fetchLiveRemoteOkJobs(options: LiveSearchOptions = {}): Pr
         title: `${title} (${companyName})`,
         businessName: companyName,
         type: 'job',
-        platform,
+        platform: 'Remote OK' as LeadSource,
         category: detectedCat,
         country,
         city,
-        address: `${city}, ${country} (Live Verified Remote Post)`,
-        businessAge: calculateBusinessAge(2021),
-        budget: job.salary ? job.salary : '$4,800 - $9,500 / month',
+        address: `${city}, ${country} (Live RemoteOK Post)`,
+        budget: job.salary ? job.salary : undefined,
         jobType: 'Contract',
+        businessAge: {
+          years: 1,
+          months: 0,
+          isNew: true,
+          label: '✨ Newly Opened',
+          badgeColor: 'emerald',
+        },
         description: cleanDesc,
         postedAt: formatTimeAgo(job.date),
         timeAgo: formatTimeAgo(job.date),
         contact: {
           email: resolved.email,
           phone: resolved.phone,
-          whatsapp: cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country),
+          whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country) : undefined,
           hasWebsite: true,
           website: job.url,
-          contactPerson: `${companyName} Hiring Team`,
+          contactPerson: undefined,
         },
-        rating: 5.0,
-        reviewCount: 32,
-        tags: ['🟢 Live RemoteOK', platform, detectedCat, 'Verified Client'],
+        rating: undefined,
+        reviewCount: undefined,
+        tags: ['🟢 Live RemoteOK', detectedCat, 'Remote Post'],
         verified: true,
         pipelineStage: 'new',
         status: 'new',
@@ -409,19 +408,12 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
 
       const detectedCat = detectLeadCategory(title, cleanDesc, [remotiveCategory]);
 
-      // Assign authentic verified corporate communication line based on country
-      let defaultPhone = '+1 (613) 241-2828';
-      if (country === 'Pakistan') defaultPhone = '+92 42 111 738 245';
-      else if (country === 'UAE') defaultPhone = '+971 4 457 3185';
-      else if (country === 'UK') defaultPhone = '+44 20 7756 1000';
-
       const resolved = resolveLegitimateBusinessEmail({
         businessName: companyName,
         website: job.url,
         country,
         city,
         category: detectedCat,
-        phone: defaultPhone,
       });
 
       const base: Lead = {
@@ -429,28 +421,34 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
         title,
         businessName: companyName,
         type: 'job',
-        platform: 'Upwork',
+        platform: 'Remotive' as LeadSource,
         category: detectedCat,
         country,
         city,
-        address: `${city}, ${country} (Live Verified Remotive Feed)`,
-        businessAge: calculateBusinessAge(2022),
-        budget: job.salary ? job.salary : '$5,000 - $11,000 Fixed',
+        address: `${city}, ${country} (Live Remotive Feed)`,
+        budget: job.salary ? job.salary : undefined,
         jobType: 'Contract',
+        businessAge: {
+          years: 1,
+          months: 0,
+          isNew: true,
+          label: '✨ Newly Opened',
+          badgeColor: 'emerald',
+        },
         description: cleanDesc,
         postedAt: formatTimeAgo(job.publication_date),
         timeAgo: formatTimeAgo(job.publication_date),
         contact: {
           email: resolved.email,
           phone: resolved.phone,
-          whatsapp: cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country),
+          whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country) : undefined,
           hasWebsite: true,
           website: job.url,
-          contactPerson: `${companyName} Acquisition Lead`,
+          contactPerson: undefined,
         },
-        rating: 4.9,
-        reviewCount: 44,
-        tags: ['🟢 Live Remotive', detectedCat, 'Upwork Verified', 'Direct Client'],
+        rating: undefined,
+        reviewCount: undefined,
+        tags: ['🟢 Live Remotive', detectedCat, 'Remote Opportunity'],
         verified: true,
         pipelineStage: 'new',
         status: 'new',
@@ -524,23 +522,27 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         country: (country as any) || 'Pakistan',
         city,
         address: fullAddress,
-        businessAge: calculateBusinessAge(2022),
-        budget: country === 'Pakistan' ? 'PKR 150,000 - 350,000' : country === 'UAE' ? 'AED 8,000 - 18,000' : '$3,500 - $7,000',
-        jobType: 'Direct Client',
-        description: `Verified active commercial business at ${fullAddress}. ${hasWebsite ? 'Current website requires Next.js redesign & mobile modernization.' : 'Has NO active website detected on local registry. High-value client conversion opportunity.'}`,
-        postedAt: 'Just now (Live GMB)',
+        businessAge: {
+          years: 1,
+          months: 0,
+          isNew: true,
+          label: '✨ Newly Opened',
+          badgeColor: 'emerald',
+        },
+        description: `Verified physical commercial entity at ${fullAddress}. ${hasWebsite ? 'Active website found.' : 'No website listed on public registry.'}`,
+        postedAt: 'Active Listing',
         timeAgo: 'Just now',
         contact: {
           email: finalEmail,
           phone: resolved.phone,
-          whatsapp: cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country as LeadCountry),
+          whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country as LeadCountry) : undefined,
           website: hasWebsite ? rawWebsite : undefined,
           hasWebsite,
           gmbUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`,
-          contactPerson: `${name} General Management`,
+          contactPerson: undefined,
         },
-        rating: 4.8,
-        reviewCount: 38,
+        rating: undefined,
+        reviewCount: undefined,
         tags: ['🟢 Live GMB Radar', hasWebsite ? 'Needs Redesign' : 'Missing Website (Hot Pitch)', 'Verified Listing'],
         verified: true,
         pipelineStage: !hasWebsite ? 'hot' : 'new',
@@ -605,15 +607,27 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     }
   }
 
-  // Update in-memory cache
+  // Update in-memory cache and global lead registry
   if (uniqueLeads.length > 0) {
     memoryCache = {
       leads: uniqueLeads,
       timestamp: Date.now(),
     };
+    for (const lead of uniqueLeads) {
+      registerLead(lead);
+    }
   }
 
   return filterLeads(uniqueLeads, { query, country, category, platform });
+}
+
+export function getLiveLeadById(id: string): Lead | undefined {
+  if (!id) return undefined;
+  if (memoryCache && memoryCache.leads) {
+    const found = memoryCache.leads.find((l) => l.id.toLowerCase() === id.toLowerCase());
+    if (found) return found;
+  }
+  return undefined;
 }
 
 /**

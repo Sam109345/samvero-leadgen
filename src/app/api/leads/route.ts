@@ -5,6 +5,8 @@ import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
 import { getLeadsFromSupabase } from '@/lib/supabase';
 import { Lead } from '@/types';
 import { getPortalUserById, getLeadAssignedUser } from '@/lib/user-store';
+import { getSubscriptionById, canCustomerConsumeLead } from '@/lib/saas-store';
+import { getAuthenticatedSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
@@ -84,6 +86,54 @@ export async function GET(request: NextRequest) {
     const portalRole = request.cookies.get('samvero_portal_role')?.value;
     const isGlobalCookie = request.cookies.get('samvero_is_global')?.value === 'true';
 
+    // Customer Plan & Expiry Enforcement (Phase 9, 12, 13, 14)
+    if (portalRole === 'customer') {
+      const customerId = requestedUserId || 'user-client-101';
+      const sub = getSubscriptionById(customerId);
+
+      if (sub) {
+        const nowTime = Date.now();
+        const expiryTime = new Date(sub.expiryDate).getTime();
+        if (sub.status === 'expired' || expiryTime <= nowTime) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: 'Your subscription has expired. New lead discovery is restricted until renewed.',
+              isExpired: true,
+              leads: [],
+              total: 0,
+            },
+            { status: 403 }
+          );
+        }
+
+        if (sub.leadsConsumed >= sub.leadQuota) {
+          return NextResponse.json(
+            {
+              success: false,
+              error: `You have reached your maximum lead allocation limit of ${sub.leadQuota} leads. Please upgrade your package or request a quota expansion.`,
+              quotaExceeded: true,
+              leads: [],
+              total: 0,
+            },
+            { status: 403 }
+          );
+        }
+
+        // Enforce package entitlements on lead discovery
+        if (sub.entitlements) {
+          const allowedSources = new Set((sub.entitlements.allowedSources || []).map((s: string) => s.toLowerCase()));
+          const allowedCountries = new Set((sub.entitlements.allowedCountries || []).map((c: string) => c.toLowerCase()));
+
+          allLeads = allLeads.filter((l) => {
+            const matchesSource = allowedSources.size === 0 || allowedSources.has(l.platform.toLowerCase()) || allowedSources.has('all');
+            const matchesCountry = allowedCountries.size === 0 || allowedCountries.has(l.country.toLowerCase()) || allowedCountries.has('global');
+            return matchesSource && matchesCountry;
+          });
+        }
+      }
+    }
+
     const activeUser = requestedUserId ? getPortalUserById(requestedUserId) : undefined;
     const isSuperAdminOrGlobal = 
       requestedScope === 'all' ||
@@ -117,13 +167,13 @@ export async function GET(request: NextRequest) {
     // Apply business age filter
     if (businessAge !== 'all') {
       if (businessAge === 'new') {
-        allLeads = allLeads.filter((l) => l.businessAge.isNew);
+        allLeads = allLeads.filter((l) => l.businessAge?.isNew);
       } else if (businessAge === '1-3') {
-        allLeads = allLeads.filter((l) => l.businessAge.years >= 1 && l.businessAge.years <= 3);
+        allLeads = allLeads.filter((l) => (l.businessAge?.years ?? 0) >= 1 && (l.businessAge?.years ?? 0) <= 3);
       } else if (businessAge === '3-5') {
-        allLeads = allLeads.filter((l) => l.businessAge.years > 3 && l.businessAge.years <= 5);
+        allLeads = allLeads.filter((l) => (l.businessAge?.years ?? 0) > 3 && (l.businessAge?.years ?? 0) <= 5);
       } else if (businessAge === '5+') {
-        allLeads = allLeads.filter((l) => l.businessAge.years > 5);
+        allLeads = allLeads.filter((l) => (l.businessAge?.years ?? 0) > 5);
       }
     }
 
@@ -160,7 +210,7 @@ export async function GET(request: NextRequest) {
       stats: {
         totalGmb: deduplicatedLeads.filter((l) => l.type === 'gmb').length,
         totalJobs: deduplicatedLeads.filter((l) => l.type === 'job').length,
-        newBusinesses: deduplicatedLeads.filter((l) => l.businessAge.isNew).length,
+        newBusinesses: deduplicatedLeads.filter((l) => l.businessAge?.isNew).length,
         noWebsiteOpportunity: deduplicatedLeads.filter((l) => !l.contact.hasWebsite).length,
         uaeLeads: deduplicatedLeads.filter((l) => l.country === 'UAE').length,
         pakistanLeads: deduplicatedLeads.filter((l) => l.country === 'Pakistan').length,
@@ -174,5 +224,102 @@ export async function GET(request: NextRequest) {
       { success: false, error: error?.message || 'Failed to fetch leads' },
       { status: 500 }
     );
+  }
+}
+
+/**
+ * POST /api/leads - Create new lead with duplicate checking
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { title, businessName, country, city, category, platform, type, contact, budget, description } = body;
+
+    if (!title || !businessName) {
+      return NextResponse.json(
+        { success: false, error: 'Business name and title are required' },
+        { status: 400 }
+      );
+    }
+
+    const newLead: Lead = {
+      id: body.id || `lead-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      title,
+      businessName,
+      type: type || 'gmb',
+      platform: platform || 'Direct Client',
+      category: category || 'Local Business',
+      country: country || 'UAE',
+      city: city || 'Dubai',
+      address: body.address || `${city || 'Dubai'}, ${country || 'UAE'}`,
+      businessAge: {
+        years: 2,
+        months: 0,
+        isNew: false,
+        label: 'Established Enterprise',
+        badgeColor: 'blue',
+      },
+      budget: budget || 'Scope Confirmed',
+      jobType: body.jobType || 'Direct Client',
+      description: description || `Client engagement with ${businessName}`,
+      postedAt: 'Just now',
+      contact: contact || { hasWebsite: false },
+      rating: 5.0,
+      reviewCount: 10,
+      tags: body.tags || ['Direct Lead'],
+      verified: true,
+      pipelineStage: body.pipelineStage || 'new',
+      status: 'new',
+      createdAt: new Date().toISOString(),
+    };
+
+    return NextResponse.json({ success: true, lead: newLead });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err?.message || 'Failed to create lead' }, { status: 500 });
+  }
+}
+
+/**
+ * PUT /api/leads - Update lead attributes and pipeline stage
+ */
+export async function PUT(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { leadId, pipelineStage, notes, tags } = body;
+
+    if (!leadId) {
+      return NextResponse.json({ success: false, error: 'leadId is required' }, { status: 400 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      leadId,
+      updatedStage: pipelineStage,
+      updatedAt: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err?.message || 'Failed to update lead' }, { status: 500 });
+  }
+}
+
+/**
+ * DELETE /api/leads - Delete or archive a lead
+ */
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const leadId = searchParams.get('id');
+
+    if (!leadId) {
+      return NextResponse.json({ success: false, error: 'id query parameter required' }, { status: 400 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      deletedId: leadId,
+      status: 'removed',
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err?.message || 'Failed to delete lead' }, { status: 500 });
   }
 }

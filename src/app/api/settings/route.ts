@@ -20,6 +20,8 @@ export async function GET() {
         resendKeyMasked: process.env.RESEND_API_KEY ? `${process.env.RESEND_API_KEY.substring(0, 6)}...` : '',
         isGeminiConfigured: Boolean(geminiKey),
         geminiKeyMasked: geminiKey ? `${geminiKey.substring(0, 6)}...${geminiKey.slice(-4)}` : '',
+        isGooglePlacesConfigured: Boolean(process.env.GOOGLE_PLACES_API_KEY),
+        googlePlacesKeyMasked: process.env.GOOGLE_PLACES_API_KEY ? `${process.env.GOOGLE_PLACES_API_KEY.substring(0, 6)}...` : '',
         isSupabaseConfigured,
         supabaseUrlMasked: supabaseUrl ? `${supabaseUrl.substring(0, 18)}...` : '',
       },

@@ -6,7 +6,7 @@
  * "Phone number shared via url is invalid".
  */
 
-export function cleanWhatsAppDigits(phone?: string, country: string = ''): string {
+export function cleanWhatsAppDigits(phone?: string | null, country: string | null = ''): string {
   if (!phone) return '';
   let digits = phone.replace(/[^0-9]/g, '');
   if (!digits) return '';
@@ -16,7 +16,7 @@ export function cleanWhatsAppDigits(phone?: string, country: string = ''): strin
     digits = digits.slice(2);
   }
 
-  const c = country.toLowerCase();
+  const c = (country || '').toLowerCase();
 
   // If number starts with trunk zero (e.g. 03... in PK, 05... in UAE, 07... in UK)
   if (digits.startsWith('0')) {
@@ -55,7 +55,7 @@ export function cleanWhatsAppDigits(phone?: string, country: string = ''): strin
 /**
  * Construct valid WhatsApp URL (wa.me) with pure numeric digits and optional message
  */
-export function formatWhatsAppUrl(phone?: string, text: string = '', country: string = ''): string {
+export function formatWhatsAppUrl(phone?: string | null, text: string = '', country: string | null = ''): string {
   const digits = cleanWhatsAppDigits(phone, country);
   if (!digits) return '';
   const base = `https://wa.me/${digits}`;

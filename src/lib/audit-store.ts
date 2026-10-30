@@ -2,7 +2,7 @@ import { getAllRegisteredLeads, getLeadById } from './lead-store';
 
 export interface AuditSession {
   id: string;
-  role: 'admin' | 'employer';
+  role: 'admin' | 'employer' | 'customer';
   userName: string;
   ipAddress: string;
   deviceName: string;
@@ -187,7 +187,7 @@ export function getAuditSessions(): AuditSession[] {
 }
 
 export function recordLoginSession(sessionData: {
-  role: 'admin' | 'employer';
+  role: 'admin' | 'employer' | 'customer';
   userName: string;
   ipAddress: string;
   deviceName?: string;

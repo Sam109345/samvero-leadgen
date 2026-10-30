@@ -280,8 +280,13 @@ export function generateNextIncomingLead(): Lead {
   const template = incomingLeadTemplates[streamCounter % incomingLeadTemplates.length];
   streamCounter++;
 
-  const id = `stream-lead-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+  const id = `demo-stream-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
   const businessAge = calculateBusinessAge(template.foundedDate);
+
+  const cleanContact = {
+    ...template.contact,
+    contactPerson: undefined, // Enforce Real-Data Policy: Do not fabricate personal contact names
+  };
 
   const baseLead: Lead = {
     id,
@@ -297,12 +302,12 @@ export function generateNextIncomingLead(): Lead {
     budget: template.budget,
     jobType: template.jobType,
     description: template.description,
-    postedAt: 'Just now',
-    contact: template.contact,
+    postedAt: 'Just now (DEMO)',
+    contact: cleanContact,
     rating: template.rating,
     reviewCount: template.reviewCount,
-    tags: template.tags,
-    verified: true,
+    tags: [...template.tags, 'DEMO Template'],
+    verified: false,
     pipelineStage: template.contact.hasWebsite ? 'new' : 'hot',
     status: 'new',
     incomingAt: Date.now(),

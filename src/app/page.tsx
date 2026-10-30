@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import FreelancerNavbar from '@/components/freelancer/FreelancerNavbar';
 import FreelancerSubNav from '@/components/freelancer/FreelancerSubNav';
 import FreelancerFiltersSidebar from '@/components/freelancer/FreelancerFiltersSidebar';
@@ -19,18 +19,53 @@ import JobScopeAnalyzerModal from '@/components/JobScopeAnalyzerModal';
 import PortalAuthGate from '@/components/PortalAuthGate';
 import AdminAuditDashboard from '@/components/AdminAuditDashboard';
 
-import { Lead, LeadNotification, PipelineStage } from '@/types';
-import { generateNextIncomingLead } from '@/lib/lead-stream';
-import { playLuxuryChime } from '@/lib/sound-chime';
-import { getJobRequirementSpec } from '@/lib/job-spec-helper';
-import { Briefcase, Sparkles, Flame, Plus, Layers, Filter, RotateCcw } from 'lucide-react';
+// Enterprise Real-Data SaaS Views
+import UnifiedSidebar, { NavViewId } from '@/components/navigation/UnifiedSidebar';
+import ExecutiveDashboard from '@/components/dashboard/ExecutiveDashboard';
+import LeadManagementView from '@/components/leads/LeadManagementView';
+import DiscoverLeadsView from '@/components/discovery/DiscoverLeadsView';
+import LeadListsView from '@/components/lists/LeadListsView';
+import SavedLeadsView from '@/components/saved/SavedLeadsView';
+import BusinessResearchView from '@/components/research/BusinessResearchView';
+import GmbProfilesView from '@/components/research/GmbProfilesView';
+import EmailVerificationView from '@/components/verification/EmailVerificationView';
+import PhoneVerificationView from '@/components/verification/PhoneVerificationView';
+import VerificationQueueView from '@/components/queue/VerificationQueueView';
+import QualifiedLeadsView from '@/components/sales/QualifiedLeadsView';
+import OutreachCampaignsView from '@/components/sales/OutreachCampaignsView';
+import SalesPipelineView from '@/components/sales/SalesPipelineView';
+import ActivityLogsView from '@/components/analytics/ActivityLogsView';
+import ExportCenterView from '@/components/analytics/ExportCenterView';
+import IntegrationsView from '@/components/system/IntegrationsView';
+import ApiConfigurationView from '@/components/system/ApiConfigurationView';
+import ProfileView from '@/components/system/ProfileView';
 
-export default function HomePage() {
+import { Lead, LeadNotification, PipelineStage } from '@/types';
+import { playLuxuryChime } from '@/lib/sound-chime';
+import { Briefcase, Sparkles, Flame, Plus, Layers, Filter, RotateCcw, LayoutGrid, Table } from 'lucide-react';
+import LuxuryLandingPage from '@/components/public/LuxuryLandingPage';
+
+interface HomePageProps {
+  initialView?: NavViewId;
+}
+
+export default function HomePage({ initialView }: HomePageProps) {
+  if (!initialView) {
+    return <LuxuryLandingPage />;
+  }
+  return <InternalLeadGenWorkbench initialView={initialView} />;
+}
+
+function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Active view: 'feed' (Classic Freelancer.com 3-column) | 'kanban' | 'analytics' | 'inbox' | 'gmb' | 'audit'
-  const [activeView, setActiveView] = useState<'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox' | 'audit'>('feed');
+  // Active view across all 20 modules
+  const [activeView, setActiveView] = useState<NavViewId>(initialView);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  // Feed display style (when on all-leads): 'table' | 'cards'
+  const [feedStyle, setFeedStyle] = useState<'table' | 'cards'>('table');
 
   // Filters state
   const [selectedPipelineFilter, setSelectedPipelineFilter] = useState('all');
@@ -57,9 +92,9 @@ export default function HomePage() {
     }
   }, [theme]);
 
-  // 10-Second Timer Engine & Real-Time Ingestion
+  // Live Timer & Ingestion Telemetry
   const [secondsLeft, setSecondsLeft] = useState(10);
-  const [isStreaming, setIsStreaming] = useState(true);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [latestLead, setLatestLead] = useState<Lead | null>(null);
   const [notifications, setNotifications] = useState<LeadNotification[]>([]);
@@ -76,7 +111,7 @@ export default function HomePage() {
   const [settingsModalOpen, setSettingsModalOpen] = useState(false);
   const [createLeadModalOpen, setCreateLeadModalOpen] = useState(false);
 
-  // Job Scope & Brief Analyzer Modal State (Requested by user)
+  // Job Scope & Brief Analyzer Modal State
   const [selectedLeadForJobScope, setSelectedLeadForJobScope] = useState<Lead | null>(null);
   const [jobScopeModalOpen, setJobScopeModalOpen] = useState(false);
 
@@ -87,7 +122,7 @@ export default function HomePage() {
 
   const [isRefreshingLive, setIsRefreshingLive] = useState(false);
 
-  // Fetch initial leads
+  // Fetch initial leads from real database endpoint
   const fetchInitialLeads = useCallback(async (forceLive = false) => {
     try {
       if (forceLive) {
@@ -99,15 +134,10 @@ export default function HomePage() {
       const res = await fetch(url);
       const data = await res.json();
       if (data.success && Array.isArray(data.leads)) {
-        const enriched: Lead[] = data.leads.map((l: Lead, i: number) => ({
+        // REAL-DATA RULE: Preserve true pipelineStage without fake modulo assignment
+        const enriched: Lead[] = data.leads.map((l: Lead) => ({
           ...l,
-          pipelineStage: !l.contact.hasWebsite
-            ? 'hot'
-            : i % 4 === 0
-            ? 'pending'
-            : i % 5 === 0
-            ? 'won'
-            : 'new',
+          pipelineStage: l.pipelineStage || (!l.contact?.hasWebsite ? 'hot' : 'new'),
         }));
         setLeads(enriched);
         if (enriched.length > 0) {
@@ -126,50 +156,40 @@ export default function HomePage() {
     fetchInitialLeads();
   }, [fetchInitialLeads]);
 
-  // 10-Second Live Timer Engine
+  // Live Timer: Polling live lead buffer without hallucinating fake businesses
   useEffect(() => {
     if (!isStreaming) return;
 
     const interval = setInterval(() => {
       setSecondsLeft((prev) => {
         if (prev <= 1) {
-          const newLead = generateNextIncomingLead();
-
-          setLeads((currentLeads) => [newLead, ...currentLeads]);
-          setLatestLead(newLead);
-
-          const newNotif: LeadNotification = {
-            id: `notif-${Date.now()}`,
-            title: newLead.title,
-            businessName: newLead.businessName,
-            location: `${newLead.city}, ${newLead.country}`,
-            timestamp: new Date().toLocaleTimeString(),
-            timeAgo: 'Just now',
-            leadId: newLead.id,
-            type: 'new_lead',
-            read: false,
-          };
-
-          setNotifications((prevNotifs) => [newNotif, ...prevNotifs.slice(0, 19)]);
-          setUnreadCount((c) => c + 1);
-
-          if (soundEnabled) {
-            playLuxuryChime();
-          }
-
-          return 10;
+          // Check for genuine incoming updates
+          fetchInitialLeads(true);
+          return 30;
         }
         return prev - 1;
       });
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isStreaming, soundEnabled]);
+  }, [isStreaming, fetchInitialLeads]);
 
-  // Handle stage change on Kanban board
+  // Handle stage change
   const handleMoveStage = (leadId: string, nextStage: PipelineStage) => {
     setLeads((currentLeads) =>
       currentLeads.map((l) => (l.id === leadId ? { ...l, pipelineStage: nextStage } : l))
+    );
+  };
+
+  // Handle lead deletion
+  const handleDeleteLead = (leadId: string) => {
+    setLeads((prev) => prev.filter((l) => l.id !== leadId));
+  };
+
+  // Handle lead archiving
+  const handleArchiveLead = (leadId: string) => {
+    setLeads((prev) =>
+      prev.map((l) => (l.id === leadId ? { ...l, isArchived: true, pipelineStage: 'archived' } : l))
     );
   };
 
@@ -182,7 +202,7 @@ export default function HomePage() {
     } catch (e) {}
   };
 
-  // Sync leads cache to localStorage whenever leads update
+  // Sync leads cache to localStorage
   useEffect(() => {
     if (leads.length > 0) {
       try {
@@ -203,547 +223,445 @@ export default function HomePage() {
     setEmailModalOpen(true);
   };
 
-  // Filter leads
-  const filteredLeads = leads.filter((l) => {
-    // Country filter
-    if (selectedCountry !== 'all' && l.country.toLowerCase() !== selectedCountry.toLowerCase()) {
-      return false;
-    }
+  // Filter leads for classic feed
+  const filteredLeads = useMemo(() => {
+    return leads.filter((l) => {
+      if (l.isArchived) return false;
 
-    // Pipeline Sub-filter
-    if (selectedPipelineFilter === 'new_gmb' && !l.businessAge?.isNew) {
-      return false;
-    }
-    if (selectedPipelineFilter === 'no_website' && l.contact.hasWebsite) {
-      return false;
-    }
-    if (selectedPipelineFilter === 'pitched' && l.pipelineStage !== 'pending') {
-      return false;
-    }
-
-    // Platform Origin filter
-    if (platformFilter !== 'all' && l.platform !== platformFilter) {
-      return false;
-    }
-
-    // Job Discipline Needed filter
-    if (disciplineFilter !== 'all') {
-      const spec = getJobRequirementSpec(l);
-      if (disciplineFilter === 'WordPress Website Development') {
-        if (spec.discipline !== 'WordPress Website Development') return false;
-      } else if (disciplineFilter === 'Meta Ads & Paid Social') {
-        if (spec.discipline !== 'Meta Ads & Paid Social') return false;
-      } else if (disciplineFilter === 'Social Media & Content Creation') {
-        if (spec.discipline !== 'Social Media & Content Creation') return false;
-      } else if (spec.discipline !== disciplineFilter) {
+      // Country filter
+      if (selectedCountry !== 'all' && l.country.toLowerCase() !== selectedCountry.toLowerCase()) {
         return false;
       }
-    }
 
-    // Category filter
-    if (categoryFilter !== 'all') {
-      const catLower = categoryFilter.toLowerCase();
-      if (catLower === 'wordpress') {
-        const matchesWp = (l.category?.toLowerCase() || '').includes('wordpress') || 
-                          (l.title?.toLowerCase() || '').includes('wordpress') ||
-                          (l.title?.toLowerCase() || '').includes('woocommerce') ||
-                          l.tags.some(t => t.toLowerCase().includes('wordpress') || t.toLowerCase().includes('woocommerce'));
-        if (!matchesWp) return false;
-      } else if (catLower === 'meta-ads' || catLower === 'meta' || catLower === 'meta ads') {
-        const matchesMeta = (l.platform?.toLowerCase() || '').includes('meta') ||
-                            (l.platform?.toLowerCase() || '').includes('facebook') ||
-                            (l.platform?.toLowerCase() || '').includes('instagram') ||
-                            (l.category?.toLowerCase() || '').includes('meta') ||
-                            (l.title?.toLowerCase() || '').includes('meta') ||
-                            (l.title?.toLowerCase() || '').includes('facebook ads') ||
-                            l.tags.some(t => t.toLowerCase().includes('meta ads') || t.toLowerCase().includes('facebook ads') || t.toLowerCase().includes('roas'));
-        if (!matchesMeta) return false;
-      } else if (catLower === 'social' || catLower.includes('social media') || catLower.includes('reels') || catLower.includes('thumbnail')) {
-        const matchesSocial = (l.category?.toLowerCase() || '').includes('social') || 
-                              (l.category?.toLowerCase() || '').includes('content') ||
-                              (l.title?.toLowerCase() || '').includes('social media') ||
-                              (l.title?.toLowerCase() || '').includes('reels') ||
-                              (l.title?.toLowerCase() || '').includes('thumbnail') ||
-                              (l.title?.toLowerCase() || '').includes('posting') ||
-                              l.tags.some(t => 
-                                t.toLowerCase().includes('social media') || 
-                                t.toLowerCase().includes('reels') || 
-                                t.toLowerCase().includes('thumbnail') ||
-                                t.toLowerCase().includes('youtube thumbnail')
-                              );
-        if (!matchesSocial) return false;
-      } else if (!l.category?.toLowerCase().includes(catLower)) {
+      // Pipeline Sub-filter
+      if (selectedPipelineFilter === 'new_gmb' && !l.businessAge?.isNew) {
         return false;
       }
-    }
+      if (selectedPipelineFilter === 'no_website' && l.contact?.hasWebsite) {
+        return false;
+      }
+      if (selectedPipelineFilter === 'pitched' && l.pipelineStage !== 'pending' && l.pipelineStage !== 'contacted') {
+        return false;
+      }
 
-    // Business age filter
-    if (businessAgeFilter === 'new' && !l.businessAge?.isNew) return false;
-    if (businessAgeFilter === 'rising' && (l.businessAge?.years || 0) > 3) return false;
-    if (businessAgeFilter === 'established' && l.businessAge?.isNew) return false;
+      // Category filter
+      if (categoryFilter !== 'all' && !l.category.toLowerCase().includes(categoryFilter.toLowerCase())) {
+        return false;
+      }
 
-    // Has website filter
-    if (hasWebsiteFilter === 'no' && l.contact.hasWebsite) return false;
-    if (hasWebsiteFilter === 'yes' && !l.contact.hasWebsite) return false;
+      // Platform filter
+      if (platformFilter !== 'all' && !l.platform.toLowerCase().includes(platformFilter.toLowerCase())) {
+        return false;
+      }
 
-    // Search query
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      return (
-        l.businessName.toLowerCase().includes(q) ||
-        l.title.toLowerCase().includes(q) ||
-        l.city.toLowerCase().includes(q) ||
-        l.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
+      // Business age filter
+      if (businessAgeFilter !== 'all') {
+        const years = l.businessAge?.years ?? 0;
+        if (businessAgeFilter === 'new' && !l.businessAge?.isNew) return false;
+        if (businessAgeFilter === '1-3' && (years < 1 || years > 3)) return false;
+        if (businessAgeFilter === '3-5' && (years <= 3 || years > 5)) return false;
+        if (businessAgeFilter === '5+' && years <= 5) return false;
+      }
 
-    return true;
-  });
+      // Has website filter
+      if (hasWebsiteFilter === 'no-site' && l.contact?.hasWebsite) return false;
+      if (hasWebsiteFilter === 'has-site' && !l.contact?.hasWebsite) return false;
 
-  // Sort leads
-  const sortedLeads = [...filteredLeads].sort((a, b) => {
-    if (sortBy === 'budget_desc') {
-      const numA = parseInt(a.budget?.replace(/[^0-9]/g, '') || '0', 10);
-      const numB = parseInt(b.budget?.replace(/[^0-9]/g, '') || '0', 10);
-      return numB - numA;
-    }
-    if (sortBy === 'budget_asc') {
-      const numA = parseInt(a.budget?.replace(/[^0-9]/g, '') || '0', 10);
-      const numB = parseInt(b.budget?.replace(/[^0-9]/g, '') || '0', 10);
-      return numA - numB;
-    }
-    if (sortBy === 'age_asc') {
-      return a.businessAge?.isNew ? -1 : 1;
-    }
-    return 0; // Default newest first
-  });
+      // Search query
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        return (
+          l.title.toLowerCase().includes(q) ||
+          l.businessName.toLowerCase().includes(q) ||
+          l.description.toLowerCase().includes(q) ||
+          l.city.toLowerCase().includes(q) ||
+          l.country.toLowerCase().includes(q) ||
+          l.tags.some((t) => t.toLowerCase().includes(q))
+        );
+      }
 
-  // Analytics counts
+      return true;
+    });
+  }, [leads, selectedCountry, selectedPipelineFilter, categoryFilter, platformFilter, businessAgeFilter, hasWebsiteFilter, searchQuery]);
+
+  // Derived counts
   const totalLeads = leads.length;
   const newBusinesses = leads.filter((l) => l.businessAge?.isNew).length;
-  const noWebsiteCount = leads.filter((l) => !l.contact.hasWebsite).length;
-  const uaeCount = leads.filter((l) => l.country === 'UAE').length;
-  const pakistanCount = leads.filter((l) => l.country === 'Pakistan').length;
-  const usCount = leads.filter((l) => l.country === 'US').length;
-  const ukCount = leads.filter((l) => l.country === 'UK').length;
-  const pitchedCount = leads.filter((l) => l.pipelineStage === 'pending').length;
+  const noWebsiteCount = leads.filter((l) => !l.contact?.hasWebsite).length;
+  const pitchedCount = leads.filter((l) => l.pipelineStage === 'contacted' || l.pipelineStage === 'pending').length;
+  const qualifiedCount = leads.filter((l) => (l.scoreBreakdown?.leadQualityScore || 75) >= 75).length;
+
+  // View navigation router
+  const handleSelectView = (view: NavViewId) => {
+    setActiveView(view);
+    // Smooth URL path sync without reload
+    const pathMap: Record<NavViewId, string> = {
+      dashboard: '/dashboard',
+      'all-leads': '/leads',
+      discover: '/discover',
+      lists: '/lists',
+      saved: '/saved',
+      research: '/research',
+      gmb: '/gmb',
+      'verify-email': '/verify-email',
+      'verify-phone': '/verify-phone',
+      queue: '/queue',
+      qualified: '/qualified',
+      campaigns: '/campaigns',
+      responses: '/responses',
+      pipeline: '/pipeline',
+      analytics: '/analytics',
+      'activity-logs': '/activity-logs',
+      export: '/export',
+      integrations: '/integrations',
+      'api-config': '/api-config',
+      settings: '/settings',
+      profile: '/profile',
+      feed: '/leads',
+      kanban: '/pipeline',
+      inbox: '/responses',
+      audit: '/activity-logs',
+    };
+    if (typeof window !== 'undefined' && pathMap[view]) {
+      window.history.pushState(null, '', pathMap[view]);
+    }
+  };
 
   return (
     <PortalAuthGate>
-      <div className="min-h-screen bg-[#F0F2F5] dark:bg-[#0b111a] text-slate-800 dark:text-slate-100 flex flex-col font-sans antialiased transition-colors duration-200">
-      
-      {/* 1. Classic Freelancer.com Navbar (Dark Navy / Slate) */}
-      <FreelancerNavbar
-        notifications={notifications}
-        unreadCount={unreadCount}
-        onClearNotifications={() => {
-          setNotifications([]);
-          setUnreadCount(0);
-        }}
-        secondsLeft={secondsLeft}
-        isStreaming={isStreaming}
-        onToggleStreaming={() => setIsStreaming(!isStreaming)}
-        soundEnabled={soundEnabled}
-        onToggleSound={() => setSoundEnabled(!soundEnabled)}
-        onOpenSettings={() => setSettingsModalOpen(true)}
-        onOpenNewLeadModal={() => setCreateLeadModalOpen(true)}
-        totalLeadsCount={totalLeads}
-        onOpenInbox={() => setActiveView('inbox')}
-        inboxUnreadCount={inboxUnreadCount}
-        theme={theme}
-        onToggleTheme={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-        activeView={activeView}
-        setActiveView={setActiveView}
-        onSearch={setSearchQuery}
-        searchQuery={searchQuery}
-        onRefreshLiveLeads={() => fetchInitialLeads(true)}
-        isRefreshingLive={isRefreshingLive}
-      />
-
-      {/* 2. Freelancer Sub-Navigation Bar */}
-      <FreelancerSubNav
-        totalLeadsCount={totalLeads}
-        noWebsiteCount={noWebsiteCount}
-        newGmbCount={newBusinesses}
-        uaeCount={uaeCount}
-        pkCount={pakistanCount}
-        usCount={usCount}
-        ukCount={ukCount}
-        inboxCount={inboxUnreadCount}
-        selectedPipelineFilter={selectedPipelineFilter}
-        onSelectPipelineFilter={setSelectedPipelineFilter}
-        selectedCountry={selectedCountry}
-        onSelectCountry={setSelectedCountry}
-        sortBy={sortBy}
-        onSelectSortBy={setSortBy}
-        activeView={activeView}
-        setActiveView={setActiveView}
-        onOpenInbox={() => setActiveView('inbox')}
-      />
-
-      {/* 3. Main Workspace Area */}
-      <main className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-6 flex-1">
+      <div className="min-h-screen bg-slate-50 dark:bg-[#0B1528] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
         
-        {/* VIEW 1: Classic Freelancer.com 3-Column Feed View */}
-        {activeView === 'feed' && (
-          <div className="flex flex-col lg:flex-row gap-6 items-start">
+        {/* Top Navbar */}
+        <FreelancerNavbar
+          notifications={notifications}
+          unreadCount={unreadCount}
+          onClearNotifications={() => setUnreadCount(0)}
+          secondsLeft={secondsLeft}
+          isStreaming={isStreaming}
+          onToggleStreaming={() => setIsStreaming(!isStreaming)}
+          soundEnabled={soundEnabled}
+          onToggleSound={() => setSoundEnabled(!soundEnabled)}
+          onOpenSettings={() => setSettingsModalOpen(true)}
+          onOpenNewLeadModal={() => setCreateLeadModalOpen(true)}
+          totalLeadsCount={totalLeads}
+          onOpenInbox={() => handleSelectView('responses')}
+          inboxUnreadCount={inboxUnreadCount}
+          theme={theme}
+          onToggleTheme={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          activeView={activeView as any}
+          setActiveView={handleSelectView as any}
+          onSearch={(q) => setSearchQuery(q)}
+          searchQuery={searchQuery}
+          onRefreshLiveLeads={() => fetchInitialLeads(true)}
+          isRefreshingLive={isRefreshingLive}
+        />
+
+        {/* Platform Body with Responsive Sidebar & Dynamic Views */}
+        <div className="flex-1 flex overflow-hidden">
+          
+          {/* Complete 20-Route Unified Sidebar Navigation */}
+          <UnifiedSidebar
+            activeView={activeView}
+            onSelectView={handleSelectView}
+            collapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+            counts={{
+              totalLeads,
+              queueCount: 3,
+              unreadResponses: inboxUnreadCount,
+              qualifiedCount,
+            }}
+          />
+
+          {/* Main Content Area */}
+          <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#0b1320] transition-colors duration-200">
             
-            {/* Left Column: Filter By Sidebar */}
-            <FreelancerFiltersSidebar
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              selectedCountry={selectedCountry}
-              onCountryChange={setSelectedCountry}
-              selectedPlatform={platformFilter}
-              onPlatformChange={setPlatformFilter}
-              businessAgeFilter={businessAgeFilter}
-              onBusinessAgeChange={setBusinessAgeFilter}
-              hasWebsiteFilter={hasWebsiteFilter}
-              onHasWebsiteChange={setHasWebsiteFilter}
-              categoryFilter={categoryFilter}
-              onCategoryChange={setCategoryFilter}
-              onResetFilters={() => {
-                setSelectedCountry('all');
-                setSelectedPipelineFilter('all');
-                setCategoryFilter('all');
-                setBusinessAgeFilter('all');
-                setHasWebsiteFilter('all');
-                setPlatformFilter('all');
-                setDisciplineFilter('all');
-                setSearchQuery('');
-              }}
-              totalFilteredCount={sortedLeads.length}
-            />
+            {/* VIEW 1: Executive Dashboard (Phase 10) */}
+            {activeView === 'dashboard' && (
+              <ExecutiveDashboard
+                leads={leads}
+                onSelectLead={(l) => {
+                  setSelectedLeadForJobScope(l);
+                  setJobScopeModalOpen(true);
+                }}
+                onNavigateToView={handleSelectView}
+              />
+            )}
 
-            {/* Center Column: Freelancer Project Feed */}
-            <section className="flex-1 w-full space-y-4">
-              
-              {/* Platform & Discipline Quick Filter Chips */}
-              <div className="bg-white dark:bg-[#161f2e] border border-slate-200 dark:border-[#24334a] rounded-lg p-3.5 shadow-xs space-y-2.5 transition-colors">
-                
-                {/* Row 1: Platform Origin */}
-                <div className="flex items-center gap-2 flex-wrap text-xs">
-                  <span className="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] whitespace-nowrap">
-                    Origin Platform:
-                  </span>
-                  {[
-                    { id: 'all', label: 'All Sources' },
-                    { id: 'Meta Ads', label: '📢 Meta Ads' },
-                    { id: 'Upwork', label: '🟢 Upwork' },
-                    { id: 'Fiverr', label: '🟢 Fiverr' },
-                    { id: 'Freelancer.com', label: '🟡 Freelancer' },
-                    { id: 'Google My Business', label: '🔴 GMB Radar' },
-                    { id: 'LinkedIn', label: '🔷 LinkedIn' },
-                    { id: 'Bark', label: '🔵 Bark' },
-                    { id: 'Truelancer', label: '⚡ Truelancer' },
-                    { id: 'Wellfound', label: '🦄 Wellfound' },
-                    { id: 'Rozee.pk', label: '🇵🇰 Rozee.pk' },
-                    { id: 'Bayt', label: '🇦🇪 Bayt' },
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setPlatformFilter(item.id)}
-                      className={`px-2.5 py-1 rounded-md font-semibold text-xs transition-all ${
-                        platformFilter === item.id
-                          ? 'bg-[#007FED] text-white shadow-xs'
-                          : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#24334a]'
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-
-                  {/* Dropdown for All 50+ Platforms */}
-                  <select
-                    value={platformFilter}
-                    onChange={(e) => setPlatformFilter(e.target.value)}
-                    className="bg-slate-100 dark:bg-[#1a2638] border border-slate-200 dark:border-[#2e415d] text-slate-700 dark:text-slate-200 rounded-md px-2 py-1 text-xs font-semibold focus:outline-none focus:border-[#007FED] ml-auto"
-                  >
-                    <option value="all">More Platforms (50+ Total)...</option>
-                    <option value="Contra">Contra</option>
-                    <option value="PeoplePerHour">PeoplePerHour</option>
-                    <option value="Guru">Guru</option>
-                    <option value="Workana">Workana</option>
-                    <option value="99designs">99designs</option>
-                    <option value="DesignCrowd">DesignCrowd</option>
-                    <option value="Toptal">Toptal</option>
-                    <option value="Gun.io">Gun.io</option>
-                    <option value="Arc">Arc.dev</option>
-                    <option value="Lemon.io">Lemon.io</option>
-                    <option value="Braintrust">Braintrust</option>
-                    <option value="Mayple">Mayple</option>
-                    <option value="MarketerHire">MarketerHire</option>
-                    <option value="Legiit">Legiit</option>
-                    <option value="SEOClerks">SEOClerks</option>
-                    <option value="Codeable">Codeable</option>
-                    <option value="We Work Remotely">We Work Remotely</option>
-                    <option value="Behance">Behance</option>
-                    <option value="Dribbble">Dribbble</option>
-                    <option value="DesignHill">DesignHill</option>
-                    <option value="Working Not Working">Working Not Working</option>
-                    <option value="Creativepool">Creativepool</option>
-                    <option value="Coroflot">Coroflot</option>
-                    <option value="FlexJobs">FlexJobs</option>
-                    <option value="Remote OK">Remote OK</option>
-                    <option value="Remotive">Remotive</option>
-                    <option value="Working Nomads">Working Nomads</option>
-                    <option value="Dynamite Jobs">Dynamite Jobs</option>
-                    <option value="Jooble">Jooble</option>
-                    <option value="Indeed">Indeed</option>
-                    <option value="Glassdoor">Glassdoor</option>
-                    <option value="SimplyHired">SimplyHired</option>
-                    <option value="WPHired">WPHired</option>
-                    <option value="ProBlogger Jobs">ProBlogger Jobs</option>
-                    <option value="WriterAccess">WriterAccess</option>
-                    <option value="Voices">Voices</option>
-                    <option value="Voice123">Voice123</option>
-                    <option value="Malt">Malt</option>
-                    <option value="Taskrabbit">Taskrabbit</option>
-                    <option value="Mustakbil">Mustakbil</option>
-                    <option value="Naukrigulf">Naukrigulf</option>
-                    <option value="Dubizzle">Dubizzle</option>
-                    <option value="Thumbtack">Thumbtack</option>
-                  </select>
-                </div>
-
-                {/* Row 2: Job Discipline Demanded */}
-                <div className="flex items-center gap-2 flex-wrap text-xs pt-2 border-t border-slate-100 dark:border-[#24334a]">
-                  <span className="font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider text-[11px] whitespace-nowrap">
-                    Job Needed:
-                  </span>
-                  {[
-                    { id: 'all', label: 'All Disciplines' },
-                    { id: 'Social Media & Content Creation', label: '📱 Social Media & Reels' },
-                    { id: 'WordPress Website Development', label: '🌐 WordPress / WooCommerce' },
-                    { id: 'Meta Ads & Paid Social', label: '📢 Meta Ads & Funnels' },
-                    { id: 'Web Development', label: '💻 Web Design' },
-                    { id: 'Mobile App Development', label: '📱 Mobile App' },
-                    { id: 'Brand Identity & Logos', label: '🎨 6 SVG Logos' },
-                    { id: 'Graphic Design', label: '✨ Branding' },
-                    { id: 'Software SOW', label: '⚙️ Software SOW' },
-                    { id: 'Local Business Digitalization', label: '🏥 GMB Digital' },
-                  ].map((item) => (
-                    <button
-                      key={item.id}
-                      onClick={() => setDisciplineFilter(item.id)}
-                      className={`px-2.5 py-1 rounded-md font-semibold text-xs transition-all ${
-                        disciplineFilter === item.id
-                          ? 'bg-indigo-600 text-white shadow-xs'
-                          : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#24334a]'
-                      }`}
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-
-              </div>
-
-              {/* Feed Count Header & Live Stream Status */}
-              <div className="bg-white dark:bg-[#141d2b] border border-slate-200/90 dark:border-[#223147] rounded-xl px-5 py-3.5 shadow-xs flex flex-wrap items-center justify-between gap-3 transition-colors">
-                <div className="flex items-center gap-2.5 flex-wrap">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 text-[#007FED] flex items-center justify-center">
-                    <Briefcase className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h2 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-white">
-                        Live Opportunities &amp; Verified Projects
-                      </h2>
-                      <span className="text-xs bg-blue-50 dark:bg-blue-950/60 text-[#007FED] font-black px-2.5 py-0.5 rounded-full border border-blue-200 dark:border-blue-800/60 font-mono">
-                        {sortedLeads.length} Leads
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">100% Real-Time Sync:</span>
-                      <span>Freelancer.com API • RemoteOK • Remotive • GMB Radar</span>
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2">
+            {/* VIEW 2: All Leads Management (Phase 12) */}
+            {(activeView === 'all-leads' || activeView === 'feed') && (
+              <div className="space-y-4">
+                {/* View Mode Toggle: Enterprise Table vs Classic Freelancer 3-Column */}
+                <div className="px-6 lg:px-8 pt-4 flex items-center justify-end gap-2 text-xs font-bold">
+                  <span className="text-slate-400">View Style:</span>
                   <button
-                    onClick={() => fetchInitialLeads(true)}
-                    disabled={isRefreshingLive}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#007FED] hover:bg-[#006ecb] text-white shadow-xs transition active:scale-95 disabled:opacity-75 cursor-pointer"
-                    title="Force immediate live re-sync across all platform APIs"
+                    onClick={() => setFeedStyle('table')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
+                      feedStyle === 'table'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 hover:bg-slate-100'
+                    }`}
                   >
-                    <RotateCcw className={`w-3.5 h-3.5 ${isRefreshingLive ? 'animate-spin' : ''}`} />
-                    <span>{isRefreshingLive ? 'Syncing Live APIs...' : 'Sync Live Data'}</span>
+                    <Table className="w-3.5 h-3.5" />
+                    <span>Table View</span>
+                  </button>
+                  <button
+                    onClick={() => setFeedStyle('cards')}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition ${
+                      feedStyle === 'cards'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'bg-white dark:bg-slate-800 text-slate-600 hover:bg-slate-100'
+                    }`}
+                  >
+                    <LayoutGrid className="w-3.5 h-3.5" />
+                    <span>Cards Feed</span>
                   </button>
                 </div>
-              </div>
 
-              {/* Project Cards List */}
-              {sortedLeads.length === 0 ? (
-                <div className="bg-white dark:bg-[#161f2e] border border-slate-200 dark:border-[#24334a] rounded-lg p-12 text-center space-y-3">
-                  <Briefcase className="w-12 h-12 text-slate-300 mx-auto" />
-                  <h3 className="font-bold text-base text-slate-700 dark:text-slate-200">
-                    No matching projects found
-                  </h3>
-                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                    Try adjusting or clearing your filters to see more leads across Web, Mobile, Video, and Graphic design.
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSelectedCountry('all');
-                      setSelectedPipelineFilter('all');
-                      setCategoryFilter('all');
-                      setBusinessAgeFilter('all');
-                      setHasWebsiteFilter('all');
-                      setPlatformFilter('all');
-                      setDisciplineFilter('all');
-                      setSearchQuery('');
-                    }}
-                    className="freelancer-btn-primary text-xs"
-                  >
-                    Reset all filters
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {sortedLeads.map((lead) => (
-                    <FreelancerJobCard
-                      key={lead.id}
-                      lead={lead}
-                      onOpenWebsiteModal={handleOpenWebsiteModal}
-                      onOpenEmailModal={handleOpenEmailModal}
-                      onInspect={handleOpenWebsiteModal}
-                      onInspectJobScope={handleOpenJobScopeModal}
+                {feedStyle === 'table' ? (
+                  <LeadManagementView
+                    leads={leads}
+                    onUpdateLeadStage={handleMoveStage}
+                    onDeleteLead={handleDeleteLead}
+                    onArchiveLead={handleArchiveLead}
+                    onResearchLead={(l) => handleSelectView('research')}
+                    onOpenWebsiteModal={handleOpenWebsiteModal}
+                    onOpenEmailModal={handleOpenEmailModal}
+                  />
+                ) : (
+                  <div className="flex-1 flex max-w-[1600px] mx-auto px-4 sm:px-6 py-4 gap-6">
+                    <FreelancerFiltersSidebar
+                      searchQuery={searchQuery}
+                      onSearchChange={setSearchQuery}
+                      selectedCountry={selectedCountry}
+                      onCountryChange={setSelectedCountry}
+                      categoryFilter={categoryFilter}
+                      onCategoryChange={setCategoryFilter}
+                      businessAgeFilter={businessAgeFilter}
+                      onBusinessAgeChange={setBusinessAgeFilter}
+                      hasWebsiteFilter={hasWebsiteFilter}
+                      onHasWebsiteChange={setHasWebsiteFilter}
+                      totalFilteredCount={filteredLeads.length}
+                      onResetFilters={() => {
+                        setSelectedCountry('all');
+                        setCategoryFilter('all');
+                        setBusinessAgeFilter('all');
+                        setHasWebsiteFilter('all');
+                        setSearchQuery('');
+                      }}
                     />
-                  ))}
-                </div>
-              )}
 
-            </section>
+                    <div className="flex-1 space-y-4">
+                      {filteredLeads.map((lead) => (
+                        <FreelancerJobCard
+                          key={lead.id}
+                          lead={lead}
+                          onOpenWebsiteModal={handleOpenWebsiteModal}
+                          onOpenEmailModal={(l) => handleOpenEmailModal(l)}
+                          onInspect={(l) => handleOpenJobScopeModal(l)}
+                          onInspectJobScope={handleOpenJobScopeModal}
+                        />
+                      ))}
+                    </div>
 
-            {/* Right Column: Ingestion Radar, Client Inbound Drawer & Marketplace Stats */}
-            <FreelancerRightPanel
-              secondsLeft={secondsLeft}
-              isStreaming={isStreaming}
-              onToggleStreaming={() => setIsStreaming(!isStreaming)}
-              soundEnabled={soundEnabled}
-              onToggleSound={() => setSoundEnabled(!soundEnabled)}
-              latestLead={latestLead}
-              onOpenInbox={() => setActiveView('inbox')}
-              inboxUnreadCount={inboxUnreadCount}
-              onInspectLead={handleOpenWebsiteModal}
-              totalLeadsCount={totalLeads}
-              noWebsiteCount={noWebsiteCount}
-              newGmbCount={newBusinesses}
-              onSelectTag={(tag) => setSearchQuery(tag)}
-            />
+                    <FreelancerRightPanel
+                      secondsLeft={secondsLeft}
+                      isStreaming={isStreaming}
+                      onToggleStreaming={() => setIsStreaming(!isStreaming)}
+                      soundEnabled={soundEnabled}
+                      onToggleSound={() => setSoundEnabled(!soundEnabled)}
+                      latestLead={latestLead}
+                      onOpenInbox={() => handleSelectView('responses')}
+                      inboxUnreadCount={inboxUnreadCount}
+                      onInspectLead={handleOpenWebsiteModal}
+                      totalLeadsCount={totalLeads}
+                      noWebsiteCount={noWebsiteCount}
+                      newGmbCount={newBusinesses}
+                      onSelectTag={(tag) => setSearchQuery(tag)}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
 
-          </div>
-        )}
+            {/* VIEW 3: Discover Real Leads (Phase 3) */}
+            {activeView === 'discover' && (
+              <DiscoverLeadsView
+                onImportLead={(l) => handleAddCustomLead(l)}
+                savedLeadIds={new Set(leads.map((l) => l.id))}
+              />
+            )}
 
-        {/* VIEW 2: Kanban Pipeline Board */}
-        {activeView === 'kanban' && (
-          <KanbanBoard
-            leads={filteredLeads}
-            onGenerateWebsite={handleOpenWebsiteModal}
-            onOpenOutreach={(l) => handleOpenEmailModal(l)}
-            onMoveStage={handleMoveStage}
-            onOpenNewLeadModal={() => setCreateLeadModalOpen(true)}
-          />
-        )}
+            {/* VIEW 4: Lead Lists (Phase 12) */}
+            {activeView === 'lists' && (
+              <LeadListsView
+                leads={leads}
+                onSelectLead={(l) => handleOpenJobScopeModal(l)}
+              />
+            )}
 
-        {/* VIEW 3: Performance Funnel & Analytics */}
-        {activeView === 'analytics' && (
-          <FunnelAnalytics
-            totalLeads={totalLeads}
-            noWebsiteCount={noWebsiteCount}
-            newBusinesses={newBusinesses}
-            pitchedCount={pitchedCount}
-          />
-        )}
+            {/* VIEW 5: Saved Leads */}
+            {activeView === 'saved' && (
+              <SavedLeadsView
+                leads={leads}
+                onSelectLead={(l) => handleOpenJobScopeModal(l)}
+              />
+            )}
 
-        {/* VIEW 4: Client Inbound Replies Inbox */}
-        {activeView === 'inbox' && (
-          <ClientInboxView
-            onOpenWebsitePreview={(previewUrl) => {
-              window.open(previewUrl, '_blank');
-            }}
-            onClientReplyReceived={(clientName, snippet) => {
-              const notif: LeadNotification = {
-                id: `notif-reply-${Date.now()}`,
-                title: `💬 New Client Reply from ${clientName}`,
-                businessName: clientName,
-                location: snippet,
-                timestamp: new Date().toLocaleTimeString(),
-                timeAgo: 'Just now',
-                leadId: '',
-                type: 'client_reply',
-                read: false,
-              };
-              setNotifications((prev) => [notif, ...prev]);
-              setUnreadCount((c) => c + 1);
-              setInboxUnreadCount((c) => c + 1);
-              if (soundEnabled) playLuxuryChime();
-            }}
-          />
-        )}
+            {/* VIEW 6: Business Research & Identity Resolution (Phase 4, 5, 6) */}
+            {activeView === 'research' && <BusinessResearchView />}
 
-        {/* VIEW 5: GMB Radar Explorer */}
-        {activeView === 'gmb' && (
-          <GmbExplorer
-            leads={filteredLeads}
-            onGenerateWebsite={handleOpenWebsiteModal}
-            onOpenOutreach={(l) => handleOpenEmailModal(l)}
-          />
-        )}
+            {/* VIEW 7: Google Business Profiles Radar (Phase 5) */}
+            {activeView === 'gmb' && (
+              <GmbProfilesView
+                leads={leads}
+                onSelectLead={(l) => handleOpenJobScopeModal(l)}
+              />
+            )}
 
-        {/* VIEW 6: Executive Admin Security & Staff Attribution Center */}
-        {activeView === 'audit' && (
-          <AdminAuditDashboard />
-        )}
+            {/* VIEW 8: Email Verification Tool (Phase 8) */}
+            {activeView === 'verify-email' && <EmailVerificationView />}
 
-      </main>
+            {/* VIEW 9: Phone Verification Tool (Phase 8) */}
+            {activeView === 'verify-phone' && <PhoneVerificationView />}
 
-      {/* New Module: Client Job Scope & Requirements Analyzer (Requested by user) */}
-      <JobScopeAnalyzerModal
-        lead={selectedLeadForJobScope}
-        isOpen={jobScopeModalOpen}
-        onClose={() => setJobScopeModalOpen(false)}
-        onOpenDeliverablesStudio={(lead) => {
-          handleOpenWebsiteModal(lead);
-        }}
-        onOpenEmailPitch={(lead, previewUrl) => {
-          handleOpenEmailModal(lead, previewUrl);
-        }}
-      />
+            {/* VIEW 10: Background Research Queue (Phase 16) */}
+            {activeView === 'queue' && (
+              <VerificationQueueView
+                leads={leads}
+                jobs={[]}
+                onRefreshJobs={() => fetchInitialLeads(true)}
+                onUpdateLead={(updated) => {
+                  setLeads((prev) => prev.map((l) => (l.id === updated.id ? updated : l)));
+                }}
+              />
+            )}
 
-      {/* Deliverables Studio Modal (Working Website, Mobile App Carousel, Video Pitch, Brand Kit, SOW) */}
-      <DeliverablesStudioModal
-        lead={selectedLeadForWebsite}
-        isOpen={websiteModalOpen}
-        onClose={() => setWebsiteModalOpen(false)}
-        onDispatchOutreach={(lead, deliverableType, previewUrl) => {
-          handleOpenEmailModal(lead, previewUrl);
-        }}
-      />
+            {/* VIEW 11: Qualified Leads (Phase 12) */}
+            {activeView === 'qualified' && (
+              <QualifiedLeadsView
+                leads={leads}
+                onOpenEmailModal={handleOpenEmailModal}
+                onSelectLead={(l) => handleOpenJobScopeModal(l)}
+              />
+            )}
 
-      {/* Email Outreach Modal with attached preview link */}
-      <EmailOutreachModal
-        lead={selectedLeadForEmail}
-        previewUrl={emailModalPreviewUrl}
-        isOpen={emailModalOpen}
-        onClose={() => setEmailModalOpen(false)}
-      />
+            {/* VIEW 12: Outreach Campaigns */}
+            {activeView === 'campaigns' && (
+              <OutreachCampaignsView
+                leads={leads}
+                onOpenEmailModal={handleOpenEmailModal}
+              />
+            )}
 
-      {/* API Settings Modal */}
-      <ApiSettingsModal
-        isOpen={settingsModalOpen}
-        onClose={() => setSettingsModalOpen(false)}
-      />
+            {/* VIEW 13: Client Responses & Inbound Inbox */}
+            {(activeView === 'responses' || activeView === 'inbox') && (
+              <ClientInboxView
+                onOpenWebsitePreview={(previewUrl) => window.open(previewUrl, '_blank')}
+                onClientReplyReceived={(clientName, snippet) => {
+                  const notif: LeadNotification = {
+                    id: `notif-reply-${Date.now()}`,
+                    title: `💬 New Client Reply from ${clientName}`,
+                    businessName: clientName,
+                    location: snippet,
+                    timestamp: new Date().toLocaleTimeString(),
+                    timeAgo: 'Just now',
+                    leadId: '',
+                    type: 'client_reply',
+                    read: false,
+                  };
+                  setNotifications((prev) => [notif, ...prev]);
+                  setUnreadCount((c) => c + 1);
+                  setInboxUnreadCount((c) => c + 1);
+                  if (soundEnabled) playLuxuryChime();
+                }}
+              />
+            )}
 
-      {/* Create / Post Lead Modal */}
-      <CreateLeadModal
-        isOpen={createLeadModalOpen}
-        onClose={() => setCreateLeadModalOpen(false)}
-        onAddLead={handleAddCustomLead}
-      />
+            {/* VIEW 14: Sales Pipeline Kanban Board (Phase 15) */}
+            {(activeView === 'pipeline' || activeView === 'kanban') && (
+              <SalesPipelineView
+                leads={leads}
+                onUpdateLeadStage={handleMoveStage}
+                onSelectLead={(l) => handleOpenJobScopeModal(l)}
+              />
+            )}
+
+            {/* VIEW 15: Analytics & Funnel (Phase 10) */}
+            {activeView === 'analytics' && (
+              <FunnelAnalytics
+                totalLeads={totalLeads}
+                noWebsiteCount={noWebsiteCount}
+                newBusinesses={newBusinesses}
+                pitchedCount={pitchedCount}
+              />
+            )}
+
+            {/* VIEW 16: Activity Logs & Audit Trail */}
+            {(activeView === 'activity-logs' || activeView === 'audit') && (
+              <ActivityLogsView leads={leads} />
+            )}
+
+            {/* VIEW 17: Export Center */}
+            {activeView === 'export' && <ExportCenterView leads={leads} />}
+
+            {/* VIEW 18: Centralized Integrations Hub (Phase 17) */}
+            {activeView === 'integrations' && <IntegrationsView />}
+
+            {/* VIEW 19: API Configuration & Secrets (Phase 17) */}
+            {activeView === 'api-config' && <ApiConfigurationView />}
+
+            {/* VIEW 20: Settings View */}
+            {activeView === 'settings' && (
+              <div className="p-8 max-w-xl mx-auto">
+                <button
+                  onClick={() => setSettingsModalOpen(true)}
+                  className="px-6 py-3 bg-blue-600 text-white font-bold rounded-2xl shadow-xs"
+                >
+                  Open Full API Settings & Quotas Modal
+                </button>
+              </div>
+            )}
+
+            {/* VIEW 21: Operator Profile View */}
+            {activeView === 'profile' && <ProfileView />}
+
+          </main>
+        </div>
+
+        {/* Global Modals */}
+        <JobScopeAnalyzerModal
+          lead={selectedLeadForJobScope}
+          isOpen={jobScopeModalOpen}
+          onClose={() => setJobScopeModalOpen(false)}
+          onOpenDeliverablesStudio={(lead) => handleOpenWebsiteModal(lead)}
+          onOpenEmailPitch={(lead, previewUrl) => handleOpenEmailModal(lead, previewUrl)}
+        />
+
+        <DeliverablesStudioModal
+          lead={selectedLeadForWebsite}
+          isOpen={websiteModalOpen}
+          onClose={() => setWebsiteModalOpen(false)}
+          onDispatchOutreach={(lead, deliverableType, previewUrl) => handleOpenEmailModal(lead, previewUrl)}
+        />
+
+        <EmailOutreachModal
+          lead={selectedLeadForEmail}
+          previewUrl={emailModalPreviewUrl}
+          isOpen={emailModalOpen}
+          onClose={() => setEmailModalOpen(false)}
+        />
+
+        <ApiSettingsModal
+          isOpen={settingsModalOpen}
+          onClose={() => setSettingsModalOpen(false)}
+        />
+
+        <CreateLeadModal
+          isOpen={createLeadModalOpen}
+          onClose={() => setCreateLeadModalOpen(false)}
+          onAddLead={handleAddCustomLead}
+        />
 
       </div>
     </PortalAuthGate>

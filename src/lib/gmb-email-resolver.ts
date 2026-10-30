@@ -10,11 +10,11 @@ import { cleanWhatsAppDigits } from './phone-utils';
 
 interface BusinessInfo {
   businessName: string;
-  website?: string;
-  country?: string;
-  city?: string;
-  category?: string;
-  phone?: string;
+  website?: string | null;
+  country?: string | null;
+  city?: string | null;
+  category?: string | null;
+  phone?: string | null;
 }
 
 export interface ResolvedContact {
@@ -121,7 +121,7 @@ const VERIFIED_DIRECTORY: Record<string, { domain: string; defaultEmailPrefix: s
 /**
  * Extract clean root domain from website URL
  */
-export function extractCleanDomain(url?: string): string {
+export function extractCleanDomain(url?: string | null): string {
   if (!url) return '';
   try {
     let clean = url.trim().toLowerCase();
@@ -347,10 +347,6 @@ export async function searchAndEnrichBusinessContact(info: BusinessInfo): Promis
         resolvedEmail = await scrapeLiveWebsiteEmail(searchResult.websiteUrl);
       }
 
-      if (!resolvedEmail && discoveredDomain) {
-        resolvedEmail = `info@${discoveredDomain}`;
-      }
-
       if (resolvedEmail && discoveredDomain) {
         return {
           email: resolvedEmail,
@@ -364,16 +360,24 @@ export async function searchAndEnrichBusinessContact(info: BusinessInfo): Promis
       }
     }
   } catch {
-    // Ignore and proceed to deterministic legitimate fallback
+    // Ignore and proceed
   }
 
-  // 4. Fallback to deterministic legitimate resolver
-  return resolveLegitimateBusinessEmail(info);
+  // 4. If no email is discovered from verified evidence, leave email undefined
+  const domain = extractCleanDomain(website);
+  return {
+    email: undefined,
+    phone: cleanPhone,
+    whatsapp: whatsappDigits,
+    domain: domain || '',
+    isDomainVerified: Boolean(domain),
+    sourceLabel: cleanPhone ? 'Verified Phone / Direct Outreach' : 'Contact information not found',
+  };
 }
 
 /**
  * Synchronous legitimate business contact resolver
- * Always produces authentic emails on domains with active DNS MX records.
+ * Does NOT guess email patterns like info@ or sales@. Leaves email undefined when not found.
  */
 export function resolveLegitimateBusinessEmail(info: BusinessInfo): ResolvedContact {
   const { businessName, website, country = 'Pakistan', city = 'Lahore', category = '', phone } = info;
@@ -390,37 +394,9 @@ export function resolveLegitimateBusinessEmail(info: BusinessInfo): ResolvedCont
   }
 
   const cleanPhone = phone || directoryMatch?.phone || '';
-  const whatsappDigits = cleanPhone ? cleanWhatsAppDigits(cleanPhone, country) : '';
+  const whatsappDigits = cleanPhone ? cleanWhatsAppDigits(cleanPhone, country || 'Pakistan') : '';
 
-  // 1. If legitimate website exists, construct authentic domain-level company email
-  if (domain) {
-    const catLower = category.toLowerCase();
-    let prefix = 'info';
-
-    if (catLower.includes('aesthetic') || catLower.includes('dental') || catLower.includes('doctor') || catLower.includes('clinic')) {
-      prefix = 'consultations';
-    } else if (catLower.includes('marble') || catLower.includes('roofing') || catLower.includes('construct') || catLower.includes('trade')) {
-      prefix = 'sales';
-    } else if (catLower.includes('tech') || catLower.includes('software') || catLower.includes('develop')) {
-      prefix = 'engineering';
-    } else if (catLower.includes('yacht') || catLower.includes('marine') || catLower.includes('hotel') || catLower.includes('banquet')) {
-      prefix = 'charters';
-    } else if (catLower.includes('marketing') || catLower.includes('graphic') || catLower.includes('brand')) {
-      prefix = 'creative';
-    }
-
-    return {
-      email: `${prefix}@${domain}`,
-      phone: cleanPhone,
-      whatsapp: whatsappDigits,
-      domain,
-      isDomainVerified: true,
-      emailType: 'official_domain',
-      sourceLabel: `Official Domain Email (${domain})`,
-    };
-  }
-
-  // 2. Check curated active MX corporate directory
+  // 1. Check curated active MX corporate directory
   if (directoryMatch) {
     return {
       email: `${directoryMatch.defaultEmailPrefix}@${directoryMatch.domain}`,
@@ -432,6 +408,17 @@ export function resolveLegitimateBusinessEmail(info: BusinessInfo): ResolvedCont
       sourceLabel: `Official Corporate Registry (${directoryMatch.domain})`,
     };
   }
+
+  // 2. REAL-DATA RULE: If no verified email is discovered, do not guess info@domain
+  // Leave email undefined and let user see "Contact information not found."
+  return {
+    email: undefined,
+    phone: cleanPhone,
+    whatsapp: whatsappDigits,
+    domain: domain || '',
+    isDomainVerified: Boolean(domain),
+    sourceLabel: cleanPhone ? 'Direct Phone / WhatsApp Outreach' : 'Contact information not found',
+  };
 
   // 3. For local GMB listings without an official domain or website:
   // If an email cannot be verified or found, leave email undefined and guide outreach through real verified phone / WhatsApp

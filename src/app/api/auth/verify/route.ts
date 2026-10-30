@@ -2,10 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { recordLoginSession } from '@/lib/audit-store';
 import { getLivePublicIp, resolveIpDetails } from '@/lib/geo-ip';
 import { getPortalUsers } from '@/lib/user-store';
+import { signSession, verifySessionToken } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
-const ADMIN_PASSWORD = process.env.PORTAL_ADMIN_PASSWORD || 'Sameer1234!@#';
+const ADMIN_PASSWORD = process.env.PORTAL_ADMIN_PASSWORD || '';
 const EMPLOYER_PASSWORD = process.env.PORTAL_ACCESS_PASSWORD || 'Samvero#Secure9842';
 
 function parseUserAgent(ua: string) {
@@ -27,30 +28,56 @@ function parseUserAgent(ua: string) {
   return { os, browser };
 }
 
+import { getAllSaasUsers, verifyPassword, ensureSaasStoreInitialized } from '@/lib/saas-store';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { password, username, deviceName, clientPublicIp } = body;
+    const { password, username, email, deviceName, clientPublicIp } = body;
 
     if (!password) {
       return NextResponse.json({ success: false, error: 'Password is required' }, { status: 400 });
     }
 
     const trimmedPassword = password.trim();
+    const targetIdentifier = (email || username || '').trim().toLowerCase();
 
-    let role: 'admin' | 'employer' | null = null;
+    let role: 'admin' | 'customer' | 'employer' | null = null;
     let userName = '';
     let userId = '';
     let isGlobalUser = false;
+    let mustChangePassword = false;
 
-    // 1. Direct Super Admin Master Key
-    if (trimmedPassword === ADMIN_PASSWORD.trim()) {
+    ensureSaasStoreInitialized();
+
+    // 1. Check Multi-Tenant SaaS Users Store (Customer and Super Admin)
+    const allSaasUsers = getAllSaasUsers();
+    const saasUserMatch = allSaasUsers.find((u) => {
+      const matchIdentity = targetIdentifier ? u.email.toLowerCase() === targetIdentifier : true;
+      return matchIdentity && verifyPassword(trimmedPassword, u.passwordHash);
+    });
+
+    if (saasUserMatch) {
+      if (saasUserMatch.status === 'suspended') {
+        return NextResponse.json(
+          { success: false, error: 'Your account has been suspended. Please contact customer support.' },
+          { status: 403 }
+        );
+      }
+      role = saasUserMatch.role === 'super_admin' || saasUserMatch.role === 'admin' ? 'admin' : (saasUserMatch.role === 'customer' ? 'customer' : 'employer');
+      userName = saasUserMatch.name;
+      userId = saasUserMatch.id;
+      isGlobalUser = saasUserMatch.role === 'super_admin' || saasUserMatch.role === 'admin';
+      mustChangePassword = saasUserMatch.mustChangePassword;
+    }
+    // 2. Direct Super Admin Master Key
+    else if (trimmedPassword === ADMIN_PASSWORD.trim()) {
       role = 'admin';
       userName = 'Sameer (Executive Admin)';
       userId = 'user-sameer';
       isGlobalUser = true;
     } 
-    // 2. Direct Employer Master Key
+    // 3. Direct Employer Master Key
     else if (
       trimmedPassword === EMPLOYER_PASSWORD.trim() ||
       trimmedPassword === 'Sameer12345!@#$%' // Backward compatibility
@@ -60,13 +87,13 @@ export async function POST(request: NextRequest) {
       userId = 'user-employer';
       isGlobalUser = false;
     }
-    // 3. Custom Staff Users created by Admin
+    // 4. Custom Staff Users created by Admin
     else {
       const allUsers = getPortalUsers();
       const matchedUser = allUsers.find(
         (u) =>
           u.password === trimmedPassword &&
-          (!username || u.username.toLowerCase() === username.trim().toLowerCase())
+          (!targetIdentifier || u.username.toLowerCase() === targetIdentifier || u.email.toLowerCase() === targetIdentifier)
       );
 
       if (matchedUser) {
@@ -79,7 +106,7 @@ export async function POST(request: NextRequest) {
 
     if (!role) {
       return NextResponse.json(
-        { success: false, error: 'Incorrect portal access key. Access denied.' },
+        { success: false, error: 'Incorrect portal credentials. Access denied.' },
         { status: 401 }
       );
     }
@@ -115,13 +142,17 @@ export async function POST(request: NextRequest) {
       isp: geo.isp,
     });
 
+    const redirectUrl = role === 'admin' ? '/admin/dashboard' : (role === 'customer' ? '/app/dashboard' : '/dashboard');
+
     const response = NextResponse.json({
       success: true,
-      message: `Access granted as ${role === 'admin' ? 'Super Executive Admin' : 'Staff Operator'}`,
+      message: `Access granted as ${role === 'admin' ? 'Super Executive Admin' : role === 'customer' ? 'Customer' : 'Staff Operator'}`,
       role,
       userName,
       userId,
       isGlobalUser,
+      mustChangePassword,
+      redirectUrl,
       sessionId: session.id,
       ipAddress: geo.ip,
       location,
@@ -138,9 +169,19 @@ export async function POST(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 30, // 30 days
     };
 
+    const signedToken = signSession({
+      userId,
+      role: role as any,
+      email: targetIdentifier || (role === 'admin' ? 'sameer.centric@gmail.com' : role === 'customer' ? 'client@gmail.com' : 'staff@samvero.com'),
+      name: userName,
+      isGlobal: isGlobalUser,
+      sessionId: session.id,
+      timestamp: Date.now(),
+    });
+
     response.cookies.set({
       name: 'samvero_portal_token',
-      value: 'auth_' + Buffer.from(role + ':' + session.id).toString('base64'),
+      value: signedToken,
       ...cookieOptions,
     });
 
@@ -183,13 +224,14 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('samvero_portal_token')?.value;
-    const role = (request.cookies.get('samvero_portal_role')?.value as 'admin' | 'employer') || 'employer';
-    const userId = request.cookies.get('samvero_user_id')?.value || (role === 'admin' ? 'user-sameer' : 'user-employer');
-    const isGlobalUser = request.cookies.get('samvero_is_global')?.value === 'true' || role === 'admin';
-    const sessionId = request.cookies.get('samvero_portal_session_id')?.value || '';
-    const userName = request.cookies.get('samvero_portal_user')?.value || (role === 'admin' ? 'Sameer (Executive Admin)' : 'Employer Staff');
+    const verifiedSession = verifySessionToken(token);
 
-    const isAuthenticated = !!token && token.startsWith('auth_');
+    const isAuthenticated = Boolean(verifiedSession);
+    const role = verifiedSession ? verifiedSession.role : null;
+    const userId = verifiedSession ? verifiedSession.userId : null;
+    const userName = verifiedSession ? verifiedSession.name : null;
+    const isGlobalUser = verifiedSession ? verifiedSession.isGlobal : false;
+    const sessionId = verifiedSession ? verifiedSession.sessionId : '';
 
     // Get live public IP
     const cfIp = request.headers.get('cf-connecting-ip');
@@ -203,7 +245,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       authenticated: isAuthenticated,
-      role: isAuthenticated ? role : null,
+      role: isAuthenticated ? (role === 'super_admin' ? 'admin' : role) : null,
       userId: isAuthenticated ? userId : null,
       isGlobalUser: isAuthenticated ? isGlobalUser : false,
       userName: isAuthenticated ? userName : null,

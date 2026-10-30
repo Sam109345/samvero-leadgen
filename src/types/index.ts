@@ -72,7 +72,90 @@ export type LeadCategory =
 
 export type LeadCountry = 'US' | 'UK' | 'Pakistan' | 'UAE' | 'Global';
 
-export type PipelineStage = 'new' | 'hot' | 'pending' | 'won' | 'rejected';
+export type PipelineStage = 
+  | 'new' 
+  | 'research_pending' 
+  | 'researching' 
+  | 'researched' 
+  | 'qualified' 
+  | 'contacted' 
+  | 'follow_up' 
+  | 'replied' 
+  | 'interested' 
+  | 'proposal_sent' 
+  | 'won' 
+  | 'lost' 
+  | 'archived'
+  | 'hot' 
+  | 'pending' 
+  | 'rejected';
+
+export type EmailVerificationStatus = 
+  | 'VERIFIED' 
+  | 'LIKELY_VALID' 
+  | 'UNVERIFIED' 
+  | 'INVALID' 
+  | 'DISPOSABLE' 
+  | 'UNKNOWN';
+
+export interface EmailVerificationResult {
+  email: string;
+  domain: string;
+  status: EmailVerificationStatus;
+  isValidSyntax: boolean;
+  isDisposable: boolean;
+  hasActiveMx: boolean;
+  mxRecords: Array<{ exchange: string; priority: number }>;
+  checkedAt: string;
+  reason: string;
+}
+
+export type PhoneVerificationStatus = 
+  | 'VALID_FORMAT' 
+  | 'VERIFIED' 
+  | 'UNVERIFIED' 
+  | 'INVALID' 
+  | 'UNKNOWN';
+
+export type GoogleBusinessStatus = 
+  | 'FOUND' 
+  | 'NOT_FOUND' 
+  | 'MULTIPLE_MATCHES' 
+  | 'NEEDS_REVIEW' 
+  | 'NOT_SEARCHED';
+
+export type ResearchStatus = 
+  | 'UNRESEARCHED' 
+  | 'QUEUED' 
+  | 'RUNNING'
+  | 'RESEARCHING' 
+  | 'COMPLETED' 
+  | 'PARTIALLY_COMPLETED' 
+  | 'FAILED' 
+  | 'NEEDS_REVIEW';
+
+export type EntityType = 
+  | 'individual_client' 
+  | 'registered_business' 
+  | 'agency' 
+  | 'freelancer' 
+  | 'unknown';
+
+export interface SourceEvidence {
+  id: string;
+  leadId: string;
+  fieldName: string;
+  retrievedValue: string;
+  sourceUrl: string;
+  sourceProvider: string;
+  sourceType: 'official_website' | 'gmb' | 'freelance_platform' | 'public_directory' | 'dns_mx' | 'social_media' | 'manual_input' | 'scraped_website' | 'official_domain' | 'verified_business' | 'web_search_enriched' | 'verified_directory';
+  pageTitle?: string;
+  retrievalTimestamp: string;
+  verificationStatus: EmailVerificationStatus | PhoneVerificationStatus | string;
+  matchConfidence: number; // 0 - 100
+  lastCheckedTimestamp: string;
+  notes?: string;
+}
 
 export interface BusinessAgeInfo {
   years: number;
@@ -84,13 +167,23 @@ export interface BusinessAgeInfo {
 }
 
 export interface LeadContact {
-  email?: string;
-  phone?: string;
-  whatsapp?: string;
-  website?: string;
+  email?: string | null;
+  phone?: string | null;
+  whatsapp?: string | null;
+  website?: string | null;
   hasWebsite: boolean;
-  gmbUrl?: string;
-  contactPerson?: string;
+  gmbUrl?: string | null;
+  contactPerson?: string | null;
+  emailStatus?: EmailVerificationStatus;
+  phoneStatus?: PhoneVerificationStatus;
+  evidence?: {
+    emailSourceUrl?: string;
+    emailDiscoveredAt?: string;
+    emailMethod?: string;
+    phoneSourceUrl?: string;
+    phoneDiscoveredAt?: string;
+    phoneMethod?: string;
+  };
 }
 
 export interface GeneratedWebsiteData {
@@ -148,6 +241,121 @@ export interface JobRequirementSpec {
   bidStatus?: 'unpitched' | 'pitched' | 'viewed' | 'replied';
 }
 
+export interface LeadScoreBreakdown {
+  leadQualityScore: number; // 0-100 overall
+  businessMatchConfidence: number; // 0-100
+  contactVerificationStatus: EmailVerificationStatus | PhoneVerificationStatus;
+  researchCompleteness: number; // 0-100
+  factors: {
+    projectRelevance: number;
+    budgetAvailability: number;
+    identityConfidence: number;
+    websiteAvailability: number;
+    serviceOpportunity: number;
+    geographicRelevance: number;
+    businessActivity: number;
+    contactAvailability: number;
+    researchCompleteness: number;
+  };
+  explanation: string[];
+}
+
+export interface AiBusinessIntelligence {
+  businessOverview: string;
+  servicesOffered: string[];
+  targetCustomers: string;
+  industry: string;
+  businessPositioning: string;
+  websiteQualityObservations: string[];
+  seoImprovementOpportunities: string[];
+  brandingOpportunities: string[];
+  socialMediaOpportunities: string[];
+  conversionImprovementOpportunities: string[];
+  potentialTechnicalIssues: string[];
+  suggestedPitch: string;
+  personalizedSalesApproach: string;
+  observedFacts: string[];
+  aiInferences: string[];
+  supportingSourceUrls: string[];
+  generatedAt: string;
+}
+
+export interface EnrichmentJob {
+  id: string;
+  leadId: string;
+  businessName: string;
+  status: ResearchStatus;
+  progressPercent: number;
+  currentStage: string;
+  stages: {
+    identityResolution: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    googleBusinessProfile: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    websiteResearch: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    contactExtraction: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    emailVerification: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    phoneVerification: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    aiIntelligence: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+    leadScoring: { status: 'pending' | 'running' | 'completed' | 'failed' | 'skipped'; error?: string; timestamp?: string };
+  };
+  createdAt: string;
+  updatedAt: string;
+  error?: string;
+  retryCount: number;
+}
+
+export interface LeadList {
+  id: string;
+  name: string;
+  description?: string;
+  leadIds: string[];
+  createdAt: string;
+  updatedAt: string;
+  color?: string;
+}
+
+export interface LeadActivity {
+  id: string;
+  leadId: string;
+  businessName: string;
+  type: 'discovered' | 'researched' | 'verified' | 'stage_changed' | 'email_sent' | 'note_added' | 'list_added' | 'archived';
+  description: string;
+  performedBy: string;
+  timestamp: string;
+  metadata?: Record<string, any>;
+}
+
+export interface OutreachCampaign {
+  id: string;
+  name: string;
+  status: 'draft' | 'active' | 'paused' | 'completed';
+  targetCategory: string;
+  targetCountry: string;
+  totalLeads: number;
+  sentCount: number;
+  openedCount: number;
+  repliedCount: number;
+  convertedCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ApiIntegrationItem {
+  id: string;
+  name: string;
+  category: 'search' | 'places' | 'email' | 'phone' | 'ai' | 'crawler' | 'source';
+  description: string;
+  isConfigured: boolean;
+  status: 'connected' | 'not_configured' | 'error' | 'rate_limited';
+  envKeyName: string;
+  lastSuccessfulRequest?: string;
+  lastError?: string;
+  requestsToday: number;
+  rateLimitMinute: number;
+  pricingTier: 'free' | 'freemium' | 'paid';
+  docsUrl: string;
+  availableFeatures: string[];
+}
+
 export interface Lead {
   id: string;
   title: string;
@@ -179,6 +387,21 @@ export interface Lead {
   assignedToUserId?: string;
   assignedToUserName?: string;
   assignedAt?: string;
+  // Enterprise Real-Data & Provenance Extensions
+  entityType?: EntityType;
+  sourceListingId?: string;
+  sourcePlatformUrl?: string;
+  sourceEvidenceList?: SourceEvidence[];
+  gmbStatus?: GoogleBusinessStatus;
+  gmbPlaceId?: string;
+  researchStatus?: ResearchStatus;
+  scoreBreakdown?: LeadScoreBreakdown;
+  aiIntelligence?: AiBusinessIntelligence;
+  isArchived?: boolean;
+  isSaved?: boolean;
+  listIds?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface PortalUser {
