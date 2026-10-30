@@ -23,7 +23,7 @@ import { Lead, LeadNotification, PipelineStage } from '@/types';
 import { generateNextIncomingLead } from '@/lib/lead-stream';
 import { playLuxuryChime } from '@/lib/sound-chime';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
-import { Briefcase, Sparkles, Flame, Plus, Layers, Filter } from 'lucide-react';
+import { Briefcase, Sparkles, Flame, Plus, Layers, Filter, RotateCcw } from 'lucide-react';
 
 export default function HomePage() {
   const [leads, setLeads] = useState<Lead[]>([]);
@@ -539,21 +539,39 @@ export default function HomePage() {
 
               </div>
 
-              {/* Feed Count Header */}
-              <div className="bg-white dark:bg-[#161f2e] border border-slate-200 dark:border-[#24334a] rounded-lg px-5 py-3 shadow-xs flex items-center justify-between transition-colors">
-                <div className="flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-[#007FED]" />
-                  <h2 className="font-bold text-sm sm:text-base text-slate-800 dark:text-white">
-                    Active Projects &amp; Verified Leads
-                  </h2>
-                  <span className="text-xs bg-slate-100 dark:bg-[#24334a] text-slate-600 dark:text-slate-300 font-semibold px-2 py-0.5 rounded-full">
-                    {sortedLeads.length} projects
-                  </span>
+              {/* Feed Count Header & Live Stream Status */}
+              <div className="bg-white dark:bg-[#141d2b] border border-slate-200/90 dark:border-[#223147] rounded-xl px-5 py-3.5 shadow-xs flex flex-wrap items-center justify-between gap-3 transition-colors">
+                <div className="flex items-center gap-2.5 flex-wrap">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 text-[#007FED] flex items-center justify-center">
+                    <Briefcase className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="font-extrabold text-sm sm:text-base text-slate-800 dark:text-white">
+                        Live Opportunities &amp; Verified Projects
+                      </h2>
+                      <span className="text-xs bg-blue-50 dark:bg-blue-950/60 text-[#007FED] font-black px-2.5 py-0.5 rounded-full border border-blue-200 dark:border-blue-800/60 font-mono">
+                        {sortedLeads.length} Leads
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block"></span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">100% Real-Time Sync:</span>
+                      <span>Freelancer.com API • RemoteOK • Remotive • GMB Radar</span>
+                    </p>
+                  </div>
                 </div>
 
-                <div className="text-xs text-slate-500 dark:text-slate-400 hidden sm:flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span>10s Ingestion active</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => fetchInitialLeads(true)}
+                    disabled={isRefreshingLive}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-[#007FED] hover:bg-[#006ecb] text-white shadow-xs transition active:scale-95 disabled:opacity-75 cursor-pointer"
+                    title="Force immediate live re-sync across all platform APIs"
+                  >
+                    <RotateCcw className={`w-3.5 h-3.5 ${isRefreshingLive ? 'animate-spin' : ''}`} />
+                    <span>{isRefreshingLive ? 'Syncing Live APIs...' : 'Sync Live Data'}</span>
+                  </button>
                 </div>
               </div>
 

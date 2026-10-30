@@ -109,9 +109,7 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
       if (onlyNoWebsite) {
         return livePlaces.filter((l) => !l.contact.hasWebsite);
       }
-      // Combine live places with verified directory
-      const verifiedGmb = INITIAL_LEADS.filter((l) => l.type === 'gmb');
-      return [...livePlaces, ...verifiedGmb];
+      return livePlaces;
     }
   } catch (err) {
     console.warn('Live places aggregator fallback:', err);

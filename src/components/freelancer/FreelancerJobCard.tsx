@@ -125,7 +125,7 @@ export default function FreelancerJobCard({
   };
 
   return (
-    <article className="freelancer-project-card p-5 bg-white dark:bg-[#161f2e] border border-slate-200 dark:border-[#24334a] rounded-lg hover:border-[#007FED] hover:shadow-md transition-all duration-200 flex flex-col justify-between gap-3.5 group">
+    <article className="freelancer-project-card p-5 sm:p-5.5 bg-white dark:bg-[#141d2b] border border-slate-200/90 dark:border-[#223147] rounded-xl hover:border-[#007FED] dark:hover:border-[#007FED] hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-200 flex flex-col justify-between gap-3.5 group">
       
       {/* 1. Origin Platform & Service Discipline Header Bar */}
       <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-slate-100 dark:border-[#24334a]">
@@ -402,8 +402,23 @@ export default function FreelancerJobCard({
         </div>
 
         {/* Right: Primary Action Buttons */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           
+          {/* Live External Platform Source Link */}
+          {lead.contact.website && (
+            <a
+              href={lead.contact.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="freelancer-btn-secondary text-xs sm:text-sm py-1.5 px-3 bg-slate-50 dark:bg-[#1a2638] border border-slate-200 dark:border-[#2e415d] hover:bg-slate-100 dark:hover:bg-[#24354d] text-slate-700 dark:text-slate-200 rounded-md font-semibold flex items-center gap-1.5 transition-all shadow-2xs"
+              title={`Open live project source listing on ${lead.platform}`}
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-[#007FED]" />
+              <span>Live Listing ↗</span>
+            </a>
+          )}
+
           {/* Inspect Job Scope & Brief (New Module requested by user!) */}
           <button
             onClick={() => onInspectJobScope ? onInspectJobScope(lead) : onOpenWebsiteModal(lead)}

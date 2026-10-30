@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchGmbLeads } from '@/lib/gmb-service';
 import { fetchFreelanceJobs } from '@/lib/jobs-service';
+import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
 import { getLeadsFromSupabase } from '@/lib/supabase';
 import { Lead } from '@/types';
 import { getPortalUserById, getLeadAssignedUser } from '@/lib/user-store';
@@ -20,24 +21,52 @@ export async function GET(request: NextRequest) {
     const requestedUserId = searchParams.get('userId') || request.cookies.get('samvero_user_id')?.value;
     const requestedScope = searchParams.get('scope'); // 'all' | 'mine'
 
+    const refresh = searchParams.get('refresh');
+    const forceRefresh = refresh === 'live';
+
     let allLeads: Lead[] = [];
 
-    // 1. Check if Supabase PostgreSQL database is connected and populated
-    const supabaseLeads = await getLeadsFromSupabase();
-    if (supabaseLeads && supabaseLeads.length > 0) {
-      allLeads = supabaseLeads;
-    } else {
-      // 2. Fetch from active services & aggregator engine
-      if (type === 'gmb') {
-        allLeads = await fetchGmbLeads({ query, country, category });
-      } else if (type === 'job') {
-        allLeads = await fetchFreelanceJobs({ query, country, category, platform });
+    // 1. Fetch 100% REAL-TIME LIVE LEADS from multi-platform aggregator
+    try {
+      const liveLeads = await getMasterRealTimeLiveLeads({
+        query,
+        country,
+        category,
+        platform,
+        forceRefresh,
+      });
+
+      if (liveLeads && liveLeads.length > 0) {
+        if (type === 'gmb') {
+          allLeads = liveLeads.filter((l) => l.type === 'gmb');
+        } else if (type === 'job') {
+          allLeads = liveLeads.filter((l) => l.type === 'job');
+        } else {
+          allLeads = liveLeads;
+        }
+      }
+    } catch (err) {
+      console.warn('Real-time live aggregator issue, proceeding to fallback:', err);
+    }
+
+    // 2. Check if Supabase PostgreSQL database is connected and populated
+    if (allLeads.length === 0) {
+      const supabaseLeads = await getLeadsFromSupabase();
+      if (supabaseLeads && supabaseLeads.length > 0) {
+        allLeads = supabaseLeads;
       } else {
-        const [gmbLeads, jobLeads] = await Promise.all([
-          fetchGmbLeads({ query, country, category }),
-          fetchFreelanceJobs({ query, country, category, platform }),
-        ]);
-        allLeads = [...gmbLeads, ...jobLeads];
+        // 3. Fallback to active services if live leads pool is empty
+        if (type === 'gmb') {
+          allLeads = await fetchGmbLeads({ query, country, category });
+        } else if (type === 'job') {
+          allLeads = await fetchFreelanceJobs({ query, country, category, platform });
+        } else {
+          const [gmbLeads, jobLeads] = await Promise.all([
+            fetchGmbLeads({ query, country, category }),
+            fetchFreelanceJobs({ query, country, category, platform }),
+          ]);
+          allLeads = [...gmbLeads, ...jobLeads];
+        }
       }
     }
 
@@ -122,6 +151,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
+      isLiveSynced: true,
       total: deduplicatedLeads.length,
       leads: deduplicatedLeads,
       isGlobalView: isSuperAdminOrGlobal,

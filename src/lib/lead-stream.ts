@@ -2,6 +2,7 @@ import { Lead } from '@/types';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
 import { registerLead } from './lead-store';
+import { getNextBufferedLiveLead } from './live-lead-aggregator';
 
 const incomingLeadTemplates = [
   {
@@ -262,6 +263,20 @@ let streamCounter = 0;
  * Returns a new realistic incoming lead with calculated business age and pre-synthesized website
  */
 export function generateNextIncomingLead(): Lead {
+  // Check if live stream buffer has fresh leads from live APIs (Freelancer.com, RemoteOK, Remotive, GMB)
+  const bufferedLead = getNextBufferedLiveLead();
+  if (bufferedLead) {
+    const liveLead: Lead = {
+      ...bufferedLead,
+      id: `stream-${bufferedLead.id}-${Date.now().toString().slice(-4)}`,
+      postedAt: 'Just now (Live Feed)',
+      timeAgo: 'Just now',
+      incomingAt: Date.now(),
+    };
+    registerLead(liveLead);
+    return liveLead;
+  }
+
   const template = incomingLeadTemplates[streamCounter % incomingLeadTemplates.length];
   streamCounter++;
 

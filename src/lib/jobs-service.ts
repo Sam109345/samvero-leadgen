@@ -58,7 +58,7 @@ export async function fetchFreelanceJobs(params: JobSearchParams): Promise<Lead[
   }
 
   if (liveJobs.length > 0) {
-    return [...liveJobs, ...jobs];
+    return liveJobs;
   }
 
   return jobs;
