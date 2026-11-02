@@ -28,7 +28,8 @@ import {
   FileSearch,
   Zap,
   Check,
-  UserCheck
+  UserCheck,
+  Bookmark,
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
@@ -36,6 +37,8 @@ import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface FreelancerJobCardProps {
   lead: Lead;
+  isSaved?: boolean;
+  onToggleSave?: (lead: Lead) => void;
   onOpenWebsiteModal: (lead: Lead) => void;
   onOpenEmailModal: (lead: Lead, previewUrl?: string) => void;
   onInspect: (lead: Lead) => void;
@@ -44,6 +47,8 @@ interface FreelancerJobCardProps {
 
 export default function FreelancerJobCard({
   lead,
+  isSaved = false,
+  onToggleSave,
   onOpenWebsiteModal,
   onOpenEmailModal,
   onInspect,
@@ -429,20 +434,51 @@ export default function FreelancerJobCard({
             <span>Inspect Scope &amp; Brief</span>
           </button>
 
+          {/* Save / Shortlist Lead Button */}
+          {onToggleSave && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleSave(lead);
+              }}
+              className={`freelancer-btn-secondary text-xs sm:text-sm py-1.5 px-3 rounded-md font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer ${
+                isSaved
+                  ? 'bg-purple-50 dark:bg-purple-950/60 border-purple-300 dark:border-purple-800 text-purple-700 dark:text-purple-300 font-bold'
+                  : 'bg-white dark:bg-[#1a2638] border-slate-300 dark:border-[#2e415d] text-slate-700 dark:text-slate-200 hover:bg-slate-50'
+              }`}
+              title={isSaved ? 'Remove from Saved Leads' : 'Save & Shortlist Lead'}
+            >
+              <Bookmark className={`w-3.5 h-3.5 ${isSaved ? 'fill-current text-purple-600 dark:text-purple-400' : 'text-slate-400'}`} />
+              <span>{isSaved ? 'Shortlisted' : 'Save Lead'}</span>
+            </button>
+          )}
+
+          {/* Inspect Details Drawer Button */}
+          <button
+            type="button"
+            onClick={() => onInspect(lead)}
+            className="freelancer-btn-secondary text-xs sm:text-sm py-1.5 px-3 bg-white dark:bg-[#1a2638] border border-slate-300 dark:border-[#2e415d] hover:bg-slate-50 dark:hover:bg-[#24354d] text-slate-700 dark:text-slate-200 rounded-md font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+            title="Open comprehensive 9-section lead detail drawer"
+          >
+            <Eye className="w-3.5 h-3.5 text-[#3B6FF5]" />
+            <span>Details</span>
+          </button>
+
           {/* Live Preview Deliverables */}
           <Link
             href={previewUrl}
             target="_blank"
             className="freelancer-btn-secondary text-xs sm:text-sm py-1.5 px-3 bg-white dark:bg-[#1a2638] border border-slate-300 dark:border-[#2e415d] hover:bg-slate-50 dark:hover:bg-[#24354d] text-slate-700 dark:text-slate-200 dark:hover:text-white rounded-md font-semibold flex items-center gap-1.5 transition-all shadow-xs"
           >
-            <Eye className="w-3.5 h-3.5 text-[#007FED] dark:text-[#38bdf8]" />
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
             <span>Preview Deliverables</span>
           </Link>
 
           {/* Bid on Project / Pitch Client */}
           <button
             onClick={() => onOpenWebsiteModal(lead)}
-            className="freelancer-btn-primary text-xs sm:text-sm py-1.5 px-4 bg-[#007FED] hover:bg-[#0067c6] text-white rounded-md font-bold shadow-sm transition-all flex items-center gap-1.5 active:scale-95"
+            className="freelancer-btn-primary text-xs sm:text-sm py-1.5 px-4 bg-[#3B6FF5] hover:bg-blue-600 text-white rounded-md font-bold shadow-sm transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer"
           >
             <Send className="w-3.5 h-3.5" />
             <span>Bid on Project</span>

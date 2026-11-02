@@ -358,6 +358,26 @@
   ],
   "applications": [
     {
+      "id": "app-1793372220252-4hk7",
+      "referenceNumber": "APP-2026-2077",
+      "fullName": "David Sterling",
+      "businessName": "Sterling Growth Capital",
+      "email": "corp_1793372220076@samvero-test.com",
+      "whatsapp": "+14155550199",
+      "country": "US",
+      "companyWebsite": "https://sterlinggrowth.com",
+      "planId": "plan_standard",
+      "planName": "Standard",
+      "billingDuration": "monthly",
+      "serviceRequirements": "High-intent B2B outreach for enterprise technology providers.",
+      "additionalMessage": "Prefer wire transfer settlement via JPMorgan Chase escrow.",
+      "status": "approved",
+      "createdAt": "2026-10-30T14:57:00.252Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z",
+      "customerId": "user-1793372221148-dmnc",
+      "processedBy": "Sameer (Executive Admin)"
+    },
+    {
       "id": "app-1793366991796-z507",
       "referenceNumber": "APP-2026-6428",
       "fullName": "David Sterling",
@@ -447,15 +467,15 @@
       "country": "Pakistan",
       "role": "super_admin",
       "status": "active",
-      "passwordHash": "09103f23286dc531384fb6fedb97749047ba1a6c01f1c4da93c7cbd21bb54a9c3c005cd27b3353d64b14ccbcf794480455e56908ee3901c294a704fb556e4f22",
-      "mustChangePassword": true,
+      "passwordHash": "8ee81802904c82a9b8173e69f85f38066ba4f02eccfe1467df35e415592d03df45f3426b1f0369801b00f67607a09cc92faf26c5a910a74e87914890afddb281",
+      "mustChangePassword": false,
       "createdAt": "2026-10-30T13:19:36.564Z",
       "updatedAt": "2026-10-30T13:19:36.564Z"
     },
     {
       "id": "user-client-101",
       "email": "client@gmail.com",
-      "name": "Alexander Wright",
+      "name": "Customer Client",
       "businessName": "Apex Digital Growth LLC",
       "phone": "+1 (415) 890-2341",
       "whatsapp": "+14158902341",
@@ -463,8 +483,8 @@
       "companyWebsite": "https://apexdigitalgrowth.com",
       "role": "customer",
       "status": "active",
-      "passwordHash": "35fe0765188b823b3f43f62a57c6ec9366a510e4748c0f7d1d355d4226cad39e6c7bcf946cafeb0278c3fdb2d48cbe2056a159278cf50930a1e742e4ee7d0c0c",
-      "mustChangePassword": true,
+      "passwordHash": "018ad6f25ecc5a4f9d7ca924a9870d4cdb8c70e198e17353891c459d471e9d3cc04d8e8a729c77e8802b6ae79a709856afebd67ab0db9b3134f1acb32b4d1ed7",
+      "mustChangePassword": false,
       "createdAt": "2026-10-30T13:19:36.639Z",
       "updatedAt": "2026-10-30T13:19:36.639Z"
     },
@@ -539,6 +559,24 @@
       "resetTokenExpires": "2026-11-06T13:29:53.173Z",
       "createdAt": "2026-10-30T13:29:53.173Z",
       "updatedAt": "2026-10-30T13:29:55.903Z"
+    },
+    {
+      "id": "user-1793372221148-dmnc",
+      "email": "corp_1793372220076@samvero-test.com",
+      "name": "David Sterling",
+      "businessName": "Sterling Growth Capital",
+      "phone": "+14155550199",
+      "whatsapp": "+14155550199",
+      "country": "US",
+      "companyWebsite": "https://sterlinggrowth.com",
+      "role": "customer",
+      "status": "active",
+      "passwordHash": "9fd74fe7bc06da5affbb768ea852ed586ccf6910da643d9bed291caf9920b46fe1574b856a485e44a0ca47f93d51512b6fa6f5e1d942948b98a4521d8e76d4f5",
+      "mustChangePassword": true,
+      "resetToken": "2a7f78dea760eb1b39d6dc6bcf7d0dc09db96e3c5f95fe44",
+      "resetTokenExpires": "2026-11-06T14:57:01.220Z",
+      "createdAt": "2026-10-30T14:57:01.220Z",
+      "updatedAt": "2026-10-30T14:57:01.220Z"
     }
   ],
   "subscriptions": [
@@ -932,6 +970,82 @@
       "createdBy": "Sameer (Executive Admin)",
       "createdAt": "2026-10-30T13:29:53.173Z",
       "updatedAt": "2026-10-30T13:29:56.418Z"
+    },
+    {
+      "id": "sub-1793372221220-zunc",
+      "customerId": "user-1793372221148-dmnc",
+      "customerEmail": "corp_1793372220076@samvero-test.com",
+      "customerName": "David Sterling",
+      "planId": "plan_standard",
+      "planName": "Standard",
+      "billingCycle": "monthly",
+      "startDate": "2026-10-30T14:57:01.148Z",
+      "expiryDate": "2026-11-29T14:57:01.148Z",
+      "gracePeriodDays": 3,
+      "status": "active",
+      "leadQuota": 2500,
+      "leadsConsumed": 10,
+      "renewalStatus": "none",
+      "entitlements": {
+        "id": "plan_standard",
+        "name": "Standard",
+        "slug": "standard",
+        "tagline": "High-Growth Commercial Teams",
+        "description": "Our most popular full-scale lead acquisition engine with deep AI proposal blueprints and high quota.",
+        "prices": {
+          "monthly": 199,
+          "quarterly": 539,
+          "half_yearly": 999,
+          "annual": 1799
+        },
+        "maxLeadsQuota": 2500,
+        "allowedSources": [
+          "Google My Business",
+          "LinkedIn",
+          "Upwork",
+          "Fiverr",
+          "PeoplePerHour",
+          "Bark"
+        ],
+        "allowedIndustries": [
+          "Web Development",
+          "WordPress Development",
+          "Meta Ads & Marketing",
+          "Social Media Management",
+          "Digital Marketing",
+          "Local Business",
+          "Graphic Design",
+          "Mobile App"
+        ],
+        "allowedCountries": [
+          "US",
+          "UK",
+          "UAE",
+          "Pakistan",
+          "Global"
+        ],
+        "hasBusinessResearch": true,
+        "hasGmbResearch": true,
+        "hasEmailDiscovery": true,
+        "hasPhoneDiscovery": true,
+        "hasEmailVerification": true,
+        "hasPhoneValidation": true,
+        "hasCsvExport": true,
+        "hasAdvancedAnalytics": true,
+        "hasAiAnalysis": true,
+        "hasBulkResearch": true,
+        "concurrentResearchJobs": 15,
+        "prioritySupport": true,
+        "isFeatured": true,
+        "isActive": true,
+        "customDurationSupported": false,
+        "sortOrder": 3,
+        "updatedAt": "2026-10-30T13:19:36.472Z"
+      },
+      "applicationReference": "APP-2026-2077",
+      "createdBy": "Sameer (Executive Admin)",
+      "createdAt": "2026-10-30T14:57:01.220Z",
+      "updatedAt": "2026-10-30T14:57:01.220Z"
     }
   ],
   "subscriptionHistory": [
@@ -1039,6 +1153,21 @@
       "reason": "Automated test expiry simulation",
       "performedBy": "Sameer (Executive Admin)",
       "timestamp": "2026-10-30T13:29:56.419Z"
+    },
+    {
+      "id": "hist-1793372221221",
+      "subscriptionId": "sub-1793372221220-zunc",
+      "customerId": "user-1793372221148-dmnc",
+      "action": "created",
+      "newState": {
+        "planName": "Standard",
+        "billingCycle": "monthly",
+        "leadQuota": 2500,
+        "expiryDate": "2026-11-29T14:57:01.148Z"
+      },
+      "reason": "Initial customer onboarding from application APP-2026-2077. Payment confirmed.",
+      "performedBy": "Sameer (Executive Admin)",
+      "timestamp": "2026-10-30T14:57:01.221Z"
     }
   ],
   "payments": [
@@ -1196,6 +1325,29 @@
       "confirmedAt": "2026-10-30T13:29:55.817Z",
       "createdAt": "2026-10-30T13:29:55.817Z",
       "updatedAt": "2026-10-30T13:29:55.817Z"
+    },
+    {
+      "id": "pay-1793372221221-0z4z",
+      "applicationId": "app-1793372220252-4hk7",
+      "applicationReference": "APP-2026-2077",
+      "customerId": "user-1793372221148-dmnc",
+      "customerName": "David Sterling",
+      "customerEmail": "corp_1793372220076@samvero-test.com",
+      "planId": "plan_standard",
+      "planName": "Standard",
+      "billingDuration": "monthly",
+      "amountDue": 199,
+      "amountReceived": 199,
+      "currency": "USD",
+      "paymentMethod": "Bank Wire Transfer",
+      "paymentReference": "WIRE-1793372221147",
+      "paymentDate": "2026-10-30T14:57:01.221Z",
+      "paymentEvidenceNote": "Manual payment verified by admin desk.",
+      "status": "confirmed",
+      "confirmedBy": "Sameer (Executive Admin)",
+      "confirmedAt": "2026-10-30T14:57:01.221Z",
+      "createdAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
     }
   ],
   "renewals": [
@@ -2510,9 +2662,286 @@
       ],
       "consumedAt": "2026-10-30T13:29:53.174Z",
       "updatedAt": "2026-10-30T13:29:53.174Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-pk-gmb-101",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "pk-gmb-101",
+      "businessName": "Shabbir Tiles & Ceramics Limited (Stile)",
+      "category": "Local Business",
+      "country": "Pakistan",
+      "city": "Karachi",
+      "platform": "Google My Business",
+      "contact": {
+        "email": "info@stile.com.pk",
+        "phone": "+92 21 111 000 375",
+        "whatsapp": "9221111000375",
+        "hasWebsite": true,
+        "website": "https://stile.com.pk",
+        "gmbUrl": "https://maps.google.com/?q=Shabbir+Tiles+Karachi",
+        "contactPerson": "Syed Masood Ali (Marketing Head)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-pk-gmb-102",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "pk-gmb-102",
+      "businessName": "Al-Fatah Department Store",
+      "category": "Local Business",
+      "country": "Pakistan",
+      "city": "Lahore",
+      "platform": "Google My Business",
+      "contact": {
+        "email": "info@alfatah.pk",
+        "phone": "+92 42 111 253 282",
+        "whatsapp": "9242111253282",
+        "hasWebsite": true,
+        "website": "https://alfatah.pk",
+        "gmbUrl": "https://maps.google.com/?q=Al+Fatah+Gulberg+Lahore",
+        "contactPerson": "Tariq Mehmood (General Manager)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-pk-gmb-103",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "pk-gmb-103",
+      "businessName": "RIAA Barker Gillette",
+      "category": "Local Business",
+      "country": "Pakistan",
+      "city": "Islamabad",
+      "platform": "Google My Business",
+      "contact": {
+        "email": "islamabad@riaabg.com",
+        "phone": "+92 51 281 4050",
+        "whatsapp": "92512814050",
+        "hasWebsite": true,
+        "website": "https://riaabarkergillette.com",
+        "gmbUrl": "https://maps.google.com/?q=RIAA+Barker+Gillette+Islamabad",
+        "contactPerson": "Bilal Shaukat (Partner)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-pk-job-104",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "pk-job-104",
+      "businessName": "Daraz Pakistan",
+      "category": "Web Development",
+      "country": "Pakistan",
+      "city": "Karachi",
+      "platform": "Upwork",
+      "contact": {
+        "email": "customer.pk@care.daraz.com",
+        "phone": "+92 21 111 132 729",
+        "whatsapp": "9221111132729",
+        "hasWebsite": true,
+        "website": "https://daraz.pk",
+        "contactPerson": "Waleed Malik (Engineering Lead)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-pk-job-105",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "pk-job-105",
+      "businessName": "Sapphire Online Apparel & Textiles",
+      "category": "Graphic Design",
+      "country": "Pakistan",
+      "city": "Lahore",
+      "platform": "Bark",
+      "contact": {
+        "email": "wecare@sapphireonline.pk",
+        "phone": "+92 42 111 738 245",
+        "whatsapp": "9242111738245",
+        "hasWebsite": true,
+        "website": "https://sapphireonline.pk",
+        "contactPerson": "Amna & Bilal (Brand Leads)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-us-gmb-201",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "us-gmb-201",
+      "businessName": "Austin Dental Care",
+      "category": "Local Business",
+      "country": "US",
+      "city": "Austin",
+      "platform": "Google My Business",
+      "contact": {
+        "email": "info@austindentalcare.com",
+        "phone": "+1 512 377 9780",
+        "whatsapp": "15123779780",
+        "hasWebsite": true,
+        "website": "https://austindentalcare.com",
+        "gmbUrl": "https://maps.google.com/?q=Austin+TX+Austin+Dental+Care",
+        "contactPerson": "Dr. Raymond Harris (Lead Practitioner)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-us-job-202",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "us-job-202",
+      "businessName": "Stripe Inc",
+      "category": "Web Development",
+      "country": "US",
+      "city": "San Francisco",
+      "platform": "Upwork",
+      "contact": {
+        "email": "media@stripe.com",
+        "phone": "+1 888 926 2289",
+        "whatsapp": "18889262289",
+        "hasWebsite": true,
+        "website": "https://stripe.com",
+        "contactPerson": "Elena Rostova (Head of Growth)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-us-job-203",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "us-job-203",
+      "businessName": "HubSpot Inc",
+      "category": "Web Development",
+      "country": "US",
+      "city": "Cambridge",
+      "platform": "LinkedIn",
+      "contact": {
+        "email": "info@hubspot.com",
+        "phone": "+1 888 482 7768",
+        "whatsapp": "18884827768",
+        "hasWebsite": true,
+        "website": "https://hubspot.com",
+        "contactPerson": "Marcus Vance (Solutions Director)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-us-gmb-204",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "us-gmb-204",
+      "businessName": "Interstate Roofing Denver",
+      "category": "Local Business",
+      "country": "US",
+      "city": "Denver",
+      "platform": "Google My Business",
+      "contact": {
+        "email": "info@interstateroof.com",
+        "phone": "+1 303 763 9114",
+        "whatsapp": "13037639114",
+        "hasWebsite": true,
+        "website": "https://interstateroof.com",
+        "gmbUrl": "https://maps.google.com/?q=Interstate+Roofing+Denver",
+        "contactPerson": "Brad Cooper (General Contractor)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "clead-user-1793372221148-dmnc-uk-gmb-301",
+      "customerId": "user-1793372221148-dmnc",
+      "leadId": "uk-gmb-301",
+      "businessName": "Smilepod London",
+      "category": "Local Business",
+      "country": "UK",
+      "city": "London",
+      "platform": "Google My Business",
+      "contact": {
+        "email": "info@smilepod.co.uk",
+        "phone": "+44 20 7836 6866",
+        "whatsapp": "442078366866",
+        "hasWebsite": true,
+        "website": "https://smilepod.co.uk",
+        "gmbUrl": "https://maps.google.com/?q=Smilepod+Covent+Garden+London",
+        "contactPerson": "Dr. Charlotte Bell (Clinical Director)"
+      },
+      "status": "saved",
+      "tags": [
+        "Initial Plan Match"
+      ],
+      "consumedAt": "2026-10-30T14:57:01.221Z",
+      "updatedAt": "2026-10-30T14:57:01.221Z"
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1793372221224-l9bd",
+      "recipientRole": "admin",
+      "type": "payment_confirmed",
+      "title": "Customer Account Activated: David Sterling",
+      "message": "Customer David Sterling (corp_1793372220076@samvero-test.com) was provisioned with package \"Standard\" and expiry 11/29/2026.",
+      "link": "/admin/users",
+      "isRead": false,
+      "createdAt": "2026-10-30T14:57:01.224Z"
+    },
+    {
+      "id": "notif-1793372221223-5ixx",
+      "recipientRole": "customer",
+      "recipientUserId": "user-1793372221148-dmnc",
+      "type": "payment_confirmed",
+      "title": "Welcome to SAMVERO — Account Activated",
+      "message": "Your payment was confirmed and your Standard subscription is now active! You have 2500 leads allocated until 11/29/2026.",
+      "link": "/app/dashboard",
+      "isRead": false,
+      "createdAt": "2026-10-30T14:57:01.223Z"
+    },
+    {
+      "id": "notif-1793372220253-elii",
+      "recipientRole": "admin",
+      "type": "new_application",
+      "title": "New SaaS Application: David Sterling",
+      "message": "David Sterling (corp_1793372220076@samvero-test.com) submitted application APP-2026-2077 for package: Standard (monthly).",
+      "link": "/admin/applications",
+      "isRead": false,
+      "createdAt": "2026-10-30T14:57:00.253Z"
+    },
     {
       "id": "notif-1793366995904-em2q",
       "recipientRole": "customer",

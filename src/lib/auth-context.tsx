@@ -3,14 +3,14 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 export interface AuthUser {
-  role: 'admin' | 'employer';
+  role: 'admin' | 'employer' | 'customer' | 'super_admin' | 'user';
   userName: string;
   sessionId: string;
   currentIp: string;
 }
 
 interface AuthContextType {
-  role: 'admin' | 'employer' | null;
+  role: 'admin' | 'employer' | 'customer' | 'super_admin' | 'user' | null;
   userName: string;
   sessionId: string;
   currentIp: string;
@@ -32,7 +32,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [role, setRole] = useState<'admin' | 'employer' | null>(null);
+  const [role, setRole] = useState<'admin' | 'employer' | 'customer' | 'super_admin' | 'user' | null>(null);
   const [userName, setUserName] = useState('');
   const [sessionId, setSessionId] = useState('');
   const [currentIp, setCurrentIp] = useState('');
@@ -45,7 +45,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (data.authenticated && data.role) {
         setRole(data.role);
-        setUserName(data.userName || (data.role === 'admin' ? 'Sameer (Executive Admin)' : 'Employer Staff'));
+        setUserName(
+          data.userName ||
+            (data.role === 'admin' || data.role === 'super_admin'
+              ? 'Sameer (Executive Admin)'
+              : data.role === 'customer'
+              ? 'Customer Client'
+              : 'Employer Staff')
+        );
         setSessionId(data.sessionId || '');
         setCurrentIp(data.currentIp || '127.0.0.1');
         setIsAuthenticated(true);
@@ -53,12 +60,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         localStorage.setItem('samvero_portal_role', data.role);
       } else {
         // Fallback to local storage if network glitch
-        const storedRole = localStorage.getItem('samvero_portal_role') as 'admin' | 'employer' | null;
+        const storedRole = localStorage.getItem('samvero_portal_role') as any;
         const storedAuth = localStorage.getItem('samvero_portal_session');
 
         if (storedAuth === 'active' && storedRole) {
           setRole(storedRole);
-          setUserName(storedRole === 'admin' ? 'Sameer (Executive Admin)' : 'Employer Staff');
+          setUserName(
+            storedRole === 'admin' || storedRole === 'super_admin'
+              ? 'Sameer (Executive Admin)'
+              : storedRole === 'customer'
+              ? 'Customer Client'
+              : 'Employer Staff'
+          );
           setIsAuthenticated(true);
         } else {
           setIsAuthenticated(false);

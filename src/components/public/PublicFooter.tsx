@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ShieldCheck, Mail, Globe, Lock, ArrowUpRight } from 'lucide-react';
+import SamveroBrandLogo from '@/components/SamveroBrandLogo';
 
 export default function PublicFooter() {
   return (
@@ -10,12 +11,7 @@ export default function PublicFooter() {
           {/* Column 1: Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
-                <span className="text-black font-black text-base tracking-wider">S</span>
-              </div>
-              <span className="text-xl font-black tracking-tight text-white font-serif">
-                SAMVERO
-              </span>
+              <SamveroBrandLogo size="md" theme="dark" tagline={false} />
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               Discover real business opportunities, research companies, access verified contact information and manage your entire prospecting workflow from one intelligent platform.
@@ -95,11 +91,11 @@ export default function PublicFooter() {
             </p>
             <div className="space-y-2 text-xs">
               <a
-                href="mailto:support@samvero.com"
+                href="mailto:samverodigital@gmail.com"
                 className="flex items-center gap-2 text-slate-300 hover:text-white transition"
               >
                 <Mail className="w-3.5 h-3.5 text-amber-400" />
-                <span>support@samvero.com</span>
+                <span>samverodigital@gmail.com</span>
               </a>
               <div className="flex items-center gap-2 text-slate-400">
                 <Globe className="w-3.5 h-3.5 text-slate-500" />

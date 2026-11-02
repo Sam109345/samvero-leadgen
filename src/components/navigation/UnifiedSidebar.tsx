@@ -1,40 +1,75 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import {
   LayoutDashboard,
-  Users,
   Compass,
-  FolderKanban,
+  Flame,
+  CheckCircle2,
+  Layers,
+  ShieldAlert,
   Bookmark,
+  MessageSquare,
+  Send,
+  History,
+  Briefcase,
+  BarChart3,
+  DownloadCloud,
+  CreditCard,
+  Settings,
+  ShieldCheck,
+  Users,
+  Database,
+  Cpu,
+  ChevronLeft,
+  ChevronRight,
+  FolderKanban,
   Search,
   Building2,
   MailCheck,
   PhoneCall,
   ListTree,
   Star,
-  Send,
-  MessageSquare,
-  Kanban,
-  BarChart3,
-  History,
-  DownloadCloud,
-  Network,
-  Cpu,
-  Settings,
-  User,
-  ChevronLeft,
-  ChevronRight,
-  ShieldAlert,
   Sparkles,
+  Network,
+  User,
+  Kanban,
 } from 'lucide-react';
 import SamveroBrandLogo from '@/components/SamveroBrandLogo';
+import { useAuth } from '@/lib/auth-context';
 
 export type NavViewId =
   | 'dashboard'
-  | 'all-leads'
   | 'discover'
+  | 'hot-leads'
+  | 'qualified-leads'
+  | 'extra-leads'
+  | 'needs-verification'
+  | 'saved-leads'
+  | 'messages'
+  | 'outreach'
+  | 'follow-ups'
+  | 'campaigns'
+  | 'analytics'
+  | 'reports'
+  | 'subscription'
+  | 'settings'
+  | 'admin-dashboard'
+  | 'user-management'
+  | 'subscription-management'
+  | 'lead-management'
+  | 'system-settings'
+  // Legacy Aliases
+  | 'all-leads'
+  | 'approached-clients'
+  | 'waiting-response'
+  | 'interested-leads'
+  | 'not-interested'
+  | 'wasted-leads'
+  | 'converted-leads'
+  | 'closed-leads'
+  | 'email-templates'
   | 'lists'
   | 'saved'
   | 'research'
@@ -43,15 +78,12 @@ export type NavViewId =
   | 'verify-phone'
   | 'queue'
   | 'qualified'
-  | 'campaigns'
   | 'responses'
   | 'pipeline'
-  | 'analytics'
   | 'activity-logs'
   | 'export'
   | 'integrations'
   | 'api-config'
-  | 'settings'
   | 'profile'
   | 'feed'
   | 'kanban'
@@ -65,21 +97,27 @@ interface UnifiedSidebarProps {
   onToggleCollapse: () => void;
   counts?: {
     totalLeads?: number;
-    queueCount?: number;
-    unreadResponses?: number;
+    hotCount?: number;
     qualifiedCount?: number;
+    extraCount?: number;
+    needsVerificationCount?: number;
+    savedCount?: number;
+    unreadResponses?: number;
+    followupCount?: number;
+    queueCount?: number;
   };
 }
 
 interface NavSection {
   title: string;
+  adminOnly?: boolean;
   items: Array<{
     id: NavViewId;
     label: string;
     path: string;
     icon: React.ElementType;
     badge?: number;
-    highlight?: 'blue' | 'emerald' | 'amber' | 'purple';
+    highlight?: 'blue' | 'emerald' | 'amber' | 'purple' | 'rose';
   }>;
 }
 
@@ -90,123 +128,165 @@ export default function UnifiedSidebar({
   onToggleCollapse,
   counts = {},
 }: UnifiedSidebarProps) {
+  const { role } = useAuth();
+  const isAdmin = role === 'admin' || role === 'super_admin';
+
+  // Persistent collapse preference
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('samvero_sidebar_collapsed');
+      if (stored !== null) {
+        const isCollapsed = stored === 'true';
+        if (isCollapsed !== collapsed) {
+          onToggleCollapse();
+        }
+      }
+    } catch (e) {}
+  }, []);
+
+  const handleToggle = () => {
+    const next = !collapsed;
+    try {
+      localStorage.setItem('samvero_sidebar_collapsed', String(next));
+    } catch (e) {}
+    onToggleCollapse();
+  };
+
   const sections: NavSection[] = [
     {
       title: 'WORKSPACE',
       items: [
         { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-        { id: 'all-leads', label: 'All Leads', path: '/leads', icon: Users, badge: counts.totalLeads },
-        { id: 'discover', label: 'Discover Leads', path: '/discover', icon: Compass, highlight: 'blue' },
-        { id: 'lists', label: 'Lead Lists', path: '/lists', icon: FolderKanban },
-        { id: 'saved', label: 'Saved Leads', path: '/saved', icon: Bookmark },
+        { id: 'discover', label: 'Discover Leads', path: '/discover', icon: Compass, badge: counts.totalLeads, highlight: 'blue' },
+        { id: 'hot-leads', label: 'Hot Leads', path: '/hot-leads', icon: Flame, badge: counts.hotCount, highlight: 'rose' },
+        { id: 'qualified-leads', label: 'Qualified Leads', path: '/qualified', icon: CheckCircle2, badge: counts.qualifiedCount, highlight: 'emerald' },
+        { id: 'extra-leads', label: 'Extra Leads', path: '/extra-leads', icon: Layers, badge: counts.extraCount },
+        { id: 'needs-verification', label: 'Needs Verification', path: '/needs-verification', icon: ShieldAlert, badge: counts.needsVerificationCount, highlight: 'amber' },
+        { id: 'saved-leads', label: 'Saved Leads', path: '/saved', icon: Bookmark, badge: counts.savedCount, highlight: 'purple' },
       ],
     },
     {
-      title: 'RESEARCH',
+      title: 'COMMUNICATION',
       items: [
-        { id: 'research', label: 'Business Research', path: '/research', icon: Search },
-        { id: 'gmb', label: 'Google Business Profiles', path: '/gmb', icon: Building2 },
-        { id: 'verify-email', label: 'Email Verification', path: '/verify-email', icon: MailCheck },
-        { id: 'verify-phone', label: 'Phone Verification', path: '/verify-phone', icon: PhoneCall },
-        { id: 'queue', label: 'Data Verification Queue', path: '/queue', icon: ListTree, badge: counts.queueCount, highlight: 'amber' },
+        { id: 'messages', label: 'Messages', path: '/messages', icon: MessageSquare, badge: counts.unreadResponses, highlight: 'purple' },
+        { id: 'outreach', label: 'Outreach', path: '/outreach', icon: Send, highlight: 'blue' },
+        { id: 'follow-ups', label: 'Follow-ups', path: '/follow-ups', icon: History, badge: counts.followupCount, highlight: 'amber' },
+        { id: 'campaigns', label: 'Campaigns', path: '/campaigns', icon: Briefcase },
       ],
     },
     {
-      title: 'SALES',
-      items: [
-        { id: 'qualified', label: 'Qualified Leads', path: '/qualified', icon: Star, badge: counts.qualifiedCount, highlight: 'emerald' },
-        { id: 'campaigns', label: 'Outreach Campaigns', path: '/campaigns', icon: Send },
-        { id: 'responses', label: 'Responses', path: '/responses', icon: MessageSquare, badge: counts.unreadResponses, highlight: 'purple' },
-        { id: 'pipeline', label: 'Sales Pipeline', path: '/pipeline', icon: Kanban },
-      ],
-    },
-    {
-      title: 'ANALYTICS',
+      title: 'MANAGEMENT',
       items: [
         { id: 'analytics', label: 'Analytics', path: '/analytics', icon: BarChart3 },
-        { id: 'activity-logs', label: 'Activity Logs', path: '/activity-logs', icon: History },
-        { id: 'export', label: 'Export Center', path: '/export', icon: DownloadCloud },
-      ],
-    },
-    {
-      title: 'SYSTEM',
-      items: [
-        { id: 'integrations', label: 'Integrations', path: '/integrations', icon: Network },
-        { id: 'api-config', label: 'API Configuration', path: '/api-config', icon: Cpu },
+        { id: 'reports', label: 'Reports', path: '/export', icon: DownloadCloud },
+        { id: 'subscription', label: 'Subscription', path: '/pricing', icon: CreditCard, highlight: 'emerald' },
         { id: 'settings', label: 'Settings', path: '/settings', icon: Settings },
-        { id: 'profile', label: 'Profile', path: '/profile', icon: User },
       ],
     },
+    // ADMIN ONLY section - strictly hidden from normal users
+    ...(isAdmin
+      ? [
+          {
+            title: 'ADMIN ONLY',
+            adminOnly: true,
+            items: [
+              { id: 'admin-dashboard' as NavViewId, label: 'Admin Dashboard', path: '/admin/dashboard', icon: ShieldCheck, highlight: 'amber' as const },
+              { id: 'user-management' as NavViewId, label: 'User Management', path: '/admin/users', icon: Users },
+              { id: 'subscription-management' as NavViewId, label: 'Subscription Management', path: '/admin/subscriptions', icon: CreditCard },
+              { id: 'lead-management' as NavViewId, label: 'Lead Management', path: '/admin/leads', icon: Database },
+              { id: 'system-settings' as NavViewId, label: 'System Settings', path: '/admin/settings', icon: Cpu },
+            ],
+          },
+        ]
+      : []),
   ];
 
-  // Helper to normalize view matches (e.g. 'feed' maps to 'all-leads', 'inbox' to 'responses', 'kanban' to 'pipeline')
+  // View matching helper
   const isItemActive = (itemId: NavViewId) => {
     if (activeView === itemId) return true;
-    if (itemId === 'all-leads' && activeView === 'feed') return true;
-    if (itemId === 'pipeline' && activeView === 'kanban') return true;
-    if (itemId === 'responses' && activeView === 'inbox') return true;
+    if (itemId === 'dashboard' && (activeView === 'feed' || activeView === 'all-leads')) return true;
+    if (itemId === 'discover' && activeView === 'discover') return true;
+    if (itemId === 'hot-leads' && activeView === 'hot-leads') return true;
+    if (itemId === 'qualified-leads' && (activeView === 'qualified-leads' || activeView === 'qualified')) return true;
+    if (itemId === 'saved-leads' && (activeView === 'saved-leads' || activeView === 'saved')) return true;
+    if (itemId === 'messages' && (activeView === 'messages' || activeView === 'responses' || activeView === 'inbox')) return true;
+    if (itemId === 'outreach' && (activeView === 'outreach' || activeView === 'approached-clients')) return true;
+    if (itemId === 'reports' && (activeView === 'reports' || activeView === 'export' || activeView === 'activity-logs')) return true;
     return false;
   };
 
   return (
     <aside
-      className={`relative h-full flex flex-col bg-white dark:bg-[#0c1524] border-r border-slate-200 dark:border-slate-800 transition-all duration-200 select-none ${
+      className={`relative h-full flex flex-col bg-white dark:bg-[#111c2e] border-r border-slate-200 dark:border-slate-800/80 transition-all duration-300 select-none z-30 shrink-0 ${
         collapsed ? 'w-18' : 'w-64'
       }`}
     >
-      {/* Top Branding */}
-      <div className="h-16 flex items-center justify-between px-4 border-b border-slate-200 dark:border-slate-800 shrink-0">
+      {/* Top Header with Logo & Toggle Button */}
+      <div className="h-16 flex items-center justify-between px-3.5 border-b border-slate-200 dark:border-slate-800/80 shrink-0">
         <button
           onClick={() => onSelectView('dashboard')}
-          className="flex items-center gap-3 overflow-hidden focus:outline-none"
+          className="flex items-center gap-2.5 overflow-hidden focus:outline-none"
           title="SAMVERO Platform"
         >
           <SamveroBrandLogo size={collapsed ? 'sm' : 'md'} showText={!collapsed} tagline={false} />
         </button>
+
         <button
-          onClick={onToggleCollapse}
-          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition hidden lg:flex"
+          onClick={handleToggle}
+          className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition flex cursor-pointer"
           title={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          aria-label={collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
           {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
         </button>
       </div>
 
-      {/* Nav Items List */}
-      <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
+      {/* Nav List */}
+      <div className="flex-1 overflow-y-auto px-2.5 py-4 space-y-5 scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-700">
         {sections.map((sec) => (
           <div key={sec.title} className="space-y-1">
-            {!collapsed && (
-              <div className="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
-                {sec.title}
+            {!collapsed ? (
+              <div className="px-3 text-[10px] font-black uppercase tracking-wider text-slate-400 dark:text-slate-400 mb-1.5 flex items-center justify-between">
+                <span>{sec.title}</span>
+                {sec.adminOnly && (
+                  <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/20">
+                    PROTECTED
+                  </span>
+                )}
               </div>
+            ) : (
+              <div className="my-2 border-t border-slate-200/60 dark:border-slate-800/60" />
             )}
+
             {sec.items.map((item) => {
               const Icon = item.icon;
               const active = isItemActive(item.id);
 
               return (
-                <Link
+                <button
                   key={item.id}
-                  href={item.path}
-                  onClick={(e) => {
-                    // Update state immediately without unmounting layout
-                    onSelectView(item.id);
-                    if (typeof window !== 'undefined') {
-                      window.history.pushState(null, '', item.path);
-                    }
-                  }}
-                  title={collapsed ? `${item.label}` : undefined}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all group ${
+                  onClick={() => onSelectView(item.id)}
+                  title={collapsed ? item.label : undefined}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all group cursor-pointer relative ${
                     active
-                      ? 'bg-blue-600 text-white shadow-xs font-bold'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/60'
+                      ? 'bg-[#3B6FF5] text-white shadow-xs font-bold'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/70'
                   }`}
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <Icon
                       className={`w-4 h-4 shrink-0 transition-transform group-hover:scale-110 ${
-                        active ? 'text-white' : 'text-slate-400 dark:text-slate-400'
+                        active
+                          ? 'text-white'
+                          : item.highlight === 'rose'
+                          ? 'text-rose-500'
+                          : item.highlight === 'emerald'
+                          ? 'text-emerald-500'
+                          : item.highlight === 'amber'
+                          ? 'text-amber-500'
+                          : item.highlight === 'blue'
+                          ? 'text-[#3B6FF5]'
+                          : 'text-slate-400 dark:text-slate-400'
                       }`}
                     />
                     {!collapsed && <span className="truncate">{item.label}</span>}
@@ -217,6 +297,8 @@ export default function UnifiedSidebar({
                       className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-full ${
                         active
                           ? 'bg-white/20 text-white'
+                          : item.highlight === 'rose'
+                          ? 'bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300'
                           : item.highlight === 'emerald'
                           ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
                           : item.highlight === 'amber'
@@ -229,23 +311,34 @@ export default function UnifiedSidebar({
                       {item.badge}
                     </span>
                   )}
-                </Link>
+
+                  {/* Active dot in collapsed mode */}
+                  {collapsed && active && (
+                    <span className="absolute right-1.5 w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                  )}
+                </button>
               );
             })}
           </div>
         ))}
       </div>
 
-      {/* Bottom Real-Data Badge */}
+      {/* Bottom Profile / Quick Info Footer */}
       {!collapsed && (
-        <div className="p-3 border-t border-slate-200 dark:border-slate-800 text-[11px] bg-slate-50 dark:bg-slate-900/40 shrink-0">
-          <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>Strict Real-Data Policy</span>
+        <div className="p-3 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-[#0b1320] shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-full bg-[#3B6FF5]/10 border border-[#3B6FF5]/30 text-[#3B6FF5] font-black text-xs flex items-center justify-center shrink-0">
+              {isAdmin ? 'A' : 'U'}
+            </div>
+            <div className="min-w-0 flex-1">
+              <span className="text-xs font-bold text-slate-800 dark:text-slate-200 block truncate">
+                {isAdmin ? 'Super Admin' : 'Client User'}
+              </span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono block truncate">
+                {isAdmin ? 'Executive Access' : 'Pro Prospector'}
+              </span>
+            </div>
           </div>
-          <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
-            100% Traceable Contact Sources. Zero Fabricated Records.
-          </p>
         </div>
       )}
     </aside>

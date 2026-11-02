@@ -534,25 +534,186 @@ CREATE TABLE IF NOT EXISTS public.admin_settings (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
--- RLS Enablement on New SaaS Entities
-ALTER TABLE public.plans ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.applications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.subscriptions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.subscription_history ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.payments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.renewals ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.customer_leads ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.notifications ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.admin_settings ENABLE ROW LEVEL SECURITY;
+-- 29. Pipeline Stages Entity
+CREATE TABLE IF NOT EXISTS public.pipeline_stages (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    description TEXT,
+    color TEXT DEFAULT 'blue',
+    sort_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
 
-CREATE POLICY "Allow public select on active plans" ON public.plans FOR SELECT USING (is_active = true);
-CREATE POLICY "Allow service role full access on plans" ON public.plans FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on applications" ON public.applications FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on subscriptions" ON public.subscriptions FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on subscription_history" ON public.subscription_history FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on payments" ON public.payments FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on renewals" ON public.renewals FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on customer_leads" ON public.customer_leads FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on notifications" ON public.notifications FOR ALL USING (true);
-CREATE POLICY "Allow service role full access on admin_settings" ON public.admin_settings FOR ALL USING (true);
+-- 30. User Integrations & AI Settings
+CREATE TABLE IF NOT EXISTS public.user_integrations (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    provider TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'not_configured',
+    config JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    UNIQUE (user_id, provider)
+);
+
+CREATE TABLE IF NOT EXISTS public.user_ai_settings (
+    user_id TEXT PRIMARY KEY REFERENCES public.users(id) ON DELETE CASCADE,
+    gemini_api_key_encrypted TEXT,
+    model TEXT NOT NULL DEFAULT 'gemini-1.5-flash',
+    status TEXT NOT NULL DEFAULT 'not_configured', -- 'configured' | 'not_configured' | 'active' | 'invalid'
+    last_tested_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 31. User SMTP Settings
+CREATE TABLE IF NOT EXISTS public.user_smtp_settings (
+    user_id TEXT PRIMARY KEY REFERENCES public.users(id) ON DELETE CASCADE,
+    sender_name TEXT NOT NULL,
+    sender_email TEXT NOT NULL,
+    smtp_host TEXT NOT NULL,
+    smtp_port INTEGER NOT NULL DEFAULT 587,
+    smtp_user TEXT NOT NULL,
+    smtp_pass_encrypted TEXT NOT NULL,
+    encryption TEXT NOT NULL DEFAULT 'tls', -- 'tls' | 'ssl' | 'starttls' | 'none'
+    reply_to_email TEXT,
+    status TEXT NOT NULL DEFAULT 'not_configured', -- 'connected' | 'not_configured' | 'error'
+    last_tested_at TIMESTAMP WITH TIME ZONE,
+    last_error TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 32. Canonical Lead Statuses & Approached Clients
+CREATE TABLE IF NOT EXISTS public.lead_statuses (
+    id TEXT PRIMARY KEY, -- '${user_id}_${lead_id}'
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    status TEXT NOT NULL DEFAULT 'New Lead', -- 'New Lead' | 'Approached' | 'Waiting for Client Response' | 'Follow-up Required' | 'Interested' | 'Not Interested' | 'Wasted Lead' | 'Converted / Won' | 'Closed'
+    approached_at TIMESTAMP WITH TIME ZONE,
+    last_contact_date TIMESTAMP WITH TIME ZONE,
+    next_followup_date TIMESTAMP WITH TIME ZONE,
+    opened_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    UNIQUE (user_id, lead_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.approached_clients (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    status TEXT NOT NULL DEFAULT 'Approached',
+    approached_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    last_contact_date TIMESTAMP WITH TIME ZONE,
+    next_followup_date TIMESTAMP WITH TIME ZONE,
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    UNIQUE (user_id, lead_id)
+);
+
+-- 33. Email Drafts & Bid Drafts
+CREATE TABLE IF NOT EXISTS public.email_drafts (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    subject TEXT NOT NULL,
+    html_content TEXT NOT NULL,
+    plain_text TEXT NOT NULL,
+    category TEXT,
+    status TEXT NOT NULL DEFAULT 'draft', -- 'draft' | 'sent'
+    sent_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.bid_drafts (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    deliverables JSONB DEFAULT '[]'::jsonb,
+    timeline TEXT,
+    investment TEXT,
+    status TEXT NOT NULL DEFAULT 'draft', -- 'draft' | 'submitted'
+    submitted_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 34. Lead Activity Logs, Follow-ups, and Notes
+CREATE TABLE IF NOT EXISTS public.lead_activity_logs (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    type TEXT NOT NULL, -- 'lead_discovered' | 'date_opened' | 'marked_approached' | 'email_draft_created' | 'email_sent' | 'bid_generated' | 'bid_submitted' | 'status_changed' | 'note_added' | 'followup_scheduled' | 'followup_completed'
+    description TEXT NOT NULL,
+    metadata JSONB DEFAULT '{}'::jsonb,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.lead_followups (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    due_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    notes TEXT,
+    status TEXT NOT NULL DEFAULT 'pending', -- 'pending' | 'completed' | 'rescheduled' | 'cancelled'
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    completed_at TIMESTAMP WITH TIME ZONE
+);
+
+CREATE TABLE IF NOT EXISTS public.lead_notes (
+    id TEXT PRIMARY KEY DEFAULT gen_random_uuid()::text,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    lead_id TEXT NOT NULL REFERENCES public.leads(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- 35. Email Templates Management
+CREATE TABLE IF NOT EXISTS public.email_templates (
+    id TEXT PRIMARY KEY,
+    user_id TEXT NOT NULL REFERENCES public.users(id) ON DELETE CASCADE,
+    title TEXT NOT NULL,
+    category TEXT NOT NULL, -- 'Website Development' | 'WordPress' | 'Shopify' | 'Social Media' | 'SEO' | 'Graphic Design' | 'Branding' | 'Digital Marketing' | 'General Outreach'
+    subject TEXT NOT NULL,
+    html_content TEXT NOT NULL,
+    plain_text TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- RLS Enablement on All New Entities
+ALTER TABLE public.pipeline_stages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_integrations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_ai_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_smtp_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lead_statuses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.approached_clients ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.email_drafts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.bid_drafts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lead_activity_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lead_followups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.lead_notes ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.email_templates ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow authenticated read pipeline_stages" ON public.pipeline_stages FOR SELECT USING (true);
+CREATE POLICY "Allow user manage own integrations" ON public.user_integrations FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own ai settings" ON public.user_ai_settings FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own smtp settings" ON public.user_smtp_settings FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own lead statuses" ON public.lead_statuses FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own approached clients" ON public.approached_clients FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own email drafts" ON public.email_drafts FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own bid drafts" ON public.bid_drafts FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own lead activity logs" ON public.lead_activity_logs FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own lead followups" ON public.lead_followups FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own lead notes" ON public.lead_notes FOR ALL USING (auth.uid()::text = user_id);
+CREATE POLICY "Allow user manage own email templates" ON public.email_templates FOR ALL USING (auth.uid()::text = user_id);
+
+CREATE POLICY "Allow service role full access on all upgraded tables" ON public.pipeline_stages FOR ALL USING (true);
+
 

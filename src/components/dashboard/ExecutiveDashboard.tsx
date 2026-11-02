@@ -154,6 +154,46 @@ export default function ExecutiveDashboard({
     };
   }, [filteredLeads]);
 
+  // 8 Canonical Database Pipeline Statistics (Requirement 10)
+  const pipelineStats = useMemo(() => {
+    let newLeads = 0;
+    let approached = 0;
+    let waiting = 0;
+    let followup = 0;
+    let interested = 0;
+    let converted = 0;
+    let notInterested = 0;
+    let wasted = 0;
+
+    const now = Date.now();
+    filteredLeads.forEach((l) => {
+      const st = l.currentStatus;
+      if (!st || st === 'New Lead') newLeads++;
+      else if (st === 'Approached') approached++;
+      else if (st === 'Waiting for Client Response') waiting++;
+      else if (st === 'Follow-up Required') followup++;
+      else if (st === 'Interested') interested++;
+      else if (st === 'Converted / Won') converted++;
+      else if (st === 'Not Interested') notInterested++;
+      else if (st === 'Wasted Lead') wasted++;
+
+      if (st !== 'Follow-up Required' && l.nextFollowupDate && new Date(l.nextFollowupDate).getTime() <= now) {
+        followup++;
+      }
+    });
+
+    return {
+      newLeads,
+      approached,
+      waiting,
+      followup,
+      interested,
+      converted,
+      notInterested,
+      wasted,
+    };
+  }, [filteredLeads]);
+
   // 12 Required Chart Datasets calculated strictly from database records
   const chartData = useMemo(() => {
     const sources: Record<string, number> = {};
@@ -321,6 +361,49 @@ export default function ExecutiveDashboard({
               <span>Quick Lead Discovery</span>
             </button>
           )}
+        </div>
+      </div>
+
+      {/* 8 Required Database Pipeline Status Statistics (Requirement 10) */}
+      <div className="space-y-2.5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#007FED] animate-pulse" />
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-200">
+              Pipeline Status & Outreach Milestones
+            </h2>
+          </div>
+          <span className="text-[11px] text-slate-400 font-semibold">Live Database Records</span>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          {[
+            { label: 'New Leads', val: pipelineStats.newLeads, view: 'all-leads', color: 'blue', desc: 'Unapproached' },
+            { label: 'Approached Clients', val: pipelineStats.approached, view: 'approached-clients', color: 'sky', desc: 'Outreach started' },
+            { label: 'Waiting for Response', val: pipelineStats.waiting, view: 'waiting-response', color: 'purple', desc: 'Awaiting client' },
+            { label: 'Follow-ups Due', val: pipelineStats.followup, view: 'follow-ups', color: 'amber', desc: 'Action required' },
+            { label: 'Interested Clients', val: pipelineStats.interested, view: 'interested-leads', color: 'emerald', desc: 'Positive reply' },
+            { label: 'Converted Leads', val: pipelineStats.converted, view: 'converted-leads', color: 'teal', desc: 'Won business' },
+            { label: 'Not Interested', val: pipelineStats.notInterested, view: 'not-interested', color: 'slate', desc: 'Declined' },
+            { label: 'Wasted Leads', val: pipelineStats.wasted, view: 'wasted-leads', color: 'rose', desc: 'Unresponsive' },
+          ].map((item, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => onNavigateToView?.(item.view)}
+              className="bg-white dark:bg-[#111c2e] border border-slate-200 dark:border-[#22334d] hover:border-[#007FED] dark:hover:border-blue-500 rounded-xl p-3 text-left transition shadow-2xs group"
+            >
+              <div className="text-[10px] font-bold text-slate-400 group-hover:text-[#007FED] uppercase truncate">
+                {item.label}
+              </div>
+              <div className="text-xl font-black text-slate-900 dark:text-white mt-1">
+                {item.val}
+              </div>
+              <div className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 truncate">
+                {item.desc}
+              </div>
+            </button>
+          ))}
         </div>
       </div>
 

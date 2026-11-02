@@ -45,13 +45,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { leadId } = body;
+    const { leadId, leadData } = body;
 
     if (!leadId) {
       return NextResponse.json({ success: false, error: 'Lead ID is required' }, { status: 400 });
     }
 
-    const targetLead = getLeadById(leadId) || getLiveLeadById(leadId);
+    let targetLead = getLeadById(leadId) || getLiveLeadById(leadId);
+    if (!targetLead && leadData) {
+      targetLead = leadData;
+    }
     if (!targetLead) {
       return NextResponse.json({ success: false, error: 'Lead record not found' }, { status: 404 });
     }

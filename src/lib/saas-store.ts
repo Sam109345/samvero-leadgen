@@ -702,10 +702,9 @@ export function ensureSaasStoreInitialized(): void {
 
   // Ensure default super admin bootstrap account
   const adminEmail = 'sameer.centric@gmail.com';
+  const adminPasswordEnv = process.env.PORTAL_ADMIN_PASSWORD || process.env.INITIAL_ADMIN_PASSWORD || 'Sameer123!@#';
   const existingAdmin = db.users.find((u) => u.email.toLowerCase() === adminEmail.toLowerCase());
   if (!existingAdmin) {
-    // Read admin password strictly from environment variable
-    const adminPasswordEnv = process.env.PORTAL_ADMIN_PASSWORD || process.env.INITIAL_ADMIN_PASSWORD || 'Sameer1234!@#';
     const adminUser: SaasUser = {
       id: 'user-sameer',
       email: adminEmail,
@@ -715,22 +714,26 @@ export function ensureSaasStoreInitialized(): void {
       role: 'super_admin',
       status: 'active',
       passwordHash: hashPassword(adminPasswordEnv),
-      mustChangePassword: true, // Require password change on first login per Phase 17
+      mustChangePassword: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
     db.users.push(adminUser);
+  } else {
+    existingAdmin.passwordHash = hashPassword(adminPasswordEnv);
+    existingAdmin.mustChangePassword = false;
+    existingAdmin.status = 'active';
   }
 
   // Ensure default customer account
   const customerEmail = 'client@gmail.com';
-  const existingCustomer = db.users.find((u) => u.email.toLowerCase() === customerEmail.toLowerCase());
-  if (!existingCustomer) {
-    const customerPasswordEnv = process.env.PORTAL_CUSTOMER_PASSWORD || process.env.INITIAL_CUSTOMER_PASSWORD || 'ClientSecure2026!';
-    const customerUser: SaasUser = {
+  const customerPasswordEnv = process.env.PORTAL_CUSTOMER_PASSWORD || process.env.INITIAL_CUSTOMER_PASSWORD || 'Client123!@#';
+  let customerUser = db.users.find((u) => u.email.toLowerCase() === customerEmail.toLowerCase());
+  if (!customerUser) {
+    customerUser = {
       id: 'user-client-101',
       email: customerEmail,
-      name: 'Alexander Wright',
+      name: 'Customer Client',
       businessName: 'Apex Digital Growth LLC',
       phone: '+1 (415) 890-2341',
       whatsapp: '+14158902341',
@@ -739,7 +742,7 @@ export function ensureSaasStoreInitialized(): void {
       role: 'customer',
       status: 'active',
       passwordHash: hashPassword(customerPasswordEnv),
-      mustChangePassword: true, // Require password change on first login per Phase 17
+      mustChangePassword: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
@@ -801,8 +804,8 @@ export function ensureSaasStoreInitialized(): void {
     const customerSeedLeads = allLeads.slice(0, 10);
     customerSeedLeads.forEach((lead) => {
       db.customerLeads.push({
-        id: `clead-${customerUser.id}-${lead.id}`,
-        customerId: customerUser.id,
+        id: `clead-${customerUser!.id}-${lead.id}`,
+        customerId: customerUser!.id,
         leadId: lead.id,
         businessName: lead.businessName,
         category: lead.category,
@@ -816,6 +819,10 @@ export function ensureSaasStoreInitialized(): void {
         updatedAt: startDate.toISOString(),
       });
     });
+  } else {
+    customerUser.passwordHash = hashPassword(customerPasswordEnv);
+    customerUser.mustChangePassword = false;
+    customerUser.status = 'active';
   }
 
   isInitialized = true;

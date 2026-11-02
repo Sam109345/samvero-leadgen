@@ -12,7 +12,8 @@
     "test:contacts": "node tests/audit-contacts.js",
     "test:saas": "node tests/test-saas-complete.js",
     "test:qa": "node tests/qa-verification.js",
-    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js"
+    "test:functional": "node tests/test-functional-upgrade.js",
+    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js && node tests/test-functional-upgrade.js"
   },
   "keywords": [],
   "author": "",
@@ -20,8 +21,15 @@
   "description": "",
   "dependencies": {
     "@supabase/supabase-js": "^2.118.0",
+    "@tiptap/extension-link": "^3.32.2",
+    "@tiptap/extension-text-align": "^3.32.2",
+    "@tiptap/extension-underline": "^3.32.2",
+    "@tiptap/react": "^3.32.2",
+    "@tiptap/starter-kit": "^3.32.2",
+    "@types/dompurify": "^3.0.5",
     "axios": "^1.20.0",
     "clsx": "^2.1.1",
+    "dompurify": "^3.4.17",
     "lucide-react": "^1.61.0",
     "next": "^14.2.15",
     "nodemailer": "^10.1.7",

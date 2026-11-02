@@ -9,11 +9,17 @@ import {
   distributeRandomLeads 
 } from '@/lib/user-store';
 import { getAllRegisteredLeads } from '@/lib/lead-store';
+import { getAuthenticatedSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
+      return NextResponse.json({ success: false, error: 'Unauthorized. Admin access required.' }, { status: 403 });
+    }
+
     const users = getPortalUsers();
     const allLeads = getAllRegisteredLeads();
 
@@ -42,6 +48,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
+      return NextResponse.json({ success: false, error: 'Unauthorized. Admin access required.' }, { status: 403 });
+    }
+
     const body = await request.json();
     const { action } = body;
 

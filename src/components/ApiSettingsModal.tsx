@@ -18,16 +18,51 @@ import {
   Radio, 
   ExternalLink, 
   Copy,
-  Sparkles
+  Sparkles,
+  Sun,
+  Moon,
+  Palette
 } from 'lucide-react';
 
 interface ApiSettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  theme?: 'light' | 'dark';
+  onToggleTheme?: (theme: 'light' | 'dark') => void;
 }
 
-export default function ApiSettingsModal({ isOpen, onClose }: ApiSettingsModalProps) {
-  const [activeTab, setActiveTab] = useState<'gemini' | 'smtp' | 'resend' | 'tunnel' | 'quotas'>('gemini');
+export default function ApiSettingsModal({ isOpen, onClose, theme, onToggleTheme }: ApiSettingsModalProps) {
+  const [activeTab, setActiveTab] = useState<'gemini' | 'smtp' | 'resend' | 'tunnel' | 'quotas' | 'appearance'>('gemini');
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark'>(theme || 'dark');
+
+  useEffect(() => {
+    if (theme) {
+      setCurrentTheme(theme);
+    } else if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('samvero_theme') as 'light' | 'dark' | null;
+      if (stored) {
+        setCurrentTheme(stored);
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setCurrentTheme(prefersDark ? 'dark' : 'light');
+      }
+    }
+  }, [theme, isOpen]);
+
+  const handleSelectTheme = (newTheme: 'light' | 'dark') => {
+    setCurrentTheme(newTheme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('samvero_theme', newTheme);
+      if (newTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+    if (onToggleTheme) {
+      onToggleTheme(newTheme);
+    }
+  };
   
   // Gemini AI state
   const [geminiApiKey, setGeminiApiKey] = useState('');
@@ -343,6 +378,18 @@ export default function ApiSettingsModal({ isOpen, onClose }: ApiSettingsModalPr
           >
             <Layers className="w-4 h-4" />
             <span>Rate Limits &amp; Quotas</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('appearance')}
+            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 shrink-0 ${
+              activeTab === 'appearance'
+                ? 'border-[#007FED] text-[#007FED] dark:text-[#38BDF8]'
+                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <Palette className="w-4 h-4 text-amber-500" />
+            <span>Appearance &amp; Theme</span>
           </button>
         </div>
 
@@ -755,6 +802,144 @@ export default function ApiSettingsModal({ isOpen, onClose }: ApiSettingsModalPr
                     60 requests / min
                   </span>
                 </div>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: Appearance & Brand Theme */}
+          {activeTab === 'appearance' && (
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-bold text-xs uppercase tracking-wider text-slate-500 mb-1">
+                  Interface Theme
+                </h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  Select your visual theme. The workspace preserves all filters, pipelines, and state across modes with zero page reloads.
+                </p>
+              </div>
+
+              {/* Light vs Dark Grid */}
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleSelectTheme('light')}
+                  className={`p-3.5 rounded-xl border-2 text-left transition flex flex-col justify-between cursor-pointer ${
+                    currentTheme === 'light'
+                      ? 'border-[#3B6FF5] bg-[#3B6FF5]/5 shadow-sm ring-2 ring-[#3B6FF5]/20'
+                      : 'border-slate-200 dark:border-[#24334a] hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-[#111c2e]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center">
+                      <Sun className="w-4 h-4" />
+                    </div>
+                    {currentTheme === 'light' && (
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-[#3B6FF5] text-white px-2 py-0.5 rounded-full">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 dark:text-white block">Light Mode</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                      Cloud canvas (#F5F7FB), white cards, crisp Freelancer daylight aesthetic
+                    </span>
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSelectTheme('dark')}
+                  className={`p-3.5 rounded-xl border-2 text-left transition flex flex-col justify-between cursor-pointer ${
+                    currentTheme === 'dark'
+                      ? 'border-[#3B6FF5] bg-[#3B6FF5]/10 shadow-sm ring-2 ring-[#3B6FF5]/30'
+                      : 'border-slate-200 dark:border-[#24334a] hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-[#111c2e]'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center">
+                      <Moon className="w-4 h-4" />
+                    </div>
+                    {currentTheme === 'dark' && (
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-[#3B6FF5] text-white px-2 py-0.5 rounded-full">
+                        Active
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <span className="font-bold text-xs text-slate-900 dark:text-white block">Dark Mode</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">
+                      Midnight Navy (#172B4D), low-fatigue contrast, vivid cobalt accents
+                    </span>
+                  </div>
+                </button>
+              </div>
+
+              {/* Official Brand Palette */}
+              <div className="space-y-2 pt-2">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-300">
+                  <Palette className="w-3.5 h-3.5 text-[#3B6FF5]" />
+                  <span>Official Samvero Brand Palette</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#24334a] bg-slate-50/50 dark:bg-[#0d141e] flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md shadow-xs shrink-0" style={{ backgroundColor: '#172B4D' }} />
+                    <div className="min-w-0">
+                      <span className="font-bold text-[11px] text-slate-800 dark:text-slate-200 block truncate">Midnight Navy</span>
+                      <span className="font-mono text-[9px] text-slate-400">#172B4D</span>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#24334a] bg-slate-50/50 dark:bg-[#0d141e] flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md shadow-xs shrink-0" style={{ backgroundColor: '#3B6FF5' }} />
+                    <div className="min-w-0">
+                      <span className="font-bold text-[11px] text-slate-800 dark:text-slate-200 block truncate">Cobalt Blue</span>
+                      <span className="font-mono text-[9px] text-slate-400">#3B6FF5</span>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#24334a] bg-slate-50/50 dark:bg-[#0d141e] flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md shadow-xs shrink-0" style={{ backgroundColor: '#72D6B5' }} />
+                    <div className="min-w-0">
+                      <span className="font-bold text-[11px] text-slate-800 dark:text-slate-200 block truncate">Mint</span>
+                      <span className="font-mono text-[9px] text-slate-400">#72D6B5</span>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#24334a] bg-slate-50/50 dark:bg-[#0d141e] flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md border border-slate-300 dark:border-slate-600 shadow-xs shrink-0" style={{ backgroundColor: '#F5F7FB' }} />
+                    <div className="min-w-0">
+                      <span className="font-bold text-[11px] text-slate-800 dark:text-slate-200 block truncate">Cloud</span>
+                      <span className="font-mono text-[9px] text-slate-400">#F5F7FB</span>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#24334a] bg-slate-50/50 dark:bg-[#0d141e] flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md border border-slate-300 dark:border-slate-600 shadow-xs shrink-0" style={{ backgroundColor: '#FFFFFF' }} />
+                    <div className="min-w-0">
+                      <span className="font-bold text-[11px] text-slate-800 dark:text-slate-200 block truncate">White</span>
+                      <span className="font-mono text-[9px] text-slate-400">#FFFFFF</span>
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 rounded-lg border border-slate-200 dark:border-[#24334a] bg-slate-50/50 dark:bg-[#0d141e] flex items-center gap-2.5">
+                    <div className="w-6 h-6 rounded-md shadow-xs shrink-0" style={{ backgroundColor: '#202938' }} />
+                    <div className="min-w-0">
+                      <span className="font-bold text-[11px] text-slate-800 dark:text-slate-200 block truncate">Slate Ink</span>
+                      <span className="font-mono text-[9px] text-slate-400">#202938</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Anti-flash notice */}
+              <div className="p-3 rounded-lg bg-slate-100 dark:bg-[#111c2e] border border-slate-200 dark:border-[#24334a] flex items-center justify-between text-[11px]">
+                <span className="text-slate-600 dark:text-slate-400">
+                  Persistent Storage: <strong className="text-slate-800 dark:text-slate-200 font-mono">localStorage.samvero_theme</strong> with zero-flash &lt;head&gt; script
+                </span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Synchronized
+                </span>
               </div>
             </div>
           )}

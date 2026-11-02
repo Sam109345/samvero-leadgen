@@ -7,11 +7,16 @@ import { Lead } from '@/types';
 import { getPortalUserById, getLeadAssignedUser } from '@/lib/user-store';
 import { getSubscriptionById, canCustomerConsumeLead } from '@/lib/saas-store';
 import { getAuthenticatedSession } from '@/lib/session';
+import { getEffectiveUser } from '@/lib/auth-user';
+import { getAllUserLeadStates, computeLeadWorkspaceStats } from '@/lib/lead-workspace-store';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
+    const effectiveUser = getEffectiveUser(request);
+    const userStates = getAllUserLeadStates(effectiveUser.userId);
+
     const { searchParams } = new URL(request.url);
     const country = searchParams.get('country') || 'all';
     const category = searchParams.get('category') || 'all';
@@ -20,6 +25,7 @@ export async function GET(request: NextRequest) {
     const type = searchParams.get('type') || 'all'; // 'gmb', 'job', 'all'
     const query = searchParams.get('q') || '';
     const hasWebsite = searchParams.get('hasWebsite') || 'all';
+    const statusParam = searchParams.get('status'); // 'new', 'all', or specific status
     const requestedUserId = searchParams.get('userId') || request.cookies.get('samvero_user_id')?.value;
     const requestedScope = searchParams.get('scope'); // 'all' | 'mine'
 
@@ -72,15 +78,28 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Attach real assigned user attribution to each lead
+    // Attach real assigned user attribution and canonical user workspace status to each lead
     allLeads = allLeads.map((lead) => {
       const assignedUser = getLeadAssignedUser(lead.id);
+      const uState = userStates[lead.id];
+      const currentStatus = uState?.status || 'New Lead';
       return {
         ...lead,
+        currentStatus,
+        approachedAt: uState?.approachedAt,
+        lastContactDate: uState?.lastContactDate,
+        nextFollowupDate: uState?.nextFollowupDate,
         assignedToUserId: assignedUser?.id,
         assignedToUserName: assignedUser?.name,
       };
     });
+
+    // Optional status filter
+    if (statusParam === 'new') {
+      allLeads = allLeads.filter((l: any) => l.currentStatus === 'New Lead');
+    } else if (statusParam && statusParam !== 'all') {
+      allLeads = allLeads.filter((l: any) => l.currentStatus === statusParam);
+    }
 
     // 3. User Permission & Role Check
     const portalRole = request.cookies.get('samvero_portal_role')?.value;
@@ -207,6 +226,7 @@ export async function GET(request: NextRequest) {
       isGlobalView: isSuperAdminOrGlobal,
       activeUserId: activeUser?.id || (isSuperAdminOrGlobal ? 'global_all' : null),
       activeUserName: activeUser?.name || 'All Leads Master Pool',
+      pipelineStats: computeLeadWorkspaceStats(effectiveUser.userId, deduplicatedLeads),
       stats: {
         totalGmb: deduplicatedLeads.filter((l) => l.type === 'gmb').length,
         totalJobs: deduplicatedLeads.filter((l) => l.type === 'job').length,

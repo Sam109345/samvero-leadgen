@@ -54,6 +54,7 @@ interface FreelancerNavbarProps {
   searchQuery: string;
   onRefreshLiveLeads?: () => void;
   isRefreshingLive?: boolean;
+  onToggleSidebar?: () => void;
 }
 
 export default function FreelancerNavbar({
@@ -78,6 +79,7 @@ export default function FreelancerNavbar({
   searchQuery,
   onRefreshLiveLeads,
   isRefreshingLive = false,
+  onToggleSidebar,
 }: FreelancerNavbarProps) {
   const { role, userName, logout } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
@@ -97,8 +99,18 @@ export default function FreelancerNavbar({
     <header className="sticky top-0 z-50 bg-white dark:bg-[#161f2e] text-slate-800 dark:text-white border-b border-slate-200 dark:border-[#24334a] shadow-xs select-none transition-colors">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
         
-        {/* Left: SAMVERO Official Brand Logo & Navigation */}
-        <div className="flex items-center gap-6">
+        {/* Left: Mobile Toggle + SAMVERO Official Brand Logo & Navigation */}
+        <div className="flex items-center gap-3 sm:gap-6">
+          {onToggleSidebar && (
+            <button
+              onClick={onToggleSidebar}
+              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#24334a] md:hidden cursor-pointer"
+              title="Toggle Navigation Menu"
+              aria-label="Toggle Navigation Menu"
+            >
+              <Briefcase className="w-5 h-5 text-[#3B6FF5]" />
+            </button>
+          )}
           
           {/* SAMVERO Dynamic Logo (Dark Mode & Light Mode) */}
           <button 

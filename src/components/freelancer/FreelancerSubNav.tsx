@@ -3,49 +3,48 @@
 import React from 'react';
 import { 
   Flame, 
-  Sparkles, 
-  Globe2, 
-  MessageSquare, 
+  CheckCircle2, 
   Layers, 
-  ListFilter, 
+  ShieldAlert, 
+  Bookmark, 
+  MessageSquare, 
   ArrowUpDown, 
-  SlidersHorizontal,
-  LayoutGrid,
-  BarChart3,
-  AlignJustify
+  Globe2, 
+  LayoutGrid, 
+  AlignJustify,
+  BarChart3
 } from 'lucide-react';
+
+export type LeadCategoryTab = 'all' | 'hot' | 'qualified' | 'extra' | 'needs_verification' | 'saved';
 
 interface FreelancerSubNavProps {
   totalLeadsCount: number;
-  noWebsiteCount: number;
-  newGmbCount: number;
-  uaeCount?: number;
-  pkCount: number;
-  usCount: number;
-  ukCount: number;
-  inboxCount: number;
-  selectedPipelineFilter: string;
-  onSelectPipelineFilter: (f: string) => void;
+  hotCount: number;
+  qualifiedCount: number;
+  extraCount: number;
+  needsVerificationCount: number;
+  savedCount: number;
+  activeCategoryTab: LeadCategoryTab;
+  onSelectCategoryTab: (tab: LeadCategoryTab) => void;
   selectedCountry: string;
   onSelectCountry: (c: string) => void;
   sortBy: string;
   onSelectSortBy: (s: string) => void;
   activeView: string;
-  setActiveView: (view: 'kanban' | 'analytics' | 'feed' | 'gmb' | 'jobs' | 'builder' | 'inbox' | 'audit') => void;
+  setActiveView: (view: 'feed' | 'kanban' | 'analytics') => void;
   onOpenInbox: () => void;
+  inboxCount: number;
 }
 
 export default function FreelancerSubNav({
   totalLeadsCount,
-  noWebsiteCount,
-  newGmbCount,
-  uaeCount = 6,
-  pkCount,
-  usCount,
-  ukCount,
-  inboxCount,
-  selectedPipelineFilter,
-  onSelectPipelineFilter,
+  hotCount,
+  qualifiedCount,
+  extraCount,
+  needsVerificationCount,
+  savedCount,
+  activeCategoryTab,
+  onSelectCategoryTab,
   selectedCountry,
   onSelectCountry,
   sortBy,
@@ -53,30 +52,27 @@ export default function FreelancerSubNav({
   activeView,
   setActiveView,
   onOpenInbox,
+  inboxCount,
 }: FreelancerSubNavProps) {
   return (
     <div className="bg-white dark:bg-[#111927] border-b border-slate-200 dark:border-[#24334a] shadow-xs sticky top-16 z-40 transition-colors">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
         
-        {/* Quick Filter Pills (Classic Freelancer Project Sub-filters) */}
+        {/* Lead Categories Tabs (Requirement 1 & 7) */}
         <div className="flex items-center gap-1.5 overflow-x-auto py-0.5 no-scrollbar">
           
           {/* All Leads */}
           <button
-            onClick={() => {
-              onSelectPipelineFilter('all');
-              onSelectCountry('all');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedPipelineFilter === 'all' && selectedCountry === 'all' && activeView === 'feed'
-                ? 'bg-[#007FED] text-white shadow-xs'
+            onClick={() => onSelectCategoryTab('all')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'all'
+                ? 'bg-[#3B6FF5] text-white shadow-xs font-bold'
                 : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#223147]'
             }`}
           >
-            <span>All Projects</span>
+            <span>All Leads</span>
             <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
-              selectedPipelineFilter === 'all' && selectedCountry === 'all' && activeView === 'feed'
+              activeCategoryTab === 'all'
                 ? 'bg-white/20 text-white'
                 : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
             }`}>
@@ -84,163 +80,173 @@ export default function FreelancerSubNav({
             </span>
           </button>
 
-          {/* Missing Website (Prime Targets) */}
+          {/* Hot Leads */}
           <button
-            onClick={() => {
-              onSelectPipelineFilter('no_website');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedPipelineFilter === 'no_website' && activeView === 'feed'
-                ? 'bg-amber-500 text-white shadow-xs'
-                : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100'
+            onClick={() => onSelectCategoryTab('hot')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'hot'
+                ? 'bg-rose-600 text-white shadow-xs font-bold'
+                : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-900/60 hover:bg-rose-100'
             }`}
           >
-            <Flame className="w-3.5 h-3.5 text-amber-500 fill-current" />
-            <span>Missing Website</span>
-            <span className="bg-amber-200/60 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {noWebsiteCount}
+            <Flame className="w-3.5 h-3.5 text-rose-500 fill-current" />
+            <span>Hot Leads</span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+              activeCategoryTab === 'hot'
+                ? 'bg-white/20 text-white'
+                : 'bg-rose-200/60 dark:bg-rose-900/60 text-rose-900 dark:text-rose-200'
+            }`}>
+              {hotCount}
             </span>
           </button>
 
-          {/* Newly Opened GMB */}
+          {/* Qualified Leads */}
           <button
-            onClick={() => {
-              onSelectPipelineFilter('new_gmb');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedPipelineFilter === 'new_gmb' && activeView === 'feed'
-                ? 'bg-emerald-600 text-white shadow-xs'
+            onClick={() => onSelectCategoryTab('qualified')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'qualified'
+                ? 'bg-emerald-600 text-white shadow-xs font-bold'
                 : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 hover:bg-emerald-100'
             }`}
           >
-            <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Newly Opened (&lt;1 yr)</span>
-            <span className="bg-emerald-200/60 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200 px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {newGmbCount}
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+            <span>Qualified Leads</span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+              activeCategoryTab === 'qualified'
+                ? 'bg-white/20 text-white'
+                : 'bg-emerald-200/60 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200'
+            }`}>
+              {qualifiedCount}
             </span>
           </button>
 
-          {/* UAE (Dubai, Abu Dhabi) */}
+          {/* Extra Leads */}
           <button
-            onClick={() => {
-              onSelectCountry(selectedCountry === 'UAE' ? 'all' : 'UAE');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedCountry === 'UAE' && activeView === 'feed'
-                ? 'bg-amber-600 text-white shadow-xs'
+            onClick={() => onSelectCategoryTab('extra')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'extra'
+                ? 'bg-[#3B6FF5] text-white shadow-xs font-bold'
                 : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#223147]'
             }`}
           >
-            <span>🇦🇪 UAE</span>
-            <span className="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {uaeCount}
+            <Layers className="w-3.5 h-3.5 text-[#3B6FF5]" />
+            <span>Extra Leads</span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+              activeCategoryTab === 'extra'
+                ? 'bg-white/20 text-white'
+                : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
+            }`}>
+              {extraCount}
             </span>
           </button>
 
-          {/* Pakistan Local */}
+          {/* Needs Verification */}
           <button
-            onClick={() => {
-              onSelectCountry(selectedCountry === 'Pakistan' ? 'all' : 'Pakistan');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedCountry === 'Pakistan' && activeView === 'feed'
-                ? 'bg-emerald-700 text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#223147]'
+            onClick={() => onSelectCategoryTab('needs_verification')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'needs_verification'
+                ? 'bg-amber-500 text-white shadow-xs font-bold'
+                : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60 hover:bg-amber-100'
             }`}
           >
-            <span>🇵🇰 Pakistan</span>
-            <span className="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {pkCount}
+            <ShieldAlert className="w-3.5 h-3.5 text-amber-500" />
+            <span>Needs Verification</span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+              activeCategoryTab === 'needs_verification'
+                ? 'bg-white/20 text-white'
+                : 'bg-amber-200/60 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200'
+            }`}>
+              {needsVerificationCount}
             </span>
           </button>
 
-          {/* United States */}
+          {/* Saved Leads */}
           <button
-            onClick={() => {
-              onSelectCountry(selectedCountry === 'US' ? 'all' : 'US');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedCountry === 'US' && activeView === 'feed'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#223147]'
+            onClick={() => onSelectCategoryTab('saved')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'saved'
+                ? 'bg-purple-600 text-white shadow-xs font-bold'
+                : 'bg-purple-50 dark:bg-purple-950/40 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800/60 hover:bg-purple-100'
             }`}
           >
-            <span>🇺🇸 US</span>
-            <span className="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {usCount}
+            <Bookmark className="w-3.5 h-3.5 text-purple-500" />
+            <span>Saved Leads</span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+              activeCategoryTab === 'saved'
+                ? 'bg-white/20 text-white'
+                : 'bg-purple-200/60 dark:bg-purple-900/60 text-purple-900 dark:text-purple-200'
+            }`}>
+              {savedCount}
             </span>
           </button>
 
-          {/* United Kingdom */}
-          <button
-            onClick={() => {
-              onSelectCountry(selectedCountry === 'UK' ? 'all' : 'UK');
-              if (activeView !== 'feed') setActiveView('feed');
-            }}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              selectedCountry === 'UK' && activeView === 'feed'
-                ? 'bg-indigo-600 text-white shadow-xs'
-                : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-[#223147]'
-            }`}
-          >
-            <span>🇬🇧 UK</span>
-            <span className="bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {ukCount}
-            </span>
-          </button>
-
-          {/* Client Responses Inbound Tab */}
+          {/* Messages Inbound Tab */}
           <button
             onClick={onOpenInbox}
-            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-              activeView === 'inbox'
-                ? 'bg-[#ff0055] text-white shadow-xs'
-                : 'bg-rose-50 dark:bg-rose-950/40 text-rose-700 dark:text-rose-300 border border-rose-200 dark:border-rose-800/60 hover:bg-rose-100'
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeView === 'inbox' || activeView === 'messages'
+                ? 'bg-[#3B6FF5] text-white shadow-xs font-bold'
+                : 'bg-slate-100 dark:bg-[#1a2638] text-slate-700 dark:text-slate-300 hover:bg-slate-200'
             }`}
           >
-            <MessageSquare className="w-3.5 h-3.5 text-rose-500" />
-            <span>Client Replies</span>
-            <span className="bg-[#ff0055] text-white px-1.5 py-0.2 rounded-full text-[10px] font-bold">
-              {inboxCount}
-            </span>
+            <MessageSquare className="w-3.5 h-3.5 text-[#3B6FF5]" />
+            <span>Messages</span>
+            {inboxCount > 0 && (
+              <span className="bg-[#3B6FF5] text-white px-1.5 py-0.2 rounded-full text-[10px] font-bold">
+                {inboxCount}
+              </span>
+            )}
           </button>
 
         </div>
 
-        {/* Right Side: Sorting Dropdown & View Switcher */}
+        {/* Right Side: Sorting Dropdown & View Mode Switcher */}
         <div className="flex items-center gap-3">
           
+          {/* Territory filter */}
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+            <Globe2 className="w-3.5 h-3.5 text-slate-400" />
+            <select
+              value={selectedCountry}
+              onChange={(e) => onSelectCountry(e.target.value)}
+              className="bg-transparent font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer border-b border-transparent hover:border-slate-300"
+            >
+              <option value="all" className="dark:bg-[#161f2e]">🌍 All Markets</option>
+              <option value="UAE" className="dark:bg-[#161f2e]">🇦🇪 UAE</option>
+              <option value="Pakistan" className="dark:bg-[#161f2e]">🇵🇰 Pakistan</option>
+              <option value="US" className="dark:bg-[#161f2e]">🇺🇸 United States</option>
+              <option value="UK" className="dark:bg-[#161f2e]">🇬🇧 United Kingdom</option>
+            </select>
+          </div>
+
+          <div className="h-4 w-px bg-slate-200 dark:bg-[#24334a]" />
+
           {/* Sort By Dropdown */}
           <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
             <ArrowUpDown className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Sort:</span>
             <select
               value={sortBy}
               onChange={(e) => onSelectSortBy(e.target.value)}
               className="bg-transparent font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer border-b border-transparent hover:border-slate-300"
             >
               <option value="newest" className="dark:bg-[#161f2e]">Newest First</option>
+              <option value="quality_desc" className="dark:bg-[#161f2e]">Lead Quality (High to Low)</option>
               <option value="budget_desc" className="dark:bg-[#161f2e]">Highest Budget</option>
               <option value="budget_asc" className="dark:bg-[#161f2e]">Lowest Budget</option>
-              <option value="age_asc" className="dark:bg-[#161f2e]">Business Age (Newest)</option>
+              <option value="relevance" className="dark:bg-[#161f2e]">Relevance</option>
             </select>
           </div>
 
           <div className="h-4 w-px bg-slate-200 dark:bg-[#24334a]" />
 
           {/* View Mode Switcher */}
-          <div className="flex items-center bg-slate-100 dark:bg-[#1a2638] p-0.5 rounded-md border border-slate-200 dark:border-[#24334a]">
+          <div className="flex items-center bg-slate-100 dark:bg-[#1a2638] p-0.5 rounded-lg border border-slate-200 dark:border-[#24334a]">
             <button
               onClick={() => setActiveView('feed')}
               title="Freelancer List Feed View"
-              className={`p-1.5 rounded text-xs font-medium flex items-center gap-1 transition-all ${
+              className={`p-1.5 rounded-md text-xs font-medium flex items-center gap-1 transition-all cursor-pointer ${
                 activeView === 'feed'
-                  ? 'bg-white dark:bg-[#007FED] text-slate-900 dark:text-white shadow-xs font-semibold'
+                  ? 'bg-white dark:bg-[#3B6FF5] text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
               }`}
             >
@@ -251,22 +257,22 @@ export default function FreelancerSubNav({
             <button
               onClick={() => setActiveView('kanban')}
               title="Kanban Pipeline Board"
-              className={`p-1.5 rounded text-xs font-medium flex items-center gap-1 transition-all ${
+              className={`p-1.5 rounded-md text-xs font-medium flex items-center gap-1 transition-all cursor-pointer ${
                 activeView === 'kanban'
-                  ? 'bg-white dark:bg-[#007FED] text-slate-900 dark:text-white shadow-xs font-semibold'
+                  ? 'bg-white dark:bg-[#3B6FF5] text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
               }`}
             >
               <LayoutGrid className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Kanban</span>
+              <span className="hidden md:inline">Pipeline</span>
             </button>
 
             <button
               onClick={() => setActiveView('analytics')}
-              title="Performance Funnel & Wave Analytics"
-              className={`p-1.5 rounded text-xs font-medium flex items-center gap-1 transition-all ${
+              title="Funnel Analytics"
+              className={`p-1.5 rounded-md text-xs font-medium flex items-center gap-1 transition-all cursor-pointer ${
                 activeView === 'analytics'
-                  ? 'bg-white dark:bg-[#007FED] text-slate-900 dark:text-white shadow-xs font-semibold'
+                  ? 'bg-white dark:bg-[#3B6FF5] text-slate-900 dark:text-white shadow-xs font-bold'
                   : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
               }`}
             >

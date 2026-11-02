@@ -72,8 +72,8 @@ export default function ContactPage() {
                     <Mail className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                     <div>
                       <div className="font-bold text-white">Customer Support</div>
-                      <a href="mailto:support@samvero.com" className="text-slate-400 hover:text-white transition">
-                        support@samvero.com
+                      <a href="mailto:samverodigital@gmail.com" className="text-slate-400 hover:text-white transition">
+                        samverodigital@gmail.com
                       </a>
                     </div>
                   </div>

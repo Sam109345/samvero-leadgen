@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Sparkles, Menu, X, ArrowRight, ShieldCheck, ChevronRight } from 'lucide-react';
+import SamveroBrandLogo from '@/components/SamveroBrandLogo';
 
 export default function PublicNavbar() {
   const pathname = usePathname();
@@ -43,20 +44,7 @@ export default function PublicNavbar() {
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20 group-hover:scale-105 transition">
-              <span className="text-black font-black text-lg tracking-wider">S</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tight text-white flex items-center gap-1.5 font-serif">
-                SAMVERO
-                <span className="text-[10px] uppercase font-sans font-black tracking-widest px-1.5 py-0.5 rounded bg-amber-400/10 text-amber-400 border border-amber-400/20">
-                  SaaS
-                </span>
-              </span>
-              <span className="text-[9px] uppercase tracking-wider text-slate-400 font-medium">
-                Enterprise Lead Intelligence
-              </span>
-            </div>
+            <SamveroBrandLogo size="md" theme="auto" />
           </Link>
 
           {/* Desktop Navigation Links */}

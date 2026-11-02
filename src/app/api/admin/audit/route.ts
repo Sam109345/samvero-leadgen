@@ -8,15 +8,14 @@ import {
   recordLoginSession
 } from '@/lib/audit-store';
 import { getLivePublicIp, resolveIpDetails } from '@/lib/geo-ip';
+import { getAuthenticatedSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const role = request.cookies.get('samvero_portal_role')?.value || request.headers.get('x-portal-role');
-
-    // Only Admin can access the complete Audit & Reach Center
-    if (role !== 'admin') {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
       return NextResponse.json(
         { 
           success: false, 
@@ -92,9 +91,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { action, sessionId, outreachData } = body;
 
-    const role = request.cookies.get('samvero_portal_role')?.value || request.headers.get('x-portal-role');
-
-    if (role !== 'admin') {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized: Admin privileges required.' },
         { status: 403 }

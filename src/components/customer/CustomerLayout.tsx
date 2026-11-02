@@ -24,6 +24,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { SaasSubscription } from '@/lib/saas-store';
+import SamveroBrandLogo from '@/components/SamveroBrandLogo';
 
 interface CustomerLayoutProps {
   children: React.ReactNode;
@@ -140,15 +141,7 @@ export default function CustomerLayout({ children, title, subtitle }: CustomerLa
         {/* Brand */}
         <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
           <Link href="/app/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 flex items-center justify-center text-slate-950 font-extrabold text-sm shadow-lg shadow-amber-500/20">
-              S
-            </div>
-            <div>
-              <span className="font-serif tracking-wider font-bold text-white text-base">SAMVERO</span>
-              <span className="block text-[9px] font-mono uppercase tracking-widest text-amber-400 font-semibold">
-                Client Workspace
-              </span>
-            </div>
+            <SamveroBrandLogo size="md" theme="dark" />
           </Link>
         </div>
 

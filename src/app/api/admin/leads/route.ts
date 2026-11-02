@@ -5,15 +5,14 @@ import {
   deleteCustomerLeadRecord,
 } from '@/lib/saas-store';
 import { getAllRegisteredLeads } from '@/lib/lead-store';
+import { getAuthenticatedSession } from '@/lib/session';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
-    const roleCookie = request.cookies.get('samvero_portal_role')?.value;
-    const token = request.cookies.get('samvero_portal_token')?.value;
-
-    if (!token || (roleCookie !== 'admin' && roleCookie !== 'super_admin')) {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
       return NextResponse.json({ success: false, error: 'Unauthorized. Admin access required.' }, { status: 403 });
     }
 
@@ -33,10 +32,8 @@ export async function GET(request: NextRequest) {
 
 export async function PATCH(request: NextRequest) {
   try {
-    const roleCookie = request.cookies.get('samvero_portal_role')?.value;
-    const token = request.cookies.get('samvero_portal_token')?.value;
-
-    if (!token || (roleCookie !== 'admin' && roleCookie !== 'super_admin')) {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
       return NextResponse.json({ success: false, error: 'Unauthorized. Admin access required.' }, { status: 403 });
     }
 

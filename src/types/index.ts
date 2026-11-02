@@ -402,6 +402,21 @@ export interface Lead {
   listIds?: string[];
   createdAt?: string;
   updatedAt?: string;
+  // Outreach Lifecycle Extensions (Requirements 7, 9, 10)
+  currentStatus?:
+    | 'New Lead'
+    | 'Approached'
+    | 'Waiting for Client Response'
+    | 'Follow-up Required'
+    | 'Interested'
+    | 'Not Interested'
+    | 'Wasted Lead'
+    | 'Converted / Won'
+    | 'Closed';
+  approachedAt?: string;
+  lastContactDate?: string;
+  nextFollowupDate?: string;
+  openedAt?: string;
 }
 
 export interface PortalUser {

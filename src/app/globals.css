@@ -20,6 +20,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+.dark body {
+  background: #0B1528;
+  color: #f1f5f9;
+}
+
 /* Glassmorphism Classes */
 .glass-panel {
   background: rgba(255, 255, 255, 0.82);

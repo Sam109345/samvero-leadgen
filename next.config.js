@@ -5,6 +5,17 @@ const nextConfig = {
   reactStrictMode: true,
   webpack: (config, { isServer }) => {
     config.resolve.alias['@'] = path.resolve(__dirname, 'src');
+    config.resolve.extensions = [
+      '.tsx',
+      '.ts',
+      '.jsx',
+      '.js',
+      '.mjs',
+      '.json',
+      ...(config.resolve.extensions || []).filter(
+        (ext) => !['.tsx', '.ts', '.jsx', '.js', '.mjs', '.json'].includes(ext)
+      ),
+    ];
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,

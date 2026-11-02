@@ -25,6 +25,7 @@ import {
   Calendar,
   DollarSign,
 } from 'lucide-react';
+import SamveroBrandLogo from '@/components/SamveroBrandLogo';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -118,15 +119,7 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
         {/* Brand */}
         <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
           <Link href="/admin/dashboard" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
-              <span className="text-black font-black text-sm tracking-wider">S</span>
-            </div>
-            <div>
-              <span className="text-base font-black tracking-tight text-white font-serif">SAMVERO</span>
-              <span className="block text-[9px] uppercase tracking-widest text-amber-400 font-bold">
-                Admin Super Portal
-              </span>
-            </div>
+            <SamveroBrandLogo size="md" theme="dark" />
           </Link>
         </div>
 

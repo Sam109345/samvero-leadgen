@@ -37,6 +37,7 @@ interface LeadManagementViewProps {
   onResearchLead?: (lead: Lead) => void;
   onOpenWebsiteModal?: (lead: Lead) => void;
   onOpenEmailModal?: (lead: Lead) => void;
+  onInspectLead?: (lead: Lead) => void;
 }
 
 export default function LeadManagementView({
@@ -47,6 +48,7 @@ export default function LeadManagementView({
   onResearchLead,
   onOpenWebsiteModal,
   onOpenEmailModal,
+  onInspectLead,
 }: LeadManagementViewProps) {
   // Search & Filters state
   const [searchQuery, setSearchQuery] = useState('');
@@ -55,6 +57,7 @@ export default function LeadManagementView({
   const [selectedSource, setSelectedSource] = useState('all');
   const [selectedStage, setSelectedStage] = useState('all');
   const [contactFilter, setContactFilter] = useState<'all' | 'both' | 'email_only' | 'phone_only' | 'missing'>('all');
+  const [leadStatusFilter, setLeadStatusFilter] = useState<'new' | 'all' | 'approached' | 'waiting' | 'wasted' | 'converted' | 'closed'>('new');
 
   // Sorting state
   const [sortBy, setSortBy] = useState<'score' | 'date' | 'name'>('score');
@@ -141,6 +144,21 @@ export default function LeadManagementView({
       result = result.filter((l) => !l.contact?.email && !l.contact?.phone);
     }
 
+    // Lead Lifecycle Status Filter (Requirement 7: approached/wasted leads should not clutter default new leads list)
+    if (leadStatusFilter === 'new') {
+      result = result.filter((l) => !l.currentStatus || l.currentStatus === 'New Lead');
+    } else if (leadStatusFilter === 'approached') {
+      result = result.filter((l) => l.currentStatus === 'Approached');
+    } else if (leadStatusFilter === 'waiting') {
+      result = result.filter((l) => l.currentStatus === 'Waiting for Client Response');
+    } else if (leadStatusFilter === 'wasted') {
+      result = result.filter((l) => l.currentStatus === 'Wasted Lead');
+    } else if (leadStatusFilter === 'converted') {
+      result = result.filter((l) => l.currentStatus === 'Converted / Won');
+    } else if (leadStatusFilter === 'closed') {
+      result = result.filter((l) => l.currentStatus === 'Closed');
+    }
+
     // Sorting
     result.sort((a, b) => {
       let comparison = 0;
@@ -159,7 +177,7 @@ export default function LeadManagementView({
     });
 
     return result;
-  }, [leads, searchQuery, selectedCountry, selectedCategory, selectedSource, selectedStage, contactFilter, sortBy, sortOrder]);
+  }, [leads, searchQuery, selectedCountry, selectedCategory, selectedSource, selectedStage, contactFilter, leadStatusFilter, sortBy, sortOrder]);
 
   // Paginated Leads
   const paginatedLeads = useMemo(() => {
@@ -200,6 +218,7 @@ export default function LeadManagementView({
       setSelectedSource('all');
       setSelectedStage('all');
       setContactFilter('all');
+      setLeadStatusFilter('all');
       setSearchQuery('');
     } else if (preset === 'needs_research') {
       setContactFilter('missing');
@@ -424,7 +443,7 @@ export default function LeadManagementView({
       </div>
 
       {/* Search & Advanced Filters Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
         {/* Global Search */}
         <div className="lg:col-span-2 relative">
           <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
@@ -438,6 +457,27 @@ export default function LeadManagementView({
             placeholder="Search business, contact, email, city, domain..."
             className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+        </div>
+
+        {/* Lead Lifecycle Status Filter (Requirement 7) */}
+        <div>
+          <select
+            value={leadStatusFilter}
+            onChange={(e) => {
+              setLeadStatusFilter(e.target.value as any);
+              setCurrentPage(1);
+            }}
+            className="w-full px-3 py-2 text-xs rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-bold focus:outline-none"
+            title="Filter by Outreach Lifecycle Status"
+          >
+            <option value="new">🌟 New Leads Only</option>
+            <option value="all">🌐 All Lifecycle States</option>
+            <option value="approached">📨 Approached</option>
+            <option value="waiting">⏳ Waiting Reply</option>
+            <option value="wasted">🗑️ Wasted Leads</option>
+            <option value="converted">🏆 Converted Leads</option>
+            <option value="closed">🔒 Closed Leads</option>
+          </select>
         </div>
 
         {/* Country Filter */}
@@ -756,6 +796,16 @@ export default function LeadManagementView({
                             >
                               <Eye className="w-3.5 h-3.5" />
                             </button>
+
+                            {onInspectLead && (
+                              <button
+                                onClick={() => onInspectLead(lead)}
+                                title="Open 9-Section Lead Detail, AI Pitch & Proposal"
+                                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                              >
+                                <SlidersHorizontal className="w-3.5 h-3.5" />
+                              </button>
+                            )}
 
                             {onOpenEmailModal && hasEmail && (
                               <button

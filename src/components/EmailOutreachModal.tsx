@@ -24,6 +24,7 @@ import { Lead } from '@/types';
 import { generateSamveroEmailTemplate } from '@/lib/email-template';
 import { resolveLegitimateBusinessEmail, extractCleanDomain, slugifyBusinessName } from '@/lib/gmb-email-resolver';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
+import RichTextEditor, { sanitizeHtmlContent } from '@/components/editor/RichTextEditor';
 
 export const TEST_SMTP_EMAIL = 'sameer.centric@gmail.com';
 
@@ -132,6 +133,28 @@ export default function EmailOutreachModal({
   const [viewMode, setViewMode] = useState<'edit' | 'html_preview'>('edit');
   const [result, setResult] = useState<{ success: boolean; message: string; provider?: string } | null>(null);
   const [publicLiveOrigin, setPublicLiveOrigin] = useState<string>('');
+  const [isDraftingAi, setIsDraftingAi] = useState(false);
+
+  const handleDraftWithAi = async () => {
+    if (!lead) return;
+    try {
+      setIsDraftingAi(true);
+      const res = await fetch('/api/ai/pitch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ lead, categoryOverride: lead.category }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (data.subject) setSubject(data.subject);
+        if (data.htmlContent) setMessage(data.htmlContent);
+      }
+    } catch (err) {
+      console.warn('AI pitch drafting error:', err);
+    } finally {
+      setIsDraftingAi(false);
+    }
+  };
 
   useEffect(() => {
     fetch('/api/tunnel')
@@ -734,16 +757,26 @@ export default function EmailOutreachModal({
               </div>
             )}
 
-            {/* Message Body */}
-            <div className="space-y-1 text-xs">
-              <label className="font-bold text-slate-700 dark:text-slate-300 block">
-                Proposal Message Content:
-              </label>
-              <textarea
-                rows={7}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-lg p-3 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#007FED] font-sans leading-relaxed"
+            {/* Message Body (WYSIWYG Rich-Text Visual Editor) */}
+            <div className="space-y-1.5 text-xs">
+              <div className="flex items-center justify-between pb-1">
+                <label className="font-bold text-slate-700 dark:text-slate-300 block">
+                  Proposal Message Content (WYSIWYG Editor):
+                </label>
+                <button
+                  type="button"
+                  onClick={handleDraftWithAi}
+                  disabled={isDraftingAi}
+                  className="px-3 py-1.5 rounded-lg bg-[#007FED] hover:bg-blue-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition active:scale-95 disabled:opacity-50"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  <span>{isDraftingAi ? 'Drafting with AI...' : 'Draft Email Using AI'}</span>
+                </button>
+              </div>
+              <RichTextEditor
+                content={message}
+                onChange={(html) => setMessage(html)}
+                minHeight="200px"
               />
             </div>
 

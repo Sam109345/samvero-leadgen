@@ -35,7 +35,8 @@ import {
   Volume2,
   AlertCircle,
   Eye,
-  Printer
+  Printer,
+  MapPin,
 } from 'lucide-react';
 import { EmailThread, EmailMessage, ChatAttachment, VoiceNoteData } from '@/types';
 
@@ -842,7 +843,8 @@ export default function ClientInboxView({
 
         {/* Right Pane: Thread History & Composer */}
         {selectedThread ? (
-          <div className="flex-1 flex flex-col bg-white overflow-hidden">
+          <>
+            <div className="flex-1 flex flex-col bg-white overflow-hidden">
             {/* Thread Header Bar */}
             <div className="px-6 py-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
               <div>
@@ -1314,6 +1316,88 @@ export default function ClientInboxView({
               )}
             </div>
           </div>
+
+          {/* 3rd Pane: Client & Business Details Card (Requirement 8) */}
+          <div className="hidden xl:flex w-72 bg-slate-50 dark:bg-[#0c1424] border-l border-slate-200 dark:border-slate-800 flex-col p-4 overflow-y-auto space-y-4 shrink-0 text-xs">
+            <div className="text-center pb-4 border-b border-slate-200 dark:border-slate-800 space-y-2">
+              <div className="w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-950/80 text-[#3B6FF5] font-black text-xl flex items-center justify-center mx-auto shadow-sm">
+                {selectedThread.contactPerson.charAt(0)}
+              </div>
+              <div>
+                <h4 className="font-extrabold text-sm text-slate-900 dark:text-white">
+                  {selectedThread.contactPerson}
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {selectedThread.businessName}
+                </p>
+              </div>
+              <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                selectedThread.sentiment === 'booking'
+                  ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
+                  : selectedThread.sentiment === 'pricing'
+                  ? 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300'
+                  : 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300'
+              }`}>
+                {selectedThread.status.replace('_', ' ')}
+              </span>
+            </div>
+
+            {/* Contact Info */}
+            <div className="space-y-3">
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                Client Coordinates
+              </span>
+
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                <Mail className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+                <span className="truncate select-all font-mono text-[11px]">{selectedThread.clientEmail}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                <MapPin className="w-3.5 h-3.5 text-rose-500 shrink-0" />
+                <span>{selectedThread.city}, {selectedThread.country}</span>
+              </div>
+
+              <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+                <Clock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                <span>Last active: {selectedThread.lastMessageAt}</span>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="pt-3 border-t border-slate-200 dark:border-slate-800 space-y-2">
+              <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block">
+                Acquisition Actions
+              </span>
+
+              <button
+                type="button"
+                onClick={() => window.open(`mailto:${selectedThread.clientEmail}?subject=Follow up with ${selectedThread.businessName}`)}
+                className="w-full py-2 px-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-400 text-slate-700 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1.5 transition shadow-2xs cursor-pointer"
+              >
+                <Mail className="w-3.5 h-3.5 text-blue-500" />
+                <span>Direct Mail Client</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => applyQuickReply(`Hi ${selectedThread.contactPerson}, I wanted to confirm if you're free for a quick Zoom demo tomorrow?`)}
+                className="w-full py-2 px-3 rounded-xl bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 hover:bg-blue-100 text-[#3B6FF5] font-bold text-xs flex items-center justify-center gap-1.5 transition cursor-pointer"
+              >
+                <Calendar className="w-3.5 h-3.5" />
+                <span>Schedule Call</span>
+              </button>
+            </div>
+
+            {/* Pitch Context */}
+            <div className="p-3 rounded-xl bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 space-y-1">
+              <span className="text-[10px] font-bold text-slate-400 uppercase">Pitch Context</span>
+              <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-snug">
+                Verified Prospect &bull; Ready for follow-up and contract negotiation.
+              </p>
+            </div>
+          </div>
+        </>
         ) : (
           <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
             Select a conversation to view thread.

@@ -32,7 +32,7 @@ const COUNTRY_DIAL_PATTERNS: Array<{
   maxDigits: number;
   prefix: string;
 }> = [
-  { code: 'AE', name: 'United Arab Emirates', minDigits: 9, maxDigits: 9, prefix: '971' },
+  { code: 'AE', name: 'United Arab Emirates', minDigits: 8, maxDigits: 9, prefix: '971' },
   { code: 'PK', name: 'Pakistan', minDigits: 10, maxDigits: 11, prefix: '92' },
   { code: 'GB', name: 'United Kingdom', minDigits: 10, maxDigits: 11, prefix: '44' },
   { code: 'US', name: 'United States', minDigits: 10, maxDigits: 10, prefix: '1' },

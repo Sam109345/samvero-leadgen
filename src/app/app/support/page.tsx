@@ -165,7 +165,7 @@ export default function CustomerSupportPage() {
                 </div>
                 <div>
                   <span className="text-slate-500 text-[10px] uppercase block">Direct Escrow Desk</span>
-                  <span className="text-amber-300">support@samvero.com</span>
+                  <span className="text-amber-300">samverodigital@gmail.com</span>
                 </div>
                 <div>
                   <span className="text-slate-500 text-[10px] uppercase block">Response SLA</span>
