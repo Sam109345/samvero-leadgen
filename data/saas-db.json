@@ -358,6 +358,24 @@
   ],
   "applications": [
     {
+      "id": "app-1793619219779-mfko",
+      "referenceNumber": "APP-2026-5927",
+      "fullName": "David Sterling",
+      "businessName": "Sterling Growth Capital",
+      "email": "corp_1793619219742@samvero-test.com",
+      "whatsapp": "+14155550199",
+      "country": "US",
+      "companyWebsite": "https://sterlinggrowth.com",
+      "planId": "plan_standard",
+      "planName": "Standard",
+      "billingDuration": "monthly",
+      "serviceRequirements": "High-intent B2B outreach for enterprise technology providers.",
+      "additionalMessage": "Prefer wire transfer settlement via JPMorgan Chase escrow.",
+      "status": "pending",
+      "createdAt": "2026-11-02T11:33:39.779Z",
+      "updatedAt": "2026-11-02T11:33:39.779Z"
+    },
+    {
       "id": "app-1793372220252-4hk7",
       "referenceNumber": "APP-2026-2077",
       "fullName": "David Sterling",
@@ -475,7 +493,7 @@
     {
       "id": "user-client-101",
       "email": "client@gmail.com",
-      "name": "Customer Client",
+      "name": "Alexander Wright",
       "businessName": "Apex Digital Growth LLC",
       "phone": "+1 (415) 890-2341",
       "whatsapp": "+14158902341",
@@ -2911,6 +2929,16 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1793619219780-5wa2",
+      "recipientRole": "admin",
+      "type": "new_application",
+      "title": "New SaaS Application: David Sterling",
+      "message": "David Sterling (corp_1793619219742@samvero-test.com) submitted application APP-2026-5927 for package: Standard (monthly).",
+      "link": "/admin/applications",
+      "isRead": false,
+      "createdAt": "2026-11-02T11:33:39.780Z"
+    },
     {
       "id": "notif-1793372221224-l9bd",
       "recipientRole": "admin",

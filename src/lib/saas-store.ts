@@ -748,28 +748,32 @@ export function ensureSaasStoreInitialized(): void {
     };
     db.users.push(customerUser);
 
-    // Give initial customer an active Standard package subscription
-    const standardPlan = db.plans.find((p) => p.slug === 'standard') || db.plans[2];
+    // Give initial customer an active Enterprise package subscription
+    const enterprisePlan = db.plans.find((p) => p.slug === 'enterprise') || db.plans[5] || db.plans[2];
     const startDate = new Date();
     const expiryDate = new Date();
-    expiryDate.setDate(startDate.getDate() + 30); // 30 days active
+    expiryDate.setDate(startDate.getDate() + 365); // 1 year active
 
     const initialSub: SaasSubscription = {
-      id: 'sub-alex-standard',
+      id: 'sub-alex-enterprise',
       customerId: customerUser.id,
       customerEmail: customerUser.email,
       customerName: customerUser.name,
-      planId: standardPlan.id,
-      planName: standardPlan.name,
-      billingCycle: 'monthly',
+      planId: enterprisePlan.id,
+      planName: enterprisePlan.name,
+      billingCycle: 'annual',
       startDate: startDate.toISOString(),
       expiryDate: expiryDate.toISOString(),
       gracePeriodDays: 3,
       status: 'active',
-      leadQuota: standardPlan.maxLeadsQuota,
-      leadsConsumed: 42,
+      leadQuota: enterprisePlan.maxLeadsQuota || 60000,
+      leadsConsumed: 14,
       renewalStatus: 'none',
-      entitlements: { ...standardPlan },
+      entitlements: {
+        ...enterprisePlan,
+        allowedSources: [...enterprisePlan.allowedSources],
+        allowedCountries: [...enterprisePlan.allowedCountries],
+      },
       createdBy: 'Bootstrap System',
       createdAt: startDate.toISOString(),
       updatedAt: startDate.toISOString(),
@@ -782,16 +786,16 @@ export function ensureSaasStoreInitialized(): void {
       customerId: customerUser.id,
       customerName: customerUser.name,
       customerEmail: customerUser.email,
-      planId: standardPlan.id,
-      planName: standardPlan.name,
-      billingDuration: 'monthly',
-      amountDue: standardPlan.prices.monthly,
-      amountReceived: standardPlan.prices.monthly,
+      planId: enterprisePlan.id,
+      planName: enterprisePlan.name,
+      billingDuration: 'annual',
+      amountDue: enterprisePlan.prices.annual,
+      amountReceived: enterprisePlan.prices.annual,
       currency: 'USD',
       paymentMethod: 'Bank Wire Transfer',
       paymentReference: 'WIRE-US-992140',
       paymentDate: startDate.toISOString(),
-      paymentEvidenceNote: 'Initial corporate account activation confirmed via bank wire audit.',
+      paymentEvidenceNote: 'Initial corporate account activation confirmed via bank wire audit (Enterprise Tier).',
       status: 'confirmed',
       confirmedBy: 'Sameer (Executive Admin)',
       confirmedAt: startDate.toISOString(),
@@ -813,7 +817,7 @@ export function ensureSaasStoreInitialized(): void {
         city: lead.city,
         platform: lead.platform,
         contact: lead.contact,
-        tags: ['High Priority Outbound'],
+        tags: ['High Priority Outbound', 'Enterprise Qualified'],
         status: 'saved',
         consumedAt: startDate.toISOString(),
         updatedAt: startDate.toISOString(),
@@ -823,6 +827,28 @@ export function ensureSaasStoreInitialized(): void {
     customerUser.passwordHash = hashPassword(customerPasswordEnv);
     customerUser.mustChangePassword = false;
     customerUser.status = 'active';
+
+    // Ensure existing customer has Enterprise subscription
+    const enterprisePlan = db.plans.find((p) => p.slug === 'enterprise') || db.plans[5];
+    if (enterprisePlan) {
+      let existingSub = db.subscriptions.find((s) => s.customerId === customerUser!.id);
+      if (existingSub) {
+        existingSub.planId = enterprisePlan.id;
+        existingSub.planName = enterprisePlan.name;
+        existingSub.leadQuota = Math.max(existingSub.leadQuota || 0, enterprisePlan.maxLeadsQuota || 60000);
+        existingSub.status = 'active';
+        existingSub.entitlements = {
+          ...enterprisePlan,
+          allowedSources: [...enterprisePlan.allowedSources],
+          allowedCountries: [...enterprisePlan.allowedCountries],
+        };
+        const futureDate = new Date();
+        futureDate.setDate(futureDate.getDate() + 365);
+        if (new Date(existingSub.expiryDate).getTime() < futureDate.getTime()) {
+          existingSub.expiryDate = futureDate.toISOString();
+        }
+      }
+    }
   }
 
   isInitialized = true;

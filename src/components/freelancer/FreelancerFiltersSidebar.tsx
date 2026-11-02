@@ -162,23 +162,106 @@ export default function FreelancerFiltersSidebar({
           onChange={(e) => onPlatformChange && onPlatformChange(e.target.value)}
           className="w-full bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 text-xs font-semibold rounded-xl px-2.5 py-2 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[#3B6FF5] transition"
         >
-          <option value="all">🌐 All Channels (50+ Platforms)</option>
-          <optgroup label="Main Freelancing Platforms">
-            <option value="Upwork">Upwork</option>
-            <option value="Fiverr">Fiverr</option>
-            <option value="Freelancer.com">Freelancer.com</option>
-            <option value="PeoplePerHour">PeoplePerHour</option>
-            <option value="Guru">Guru</option>
-            <option value="Contra">Contra</option>
+          <option value="all">🌐 All Channels (70+ Platforms)</option>
+          
+          <optgroup label="⭐ High Priority (Agency Core)">
+            <option value="Upwork">Upwork (Direct Projects)</option>
+            <option value="Fiverr">Fiverr (Service Orders)</option>
+            <option value="LinkedIn">LinkedIn (Decision-Makers)</option>
+            <option value="PeoplePerHour">PeoplePerHour (Web/Creative)</option>
+            <option value="Contra">Contra (Portfolio Acquisition)</option>
+            <option value="Apollo">Apollo.io (Business Contacts)</option>
+            <option value="Clutch">Clutch (Agency Discovery)</option>
+            <option value="Google Maps">Google Maps (Missing Websites)</option>
           </optgroup>
-          <optgroup label="Direct Business Portals">
+
+          <optgroup label="1. Freelancing Marketplaces">
+            <option value="Freelancer.com">Freelancer.com (Live API)</option>
+            <option value="Guru">Guru</option>
+            <option value="Toptal">Toptal</option>
+            <option value="Workana">Workana</option>
+            <option value="Truelancer">Truelancer</option>
+            <option value="99designs">99designs</option>
+            <option value="DesignCrowd">DesignCrowd</option>
+            <option value="Legiit">Legiit</option>
+            <option value="Bark">Bark</option>
+            <option value="Mayple">Mayple</option>
+            <option value="Codeable">Codeable</option>
+          </optgroup>
+
+          <optgroup label="2. B2B Lead Generation & Outreach">
+            <option value="ZoomInfo">ZoomInfo</option>
+            <option value="Lusha">Lusha</option>
+            <option value="Lead411">Lead411</option>
+            <option value="UpLead">UpLead</option>
+            <option value="Snov.io">Snov.io</option>
+            <option value="Hunter.io">Hunter.io</option>
+            <option value="Cognism">Cognism</option>
+            <option value="RocketReach">RocketReach</option>
+            <option value="LeadIQ">LeadIQ</option>
+            <option value="GetProspect">GetProspect</option>
+            <option value="Clay">Clay</option>
+            <option value="Instantly">Instantly</option>
+            <option value="Smartlead">Smartlead</option>
+          </optgroup>
+
+          <optgroup label="3. Business Directories & Discovery">
             <option value="Google My Business">Google My Business</option>
-            <option value="LinkedIn">LinkedIn</option>
-            <option value="Bark">Bark.com</option>
-            <option value="Thumbtack">Thumbtack</option>
-            <option value="Meta Ads">Meta Ads (Facebook & Instagram)</option>
-            <option value="Rozee.pk">Rozee.pk (Pakistan)</option>
-            <option value="Bayt">Bayt (Middle East)</option>
+            <option value="Yelp">Yelp</option>
+            <option value="Yellow Pages">Yellow Pages</option>
+            <option value="Crunchbase">Crunchbase</option>
+            <option value="Product Hunt">Product Hunt</option>
+            <option value="GoodFirms">GoodFirms</option>
+            <option value="DesignRush">DesignRush</option>
+            <option value="Sortlist">Sortlist</option>
+            <option value="Y Combinator">Y Combinator</option>
+            <option value="G2">G2</option>
+            <option value="Capterra">Capterra</option>
+          </optgroup>
+
+          <optgroup label="4. Social Media Acquisition">
+            <option value="Reddit">Reddit (Live RFP)</option>
+            <option value="Facebook">Facebook Groups</option>
+            <option value="Instagram">Instagram Business</option>
+            <option value="X (Twitter)">X / Twitter</option>
+            <option value="Discord">Discord Communities</option>
+            <option value="Behance">Behance</option>
+            <option value="Dribbble">Dribbble</option>
+            <option value="Indie Hackers">Indie Hackers</option>
+            <option value="Makers">Makers</option>
+          </optgroup>
+
+          <optgroup label="5. Remote Tech Contracts">
+            <option value="Remote OK">Remote OK (Live API)</option>
+            <option value="Remotive">Remotive (Live API)</option>
+            <option value="We Work Remotely">We Work Remotely</option>
+            <option value="Wellfound">Wellfound</option>
+            <option value="FlexJobs">FlexJobs</option>
+            <option value="Working Nomads">Working Nomads</option>
+            <option value="Dynamite Jobs">Dynamite Jobs</option>
+            <option value="Jobspresso">Jobspresso</option>
+            <option value="Arc">Arc</option>
+            <option value="Lemon.io">Lemon.io</option>
+            <option value="Braintrust">Braintrust</option>
+            <option value="Catalant">Catalant</option>
+          </optgroup>
+
+          <optgroup label="6. Specialized Web Development">
+            <option value="Storetasker">Storetasker (Shopify)</option>
+            <option value="Shopify Partners">Shopify Partners</option>
+            <option value="Webflow Experts">Webflow Experts</option>
+            <option value="Wix Marketplace">Wix Marketplace</option>
+            <option value="Squarespace">Squarespace</option>
+            <option value="Envato">Envato</option>
+            <option value="Awwwards">Awwwards</option>
+          </optgroup>
+
+          <optgroup label="7. Pakistan Market Platforms">
+            <option value="Rozee.pk">Rozee.pk</option>
+            <option value="Mustakbil">Mustakbil</option>
+            <option value="BrightSpyre">BrightSpyre</option>
+            <option value="LinkedIn Pakistan">LinkedIn Pakistan</option>
+            <option value="OLX Pakistan">OLX Pakistan</option>
           </optgroup>
         </select>
       </div>

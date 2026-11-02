@@ -4,6 +4,7 @@ import { resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
 import { registerLead } from './lead-store';
+import { matchesPlatformCategory, PlatformCategoryId } from './platform-directory';
 
 interface LiveSearchOptions {
   query?: string;
@@ -564,7 +565,97 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
 }
 
 /**
- * 5. Master Real-Time Live Lead Aggregator
+ * 5. Fetch live client hiring posts from Reddit r/forhire
+ */
+export async function fetchLiveRedditJobs(options: LiveSearchOptions = {}): Promise<Lead[]> {
+  const { limit = 10 } = options;
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+
+    const res = await fetch('https://www.reddit.com/r/forhire/new.json?limit=25', {
+      signal: controller.signal,
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) SamveroLeadGen/2.0',
+      },
+    });
+    clearTimeout(timeout);
+
+    if (!res.ok) return [];
+
+    const json = await res.json();
+    const posts = json?.data?.children || [];
+
+    // Filter strictly [Hiring] posts
+    const hiringPosts = posts.filter((p: any) => {
+      const title = (p?.data?.title || '').toLowerCase();
+      const flair = (p?.data?.link_flair_text || '').toLowerCase();
+      return title.startsWith('[hiring]') || flair.includes('hiring');
+    }).slice(0, limit);
+
+    const leads: Lead[] = hiringPosts.map((item: any, idx: number) => {
+      const p = item.data;
+      const rawTitle = p.title || 'Client Project Request';
+      const cleanTitle = rawTitle.replace(/^\[hiring\]\s*/i, '').trim();
+      const cleanDesc = cleanDescription(p.selftext || cleanTitle).slice(0, 360) + '...';
+      const author = p.author ? `u/${p.author}` : 'Direct Client';
+      const url = `https://www.reddit.com${p.permalink}`;
+      
+      const budgetMatch = rawTitle.match(/\$[\d,]+(?:\s*-\s*\$[\d,]+)?(?:\s*\/\s*hr|\/hour)?/i);
+      const budget = budgetMatch ? budgetMatch[0] : 'Budget per scope';
+
+      const detectedCat = detectLeadCategory(cleanTitle, cleanDesc);
+
+      const base: Lead = {
+        id: `live-rd-${p.id || idx}`,
+        title: cleanTitle,
+        businessName: author,
+        type: 'job',
+        platform: 'Reddit' as LeadSource,
+        category: detectedCat,
+        country: 'US',
+        city: 'Global / Remote',
+        address: 'Online / Reddit Verified Community',
+        budget,
+        jobType: 'Contract',
+        businessAge: {
+          years: 1,
+          months: 0,
+          isNew: true,
+          label: '✨ Newly Opened',
+          badgeColor: 'emerald',
+        },
+        description: cleanDesc,
+        postedAt: formatTimeAgo(p.created_utc),
+        timeAgo: formatTimeAgo(p.created_utc),
+        contact: {
+          hasWebsite: true,
+          website: url,
+          contactPerson: author,
+        },
+        tags: ['🟢 Live Reddit', 'Direct Client RFP', detectedCat],
+        verified: true,
+        pipelineStage: 'new',
+        status: 'new',
+        incomingAt: (p.created_utc || Math.floor(Date.now() / 1000)) * 1000,
+      };
+
+      return {
+        ...base,
+        generatedWebsite: generateClientWebsite(base),
+      };
+    });
+
+    return leads;
+  } catch (err) {
+    console.warn('[Reddit API] issue:', err);
+    return [];
+  }
+}
+
+/**
+ * 6. Master Real-Time Live Lead Aggregator
  * Gathers 100% REAL LIVE projects across all platforms in parallel with zero synthetic data.
  */
 export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}): Promise<Lead[]> {
@@ -576,18 +667,20 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
   }
 
   // Fetch in parallel with fault tolerance
-  const [flProjects, roJobs, remJobs, pkPlaces, uaePlaces] = await Promise.all([
+  const [flProjects, roJobs, remJobs, redditJobs, pkPlaces, uaePlaces] = await Promise.all([
     fetchLiveFreelancerProjects({ query, category, limit: 16 }),
     fetchLiveRemoteOkJobs({ limit: 20 }),
     fetchLiveRemotiveJobs({ query, category, limit: 12 }),
-    fetchLiveLocalBusinesses({ query, city: 'Lahore', country: 'Pakistan', category, limit: 6 }),
-    fetchLiveLocalBusinesses({ query, city: 'Dubai', country: 'UAE', category, limit: 6 }),
+    fetchLiveRedditJobs({ limit: 8 }),
+    fetchLiveLocalBusinesses({ query, city: 'Lahore', country: 'Pakistan', category, limit: 8 }),
+    fetchLiveLocalBusinesses({ query, city: 'Dubai', country: 'UAE', category, limit: 8 }),
   ]);
 
   const combinedLeads: Lead[] = [
     ...flProjects,
     ...roJobs,
     ...remJobs,
+    ...redditJobs,
     ...pkPlaces,
     ...uaePlaces,
   ];
@@ -647,12 +740,27 @@ function filterLeads(
 
   if (options.category && options.category !== 'all') {
     const cat = options.category.toLowerCase();
-    filtered = filtered.filter((l) => {
-      const lCat = (l.category || '').toLowerCase();
-      const lTitle = (l.title || '').toLowerCase();
-      const lDesc = (l.description || '').toLowerCase();
-      return lCat.includes(cat) || lTitle.includes(cat) || lDesc.includes(cat);
-    });
+    const isCategoryTaxonomy = [
+      'agency_priority',
+      'freelance',
+      'b2b_leadgen',
+      'directories',
+      'social_media',
+      'remote_jobs',
+      'specialized_web',
+      'pakistan',
+    ].includes(cat);
+
+    if (isCategoryTaxonomy) {
+      filtered = filtered.filter((l) => matchesPlatformCategory(l.platform, cat as PlatformCategoryId));
+    } else {
+      filtered = filtered.filter((l) => {
+        const lCat = (l.category || '').toLowerCase();
+        const lTitle = (l.title || '').toLowerCase();
+        const lDesc = (l.description || '').toLowerCase();
+        return lCat.includes(cat) || lTitle.includes(cat) || lDesc.includes(cat);
+      });
+    }
   }
 
   if (options.platform && options.platform !== 'all') {

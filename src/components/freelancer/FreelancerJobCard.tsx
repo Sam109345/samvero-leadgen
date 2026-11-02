@@ -96,13 +96,33 @@ export default function FreelancerJobCard({
       case 'Facebook Ads':
       case 'Instagram Ads':
         return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-700 text-blue-700 dark:text-blue-300', dot: 'bg-blue-600' };
+      case 'Apollo':
+      case 'Apollo.io':
+        return { bg: 'bg-amber-50 dark:bg-amber-950/60 border-amber-400 dark:border-amber-700 text-amber-800 dark:text-amber-200', dot: 'bg-amber-500' };
+      case 'Clutch':
+        return { bg: 'bg-indigo-50 dark:bg-indigo-950/60 border-indigo-400 dark:border-indigo-700 text-indigo-800 dark:text-indigo-200', dot: 'bg-indigo-600' };
+      case 'Reddit':
+        return { bg: 'bg-orange-50 dark:bg-orange-950/60 border-orange-400 dark:border-orange-700 text-orange-800 dark:text-orange-200', dot: 'bg-orange-600' };
+      case 'Remote OK':
+        return { bg: 'bg-rose-50 dark:bg-rose-950/60 border-rose-400 dark:border-rose-700 text-rose-800 dark:text-rose-200', dot: 'bg-rose-500' };
+      case 'Remotive':
+        return { bg: 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200', dot: 'bg-emerald-600' };
+      case 'Google Maps':
       case 'Google My Business':
-        return { bg: 'bg-red-50 dark:bg-red-950/60 border-red-300 dark:border-red-800 text-red-700 dark:text-red-300', dot: 'bg-red-500' };
+        return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-700 text-blue-800 dark:text-blue-200', dot: 'bg-blue-600' };
+      case 'Storetasker':
+      case 'Shopify Partners':
+        return { bg: 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-700 text-emerald-800 dark:text-emerald-200', dot: 'bg-emerald-500' };
+      case 'Webflow Experts':
+        return { bg: 'bg-blue-50 dark:bg-blue-950/60 border-blue-400 dark:border-blue-700 text-blue-700 dark:text-blue-300', dot: 'bg-blue-500' };
       case 'Rozee.pk':
-      case 'Bayt':
-      case 'Dubizzle':
-      case 'Thumbtack':
-        return { bg: 'bg-teal-50 dark:bg-teal-950/60 border-teal-300 dark:border-teal-800 text-teal-700 dark:text-teal-300', dot: 'bg-teal-500' };
+      case 'Mustakbil':
+      case 'BrightSpyre':
+      case 'LinkedIn Pakistan':
+      case 'OLX Pakistan':
+        return { bg: 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-200', dot: 'bg-emerald-600' };
+      case 'We Work Remotely':
+        return { bg: 'bg-red-50 dark:bg-red-950/60 border-red-300 dark:border-red-800 text-red-700 dark:text-red-300', dot: 'bg-red-500' };
       default:
         return { bg: 'bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300', dot: 'bg-slate-500' };
     }

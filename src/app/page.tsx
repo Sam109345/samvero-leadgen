@@ -49,8 +49,10 @@ import { matchLeadCategory } from '@/lib/lead-workspace-store';
 
 import { Lead, LeadNotification, PipelineStage } from '@/types';
 import { playLuxuryChime } from '@/lib/sound-chime';
-import { Briefcase, Sparkles, Flame, Plus, Layers, Filter, RotateCcw, LayoutGrid, Table, Bookmark, Sun, Moon, Volume2, VolumeX, ShieldCheck, Key, Palette, CheckCircle2 } from 'lucide-react';
+import { Briefcase, Sparkles, Flame, Plus, Layers, Filter, RotateCcw, LayoutGrid, Table, Bookmark, Sun, Moon, Volume2, VolumeX, ShieldCheck, Key, Palette, CheckCircle2, Zap } from 'lucide-react';
 import LuxuryLandingPage from '@/components/public/LuxuryLandingPage';
+import PlatformCategorySelector from '@/components/navigation/PlatformCategorySelector';
+import { PlatformCategoryId, matchesPlatformCategory } from '@/lib/platform-directory';
 
 interface HomePageProps {
   initialView?: NavViewId;
@@ -102,6 +104,8 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
   // Specific Platform & Discipline Filters
   const [platformFilter, setPlatformFilter] = useState('all');
   const [disciplineFilter, setDisciplineFilter] = useState('all');
+  const [selectedPlatformCategory, setSelectedPlatformCategory] = useState<PlatformCategoryId | 'all'>('agency_priority');
+  const [showRightPanel, setShowRightPanel] = useState(false);
 
   // Inbox & Theme state
   const [inboxUnreadCount, setInboxUnreadCount] = useState(3);
@@ -386,9 +390,20 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
           return false;
         }
 
+        // 8-Category Platform Taxonomy filter
+        if (selectedPlatformCategory !== 'all') {
+          if (!matchesPlatformCategory(l.platform, selectedPlatformCategory)) {
+            return false;
+          }
+        }
+
         // Platform filter
-        if (platformFilter !== 'all' && !l.platform.toLowerCase().includes(platformFilter.toLowerCase())) {
-          return false;
+        if (platformFilter !== 'all') {
+          const plat = platformFilter.toLowerCase();
+          const lPlat = (l.platform || '').toLowerCase();
+          if (!lPlat.includes(plat) && !plat.includes(lPlat)) {
+            return false;
+          }
         }
 
         // Pipeline Sub-filter
@@ -689,13 +704,39 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                   inboxCount={inboxUnreadCount}
                 />
 
-                {/* View Mode Toggle: Freelancer Cards vs Table View */}
-                <div className="px-6 lg:px-8 pt-3 pb-1 flex items-center justify-between text-xs font-bold">
+                {/* Modern 8-Category Platform Hub */}
+                <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 pt-3">
+                  <PlatformCategorySelector
+                    activeCategory={selectedPlatformCategory}
+                    onSelectCategory={(cat) => {
+                      setSelectedPlatformCategory(cat);
+                      setPlatformFilter('all');
+                    }}
+                    selectedPlatform={platformFilter}
+                    onSelectPlatform={setPlatformFilter}
+                    totalLeadsCount={totalLeads}
+                  />
+                </div>
+
+                {/* View Mode & Radar Toggle Bar */}
+                <div className="max-w-[1600px] w-full mx-auto px-4 sm:px-6 pt-1 pb-2 flex flex-wrap items-center justify-between gap-3 text-xs font-bold">
                   <div className="text-slate-500 dark:text-slate-400 font-medium">
-                    Showing <span className="font-extrabold text-slate-800 dark:text-slate-200">{filteredLeads.length}</span> {activeCategoryTab.replace('_', ' ')} opportunities
+                    Showing <span className="font-extrabold text-slate-800 dark:text-slate-200">{filteredLeads.length}</span> {activeCategoryTab.replace('_', ' ')} qualified opportunities
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-slate-400">View Mode:</span>
+                    <button
+                      onClick={() => setShowRightPanel(!showRightPanel)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition cursor-pointer text-xs font-bold ${
+                        showRightPanel
+                          ? 'bg-blue-600 text-white shadow-xs'
+                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Zap className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{showRightPanel ? 'Hide Live Radar' : 'Live Ingestion Radar'}</span>
+                    </button>
+
+                    <span className="text-slate-400">View:</span>
                     <button
                       onClick={() => setFeedStyle('cards')}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition cursor-pointer ${
@@ -705,7 +746,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                       }`}
                     >
                       <LayoutGrid className="w-3.5 h-3.5" />
-                      <span>Freelancer Feed</span>
+                      <span>Cards</span>
                     </button>
                     <button
                       onClick={() => setFeedStyle('table')}
@@ -716,7 +757,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                       }`}
                     >
                       <Table className="w-3.5 h-3.5" />
-                      <span>Table View</span>
+                      <span>Table</span>
                     </button>
                   </div>
                 </div>
@@ -733,7 +774,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                     onInspectLead={handleOpenLeadDetail}
                   />
                 ) : (
-                  <div className="flex-1 flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-4 gap-6">
+                  <div className="flex-1 flex flex-col lg:flex-row max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-2 gap-6">
                     <FreelancerFiltersSidebar
                       searchQuery={searchQuery}
                       onSearchChange={setSearchQuery}
@@ -761,6 +802,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                       onResetFilters={() => {
                         setSelectedCountry('all');
                         setSelectedCity('');
+                        setSelectedPlatformCategory('agency_priority');
                         setPlatformFilter('all');
                         setCategoryFilter('all');
                         setBusinessAgeFilter('all');
@@ -783,12 +825,24 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                               ? "You haven't saved any leads to your shortlist yet. Click the 'Save Lead' button on any job card to curate your private list."
                               : "No leads match your active filters. Try adjusting your search query, country, or filter parameters."}
                           </p>
-                          {activeCategoryTab === 'saved' && (
+                          {activeCategoryTab === 'saved' ? (
                             <button
                               onClick={() => handleCategoryTabSelect('all')}
                               className="px-4 py-2 bg-[#007FED] hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition cursor-pointer"
                             >
                               Discover All Leads
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setSelectedPlatformCategory('all');
+                                setPlatformFilter('all');
+                                setSelectedCountry('all');
+                                setSearchQuery('');
+                              }}
+                              className="px-4 py-2 bg-[#007FED] hover:bg-blue-600 text-white text-xs font-bold rounded-lg transition cursor-pointer"
+                            >
+                              Show All Opportunities
                             </button>
                           )}
                         </div>
@@ -808,23 +862,25 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                       )}
                     </div>
 
-                    <div className="hidden xl:block w-80 shrink-0">
-                      <FreelancerRightPanel
-                        secondsLeft={secondsLeft}
-                        isStreaming={isStreaming}
-                        onToggleStreaming={() => setIsStreaming(!isStreaming)}
-                        soundEnabled={soundEnabled}
-                        onToggleSound={() => setSoundEnabled(!soundEnabled)}
-                        latestLead={latestLead}
-                        onOpenInbox={() => handleSelectView('messages')}
-                        inboxUnreadCount={inboxUnreadCount}
-                        onInspectLead={handleOpenWebsiteModal}
-                        totalLeadsCount={totalLeads}
-                        noWebsiteCount={noWebsiteCount}
-                        newGmbCount={newBusinesses}
-                        onSelectTag={(tag) => setSearchQuery(tag)}
-                      />
-                    </div>
+                    {showRightPanel && (
+                      <div className="hidden xl:block w-80 shrink-0">
+                        <FreelancerRightPanel
+                          secondsLeft={secondsLeft}
+                          isStreaming={isStreaming}
+                          onToggleStreaming={() => setIsStreaming(!isStreaming)}
+                          soundEnabled={soundEnabled}
+                          onToggleSound={() => setSoundEnabled(!soundEnabled)}
+                          latestLead={latestLead}
+                          onOpenInbox={() => handleSelectView('messages')}
+                          inboxUnreadCount={inboxUnreadCount}
+                          onInspectLead={handleOpenWebsiteModal}
+                          totalLeadsCount={totalLeads}
+                          noWebsiteCount={noWebsiteCount}
+                          newGmbCount={newBusinesses}
+                          onSelectTag={(tag) => setSearchQuery(tag)}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

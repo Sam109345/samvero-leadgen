@@ -56,7 +56,52 @@ export type LeadSource =
   | 'Meta Ads'
   | 'Facebook Ads'
   | 'Instagram Ads'
-  | 'DesignBoard';
+  | 'DesignBoard'
+  | 'Google Maps'
+  | 'Apollo.io'
+  | 'Apollo'
+  | 'Clutch'
+  | 'Reddit'
+  | 'X (Twitter)'
+  | 'Twitter'
+  | 'Discord'
+  | 'Storetasker'
+  | 'Shopify Partners'
+  | 'Webflow Experts'
+  | 'Wix Marketplace'
+  | 'Squarespace'
+  | 'Envato'
+  | 'Awwwards'
+  | 'BrightSpyre'
+  | 'LinkedIn Pakistan'
+  | 'OLX Pakistan'
+  | 'ZoomInfo'
+  | 'Lusha'
+  | 'Lead411'
+  | 'UpLead'
+  | 'Snov.io'
+  | 'Hunter.io'
+  | 'Cognism'
+  | 'RocketReach'
+  | 'LeadIQ'
+  | 'GetProspect'
+  | 'Clay'
+  | 'Instantly'
+  | 'Smartlead'
+  | 'Yelp'
+  | 'Yellow Pages'
+  | 'Crunchbase'
+  | 'Product Hunt'
+  | 'GoodFirms'
+  | 'DesignRush'
+  | 'Sortlist'
+  | 'Y Combinator'
+  | 'G2'
+  | 'Capterra'
+  | 'Indie Hackers'
+  | 'Makers'
+  | 'Jobspresso'
+  | 'Catalant';
 
 export type LeadCategory = 
   | 'Web Development'
@@ -425,7 +470,7 @@ export interface PortalUser {
   name: string;
   email: string;
   password?: string;
-  role: 'admin' | 'staff' | 'global_user';
+  role: 'admin' | 'staff' | 'global_user' | 'customer';
   isGlobalUser: boolean; // If true: sees ALL leads across all platforms & countries
   status: 'active' | 'suspended';
   createdAt: string;

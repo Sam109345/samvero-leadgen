@@ -139,8 +139,8 @@ export async function GET(request: NextRequest) {
           );
         }
 
-        // Enforce package entitlements on lead discovery
-        if (sub.entitlements) {
+        // Enforce package entitlements on lead discovery (Enterprise has unrestricted access to all 70+ sources)
+        if (sub.entitlements && sub.planName !== 'Enterprise' && (sub as any).slug !== 'enterprise') {
           const allowedSources = new Set((sub.entitlements.allowedSources || []).map((s: string) => s.toLowerCase()));
           const allowedCountries = new Set((sub.entitlements.allowedCountries || []).map((c: string) => c.toLowerCase()));
 
@@ -154,7 +154,9 @@ export async function GET(request: NextRequest) {
     }
 
     const activeUser = requestedUserId ? getPortalUserById(requestedUserId) : undefined;
+    const isCustomer = portalRole === 'customer' || (activeUser && (activeUser.role as string) === 'customer') || requestedUserId === 'user-client-101';
     const isSuperAdminOrGlobal = 
+      isCustomer ||
       requestedScope === 'all' ||
       !activeUser || 
       activeUser.isGlobalUser || 
@@ -164,7 +166,7 @@ export async function GET(request: NextRequest) {
       isGlobalCookie;
 
     // If staff user and NOT global: strictly filter to ONLY their assigned leads!
-    if (!isSuperAdminOrGlobal && activeUser) {
+    if (!isCustomer && !isSuperAdminOrGlobal && activeUser && activeUser.role === 'staff') {
       allLeads = allLeads.filter((l) => l.assignedToUserId === activeUser.id);
     }
 
