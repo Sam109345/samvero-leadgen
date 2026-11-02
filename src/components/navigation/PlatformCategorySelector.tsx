@@ -73,7 +73,7 @@ export default function PlatformCategorySelector({
               }}
               className="text-[11px] font-bold text-[#3B6FF5] hover:underline cursor-pointer flex items-center gap-1"
             >
-              <span>View All 50+ Platforms</span>
+              <span>View All 70+ Platforms</span>
             </button>
           )}
         </div>

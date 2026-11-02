@@ -24,7 +24,10 @@ import { CustomerLeadRecord, SaasSubscription } from '@/lib/saas-store';
 
 export default function CustomerDashboardPage() {
   const [metrics, setMetrics] = useState<any>(null);
+  const [livePreviewLeads, setLivePreviewLeads] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [savingLeadId, setSavingLeadId] = useState<string | null>(null);
+  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
 
   const fetchMetrics = () => {
     setLoading(true);
@@ -39,9 +42,44 @@ export default function CustomerDashboardPage() {
       .finally(() => setLoading(false));
   };
 
+  const fetchLiveOpportunities = () => {
+    fetch('/api/leads')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.leads)) {
+          setLivePreviewLeads(data.leads.slice(0, 5));
+        }
+      })
+      .catch(() => {});
+  };
+
   useEffect(() => {
     fetchMetrics();
+    fetchLiveOpportunities();
   }, []);
+
+  const handleSaveLead = async (lead: any) => {
+    setSavingLeadId(lead.id);
+    try {
+      const res = await fetch('/api/customer/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leadId: lead.id, leadData: lead }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setSaveSuccess(`"${lead.businessName}" saved to workspace!`);
+        setTimeout(() => setSaveSuccess(null), 3000);
+        fetchMetrics();
+      } else {
+        alert(data.error || 'Failed to save lead');
+      }
+    } catch {
+      alert('Error saving lead');
+    } finally {
+      setSavingLeadId(null);
+    }
+  };
 
   if (loading || !metrics) {
     return (
@@ -233,6 +271,95 @@ export default function CustomerDashboardPage() {
             >
               Request Renewal
             </Link>
+          </div>
+        </div>
+
+        {/* Live Multi-Platform Enterprise Opportunities Feed */}
+        <div className="bg-[#0b1222] border border-amber-500/30 rounded-2xl p-6 shadow-lg shadow-amber-500/5">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-amber-400 fill-current" />
+              <h3 className="text-sm font-semibold text-white">Live Multi-Platform Enterprise Radar</h3>
+              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                100% Real Live Opportunities
+              </span>
+            </div>
+            <Link
+              href="/app/leads"
+              className="text-xs font-mono text-amber-400 hover:text-amber-300 flex items-center gap-1 font-bold"
+            >
+              <span>Explore All 70+ Sources</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+
+          {saveSuccess && (
+            <div className="mb-3 p-2.5 bg-emerald-950/80 border border-emerald-500/50 rounded-xl text-xs text-emerald-200 flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>{saveSuccess}</span>
+            </div>
+          )}
+
+          <div className="space-y-2.5">
+            {livePreviewLeads.length > 0 ? (
+              livePreviewLeads.map((lead) => (
+                <div
+                  key={lead.id}
+                  className="p-3.5 rounded-xl bg-[#080d1a] border border-slate-800 flex flex-col md:flex-row md:items-center justify-between text-xs gap-3 hover:border-amber-400/40 transition"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold shrink-0 text-xs">
+                      {lead.businessName.charAt(0)}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-white">{lead.businessName}</span>
+                        <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-blue-500/15 text-blue-300 border border-blue-500/30">
+                          {lead.platform}
+                        </span>
+                        {lead.budget && (
+                          <span className="text-[11px] font-mono font-bold text-emerald-400">
+                            {lead.budget}
+                          </span>
+                        )}
+                      </div>
+                      <div className="text-[11px] text-slate-300 font-medium mt-0.5">
+                        {lead.title}
+                      </div>
+                      <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                        {lead.city ? `${lead.city}, ` : ''}{lead.country} • {lead.timeAgo || 'Active'}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => handleSaveLead(lead)}
+                      disabled={savingLeadId === lead.id}
+                      className="px-3 py-1.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-lg transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                    >
+                      <PlusCircle className="w-3.5 h-3.5" />
+                      <span>{savingLeadId === lead.id ? 'Saving...' : 'Save to Workspace'}</span>
+                    </button>
+                    {lead.contact?.website && (
+                      <a
+                        href={lead.contact.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg"
+                        title="Open Source Link"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="py-6 text-center text-slate-500 font-mono text-xs">
+                Connecting to real-time live lead streams across 70+ acquisition channels...
+              </div>
+            )}
           </div>
         </div>
 

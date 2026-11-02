@@ -3,7 +3,7 @@ import { cleanWhatsAppDigits } from './phone-utils';
 import { resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
-import { registerLead } from './lead-store';
+import { registerLead, getAllRegisteredLeads } from './lead-store';
 import { matchesPlatformCategory, PlatformCategoryId } from './platform-directory';
 
 interface LiveSearchOptions {
@@ -676,6 +676,8 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     fetchLiveLocalBusinesses({ query, city: 'Dubai', country: 'UAE', category, limit: 8 }),
   ]);
 
+  const registered = getAllRegisteredLeads();
+
   const combinedLeads: Lead[] = [
     ...flProjects,
     ...roJobs,
@@ -683,6 +685,7 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     ...redditJobs,
     ...pkPlaces,
     ...uaePlaces,
+    ...registered,
   ];
 
   // Populate stream buffer for the 10-second ticker
@@ -692,10 +695,11 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
   const seen = new Set<string>();
   const uniqueLeads: Lead[] = [];
   for (const l of combinedLeads) {
-    const key = (l.businessName + '::' + l.title).toLowerCase().trim();
-    if (!seen.has(l.id) && !seen.has(key)) {
-      seen.add(l.id);
-      seen.add(key);
+    const idKey = (l.id || '').toLowerCase().trim();
+    const nameKey = (l.businessName + '::' + l.title).toLowerCase().trim();
+    if (idKey && !seen.has(idKey) && !seen.has(nameKey)) {
+      seen.add(idKey);
+      seen.add(nameKey);
       uniqueLeads.push(l);
     }
   }

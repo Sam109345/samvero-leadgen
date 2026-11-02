@@ -30,9 +30,11 @@ import {
   Check,
 } from 'lucide-react';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
+import { PLATFORM_CATEGORIES, PlatformCategoryId, matchesPlatformCategory } from '@/lib/platform-directory';
 
 export default function CustomerLeadsPage() {
   const [activeTab, setActiveTab] = useState<'live' | 'saved'>('live');
+  const [selectedCategory, setSelectedCategory] = useState<PlatformCategoryId | 'all'>('all');
   const [savedLeads, setSavedLeads] = useState<CustomerLeadRecord[]>([]);
   const [liveLeads, setLiveLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
@@ -189,6 +191,7 @@ export default function CustomerLeadsPage() {
   const filteredLiveLeads = liveLeads.filter((l) => {
     const term = searchTerm.toLowerCase();
     const matchesSearch =
+      !term ||
       l.businessName.toLowerCase().includes(term) ||
       l.title.toLowerCase().includes(term) ||
       l.category.toLowerCase().includes(term) ||
@@ -197,14 +200,16 @@ export default function CustomerLeadsPage() {
       (l.contact?.email || '').toLowerCase().includes(term) ||
       (l.contact?.phone || '').toLowerCase().includes(term);
 
+    const matchesCategory = selectedCategory === 'all' || matchesPlatformCategory(l.platform, selectedCategory);
     const matchesPlatform = platformFilter === 'all' || l.platform.toLowerCase().includes(platformFilter.toLowerCase());
-    return matchesSearch && matchesPlatform;
+    return matchesSearch && matchesCategory && matchesPlatform;
   });
 
   // Filtered saved leads
   const filteredSavedLeads = savedLeads.filter((l) => {
     const term = searchTerm.toLowerCase();
     const matchesSearch =
+      !term ||
       l.businessName.toLowerCase().includes(term) ||
       l.category.toLowerCase().includes(term) ||
       l.country.toLowerCase().includes(term) ||
@@ -212,9 +217,10 @@ export default function CustomerLeadsPage() {
       (l.contact?.email || '').toLowerCase().includes(term) ||
       (l.contact?.phone || '').toLowerCase().includes(term);
 
+    const matchesCategory = selectedCategory === 'all' || matchesPlatformCategory(l.platform, selectedCategory);
     const matchesStatus = statusFilter === 'all' || l.status === statusFilter;
     const matchesPlatform = platformFilter === 'all' || l.platform.toLowerCase().includes(platformFilter.toLowerCase());
-    return matchesSearch && matchesStatus && matchesPlatform;
+    return matchesSearch && matchesCategory && matchesStatus && matchesPlatform;
   });
 
   return (
@@ -325,6 +331,66 @@ export default function CustomerLeadsPage() {
           </div>
         </div>
 
+        {/* Category Pills Strip */}
+        <div className="bg-[#0b1222] border border-slate-800/80 rounded-xl p-3">
+          <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 mb-2 font-bold flex items-center justify-between">
+            <span>Filter by Platform Category</span>
+            {selectedCategory !== 'all' && (
+              <button
+                onClick={() => {
+                  setSelectedCategory('all');
+                  setPlatformFilter('all');
+                }}
+                className="text-amber-400 hover:underline cursor-pointer"
+              >
+                Reset to All Channels
+              </button>
+            )}
+          </div>
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
+            <button
+              onClick={() => {
+                setSelectedCategory('all');
+                setPlatformFilter('all');
+              }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap cursor-pointer shrink-0 ${
+                selectedCategory === 'all'
+                  ? 'bg-amber-400 text-slate-950 font-extrabold shadow-sm'
+                  : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'
+              }`}
+            >
+              All Sources
+            </button>
+            {PLATFORM_CATEGORIES.map((cat) => {
+              const isSelected = selectedCategory === cat.id;
+              const isPriority = cat.id === 'agency_priority';
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setSelectedCategory(cat.id);
+                    setPlatformFilter('all');
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition whitespace-nowrap cursor-pointer shrink-0 ${
+                    isSelected
+                      ? isPriority
+                        ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-sm font-extrabold'
+                        : 'bg-blue-600 text-white shadow-sm font-extrabold'
+                      : isPriority
+                      ? 'bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20'
+                      : 'bg-slate-900 text-slate-300 border border-slate-800 hover:border-slate-700'
+                  }`}
+                >
+                  <span>{cat.shortTitle}</span>
+                  <span className="ml-1.5 px-1.5 py-0.2 rounded-full text-[10px] bg-white/10">
+                    {cat.platforms.length}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Search & Platform Filter Bar */}
         <div className="bg-[#0b1222] border border-slate-800/80 rounded-xl p-3.5 flex flex-col md:flex-row gap-3 items-center justify-between">
           <div className="relative w-full md:w-96">
@@ -345,19 +411,25 @@ export default function CustomerLeadsPage() {
               onChange={(e) => setPlatformFilter(e.target.value)}
               className="bg-[#080d1a] border border-slate-700 text-xs text-white rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-amber-400"
             >
-              <option value="all">All Sources (70+ Channels)</option>
-              <option value="Upwork">Upwork</option>
-              <option value="Fiverr">Fiverr</option>
+              <option value="all">All Platforms</option>
+              <option value="Upwork">Upwork (Priority)</option>
+              <option value="Fiverr">Fiverr (Priority)</option>
+              <option value="Apollo">Apollo.io (Priority)</option>
+              <option value="Clutch">Clutch (Priority)</option>
+              <option value="LinkedIn">LinkedIn (Priority)</option>
+              <option value="Contra">Contra (Priority)</option>
+              <option value="PeoplePerHour">PeoplePerHour (Priority)</option>
+              <option value="Google">Google Maps / GMB (Priority)</option>
               <option value="Freelancer">Freelancer.com</option>
-              <option value="PeoplePerHour">PeoplePerHour</option>
-              <option value="Contra">Contra</option>
-              <option value="LinkedIn">LinkedIn</option>
-              <option value="Reddit">Reddit</option>
+              <option value="Reddit">Reddit r/forhire</option>
               <option value="Remote OK">Remote OK</option>
               <option value="Remotive">Remotive</option>
-              <option value="Google Maps">Google Maps</option>
+              <option value="Storetasker">Storetasker (Shopify)</option>
+              <option value="Webflow">Webflow Experts</option>
+              <option value="Codeable">Codeable (WordPress)</option>
               <option value="Bark">Bark</option>
-              <option value="Pakistan">Pakistan Market (Rozee/OLX)</option>
+              <option value="Rozee">Rozee.pk (Pakistan)</option>
+              <option value="OLX">OLX Pakistan</option>
             </select>
 
             {activeTab === 'saved' && (
