@@ -93,7 +93,9 @@ export async function testGitHubConnection(): Promise<TestConnectionResult> {
 
 export async function searchGitHubLeads(options: {
   query?: string;
+  category?: string;
   country?: string;
+  city?: string;
   limit?: number;
 }): Promise<Lead[]> {
   const token = getPlatformCredential('github', 'token');
@@ -103,8 +105,10 @@ export async function searchGitHubLeads(options: {
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
 
-  const { query = 'digital agency', country, limit = 8 } = options;
-  const qStr = `${query} type:org${country ? ` location:${country}` : ''}`;
+  const { query, category, country, city, limit = 8 } = options;
+  const targetTerm = query || category || 'digital agency';
+  const locTerm = city || country;
+  const qStr = `${targetTerm} type:org${locTerm ? ` location:"${locTerm}"` : ''}`;
 
   try {
     const searchUrl = `https://api.github.com/search/users?q=${encodeURIComponent(qStr)}&per_page=${Math.min(limit, 10)}`;

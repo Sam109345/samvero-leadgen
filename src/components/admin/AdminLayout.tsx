@@ -92,7 +92,6 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
     { name: 'Global Leads Pool', href: '/admin/leads', icon: Database },
     { name: 'Analytics & Revenue', href: '/admin/analytics', icon: BarChart3 },
     { name: 'Lead Sources', href: '/admin/lead-sources', icon: Search },
-    { name: 'Integrations', href: '/admin/integrations', icon: Plug },
     { name: 'Activity Logs', href: '/admin/activity-logs', icon: Activity },
     { name: 'Platform Settings', href: '/admin/settings', icon: Settings },
   ];

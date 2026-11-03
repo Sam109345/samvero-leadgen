@@ -571,15 +571,17 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                 <div className="bg-white dark:bg-[#111c2e] p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Connected Platform Credentials</h4>
-                      <p className="text-xs text-slate-500">Configure your Apollo.io, Hunter.io, SerpApi, and Foursquare API keys.</p>
+                      <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100 flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span>Automated Lead Generation Engine</span>
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-1">
+                        Backend discovery pipelines operate continuously across global registries, open POI networks, and public feeds with zero manual setup.
+                      </p>
                     </div>
-                    <button
-                      onClick={() => handleSelectView('integrations')}
-                      className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold transition"
-                    >
-                      Open Integrations
-                    </button>
+                    <span className="px-3 py-1 bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 rounded-lg text-xs font-semibold">
+                      Automated & Active
+                    </span>
                   </div>
                 </div>
               </div>

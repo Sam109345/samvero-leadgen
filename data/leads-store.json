@@ -1,1 +1,3380 @@
-[]
+[
+  {
+    "id": "osm-281349551",
+    "title": "Basinghall Health Centre",
+    "businessName": "Basinghall Health Centre",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Basinghall Health Centre, 4, Basinghall Street, Moorgate, City of London, Greater London, England, EC2V 5BQ, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Basinghall Health Centre, 4, Basinghall Street, Moorgate, City of London, Greater London, England, EC2V 5BQ, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Basinghall%20Health%20Centre%20Basinghall%20Health%20Centre%2C%204%2C%20Basinghall%20Street%2C%20Moorgate%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2V%205BQ%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281349551",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5152516&mlon=-0.0907976",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281349551",
+        "leadId": "osm-281349551",
+        "fieldName": "business_name",
+        "retrievedValue": "Basinghall Health Centre",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5152516&mlon=-0.0907976",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281397815",
+    "title": "One Heart Clinic City",
+    "businessName": "One Heart Clinic City",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "One Heart Clinic City, 80, Cheapside, Bank, City of London, Greater London, England, EC2V 6EE, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at One Heart Clinic City, 80, Cheapside, Bank, City of London, Greater London, England, EC2V 6EE, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=One%20Heart%20Clinic%20City%20One%20Heart%20Clinic%20City%2C%2080%2C%20Cheapside%2C%20Bank%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2V%206EE%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281397815",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5135273&mlon=-0.0914607",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281397815",
+        "leadId": "osm-281397815",
+        "fieldName": "business_name",
+        "retrievedValue": "One Heart Clinic City",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5135273&mlon=-0.0914607",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281584294",
+    "title": "Cleveland Clinic Moorgate Outpatient Centre",
+    "businessName": "Cleveland Clinic Moorgate Outpatient Centre",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Cleveland Clinic Moorgate Outpatient Centre, 55, Moorgate, Leadenhall Market, Moorgate, City of London, Greater London, England, EC2R 6BH, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Cleveland Clinic Moorgate Outpatient Centre, 55, Moorgate, Leadenhall Market, Moorgate, City of London, Greater London, England, EC2R 6BH, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://clevelandcliniclondon.uk/locations/moorgate-outpatient-centre",
+      "phone": "+44 20 3423 7500",
+      "whatsapp": "442034237500",
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Cleveland%20Clinic%20Moorgate%20Outpatient%20Centre%20Cleveland%20Clinic%20Moorgate%20Outpatient%20Centre%2C%2055%2C%20Moorgate%2C%20Leadenhall%20Market%2C%20Moorgate%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2R%206BH%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Active Website"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281584294",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5168387&mlon=-0.0890488",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281584294",
+        "leadId": "osm-281584294",
+        "fieldName": "business_name",
+        "retrievedValue": "Cleveland Clinic Moorgate Outpatient Centre",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5168387&mlon=-0.0890488",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 68,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct telephone / WhatsApp channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-278737474",
+    "title": "Health Now",
+    "businessName": "Health Now",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Health Now, 61, Queen Street, St Paul's, City of London, Greater London, England, EC4R 1EB, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Health Now, 61, Queen Street, St Paul's, City of London, Greater London, England, EC4R 1EB, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Health%20Now%20Health%20Now%2C%2061%2C%20Queen%20Street%2C%20St%20Paul's%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC4R%201EB%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "278737474",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5109809&mlon=-0.0927245",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-278737474",
+        "leadId": "osm-278737474",
+        "fieldName": "business_name",
+        "retrievedValue": "Health Now",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5109809&mlon=-0.0927245",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281265480",
+    "title": "My Vital Metrics",
+    "businessName": "My Vital Metrics",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "My Vital Metrics, London Wall, Leadenhall Market, Moorgate, City of London, Greater London, England, EC2M 5QQ, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at My Vital Metrics, London Wall, Leadenhall Market, Moorgate, City of London, Greater London, England, EC2M 5QQ, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=My%20Vital%20Metrics%20My%20Vital%20Metrics%2C%20London%20Wall%2C%20Leadenhall%20Market%2C%20Moorgate%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2M%205QQ%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281265480",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5173811&mlon=-0.0874896",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281265480",
+        "leadId": "osm-281265480",
+        "fieldName": "business_name",
+        "retrievedValue": "My Vital Metrics",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5173811&mlon=-0.0874896",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281348612",
+    "title": "CREATE Fertility",
+    "businessName": "CREATE Fertility",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "CREATE Fertility, 150, Cheapside, West Smithfield, St Paul's, City of London, Greater London, England, EC2V 6ET, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at CREATE Fertility, 150, Cheapside, West Smithfield, St Paul's, City of London, Greater London, England, EC2V 6ET, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=CREATE%20Fertility%20CREATE%20Fertility%2C%20150%2C%20Cheapside%2C%20West%20Smithfield%2C%20St%20Paul's%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2V%206ET%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281348612",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5149240&mlon=-0.0969288",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281348612",
+        "leadId": "osm-281348612",
+        "fieldName": "business_name",
+        "retrievedValue": "CREATE Fertility",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5149240&mlon=-0.0969288",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281520506",
+    "title": "Bodyscan City",
+    "businessName": "Bodyscan City",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Bodyscan City, 36-38, Cornhill, Leadenhall Market, Bank, City of London, Greater London, England, EC3V 3ND, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Bodyscan City, 36-38, Cornhill, Leadenhall Market, Bank, City of London, Greater London, England, EC3V 3ND, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Bodyscan%20City%20Bodyscan%20City%2C%2036-38%2C%20Cornhill%2C%20Leadenhall%20Market%2C%20Bank%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC3V%203ND%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281520506",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5132625&mlon=-0.0860897",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281520506",
+        "leadId": "osm-281520506",
+        "fieldName": "business_name",
+        "retrievedValue": "Bodyscan City",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5132625&mlon=-0.0860897",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281348575",
+    "title": "Randox Health",
+    "businessName": "Randox Health",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Randox Health, Paternoster Row, West Smithfield, St Paul's, City of London, Greater London, England, EC4M 8AB, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Randox Health, Paternoster Row, West Smithfield, St Paul's, City of London, Greater London, England, EC4M 8AB, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Randox%20Health%20Randox%20Health%2C%20Paternoster%20Row%2C%20West%20Smithfield%2C%20St%20Paul's%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC4M%208AB%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281348575",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5146173&mlon=-0.0982837",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281348575",
+        "leadId": "osm-281348575",
+        "fieldName": "business_name",
+        "retrievedValue": "Randox Health",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5146173&mlon=-0.0982837",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-369668192",
+    "title": "LASIK MD",
+    "businessName": "LASIK MD",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "LASIK MD, 320, Dundas Street, London, Southwestern Ontario, Ontario, N6B 6R2, Canada",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at LASIK MD, 320, Dundas Street, London, Southwestern Ontario, Ontario, N6B 6R2, Canada. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "http://www.lasikmd.com/london",
+      "email": "info@lasikmd.com",
+      "phone": "+1-519-963-2222",
+      "whatsapp": "15199632222",
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=LASIK%20MD%20LASIK%20MD%2C%20320%2C%20Dundas%20Street%2C%20London%2C%20Southwestern%20Ontario%2C%20Ontario%2C%20N6B%206R2%2C%20Canada"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Active Website"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "369668192",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=42.9856564&mlon=-81.2435340",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-369668192",
+        "leadId": "osm-369668192",
+        "fieldName": "business_name",
+        "retrievedValue": "LASIK MD",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=42.9856564&mlon=-81.2435340",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 71,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 100,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 10,
+        "researchCompleteness": 100
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Omnichannel contact reachability (Both corporate Email & Phone verified) (+10 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281519250",
+    "title": "56 Dean Street",
+    "businessName": "56 Dean Street",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "56 Dean Street, 56, Dean Street, Soho, City of Westminster, Greater London, England, W1D 6AJ, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at 56 Dean Street, 56, Dean Street, Soho, City of Westminster, Greater London, England, W1D 6AJ, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.dean.st/",
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=56%20Dean%20Street%2056%20Dean%20Street%2C%2056%2C%20Dean%20Street%2C%20Soho%2C%20City%20of%20Westminster%2C%20Greater%20London%2C%20England%2C%20W1D%206AJ%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Active Website"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281519250",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5125444&mlon=-0.1320046",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281519250",
+        "leadId": "osm-281519250",
+        "fieldName": "business_name",
+        "retrievedValue": "56 Dean Street",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5125444&mlon=-0.1320046",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 63,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-419077515",
+    "title": "St. Pancras Clinical Research",
+    "businessName": "St. Pancras Clinical Research",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "St. Pancras Clinical Research, White Lyon Court, Barbican Estate, Barbican, City of London, Greater London, England, EC2Y 8DH, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at St. Pancras Clinical Research, White Lyon Court, Barbican Estate, Barbican, City of London, Greater London, England, EC2Y 8DH, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=St.%20Pancras%20Clinical%20Research%20St.%20Pancras%20Clinical%20Research%2C%20White%20Lyon%20Court%2C%20Barbican%20Estate%2C%20Barbican%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2Y%208DH%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "419077515",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5209894&mlon=-0.0966810",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-419077515",
+        "leadId": "osm-419077515",
+        "fieldName": "business_name",
+        "retrievedValue": "St. Pancras Clinical Research",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5209894&mlon=-0.0966810",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-429902620",
+    "title": "Rebirth Wellness Centre",
+    "businessName": "Rebirth Wellness Centre",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Rebirth Wellness Centre, 256, Central Avenue, London, Southwestern Ontario, Ontario, N6A 1M8, Canada",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Rebirth Wellness Centre, 256, Central Avenue, London, Southwestern Ontario, Ontario, N6A 1M8, Canada. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.rebirthwellness.ca/",
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Rebirth%20Wellness%20Centre%20Rebirth%20Wellness%20Centre%2C%20256%2C%20Central%20Avenue%2C%20London%2C%20Southwestern%20Ontario%2C%20Ontario%2C%20N6A%201M8%2C%20Canada"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Active Website"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "429902620",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=42.9910429&mlon=-81.2493232",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-429902620",
+        "leadId": "osm-429902620",
+        "fieldName": "business_name",
+        "retrievedValue": "Rebirth Wellness Centre",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=42.9910429&mlon=-81.2493232",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 63,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281423445",
+    "title": "Pure Sports Medicine",
+    "businessName": "Pure Sports Medicine",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Pure Sports Medicine, Threadneedle Street, Leadenhall Market, Bishopsgate, City of London, Greater London, England, EC2R 8AR, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Pure Sports Medicine, Threadneedle Street, Leadenhall Market, Bishopsgate, City of London, Greater London, England, EC2R 8AR, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.puresportsmed.com/",
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Pure%20Sports%20Medicine%20Pure%20Sports%20Medicine%2C%20Threadneedle%20Street%2C%20Leadenhall%20Market%2C%20Bishopsgate%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC2R%208AR%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Active Website"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281423445",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5143831&mlon=-0.0847227",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281423445",
+        "leadId": "osm-281423445",
+        "fieldName": "business_name",
+        "retrievedValue": "Pure Sports Medicine",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5143831&mlon=-0.0847227",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 63,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-281522793",
+    "title": "Moorfields @ Barts",
+    "businessName": "Moorfields @ Barts",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Moorfields @ Barts, West Smithfield, St Paul's, City of London, Greater London, England, EC1A 7BS, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Moorfields @ Barts, West Smithfield, St Paul's, City of London, Greater London, England, EC1A 7BS, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false,
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Moorfields%20%40%20Barts%20Moorfields%20%40%20Barts%2C%20West%20Smithfield%2C%20St%20Paul's%2C%20City%20of%20London%2C%20Greater%20London%2C%20England%2C%20EC1A%207BS%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Missing Website"
+    ],
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "281522793",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5172114&mlon=-0.0994560",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-281522793",
+        "leadId": "osm-281522793",
+        "fieldName": "business_name",
+        "retrievedValue": "Moorfields @ Barts",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5172114&mlon=-0.0994560",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 67,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "osm-280350921",
+    "title": "Dean Street Express",
+    "businessName": "Dean Street Express",
+    "type": "gmb",
+    "platform": "Google My Business",
+    "category": "Local Business",
+    "country": "UK",
+    "city": "London",
+    "address": "Dean Street Express, Dean Street, Soho, City of Westminster, Greater London, England, W1D 3RZ, United Kingdom",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Physical Location Verified",
+      "badgeColor": "emerald"
+    },
+    "description": "Verified physical location entry at Dean Street Express, Dean Street, Soho, City of Westminster, Greater London, England, W1D 3RZ, United Kingdom. Category: clinic.",
+    "postedAt": "Active Registry Listing",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.chelwest.nhs.uk/services/hiv-sexual-health/clinics/dean-street-express",
+      "gmbUrl": "https://www.google.com/maps/search/?api=1&query=Dean%20Street%20Express%20Dean%20Street%20Express%2C%20Dean%20Street%2C%20Soho%2C%20City%20of%20Westminster%2C%20Greater%20London%2C%20England%2C%20W1D%203RZ%2C%20United%20Kingdom"
+    },
+    "tags": [
+      "🟢 Live OpenStreetMap",
+      "Physical Location Verified",
+      "Active Website"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "280350921",
+    "sourcePlatformUrl": "https://www.openstreetmap.org/?mlat=51.5136098&mlon=-0.1322605",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-osm-280350921",
+        "leadId": "osm-280350921",
+        "fieldName": "business_name",
+        "retrievedValue": "Dean Street Express",
+        "sourceUrl": "https://www.openstreetmap.org/?mlat=51.5136098&mlon=-0.1322605",
+        "sourceProvider": "OpenStreetMap Nominatim",
+        "sourceType": "gmb",
+        "retrievalTimestamp": "2026-11-03T10:05:30.821Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 98,
+        "lastCheckedTimestamp": "2026-11-03T10:05:30.821Z"
+      }
+    ],
+    "incomingAt": 1793700330822,
+    "scoreBreakdown": {
+      "leadQualityScore": 63,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: UK (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-govau",
+    "title": "Digital Transformation Agency (Software Lab & Engineering)",
+    "businessName": "Digital Transformation Agency",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Canberra and Sydney",
+    "address": "Canberra and Sydney, Australia",
+    "businessAge": {
+      "years": 9,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Software engineering entity with 266 public repositories. Organization profile on GitHub.",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.dta.gov.au",
+      "contactPerson": "Digital Transformation Agency"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "266 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "25235510",
+    "sourcePlatformUrl": "https://github.com/govau",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-govau",
+        "leadId": "gh-govau",
+        "fieldName": "organization_name",
+        "retrievedValue": "Digital Transformation Agency",
+        "sourceUrl": "https://github.com/govau",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 59,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-vrk-kpa",
+    "title": "Finnish Digital Agency (Software Lab & Engineering)",
+    "businessName": "Finnish Digital Agency",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Finland",
+    "address": "Finland",
+    "businessAge": {
+      "years": 11,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "The agency promotes the digitalisation of society, secures the availability of data, and provides services for the life eve",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://dvv.fi/en/",
+      "email": "first.lastname@dvv.fi",
+      "emailStatus": "VERIFIED",
+      "contactPerson": "Finnish Digital Agency"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "117 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "11345641",
+    "sourcePlatformUrl": "https://github.com/vrk-kpa",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-vrk-kpa",
+        "leadId": "gh-vrk-kpa",
+        "fieldName": "organization_name",
+        "retrievedValue": "Finnish Digital Agency",
+        "sourceUrl": "https://github.com/vrk-kpa",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 68,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "VERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Corporate email channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-AuDigitalHealth",
+    "title": "Australian Digital Health Agency (Software Lab & Engineering)",
+    "businessName": "Australian Digital Health Agency",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Australia",
+    "address": "Australia",
+    "businessAge": {
+      "years": 8,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Software engineering entity with 75 public repositories. Organization profile on GitHub.",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.digitalhealth.gov.au",
+      "email": "admin.opensource@digitalhealth.gov.au",
+      "emailStatus": "VERIFIED",
+      "contactPerson": "Australian Digital Health Agency"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "75 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "35711308",
+    "sourcePlatformUrl": "https://github.com/AuDigitalHealth",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-AuDigitalHealth",
+        "leadId": "gh-AuDigitalHealth",
+        "fieldName": "organization_name",
+        "retrievedValue": "Australian Digital Health Agency",
+        "sourceUrl": "https://github.com/AuDigitalHealth",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 64,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "VERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Corporate email channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-generoi",
+    "title": "Genero Digital Agency (Software Lab & Engineering)",
+    "businessName": "Genero Digital Agency",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Helsinki",
+    "address": "Helsinki, Finland",
+    "businessAge": {
+      "years": 15,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Digital agency consisting of strategists, creatives, developers and digital doers.",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "http://www.genero.fi",
+      "contactPerson": "Genero Digital Agency"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "236 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "1155326",
+    "sourcePlatformUrl": "https://github.com/generoi",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-generoi",
+        "leadId": "gh-generoi",
+        "fieldName": "organization_name",
+        "retrievedValue": "Genero Digital Agency",
+        "sourceUrl": "https://github.com/generoi",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 59,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-diggsweden",
+    "title": "Digg - Agency for Digital Government (Software Lab & Engineering)",
+    "businessName": "Digg - Agency for Digital Government",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Sweden",
+    "address": "Sweden",
+    "businessAge": {
+      "years": 7,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "We coordinate and support the digitalisation of public administration.",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.digg.se/",
+      "email": "ospo@digg.se",
+      "emailStatus": "VERIFIED",
+      "contactPerson": "Digg - Agency for Digital Government"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "93 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "55883233",
+    "sourcePlatformUrl": "https://github.com/diggsweden",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-diggsweden",
+        "leadId": "gh-diggsweden",
+        "fieldName": "organization_name",
+        "retrievedValue": "Digg - Agency for Digital Government",
+        "sourceUrl": "https://github.com/diggsweden",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 64,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "VERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Corporate email channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-digital-power",
+    "title": "Digital Power (Software Lab & Engineering)",
+    "businessName": "Digital Power",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Netherlands",
+    "address": "Netherlands",
+    "businessAge": {
+      "years": 6,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Data Consultancy Agency.",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.digital-power.com",
+      "contactPerson": "Digital Power"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "15 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "61593682",
+    "sourcePlatformUrl": "https://github.com/digital-power",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-digital-power",
+        "leadId": "gh-digital-power",
+        "fieldName": "organization_name",
+        "retrievedValue": "Digital Power",
+        "sourceUrl": "https://github.com/digital-power",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 59,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-Cuberto",
+    "title": "Cuberto (Software Lab & Engineering)",
+    "businessName": "Cuberto",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "USA",
+    "address": "USA",
+    "businessAge": {
+      "years": 13,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Leading digital agency with solid design and development expertise.",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://cuberto.com/",
+      "email": "info@cuberto.com",
+      "emailStatus": "VERIFIED",
+      "contactPerson": "Cuberto"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "28 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "3691940",
+    "sourcePlatformUrl": "https://github.com/Cuberto",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-Cuberto",
+        "leadId": "gh-Cuberto",
+        "fieldName": "organization_name",
+        "retrievedValue": "Cuberto",
+        "sourceUrl": "https://github.com/Cuberto",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 64,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "VERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Corporate email channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-prolabagency",
+    "title": "PROlab Agency (Software Lab & Engineering)",
+    "businessName": "PROlab Agency",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Bishkek",
+    "address": "Bishkek",
+    "businessAge": {
+      "years": 8,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Turning Your Digital Visions into Reality",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.prolabagency.com",
+      "email": "office@prolabagency.com",
+      "emailStatus": "VERIFIED",
+      "contactPerson": "PROlab Agency"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "21 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "40358363",
+    "sourcePlatformUrl": "https://github.com/prolabagency",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-prolabagency",
+        "leadId": "gh-prolabagency",
+        "fieldName": "organization_name",
+        "retrievedValue": "PROlab Agency",
+        "sourceUrl": "https://github.com/prolabagency",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 64,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "VERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Corporate email channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "gh-Leuchtfeuer",
+    "title": "Leuchtfeuer Digital Marketing (Software Lab & Engineering)",
+    "businessName": "Leuchtfeuer Digital Marketing",
+    "type": "job",
+    "platform": "GitHub",
+    "category": "Web Development",
+    "country": "US",
+    "city": "Hannover",
+    "address": "Hannover, Germany",
+    "businessAge": {
+      "years": 6,
+      "months": 0,
+      "isNew": false,
+      "label": "GitHub Verified Organization",
+      "badgeColor": "blue"
+    },
+    "description": "Digital agency based in Hannover, Germany",
+    "postedAt": "Active GitHub Org",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.Leuchtfeuer.com",
+      "email": "dev@Leuchtfeuer.com",
+      "emailStatus": "VERIFIED",
+      "contactPerson": "Leuchtfeuer Digital Marketing"
+    },
+    "tags": [
+      "🟢 Live GitHub",
+      "Software Engineering",
+      "63 Repos"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "60928784",
+    "sourcePlatformUrl": "https://github.com/Leuchtfeuer",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-gh-Leuchtfeuer",
+        "leadId": "gh-Leuchtfeuer",
+        "fieldName": "organization_name",
+        "retrievedValue": "Leuchtfeuer Digital Marketing",
+        "sourceUrl": "https://github.com/Leuchtfeuer",
+        "sourceProvider": "GitHub REST API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.628Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.628Z"
+      }
+    ],
+    "incomingAt": 1793700327261,
+    "scoreBreakdown": {
+      "leadQualityScore": 64,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "VERIFIED",
+      "researchCompleteness": 85,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 7,
+        "researchCompleteness": 85
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Corporate email channel verified (+7 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q1058914",
+    "title": "software company (Corporate Entity)",
+    "businessName": "software company",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "company that develops software Official entity ID #Q1058914 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q1058914"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q1058914",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q1058914",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q1058914",
+        "leadId": "wd-Q1058914",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "software company",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q1058914",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q140020833",
+    "title": "Techzoq (Private) Limited (Corporate Entity)",
+    "businessName": "Techzoq (Private) Limited",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Pakistani software company Official entity ID #Q140020833 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q140020833"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q140020833",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q140020833",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q140020833",
+        "leadId": "wd-Q140020833",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Techzoq (Private) Limited",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q140020833",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q140161698",
+    "title": "Afro Digital (Corporate Entity)",
+    "businessName": "Afro Digital",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Software engineering and digital transformation agency based in Addis Ababa, Ethiopia Official entity ID #Q140161698 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q140161698"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q140161698",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q140161698",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q140161698",
+        "leadId": "wd-Q140161698",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Afro Digital",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q140161698",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 64,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q134964838",
+    "title": "Software Company Playtest (Corporate Entity)",
+    "businessName": "Software Company Playtest",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "2022 video game Official entity ID #Q134964838 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q134964838"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q134964838",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q134964838",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q134964838",
+        "leadId": "wd-Q134964838",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company Playtest",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q134964838",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74582021",
+    "title": "Software Company (M) A33 (Corporate Entity)",
+    "businessName": "Software Company (M) A33",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74582021 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74582021"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74582021",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74582021",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74582021",
+        "leadId": "wd-Q74582021",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) A33",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74582021",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74427936",
+    "title": "Software Company (M) B2 (Corporate Entity)",
+    "businessName": "Software Company (M) B2",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74427936 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74427936"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74427936",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74427936",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74427936",
+        "leadId": "wd-Q74427936",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) B2",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74427936",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74439583",
+    "title": "Software Company (M) A9 (Corporate Entity)",
+    "businessName": "Software Company (M) A9",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74439583 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74439583"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74439583",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74439583",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74439583",
+        "leadId": "wd-Q74439583",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) A9",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74439583",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74436068",
+    "title": "Software Company (M) A15 (Corporate Entity)",
+    "businessName": "Software Company (M) A15",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74436068 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74436068"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74436068",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74436068",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74436068",
+        "leadId": "wd-Q74436068",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) A15",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74436068",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326733,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74438953",
+    "title": "Software Company (M) A10 (Corporate Entity)",
+    "businessName": "Software Company (M) A10",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74438953 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74438953"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74438953",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74438953",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74438953",
+        "leadId": "wd-Q74438953",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) A10",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74438953",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326734,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74441776",
+    "title": "Software Company (M) A6 (Corporate Entity)",
+    "businessName": "Software Company (M) A6",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74441776 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74441776"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74441776",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74441776",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74441776",
+        "leadId": "wd-Q74441776",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) A6",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74441776",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326734,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74442248",
+    "title": "Software Company (M) A4 (Corporate Entity)",
+    "businessName": "Software Company (M) A4",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74442248 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74442248"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74442248",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74442248",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74442248",
+        "leadId": "wd-Q74442248",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) A4",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74442248",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326734,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74428509",
+    "title": "Software Company (M) B1 (Corporate Entity)",
+    "businessName": "Software Company (M) B1",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74428509 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74428509"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74428509",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74428509",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74428509",
+        "leadId": "wd-Q74428509",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) B1",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74428509",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326734,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "wd-Q74425752",
+    "title": "Software Company (M) B5 (Corporate Entity)",
+    "businessName": "Software Company (M) B5",
+    "type": "gmb",
+    "platform": "Wikidata",
+    "category": "software company",
+    "country": "US",
+    "city": "Global Headquarters",
+    "businessAge": {
+      "years": 4,
+      "months": 0,
+      "isNew": false,
+      "label": "Knowledge Graph Verified",
+      "badgeColor": "blue"
+    },
+    "description": "Verified enterprise indexed in Wikidata knowledge graph. Official entity ID #Q74425752 on Wikidata.",
+    "postedAt": "Active Knowledge Record",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": false
+    },
+    "tags": [
+      "🟢 Live Wikidata",
+      "Knowledge Graph Entity",
+      "ID: Q74425752"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "Q74425752",
+    "sourcePlatformUrl": "https://www.wikidata.org/wiki/Q74425752",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-wd-Q74425752",
+        "leadId": "wd-Q74425752",
+        "fieldName": "knowledge_entity_name",
+        "retrievedValue": "Software Company (M) B5",
+        "sourceUrl": "https://www.wikidata.org/wiki/Q74425752",
+        "sourceProvider": "Wikidata Knowledge Graph",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.733Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 97,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.733Z"
+      }
+    ],
+    "incomingAt": 1793700326734,
+    "scoreBreakdown": {
+      "leadQualityScore": 60,
+      "businessMatchConfidence": 70,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 50,
+      "factors": {
+        "projectRelevance": 8,
+        "budgetAvailability": 6,
+        "identityConfidence": 12,
+        "websiteAvailability": 15,
+        "serviceOpportunity": 15,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 50
+      },
+      "explanation": [
+        "Standard project scope outline (+8 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Confirmed business entity with physical market presence (+12 pts)",
+        "Zero existing website presence – prime target for full-stack build (+30 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "live-fl-40800559",
+    "title": "Modern MX Gear Logo Design",
+    "businessName": "Modern MX Gear Logo Design Client",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Graphic Design",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$10 - $30 AUD",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "I’m looking for a designer who can turn my motocross-inspired ideas into a clean, modern logo for an upcoming MX gear brand. I already have the brand name and a few rough concepts, so you’ll start with clear direction rather than a blank canvas. The style should feel fresh and contemporary—think sleek lines and balanced typography rather than heavy, grungy e...",
+    "postedAt": "15s ago",
+    "timeAgo": "15s ago",
+    "contact": {
+      "phone": "",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/adobe-illustrator/Modern-Gear-Logo-Design"
+    },
+    "reviewCount": 0,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Graphic Design",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "incomingAt": 1793700311000,
+    "generatedWebsite": {
+      "slug": "site-modern-mx-gear-logo-design-client",
+      "businessName": "Modern MX Gear Logo Design Client",
+      "tagline": "Artisan Quality &bull; Handcrafted Perfection &bull; Fast Delivery",
+      "heroHeadline": "Discover Authentic Excellence Handcrafted for Connoisseurs",
+      "heroSubheadline": "Experience the finest selection of signature collections curated by Modern MX Gear Logo Design Client. Ethically sourced, rigorously tested, and delivered directly to your doorstep in San Francisco and worldwide.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Founded with a relentless commitment to purity and heritage, Modern MX Gear Logo Design Client blends traditional craftsmanship with modern luxury. We partner directly with artisan producers to bring you unparalleled quality without compromise.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "luxury-gold",
+      "createdAt": "Just now",
+      "isEcommerce": true,
+      "announcementText": "✨ Complimentary Express Shipping on all orders over $ 2,500 across US &bull; Use code SAMVERO15 for 15% off",
+      "valueProps": [
+        {
+          "title": "100% Pure & Certified",
+          "subtitle": "Lab-tested artisan botanical & material purity",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Same-Day Express Dispatch",
+          "subtitle": "Next-day doorstep arrival in San Francisco",
+          "icon": "Zap"
+        },
+        {
+          "title": "Zero-Risk Guarantee",
+          "subtitle": "30-day hassle-free returns & replacement",
+          "icon": "RotateCcw"
+        },
+        {
+          "title": "Direct WhatsApp Concierge",
+          "subtitle": "Real-time ordering & dedicated client support",
+          "icon": "MessageCircle"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod-1",
+          "name": "Imperial Reserve Blend (250g Tin)",
+          "price": "$ 2,450",
+          "oldPrice": "$ 2,900",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
+          "isNew": true,
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-2",
+          "name": "Artisan Botanical Infusion Pack",
+          "price": "$ 1,850",
+          "oldPrice": "$ 2,200",
+          "rating": 4.9,
+          "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        },
+        {
+          "id": "prod-3",
+          "name": "Handcrafted Heritage Ceramic Jar Set",
+          "price": "$ 3,800",
+          "oldPrice": "$ 4,500",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-4",
+          "name": "Connoisseur Tasting Box (4 Varieties)",
+          "price": "$ 4,200",
+          "oldPrice": "$ 5,000",
+          "rating": 4.8,
+          "image": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Master Blender Reserve Spotlight",
+        "subtitle": "Hand-Harvested at 6,000ft Above Sea Level",
+        "description": "Each leaf in our reserve selection is hand-picked at peak morning mist, slow-withered in cedar rooms, and sealed under inert atmosphere to lock in delicate floral terpenes.",
+        "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Zero artificial additives or chemical flavor spray",
+          "Certified organic soil test documentation included",
+          "Airtight gold-foil canisters with wax stamp seal",
+          "Same-day temperature controlled dispatch"
+        ],
+        "ctaText": "Claim Your Collector Batch &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Commercial Mass Grade vs. Artisan Reserve",
+          "metric": "3.4x Higher Antioxidant Density",
+          "beforeText": "Broken dust grades treated with synthetic flavor boosters",
+          "afterText": "Whole-leaf silver needle tips with natural floral honey notes",
+          "imageBefore": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Luxury Corporate Gifting Transformation",
+          "metric": "98% Client Re-order Rate",
+          "beforeText": "Generic factory corporate hampers forgotten within days",
+          "afterText": "Handmade velvet gift boxes engraved with client crest",
+          "imageBefore": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Ayesha Khan",
+          "role": "Verified Purchaser",
+          "quote": "The aroma and packaging of Modern MX Gear Logo Design Client blew me away. Truly international standard luxury right here in San Francisco!",
+          "rating": 5,
+          "date": "3 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Hamza Farooq",
+          "role": "Private Collector",
+          "quote": "Ordered the Imperial Reserve set for my office. Every guest asks where I got it. Sensational quality.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Dr. Sarah Tariq",
+          "role": "Verified Buyer",
+          "quote": "Fast delivery, exquisite packaging, and the purest flavor I have experienced in years.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How long does delivery take to San Francisco?",
+          "answer": "Orders placed before 2:00 PM are dispatched the same day. Standard delivery takes 24 to 48 hours across major cities in US."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept Cash on Delivery (COD), Direct Bank Transfer, Visa, MasterCard, and Apple Pay."
+        },
+        {
+          "question": "Are your products 100% natural and preservative-free?",
+          "answer": "Yes! Absolutely zero artificial flavoring, additives, or preservatives are used in any of our blends or materials."
+        },
+        {
+          "question": "Do you offer custom corporate gift packages?",
+          "answer": "Yes, we curate custom engraved corporate hampers for executive events, weddings, and annual client appreciation gifts."
+        }
+      ],
+      "services": [
+        {
+          "title": "Artisan Purity Guarantee",
+          "description": "Small-batch harvested, tested, and sealed to preserve peak fragrance and flavor.",
+          "icon": "CheckCircle"
+        },
+        {
+          "title": "Custom Corporate Gifting",
+          "description": "Bespoke branded gift boxes, velvet ribbon packaging, and custom wax seals.",
+          "icon": "Gift"
+        },
+        {
+          "title": "Subscription Drop Program",
+          "description": "Receive fresh seasonal harvests delivered automatically to your home every month.",
+          "icon": "Calendar"
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    },
+    "scoreBreakdown": {
+      "leadQualityScore": 69,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 12,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Confirmed budget allocation detected (+12 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "hf-xt0r3-0",
+    "title": "xt0r3 (AI & Machine Learning Lab)",
+    "businessName": "xt0r3",
+    "type": "job",
+    "platform": "Hugging Face",
+    "category": "AI & Machine Learning",
+    "country": "US",
+    "city": "Global AI Ecosystem",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "AI Hub Verified Org",
+      "badgeColor": "blue"
+    },
+    "description": "Active AI organization and builder team on Hugging Face Hub developing machine learning models and intelligent apps.",
+    "postedAt": "Active AI Organization",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://huggingface.co/xt0r3",
+      "contactPerson": "xt0r3"
+    },
+    "tags": [
+      "🟢 Live Hugging Face",
+      "AI & Machine Learning",
+      "Software Lab"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "entityType": "registered_business",
+    "sourceListingId": "xt0r3",
+    "sourcePlatformUrl": "https://huggingface.co/xt0r3",
+    "sourceEvidenceList": [
+      {
+        "id": "ev-hf-xt0r3-0",
+        "leadId": "hf-xt0r3-0",
+        "fieldName": "ai_organization_name",
+        "retrievedValue": "xt0r3",
+        "sourceUrl": "https://huggingface.co/xt0r3",
+        "sourceProvider": "Hugging Face Hub API",
+        "sourceType": "b2b_database",
+        "retrievalTimestamp": "2026-11-03T10:05:26.548Z",
+        "verificationStatus": "VERIFIED",
+        "matchConfidence": 96,
+        "lastCheckedTimestamp": "2026-11-03T10:05:26.548Z"
+      }
+    ],
+    "incomingAt": 1793700326548,
+    "scoreBreakdown": {
+      "leadQualityScore": 66,
+      "businessMatchConfidence": 85,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 60,
+      "factors": {
+        "projectRelevance": 15,
+        "budgetAvailability": 6,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 60
+      },
+      "explanation": [
+        "High commercial intent detected in project scope (+15 pts)",
+        "Undisclosed / flexible budget range (+6 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  },
+  {
+    "id": "live-rem-2091165",
+    "title": "Full-Stack Developer",
+    "businessName": "Fluence International, Inc.",
+    "type": "job",
+    "platform": "Remotive",
+    "category": "Local Business",
+    "country": "US",
+    "city": "New York",
+    "address": "New York, US (Live Remotive Feed)",
+    "budget": "$3.5k–$5k/month",
+    "jobType": "Contract",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "We’re looking for a pragmatic, security-minded Full-Stack Developer to help build and scale Fluence’s B2B products used by clinicians, researchers, and organizations in psychedelic-assisted therapy and mental health. You’ll work closely with and report to our Senior AI & Design Lead to turn product requirements into robust, secure, and we...",
+    "postedAt": "4d ago",
+    "timeAgo": "4d ago",
+    "contact": {
+      "phone": "",
+      "hasWebsite": true,
+      "website": "https://remotive.com/remote-jobs/software-development/full-stack-developer-2091165"
+    },
+    "tags": [
+      "🟢 Live Remotive",
+      "Local Business",
+      "Remote Opportunity"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "incomingAt": 1793280161000,
+    "generatedWebsite": {
+      "slug": "site-fluence-international-inc",
+      "businessName": "Fluence International, Inc.",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Fluence International, Inc. provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "New York, US (Live Remotive Feed)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in New York",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Dr. Usman Malik",
+          "role": "Verified Patient",
+          "quote": "The best clinical experience I have ever had in New York. Completely painless, state-of-the-art facility, and exceptionally polite staff.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Zainab Qureshi",
+          "role": "Smile Design Patient",
+          "quote": "My veneers look so completely natural that no one can tell they are cosmetic! Truly master craftsmen.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Bilal Ahmed",
+          "role": "Executive Client",
+          "quote": "Prompt, hygienic, and thoroughly professional. The 3D scan and transparent treatment plan made all the difference.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "New York, US"
+    },
+    "scoreBreakdown": {
+      "leadQualityScore": 69,
+      "businessMatchConfidence": 100,
+      "contactVerificationStatus": "UNVERIFIED",
+      "researchCompleteness": 70,
+      "factors": {
+        "projectRelevance": 12,
+        "budgetAvailability": 12,
+        "identityConfidence": 15,
+        "websiteAvailability": 12,
+        "serviceOpportunity": 10,
+        "geographicRelevance": 10,
+        "businessActivity": 7,
+        "contactAvailability": 2,
+        "researchCompleteness": 70
+      },
+      "explanation": [
+        "Detailed project specification published (+12 pts)",
+        "Confirmed budget allocation detected (+12 pts)",
+        "Traceable business identity with verified location & web asset (+15 pts)",
+        "Existing web footprint detected – prime candidate for modernization (+22 pts)",
+        "High-priority operating territory: US (+10 pts)",
+        "Direct contact currently unavailable – requires enrichment research (+2 pts)"
+      ]
+    }
+  }
+]

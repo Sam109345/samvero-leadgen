@@ -405,6 +405,39 @@ async function runFunctionalUpgradeTests() {
   const isCustomerAdmin = decodedCustomer && (decodedCustomer.role === 'admin' || decodedCustomer.role === 'super_admin');
   assert(!isCustomerAdmin, 'Customer is strictly denied admin privileges');
 
+  // TEST 9: Gmail / mailto URL Plain-Text Sanitizer & Connected Platforms Removal
+  console.log('\n📧 TEST 9: Gmail URL Plain-Text Sanitizer & Zero Connected Platforms UI');
+  const { htmlToPlainText } = require('../src/lib/email-plain-text');
+
+  const richHtmlInput = `
+    <p>Dear <strong>Alexander</strong>,</p>
+    <p>We reviewed your business clinic showcase.<br/>Here are the key deliverables:</p>
+    <ul>
+      <li>Interactive Next.js Web App</li>
+      <li>One-Click WhatsApp Booking</li>
+    </ul>
+    <p>Explore your live showcase at <a href="https://samvero.com/preview/clinic">SAMVERO Demo</a>.</p>
+  `;
+
+  const plainTextResult = htmlToPlainText(richHtmlInput);
+  assert(!plainTextResult.includes('<p>'), 'No <p> tags in plain text output');
+  assert(!plainTextResult.includes('<strong>'), 'No <strong> tags in plain text output');
+  assert(!plainTextResult.includes('<ul>'), 'No <ul> tags in plain text output');
+  assert(!plainTextResult.includes('<li>'), 'No <li> tags in plain text output');
+  assert(!plainTextResult.includes('<br'), 'No <br> tags in plain text output');
+  assert(plainTextResult.includes('Alexander'), 'Client name preserved in plain text');
+  assert(plainTextResult.includes('• Interactive Next.js Web App'), 'Bullet points formatted cleanly');
+  assert(plainTextResult.includes('SAMVERO Demo (https://samvero.com/preview/clinic)'), 'Link converted to clean textual anchor');
+
+  // Verify UnifiedSidebar has NO 'Connected Platforms' or 'API Management' in navigation groups
+  const sidebarContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'components', 'navigation', 'UnifiedSidebar.tsx'), 'utf8');
+  assert(!sidebarContent.includes("'Connected Platforms'"), 'Connected Platforms removed from UnifiedSidebar');
+  assert(!sidebarContent.includes("'API Management'"), 'API Management removed from UnifiedSidebar');
+
+  // Verify AdminLayout has NO 'Integrations' navigation item
+  const adminLayoutContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'components', 'admin', 'AdminLayout.tsx'), 'utf8');
+  assert(!adminLayoutContent.includes("{ name: 'Integrations'"), 'Integrations removed from AdminLayout navigation');
+
   console.log('\n====================================================');
   console.log(`📊 Functional Verification Summary: ${passedTests}/${totalTests} Passed (${failedTests} Failed)`);
   console.log('====================================================\n');

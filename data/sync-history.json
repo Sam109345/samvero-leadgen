@@ -1,0 +1,72 @@
+[
+  {
+    "id": "sync-osm-1793700330869-7jmo",
+    "platformId": "osm",
+    "platformName": "OpenStreetMap Nominatim",
+    "startedAt": "2026-11-03T10:05:25.933Z",
+    "completedAt": "2026-11-03T10:05:30.869Z",
+    "durationMs": 4889,
+    "status": "success",
+    "recordsFetched": 15,
+    "recordsSaved": 15,
+    "duplicatesSkipped": 0,
+    "query": "",
+    "error": null
+  },
+  {
+    "id": "sync-github-1793700330856-5xxd",
+    "platformId": "github",
+    "platformName": "GitHub REST API",
+    "startedAt": "2026-11-03T10:05:26.008Z",
+    "completedAt": "2026-11-03T10:05:30.856Z",
+    "durationMs": 1253,
+    "status": "success",
+    "recordsFetched": 10,
+    "recordsSaved": 9,
+    "duplicatesSkipped": 1,
+    "query": "",
+    "error": null
+  },
+  {
+    "id": "sync-opencorporates-1793700330844-jhu9",
+    "platformId": "opencorporates",
+    "platformName": "OpenCorporates",
+    "startedAt": "2026-11-03T10:05:26.012Z",
+    "completedAt": "2026-11-03T10:05:30.844Z",
+    "durationMs": 797,
+    "status": "partial",
+    "recordsFetched": 0,
+    "recordsSaved": 0,
+    "duplicatesSkipped": 0,
+    "query": "",
+    "error": null
+  },
+  {
+    "id": "sync-wikidata-1793700330838-ya43",
+    "platformId": "wikidata",
+    "platformName": "Wikidata Knowledge Graph",
+    "startedAt": "2026-11-03T10:05:26.018Z",
+    "completedAt": "2026-11-03T10:05:30.838Z",
+    "durationMs": 716,
+    "status": "success",
+    "recordsFetched": 15,
+    "recordsSaved": 13,
+    "duplicatesSkipped": 2,
+    "query": "",
+    "error": null
+  },
+  {
+    "id": "sync-huggingface-1793700330829-9sak",
+    "platformId": "huggingface",
+    "platformName": "Hugging Face Hub API",
+    "startedAt": "2026-11-03T10:05:26.021Z",
+    "completedAt": "2026-11-03T10:05:30.829Z",
+    "durationMs": 528,
+    "status": "success",
+    "recordsFetched": 2,
+    "recordsSaved": 1,
+    "duplicatesSkipped": 1,
+    "query": "",
+    "error": null
+  }
+]

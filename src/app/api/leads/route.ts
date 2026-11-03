@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url);
     const country = searchParams.get('country') || 'all';
+    const city = searchParams.get('city') || '';
     const category = searchParams.get('category') || 'all';
     const businessAge = searchParams.get('businessAge') || 'all';
     const platform = searchParams.get('platform') || 'all';
@@ -32,12 +33,27 @@ export async function GET(request: NextRequest) {
 
     let allLeads: Lead[] = loadAllStoredLeads();
 
-    // If store is completely empty or forceRefresh requested, execute live discovery across operational sources
-    if (allLeads.length === 0 || forceRefresh) {
+    const isFilteredSearch = (country !== 'all') || (category !== 'all') || (city && city.length > 0) || (query && query.length > 0);
+    const matchingCount = allLeads.filter((l) => {
+      if (country !== 'all' && l.country?.toLowerCase() !== country.toLowerCase()) return false;
+      if (city && !l.city?.toLowerCase().includes(city.toLowerCase())) return false;
+      if (category !== 'all' && !l.category?.toLowerCase().includes(category.toLowerCase())) return false;
+      if (query) {
+        const q = query.toLowerCase();
+        const matchesQ = l.businessName?.toLowerCase().includes(q) || l.title?.toLowerCase().includes(q) || l.category?.toLowerCase().includes(q);
+        if (!matchesQ) return false;
+      }
+      return true;
+    }).length;
+
+    // If store is completely empty, forceRefresh requested, or user searched a specific query/location with 0 stored matches:
+    // execute live central pipeline across operational zero-key sources and persist new leads
+    if (allLeads.length === 0 || forceRefresh || (isFilteredSearch && matchingCount === 0)) {
       try {
         const pipelineResult = await executeCentralLeadPipeline({
           query: query || undefined,
           country: country !== 'all' ? country : undefined,
+          city: city || undefined,
           category: category !== 'all' ? category : undefined,
           limit: 15,
           autoPersist: true,
@@ -132,6 +148,12 @@ export async function GET(request: NextRequest) {
     // Apply country filter
     if (country !== 'all') {
       allLeads = allLeads.filter((l) => l.country?.toLowerCase() === country.toLowerCase());
+    }
+
+    // Apply city filter
+    if (city && city.trim().length > 0) {
+      const cLower = city.trim().toLowerCase();
+      allLeads = allLeads.filter((l) => l.city?.toLowerCase().includes(cLower) || l.address?.toLowerCase().includes(cLower));
     }
 
     // Apply category filter

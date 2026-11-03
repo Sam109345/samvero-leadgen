@@ -181,14 +181,6 @@ export default function UnifiedSidebar({
       ],
     },
     {
-      title: 'INTEGRATIONS',
-      items: [
-        { id: 'integrations', label: 'Connected Platforms', path: '/integrations', icon: Network },
-        { id: 'api-config', label: 'API Management', path: '/api-config', icon: Key },
-        { id: 'sync-history', label: 'Sync History', path: '/sync-history', icon: History },
-      ],
-    },
-    {
       title: 'MANAGEMENT',
       items: [
         { id: 'lists', label: 'Lead Lists', path: '/lists', icon: ListOrdered },

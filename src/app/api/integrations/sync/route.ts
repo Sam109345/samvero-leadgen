@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { platformId, query, category, country, city, limit } = body;
+    const { platformId, query, category, country, city, platforms, limit } = body;
 
     if (platformId && platformId !== 'all') {
       const syncLog = await syncPlatformNow(platformId as PlatformId);
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
       category,
       country,
       city,
+      platforms: platforms && Array.isArray(platforms) && platforms.length > 0 ? platforms : undefined,
       limit: limit || 15,
       autoPersist: true,
     });

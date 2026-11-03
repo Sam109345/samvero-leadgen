@@ -110,14 +110,16 @@ export async function searchOpenCorporatesLeads(options: {
   const apiToken = getPlatformCredential('opencorporates', 'apiToken');
   const tokenParam = apiToken ? `&api_token=${encodeURIComponent(apiToken)}` : '';
 
-  const { query = 'Software', category, country, limit = 10 } = options;
+  const { query, category, country, limit = 10 } = options;
+  const searchTerm = query?.trim() || category?.trim() || 'Software';
   let jurisdictionParam = '';
-  if (country === 'US') jurisdictionParam = '&jurisdiction_code=us';
-  else if (country === 'UK') jurisdictionParam = '&jurisdiction_code=gb';
+  if (country === 'UK') jurisdictionParam = '&jurisdiction_code=gb';
   else if (country === 'UAE') jurisdictionParam = '&jurisdiction_code=ae';
+  // Note: OpenCorporates has no single 'us' code (US entities are split by state: us_de, us_ca, us_ny, etc.).
+  // Omitting jurisdiction_code for US allows global/all-state search across active entities.
 
   try {
-    const apiUrl = `https://api.opencorporates.com/v0.4/companies/search?q=${encodeURIComponent(query)}${jurisdictionParam}&per_page=${Math.min(limit, 30)}&order=score${tokenParam}`;
+    const apiUrl = `https://api.opencorporates.com/v0.4/companies/search?q=${encodeURIComponent(searchTerm)}${jurisdictionParam}&per_page=${Math.min(limit, 30)}&order=score${tokenParam}`;
     const res = await fetch(apiUrl, {
       headers: {
         'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)',

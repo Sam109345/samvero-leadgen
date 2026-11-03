@@ -328,3 +328,6 @@ export function generateSamveroEmailTemplate(options: TemplateOptions): string {
 </body>
 </html>`;
 }
+
+export { htmlToPlainText } from './email-plain-text';
+

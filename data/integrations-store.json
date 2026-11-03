@@ -1,0 +1,50 @@
+{
+  "credentials": {},
+  "states": {
+    "huggingface": {
+      "id": "huggingface",
+      "status": "operational",
+      "totalRecordsFetched": 2,
+      "totalRecordsSaved": 1,
+      "configuredKeys": [],
+      "lastSyncAt": "2026-11-03T10:05:30.830Z",
+      "lastError": null
+    },
+    "wikidata": {
+      "id": "wikidata",
+      "status": "operational",
+      "totalRecordsFetched": 15,
+      "totalRecordsSaved": 13,
+      "configuredKeys": [],
+      "lastSyncAt": "2026-11-03T10:05:30.842Z",
+      "lastError": null
+    },
+    "opencorporates": {
+      "id": "opencorporates",
+      "status": "operational",
+      "totalRecordsFetched": 0,
+      "totalRecordsSaved": 0,
+      "configuredKeys": [],
+      "lastSyncAt": "2026-11-03T10:05:30.848Z",
+      "lastError": null
+    },
+    "github": {
+      "id": "github",
+      "status": "operational",
+      "totalRecordsFetched": 10,
+      "totalRecordsSaved": 9,
+      "configuredKeys": [],
+      "lastSyncAt": "2026-11-03T10:05:30.860Z",
+      "lastError": null
+    },
+    "osm": {
+      "id": "osm",
+      "status": "operational",
+      "totalRecordsFetched": 15,
+      "totalRecordsSaved": 15,
+      "configuredKeys": [],
+      "lastSyncAt": "2026-11-03T10:05:30.873Z",
+      "lastError": null
+    }
+  }
+}

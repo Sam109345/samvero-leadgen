@@ -66,26 +66,50 @@ export async function searchOsmLeads(options: {
   category?: string;
   limit?: number;
 }): Promise<Lead[]> {
-  const { query, city = 'London', country = 'UK', category, limit = 10 } = options;
-  const searchTerm = `${query || category || 'clinic'} in ${city}`.trim();
+  const { query, city, country, category, limit = 10 } = options;
+
+  // Build clean comma-separated search terms for Nominatim.
+  // Nominatim treats "in" as a literal address component, causing queries like "clinic in Lahore" to fail with 0 results.
+  // Using comma-delimited tokens ("clinic, Lahore, Pakistan") resolves directly to POI entries.
+  const targetCategory = query || category || 'clinic';
+  const locationTokens = [city, country].filter(Boolean);
+  const searchTerm = locationTokens.length > 0 ? `${targetCategory}, ${locationTokens.join(', ')}` : targetCategory;
 
   try {
-    const apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
-    const res = await fetch(apiUrl, {
+    let apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
+    let res = await fetch(apiUrl, {
       headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' },
       signal: AbortSignal.timeout(8000),
     });
 
-    if (!res.ok) return [];
-    const places = await res.json();
-    if (!Array.isArray(places)) return [];
+    let places = res.ok ? await res.json() : [];
+
+    // Fallback: If comma search returned empty and city was provided, try city + category without country
+    if ((!Array.isArray(places) || places.length === 0) && city) {
+      const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${targetCategory} ${city}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
+      const fallbackRes = await fetch(fallbackUrl, {
+        headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (fallbackRes.ok) {
+        const fallbackData = await fallbackRes.json();
+        if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+          places = fallbackData;
+        }
+      }
+    }
+
+    if (!Array.isArray(places) || places.length === 0) return [];
     const now = new Date().toISOString();
 
     return places.map((place: any, idx: number) => {
       const id = `osm-${place.place_id || idx}`;
       const name = place.name || place.display_name.split(',')[0].trim();
       const address = place.display_name;
-      const rawWebsite = place.extratags?.website || place.extratags?.['contact:website'];
+      const resolvedCity = place.address?.city || place.address?.town || place.address?.municipality || place.address?.suburb || city || 'London';
+      const resolvedCountry = place.address?.country || country || 'UK';
+
+      const rawWebsite = place.extratags?.website || place.extratags?.['contact:website'] || place.extratags?.url;
       const rawPhone = place.extratags?.phone || place.extratags?.['contact:phone'];
       const rawEmail = place.extratags?.email || place.extratags?.['contact:email'];
 
@@ -109,9 +133,9 @@ export async function searchOsmLeads(options: {
         businessName: name,
         type: 'gmb',
         platform: 'Google My Business',
-        category: (category as any) || 'Local Business',
-        country: (country as any) || 'UK',
-        city,
+        category: (category as any) || (place.type ? place.type.replace(/_/g, ' ') : 'Local Business'),
+        country: (resolvedCountry as any),
+        city: resolvedCity,
         address,
         businessAge: {
           years: 2,

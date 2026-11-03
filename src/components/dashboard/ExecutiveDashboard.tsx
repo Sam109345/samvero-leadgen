@@ -247,61 +247,52 @@ export default function ExecutiveDashboard({
 
       {/* Middle Row: Platform Health + Lead Acquisition Over Time */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* D. Platform Health */}
+        {/* D. Automated Engine Status */}
         <div className="bg-white dark:bg-[#111c2e] p-5 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2">
-                <Network className="w-4 h-4 text-blue-600" />
-                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Platform Health</h3>
+                <Network className="w-4 h-4 text-emerald-500" />
+                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">Live Data Engines</h3>
               </div>
-              {onNavigateToView && (
-                <button
-                  onClick={() => onNavigateToView('integrations')}
-                  className="text-xs font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 cursor-pointer"
-                >
-                  <span>Manage</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-              )}
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Automated
+              </span>
             </div>
 
             <div className="py-4 space-y-3">
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-slate-300 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                  Operational Platforms
+                  Live Operational Sources
                 </span>
                 <span className="font-bold text-slate-900 dark:text-slate-100">{healthStats.operational}</span>
               </div>
 
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-slate-300 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-amber-500" />
-                  Credentials Missing
+                  <span className="w-2 h-2 rounded-full bg-blue-500" />
+                  Data Fetching Status
                 </span>
-                <span className="font-bold text-slate-900 dark:text-slate-100">{healthStats.missingCreds}</span>
+                <span className="font-bold text-emerald-600 dark:text-emerald-400">Continuous Sync</span>
               </div>
 
               <div className="flex items-center justify-between text-xs">
                 <span className="text-slate-600 dark:text-slate-300 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-rose-500" />
-                  Failed / Quota Exhausted
+                  <span className="w-2 h-2 rounded-full bg-indigo-500" />
+                  Database Records Synced
                 </span>
-                <span className="font-bold text-slate-900 dark:text-slate-100">{healthStats.failed}</span>
+                <span className="font-bold text-slate-900 dark:text-slate-100">{leads.length.toLocaleString()}</span>
               </div>
             </div>
           </div>
 
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800">
-            {onNavigateToView && (
-              <button
-                onClick={() => onNavigateToView('integrations')}
-                className="w-full py-2 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg text-xs font-semibold text-slate-700 dark:text-slate-200 transition text-center cursor-pointer"
-              >
-                Configure Missing Credentials
-              </button>
-            )}
+            <div className="w-full py-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-[11px] font-medium text-slate-500 dark:text-slate-400 text-center flex items-center justify-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Internal Automated Backend Pipeline</span>
+            </div>
           </div>
         </div>
 

@@ -21,7 +21,7 @@ import {
   PhoneCall
 } from 'lucide-react';
 import { Lead } from '@/types';
-import { generateSamveroEmailTemplate } from '@/lib/email-template';
+import { generateSamveroEmailTemplate, htmlToPlainText } from '@/lib/email-template';
 import { resolveLegitimateBusinessEmail, extractCleanDomain, slugifyBusinessName } from '@/lib/gmb-email-resolver';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 import RichTextEditor, { sanitizeHtmlContent } from '@/components/editor/RichTextEditor';
@@ -287,9 +287,11 @@ export default function EmailOutreachModal({
 
   const emailBodyWithLink = `${message}\n\n🔗 Explore your interactive live deliverables showcase here:\n${resolvedPreviewUrl}\n\n---\nSent via SAMVERO – AI-Powered Lead Generation Platform`;
 
-  const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(toEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBodyWithLink)}`;
+  const plainTextEmailBody = htmlToPlainText(emailBodyWithLink);
 
-  const defaultMailtoUrl = `mailto:${encodeURIComponent(toEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBodyWithLink)}`;
+  const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(toEmail)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(plainTextEmailBody)}`;
+
+  const defaultMailtoUrl = `mailto:${encodeURIComponent(toEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(plainTextEmailBody)}`;
 
   const rawPhone = lead ? cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country) : '';
   const whatsappPitchUrl = rawPhone ? `https://wa.me/${rawPhone}?text=${encodeURIComponent(

@@ -191,12 +191,12 @@ async function executeSinglePlatformDiscovery(
     }
 
     if (pId === 'github') {
-      const leads = await searchGitHubLeads({ query: query || category || 'digital agency', country, limit });
+      const leads = await searchGitHubLeads({ query: query || undefined, category: category || undefined, city: city || undefined, country: country || undefined, limit });
       return { leads };
     }
 
     if (pId === 'osm' || pId === 'openstreetmap' || pId === 'gmb') {
-      const leads = await searchOsmLeads({ query, city: city || 'London', country: country || 'UK', category, limit });
+      const leads = await searchOsmLeads({ query: query || undefined, city: city || undefined, country: country || undefined, category: category || undefined, limit });
       return { leads };
     }
 

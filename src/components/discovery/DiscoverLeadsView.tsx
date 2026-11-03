@@ -41,7 +41,14 @@ export default function DiscoverLeadsView({
   const [industry, setIndustry] = useState('Web Development');
   const [country, setCountry] = useState('US');
   const [city, setCity] = useState('');
-  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['osm', 'github', 'opencorporates']);
+  const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([
+    'osm',
+    'github',
+    'opencorporates',
+    'wikidata',
+    'freelancer',
+    'remotive',
+  ]);
 
   // Advanced Filters State (Progressive Disclosure)
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -136,6 +143,7 @@ export default function DiscoverLeadsView({
           country: country !== 'all' ? country : undefined,
           city: city.trim() || undefined,
           jobTitle: jobTitle.trim() || undefined,
+          platforms: selectedPlatforms.length > 0 ? selectedPlatforms : undefined,
           limit: 20,
         }),
       });
