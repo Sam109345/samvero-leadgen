@@ -6,6 +6,7 @@ import { getEffectiveUser } from '@/lib/auth-user';
 import { getAllUserLeadStates, computeLeadWorkspaceStats } from '@/lib/lead-workspace-store';
 import { loadAllStoredLeads, persistDiscoveredLeads, deleteStoredLead, updateStoredLead, extractCanonicalDomain, normalizeEmailKey, normalizePhoneKey } from '@/lib/leads-persistent-store';
 import { executeCentralLeadPipeline } from '@/lib/pipeline/central-lead-pipeline';
+import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
 import { calculateExplainableLeadScore } from '@/lib/explainable-scoring';
 
 export const dynamic = 'force-dynamic';
@@ -55,22 +56,29 @@ export async function GET(request: NextRequest) {
       return true;
     }).length;
 
-    // If store is completely empty, forceRefresh requested, or user searched a specific query/location with 0 stored matches:
-    // execute live central pipeline across operational zero-key sources and persist new leads
-    if (allLeads.length === 0 || forceRefresh || (isFilteredSearch && matchingCount === 0)) {
+    // If store is low on records, forceRefresh requested, or user searched a specific query/location with few stored matches:
+    // execute live central pipeline and real-time aggregators across active online APIs and persist new leads
+    const shouldFetchLive = allLeads.length < 35 || forceRefresh || (isFilteredSearch && matchingCount < 6);
+    if (shouldFetchLive) {
       try {
-        const pipelineResult = await executeCentralLeadPipeline({
-          query: query || undefined,
-          country: country !== 'all' ? country : undefined,
-          city: city || undefined,
-          category: category !== 'all' ? category : undefined,
-          limit: 15,
-          autoPersist: true,
-        });
-
-        if (pipelineResult.leads.length > 0) {
-          allLeads = loadAllStoredLeads();
-        }
+        await Promise.allSettled([
+          getMasterRealTimeLiveLeads({
+            query: query || undefined,
+            country: country !== 'all' ? country : undefined,
+            city: city || undefined,
+            category: category !== 'all' ? category : undefined,
+            forceRefresh: true,
+          }),
+          executeCentralLeadPipeline({
+            query: query || undefined,
+            country: country !== 'all' ? country : undefined,
+            city: city || undefined,
+            category: category !== 'all' ? category : undefined,
+            limit: 15,
+            autoPersist: true,
+          }),
+        ]);
+        allLeads = loadAllStoredLeads();
       } catch (err) {
         console.warn('Pipeline discovery during lead fetch encounter:', err);
       }

@@ -5,6 +5,9 @@ import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
 import { registerLead, getAllRegisteredLeads } from './lead-store';
 import { matchesPlatformCategory, PlatformCategoryId } from './platform-directory';
+import { persistDiscoveredLeads } from './leads-persistent-store';
+import { searchOpenCorporatesLeads } from './integrations/clients/opencorporates';
+import { searchGitHubLeads } from './integrations/clients/github';
 
 interface LiveSearchOptions {
   query?: string;
@@ -187,6 +190,13 @@ export async function fetchLiveFreelancerProjects(options: LiveSearchOptions = {
         category: detectedCat,
       });
 
+      const descEmail = cleanDesc.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0]?.toLowerCase();
+      const descPhone = cleanDesc.match(/(?:\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4,6}/)?.[0];
+      const ownerHandle = p.owner?.username ? `@${p.owner.username}` : undefined;
+
+      const finalEmail = descEmail || resolved.email;
+      const finalPhone = descPhone || resolved.phone;
+
       const base: Lead = {
         id: `live-fl-${p.id || idx}`,
         title,
@@ -210,12 +220,12 @@ export async function fetchLiveFreelancerProjects(options: LiveSearchOptions = {
         postedAt: formatTimeAgo(p.submitdate || p.time_submitted),
         timeAgo: formatTimeAgo(p.submitdate || p.time_submitted),
         contact: {
-          email: resolved.email,
-          phone: resolved.phone,
-          whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country) : undefined,
+          email: finalEmail,
+          phone: finalPhone,
+          whatsapp: finalPhone ? cleanWhatsAppDigits(finalPhone, country) : undefined,
           hasWebsite: true,
           website: projectUrl,
-          contactPerson: undefined,
+          contactPerson: ownerHandle,
         },
         rating: undefined,
         reviewCount: p.bid_stats?.bid_count,
@@ -305,6 +315,14 @@ export async function fetchLiveRemoteOkJobs(options: LiveSearchOptions = {}): Pr
         category: detectedCat,
       });
 
+      const descEmail = cleanDesc.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0]?.toLowerCase();
+      let applyEmail: string | undefined;
+      if (job.apply_url && job.apply_url.toLowerCase().startsWith('mailto:')) {
+        applyEmail = job.apply_url.replace(/^mailto:/i, '').split('?')[0].trim().toLowerCase();
+      }
+      const finalEmail = applyEmail || descEmail || resolved.email;
+      const targetWebsite = job.company_url || job.url || `https://remoteok.com/remote-jobs/${job.id}`;
+
       const base: Lead = {
         id: `live-ro-${job.id || idx}`,
         title: `${title} (${companyName})`,
@@ -328,11 +346,11 @@ export async function fetchLiveRemoteOkJobs(options: LiveSearchOptions = {}): Pr
         postedAt: formatTimeAgo(job.date),
         timeAgo: formatTimeAgo(job.date),
         contact: {
-          email: resolved.email,
+          email: finalEmail,
           phone: resolved.phone,
           whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country) : undefined,
           hasWebsite: true,
-          website: job.url,
+          website: targetWebsite,
           contactPerson: undefined,
         },
         rating: undefined,
@@ -373,7 +391,8 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
       remotiveCategory = 'marketing';
     }
 
-    const apiUrl = `https://remotive.com/api/remote-jobs?category=${remotiveCategory}&limit=${limit}`;
+    const searchParam = query ? `&search=${encodeURIComponent(query)}` : '';
+    const apiUrl = `https://remotive.com/api/remote-jobs?category=${remotiveCategory}&limit=${limit}${searchParam}`;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 4000);
 
@@ -417,6 +436,9 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
         category: detectedCat,
       });
 
+      const descEmail = cleanDesc.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0]?.toLowerCase();
+      const finalEmail = descEmail || resolved.email;
+
       const base: Lead = {
         id: `live-rem-${job.id || idx}`,
         title,
@@ -440,7 +462,7 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
         postedAt: formatTimeAgo(job.publication_date),
         timeAgo: formatTimeAgo(job.publication_date),
         contact: {
-          email: resolved.email,
+          email: finalEmail,
           phone: resolved.phone,
           whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country) : undefined,
           hasWebsite: true,
@@ -476,30 +498,51 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
   const { query = '', city = 'Lahore', country = 'Pakistan', category = 'Local Business', limit = 10 } = options;
 
   try {
-    const searchTerm = `${query || category} in ${city}`.trim();
-    const apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&limit=${limit}`;
+    const targetCat = query || category || 'commercial';
+    const locTokens = [city, country].filter(Boolean);
+    const searchTerm = locTokens.length > 0 ? `${targetCat}, ${locTokens.join(', ')}` : targetCat;
+    const apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3500);
+    const timeout = setTimeout(() => controller.abort(), 4500);
 
     const res = await fetch(apiUrl, {
       signal: controller.signal,
       headers: {
         'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)',
+        Accept: 'application/json',
       },
     });
     clearTimeout(timeout);
 
     if (!res.ok) return [];
 
-    const places = await res.json();
+    let places = await res.json();
+    if (!Array.isArray(places) || places.length === 0) {
+      // Fallback query without country if empty
+      if (city) {
+        try {
+          const fallbackRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${targetCat} ${city}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}`, {
+            headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' }
+          });
+          if (fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json();
+            if (Array.isArray(fallbackData) && fallbackData.length > 0) {
+              places = fallbackData;
+            }
+          }
+        } catch {}
+      }
+    }
+
     if (!Array.isArray(places) || places.length === 0) return [];
 
     const leads: Lead[] = places.map((place: any, idx: number) => {
       const name = place.name || place.display_name.split(',')[0].trim();
       const fullAddress = place.display_name || `${city}, ${country}`;
-      const hasWebsite = Boolean(place.extratags?.website);
-      const rawWebsite = place.extratags?.website;
+      const rawWebsite = place.extratags?.website || place.extratags?.['contact:website'] || place.extratags?.url;
+      const hasWebsite = Boolean(rawWebsite);
+      const rawPhone = place.extratags?.phone || place.extratags?.['contact:phone'];
       const osmEmail = place.extratags?.email || place.extratags?.['contact:email'];
 
       const resolved = resolveLegitimateBusinessEmail({
@@ -508,10 +551,11 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         city,
         country,
         category,
-        phone: place.extratags?.phone || place.extratags?.['contact:phone'],
+        phone: rawPhone,
       });
 
       const finalEmail = osmEmail || resolved.email;
+      const finalPhone = rawPhone || resolved.phone;
 
       const base: Lead = {
         id: `live-osm-${place.place_id || idx}`,
@@ -535,8 +579,8 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         timeAgo: 'Just now',
         contact: {
           email: finalEmail,
-          phone: resolved.phone,
-          whatsapp: resolved.phone ? cleanWhatsAppDigits(resolved.whatsapp || resolved.phone, country as LeadCountry) : undefined,
+          phone: finalPhone,
+          whatsapp: finalPhone ? cleanWhatsAppDigits(resolved.whatsapp || finalPhone, country as LeadCountry) : undefined,
           website: hasWebsite ? rawWebsite : undefined,
           hasWebsite,
           gmbUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`,
@@ -568,90 +612,99 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
  * 5. Fetch live client hiring posts from Reddit r/forhire
  */
 export async function fetchLiveRedditJobs(options: LiveSearchOptions = {}): Promise<Lead[]> {
-  const { limit = 10 } = options;
+  const { limit = 12 } = options;
 
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4000);
+  const subreddits = ['forhire', 'freelance_forhire'];
+  const allPosts: any[] = [];
 
-    const res = await fetch('https://www.reddit.com/r/forhire/new.json?limit=25', {
-      signal: controller.signal,
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) SamveroLeadGen/2.0',
-      },
-    });
-    clearTimeout(timeout);
+  for (const sub of subreddits) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 4000);
 
-    if (!res.ok) return [];
-
-    const json = await res.json();
-    const posts = json?.data?.children || [];
-
-    // Filter strictly [Hiring] posts
-    const hiringPosts = posts.filter((p: any) => {
-      const title = (p?.data?.title || '').toLowerCase();
-      const flair = (p?.data?.link_flair_text || '').toLowerCase();
-      return title.startsWith('[hiring]') || flair.includes('hiring');
-    }).slice(0, limit);
-
-    const leads: Lead[] = hiringPosts.map((item: any, idx: number) => {
-      const p = item.data;
-      const rawTitle = p.title || 'Client Project Request';
-      const cleanTitle = rawTitle.replace(/^\[hiring\]\s*/i, '').trim();
-      const cleanDesc = cleanDescription(p.selftext || cleanTitle).slice(0, 360) + '...';
-      const author = p.author ? `u/${p.author}` : 'Direct Client';
-      const url = `https://www.reddit.com${p.permalink}`;
-      
-      const budgetMatch = rawTitle.match(/\$[\d,]+(?:\s*-\s*\$[\d,]+)?(?:\s*\/\s*hr|\/hour)?/i);
-      const budget = budgetMatch ? budgetMatch[0] : 'Budget per scope';
-
-      const detectedCat = detectLeadCategory(cleanTitle, cleanDesc);
-
-      const base: Lead = {
-        id: `live-rd-${p.id || idx}`,
-        title: cleanTitle,
-        businessName: author,
-        type: 'job',
-        platform: 'Reddit' as LeadSource,
-        category: detectedCat,
-        country: 'US',
-        city: 'Global / Remote',
-        address: 'Online / Reddit Verified Community',
-        budget,
-        jobType: 'Contract',
-        businessAge: {
-          years: 1,
-          months: 0,
-          isNew: true,
-          label: '✨ Newly Opened',
-          badgeColor: 'emerald',
+      const res = await fetch(`https://www.reddit.com/r/${sub}/new.json?limit=25&raw_json=1`, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          Accept: 'application/json',
         },
-        description: cleanDesc,
-        postedAt: formatTimeAgo(p.created_utc),
-        timeAgo: formatTimeAgo(p.created_utc),
-        contact: {
-          hasWebsite: true,
-          website: url,
-          contactPerson: author,
-        },
-        tags: ['🟢 Live Reddit', 'Direct Client RFP', detectedCat],
-        verified: true,
-        pipelineStage: 'new',
-        status: 'new',
-        incomingAt: (p.created_utc || Math.floor(Date.now() / 1000)) * 1000,
-      };
+      });
+      clearTimeout(timeout);
 
-      return {
-        ...base,
-        generatedWebsite: generateClientWebsite(base),
-      };
-    });
-
-    return leads;
-  } catch (err) {
-    console.warn('[Reddit API] issue:', err);
-    return [];
+      if (res.ok) {
+        const json = await res.json();
+        const posts = json?.data?.children || [];
+        allPosts.push(...posts);
+      }
+    } catch (err) {
+      console.warn(`[Reddit r/${sub} API] issue:`, err);
+    }
   }
+
+  // Filter strictly [Hiring] posts
+  const hiringPosts = allPosts.filter((p: any) => {
+    const title = (p?.data?.title || '').toLowerCase();
+    const flair = (p?.data?.link_flair_text || '').toLowerCase();
+    return title.startsWith('[hiring]') || flair.includes('hiring');
+  }).slice(0, limit);
+
+  const leads: Lead[] = hiringPosts.map((item: any, idx: number) => {
+    const p = item.data;
+    const rawTitle = p.title || 'Client Project Request';
+    const cleanTitle = rawTitle.replace(/^\[hiring\]\s*/i, '').trim();
+    const rawText = p.selftext || cleanTitle;
+    const cleanDesc = cleanDescription(rawText);
+    const author = p.author ? `u/${p.author}` : 'Direct Client';
+    const url = `https://www.reddit.com${p.permalink}`;
+    
+    const descEmail = rawText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/)?.[0]?.toLowerCase();
+    const budgetMatch = rawTitle.match(/\$[\d,]+(?:\s*-\s*\$[\d,]+)?(?:\s*\/\s*(?:hr|hour|mo|month|flat|fixed))?/i);
+    const budget = budgetMatch ? budgetMatch[0] : '$500 - $2,500 Scope Budget';
+
+    const detectedCat = detectLeadCategory(cleanTitle, cleanDesc);
+
+    const base: Lead = {
+      id: `live-rd-${p.id || idx}`,
+      title: cleanTitle,
+      businessName: author,
+      type: 'job',
+      platform: 'Reddit' as LeadSource,
+      category: detectedCat,
+      country: 'US',
+      city: 'Global / Remote',
+      address: 'Online / Reddit Verified Community',
+      budget,
+      jobType: 'Contract',
+      businessAge: {
+        years: 1,
+        months: 0,
+        isNew: true,
+        label: '✨ Newly Opened',
+        badgeColor: 'emerald',
+      },
+      description: cleanDesc.slice(0, 360) + (cleanDesc.length > 360 ? '...' : ''),
+      postedAt: formatTimeAgo(p.created_utc),
+      timeAgo: formatTimeAgo(p.created_utc),
+      contact: {
+        email: descEmail,
+        hasWebsite: true,
+        website: url,
+        contactPerson: author,
+      },
+      tags: ['🟢 Live Reddit', 'Direct Client RFP', detectedCat],
+      verified: true,
+      pipelineStage: 'new',
+      status: 'new',
+      incomingAt: (p.created_utc || Math.floor(Date.now() / 1000)) * 1000,
+    };
+
+    return {
+      ...base,
+      generatedWebsite: generateClientWebsite(base),
+    };
+  });
+
+  return leads;
 }
 
 /**
@@ -666,37 +719,73 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     return filterLeads(memoryCache.leads, { query, country, category, platform });
   }
 
-  // Fetch in parallel with fault tolerance
-  const [flProjects, roJobs, remJobs, redditJobs, pkPlaces, uaePlaces] = await Promise.all([
-    fetchLiveFreelancerProjects({ query, category, limit: 16 }),
-    fetchLiveRemoteOkJobs({ limit: 20 }),
+  // Determine local search targets based on requested country and city
+  const localSearchTargets: { city: string; country: string }[] = [];
+  if (country && country !== 'all') {
+    if (country === 'Pakistan') {
+      localSearchTargets.push({ city: city || 'Lahore', country: 'Pakistan' });
+      if (!city) localSearchTargets.push({ city: 'Karachi', country: 'Pakistan' });
+    } else if (country === 'UAE') {
+      localSearchTargets.push({ city: city || 'Dubai', country: 'UAE' });
+    } else if (country === 'UK') {
+      localSearchTargets.push({ city: city || 'London', country: 'UK' });
+    } else if (country === 'US') {
+      localSearchTargets.push({ city: city || 'New York', country: 'US' });
+    } else {
+      localSearchTargets.push({ city: city || 'Capital', country });
+    }
+  } else {
+    // Default multi-national coverage: Pakistan, UAE, UK, US
+    localSearchTargets.push(
+      { city: 'Lahore', country: 'Pakistan' },
+      { city: 'Dubai', country: 'UAE' },
+      { city: 'London', country: 'UK' },
+      { city: 'New York', country: 'US' }
+    );
+  }
+
+  // Fetch in parallel across all 7 real-time active sources
+  const [
+    flProjects,
+    roJobs,
+    remJobs,
+    redditJobs,
+    ocLeads,
+    ghLeads,
+    ...localBatches
+  ] = await Promise.all([
+    fetchLiveFreelancerProjects({ query, category, limit: 15 }),
+    fetchLiveRemoteOkJobs({ limit: 15 }),
     fetchLiveRemotiveJobs({ query, category, limit: 12 }),
-    fetchLiveRedditJobs({ limit: 8 }),
-    fetchLiveLocalBusinesses({ query, city: 'Lahore', country: 'Pakistan', category, limit: 8 }),
-    fetchLiveLocalBusinesses({ query, city: 'Dubai', country: 'UAE', category, limit: 8 }),
+    fetchLiveRedditJobs({ limit: 10 }),
+    searchOpenCorporatesLeads({ query: query || category || 'Software', category, country: country !== 'all' ? country : undefined, limit: 8 }),
+    searchGitHubLeads({ query: query || undefined, category: category || undefined, city: city || undefined, country: country !== 'all' ? country : undefined, limit: 8 }),
+    ...localSearchTargets.map(target =>
+      fetchLiveLocalBusinesses({ query, city: target.city, country: target.country, category, limit: 6 })
+    )
   ]);
 
-  const registered = getAllRegisteredLeads();
+  const allLocal = localBatches.flat();
 
   const combinedLeads: Lead[] = [
     ...flProjects,
     ...roJobs,
     ...remJobs,
     ...redditJobs,
-    ...pkPlaces,
-    ...uaePlaces,
-    ...registered,
+    ...allLocal,
+    ...ocLeads,
+    ...ghLeads,
   ];
 
-  // Populate stream buffer for the 10-second ticker
+  // Populate stream buffer for live ticker
   liveStreamBuffer = [...combinedLeads.slice(0, 30)];
 
-  // Deduplicate by ID and Business Name
+  // Deduplicate across ID and Business Name
   const seen = new Set<string>();
   const uniqueLeads: Lead[] = [];
   for (const l of combinedLeads) {
     const idKey = (l.id || '').toLowerCase().trim();
-    const nameKey = (l.businessName + '::' + l.title).toLowerCase().trim();
+    const nameKey = ((l.businessName || l.title || '') + '::' + (l.city || l.country || '')).toLowerCase().trim();
     if (idKey && !seen.has(idKey) && !seen.has(nameKey)) {
       seen.add(idKey);
       seen.add(nameKey);
@@ -704,8 +793,14 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     }
   }
 
-  // Update in-memory cache and global lead registry
+  // Persist newly discovered live leads into data/leads-store.json so they stay saved!
   if (uniqueLeads.length > 0) {
+    try {
+      persistDiscoveredLeads(uniqueLeads);
+    } catch (err) {
+      console.warn('Failed to persist live leads:', err);
+    }
+
     memoryCache = {
       leads: uniqueLeads,
       timestamp: Date.now(),

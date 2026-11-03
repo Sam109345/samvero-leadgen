@@ -1,5 +1,4 @@
 import { Lead } from '@/types';
-import { INITIAL_LEADS } from './mock-data';
 import { loadAllStoredLeads } from './leads-persistent-store';
 import { 
   getLeadAssignedUser, 
@@ -8,16 +7,23 @@ import {
   getPortalUserById 
 } from './user-store';
 
-// Global in-memory registry of all leads (mock + streaming + user-created)
+// Global in-memory registry of all leads (streaming + live discovered + user-created)
 const leadsRegistry = new Map<string, Lead>();
 
-// Initialize with verified dataset
-INITIAL_LEADS.forEach((lead) => {
-  leadsRegistry.set(lead.id.toLowerCase(), lead);
-});
-
-// Seed balanced initial assignments among staff members
-initializeDefaultAssignments(INITIAL_LEADS);
+// Initialize strictly from real stored leads in persistent storage (zero mock data)
+try {
+  const initialStored = loadAllStoredLeads();
+  initialStored.forEach((lead) => {
+    if (lead && lead.id) {
+      leadsRegistry.set(lead.id.toLowerCase(), lead);
+    }
+  });
+  if (initialStored.length > 0) {
+    initializeDefaultAssignments(initialStored);
+  }
+} catch (e) {
+  console.warn('Failed to initialize leadsRegistry from persistent store:', e);
+}
 
 export function registerLead(lead: Lead): void {
   if (lead && lead.id) {

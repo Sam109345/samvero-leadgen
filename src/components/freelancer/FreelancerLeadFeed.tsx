@@ -96,6 +96,58 @@ export default function FreelancerLeadFeed({
     }
   }, [initialCategoryTab]);
 
+  const [feedLeads, setFeedLeads] = useState<Lead[]>(leads);
+  const [isLiveSearching, setIsLiveSearching] = useState(false);
+
+  // Sync leads from parent prop
+  useEffect(() => {
+    if (leads && leads.length > 0) {
+      setFeedLeads((prev) => {
+        const idMap = new Map<string, Lead>();
+        prev.forEach((l) => idMap.set(l.id.toLowerCase(), l));
+        leads.forEach((l) => idMap.set(l.id.toLowerCase(), l));
+        return Array.from(idMap.values());
+      });
+    }
+  }, [leads]);
+
+  // Dynamically query live aggregator when user searches by keyword, country, or category
+  useEffect(() => {
+    const hasFilter = searchQuery.trim().length >= 2 || selectedCountry !== 'all' || categoryFilter !== 'all' || selectedCity.trim().length > 0;
+    if (!hasFilter) return;
+
+    const timer = setTimeout(async () => {
+      setIsLiveSearching(true);
+      try {
+        const params = new URLSearchParams();
+        if (searchQuery.trim()) params.set('q', searchQuery.trim());
+        if (selectedCountry !== 'all') params.set('country', selectedCountry);
+        if (categoryFilter !== 'all') params.set('category', categoryFilter);
+        if (selectedCity.trim()) params.set('city', selectedCity.trim());
+        params.set('refresh', 'live');
+
+        const res = await fetch(`/api/leads?${params.toString()}`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
+            setFeedLeads((prev) => {
+              const idMap = new Map<string, Lead>();
+              prev.forEach((l) => idMap.set(l.id.toLowerCase(), l));
+              data.leads.forEach((l: Lead) => idMap.set(l.id.toLowerCase(), l));
+              return Array.from(idMap.values());
+            });
+          }
+        }
+      } catch (err) {
+        console.warn('Dynamic live lead search error:', err);
+      } finally {
+        setIsLiveSearching(false);
+      }
+    }, 450);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, selectedCountry, categoryFilter, selectedCity]);
+
   // Reset filters
   const handleResetFilters = () => {
     setSearchQuery('');
@@ -111,6 +163,9 @@ export default function FreelancerLeadFeed({
     setCategoryFilter('all');
     setSortBy('newest');
     setActiveCategoryTab('all');
+    if (leads && leads.length > 0) {
+      setFeedLeads(leads);
+    }
   };
 
   // Helper: parse numerical budget from text (e.g., "$1,200", "$500 - $1,500 USD")
@@ -123,7 +178,7 @@ export default function FreelancerLeadFeed({
 
   // Filtered Leads
   const filteredLeads = useMemo(() => {
-    return leads.filter((lead) => {
+    return feedLeads.filter((lead) => {
       // 1. Sub-nav Category Tab
       if (activeCategoryTab === 'hot') {
         const isHot =
@@ -266,7 +321,7 @@ export default function FreelancerLeadFeed({
       return (b.postedAt || '').localeCompare(a.postedAt || '');
     });
   }, [
-    leads,
+    feedLeads,
     activeCategoryTab,
     searchQuery,
     selectedCountry,
@@ -286,21 +341,21 @@ export default function FreelancerLeadFeed({
   // SubNav counts computation
   const tabCounts = useMemo(() => {
     return {
-      total: leads.length,
-      hot: leads.filter(
+      total: feedLeads.length,
+      hot: feedLeads.filter(
         (l) =>
           l.pipelineStage === 'hot' ||
           (!l.contact?.hasWebsite && l.type === 'gmb') ||
           (l.scoreBreakdown?.leadQualityScore ?? 0) >= 80 ||
           (l.tags || []).some((t) => t.toLowerCase().includes('hot'))
       ).length,
-      qualified: leads.filter(
+      qualified: feedLeads.filter(
         (l) =>
           (l.scoreBreakdown?.leadQualityScore ?? 0) >= 70 ||
           l.pipelineStage === 'qualified' ||
           l.verified === true
       ).length,
-      extra: leads.filter(
+      extra: feedLeads.filter(
         (l) =>
           (l.pipelineStage as string) === 'extra' ||
           l.type === 'job' ||
@@ -308,14 +363,14 @@ export default function FreelancerLeadFeed({
             l.platform?.toLowerCase().includes(p.toLowerCase())
           )
       ).length,
-      needsVerification: leads.filter(
+      needsVerification: feedLeads.filter(
         (l) => !l.verified || (l.scoreBreakdown?.researchCompleteness ?? 100) < 80 || !l.contact?.email
       ).length,
       saved: savedLeadIds.size,
-      noWebsite: leads.filter((l) => !l.contact?.hasWebsite).length,
-      newGmb: leads.filter((l) => l.businessAge?.isNew).length,
+      noWebsite: feedLeads.filter((l) => !l.contact?.hasWebsite).length,
+      newGmb: feedLeads.filter((l) => l.businessAge?.isNew).length,
     };
-  }, [leads, savedLeadIds]);
+  }, [feedLeads, savedLeadIds]);
 
   return (
     <div className="w-full flex flex-col font-sans transition-colors duration-200">
@@ -439,6 +494,12 @@ export default function FreelancerLeadFeed({
                   {activeCategoryTab !== 'all' && (
                     <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#3B6FF5] border border-blue-200 dark:border-blue-900 capitalize">
                       {activeCategoryTab.replace('_', ' ')}
+                    </span>
+                  )}
+                  {isLiveSearching && (
+                    <span className="flex items-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 px-2.5 py-0.5 rounded-full animate-pulse">
+                      <RotateCcw className="w-3 h-3 animate-spin" />
+                      Live querying online APIs...
                     </span>
                   )}
                 </div>

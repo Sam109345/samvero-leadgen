@@ -358,6 +358,24 @@
   ],
   "applications": [
     {
+      "id": "app-1793713402244-p8c1",
+      "referenceNumber": "APP-2026-4109",
+      "fullName": "David Sterling",
+      "businessName": "Sterling Growth Capital",
+      "email": "corp_1793713402045@samvero-test.com",
+      "whatsapp": "+14155550199",
+      "country": "US",
+      "companyWebsite": "https://sterlinggrowth.com",
+      "planId": "plan_standard",
+      "planName": "Standard",
+      "billingDuration": "monthly",
+      "serviceRequirements": "High-intent B2B outreach for enterprise technology providers.",
+      "additionalMessage": "Prefer wire transfer settlement via JPMorgan Chase escrow.",
+      "status": "pending",
+      "createdAt": "2026-11-03T13:43:22.244Z",
+      "updatedAt": "2026-11-03T13:43:22.244Z"
+    },
+    {
       "id": "app-1793619219779-mfko",
       "referenceNumber": "APP-2026-5927",
       "fullName": "David Sterling",
@@ -607,7 +625,7 @@
       "planName": "Enterprise",
       "billingCycle": "monthly",
       "startDate": "2026-10-30T13:19:36.639Z",
-      "expiryDate": "2027-11-02T12:16:46.311Z",
+      "expiryDate": "2027-11-03T13:43:22.224Z",
       "gracePeriodDays": 3,
       "status": "active",
       "leadQuota": 60000,
@@ -2947,6 +2965,16 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1793713402246-g836",
+      "recipientRole": "admin",
+      "type": "new_application",
+      "title": "New SaaS Application: David Sterling",
+      "message": "David Sterling (corp_1793713402045@samvero-test.com) submitted application APP-2026-4109 for package: Standard (monthly).",
+      "link": "/admin/applications",
+      "isRead": false,
+      "createdAt": "2026-11-03T13:43:22.246Z"
+    },
     {
       "id": "notif-1793619219780-5wa2",
       "recipientRole": "admin",

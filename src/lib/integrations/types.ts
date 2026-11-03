@@ -17,7 +17,9 @@ export type PlatformId =
   | 'gemini_ai'
   | 'smtp'
   | 'freelancer'
-  | 'remotive';
+  | 'remotive'
+  | 'remoteok'
+  | 'reddit';
 
 export type IntegrationStatus =
   | 'operational'

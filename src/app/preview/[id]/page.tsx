@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { INITIAL_LEADS } from '@/lib/mock-data';
 import { getLeadById } from '@/lib/lead-store';
 import { resolveLegitimateBusinessEmail } from '@/lib/gmb-email-resolver';
 import { generateDeliverablesPackage } from '@/lib/deliverables-generator';
@@ -59,8 +58,8 @@ export default function WebsitePreviewPage({ params }: Props) {
   const [logoBgMode, setLogoBgMode] = useState<'dark' | 'light'>('dark');
   const [copiedSvgId, setCopiedSvgId] = useState<string | null>(null);
 
-  // Find lead by id in global registry or verified dataset
-  const initialLead = getLeadById(id) || INITIAL_LEADS.find((l) => l.id.toLowerCase() === id.toLowerCase());
+  // Find lead by id in real in-memory registry or stored dataset
+  const initialLead = getLeadById(id);
   const [lead, setLead] = useState<Lead | null>(initialLead || null);
   const [loadingLead, setLoadingLead] = useState(!initialLead);
   const [notFound, setNotFound] = useState(false);

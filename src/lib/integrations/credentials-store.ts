@@ -272,6 +272,30 @@ export const PLATFORM_REGISTRY: Record<PlatformId, PlatformConfig> = {
     requiredCredentials: [],
     defaultRateLimitPerMin: 60,
   },
+  remoteok: {
+    id: 'remoteok',
+    name: 'Remote OK Public Feed',
+    category: 'free_directory',
+    description: 'Live hiring tech companies with actual domains, compensation packages, and tech roles.',
+    website: 'https://remoteok.com',
+    docsUrl: 'https://remoteok.com/api',
+    isPrimary: false,
+    isFree: true,
+    requiredCredentials: [],
+    defaultRateLimitPerMin: 60,
+  },
+  reddit: {
+    id: 'reddit',
+    name: 'Reddit Client Hiring Feeds',
+    category: 'free_directory',
+    description: 'Active client RFP posts, direct hiring requests, and developer contracts from r/forhire and r/freelance_forhire.',
+    website: 'https://www.reddit.com',
+    docsUrl: 'https://www.reddit.com/r/forhire',
+    isPrimary: false,
+    isFree: true,
+    requiredCredentials: [],
+    defaultRateLimitPerMin: 30,
+  },
 };
 
 interface PersistentIntegrationStore {

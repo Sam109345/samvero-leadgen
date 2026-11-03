@@ -266,7 +266,7 @@ export async function executeCentralLeadPipeline(
             configuredPaid.push(pid);
           }
         }
-        return [...configuredPaid, 'osm', 'github', 'opencorporates', 'wikidata', 'huggingface', 'freelancer', 'remotive'];
+        return [...configuredPaid, 'osm', 'github', 'opencorporates', 'wikidata', 'huggingface', 'freelancer', 'remotive', 'remoteok', 'reddit'];
       })();
 
   const platformStatuses: Record<string, { status: string; count: number; error?: string }> = {};
