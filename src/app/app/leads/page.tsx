@@ -6,31 +6,10 @@ import CustomerLayout from '@/components/customer/CustomerLayout';
 import { CustomerLeadRecord } from '@/lib/saas-store';
 import { Lead } from '@/types';
 import {
-  Database,
-  Search,
-  Filter,
-  Download,
-  Mail,
-  Phone,
-  Globe,
-  Trash2,
-  ExternalLink,
-  Edit2,
-  Tag,
-  RefreshCw,
-  CheckCircle2,
-  Share2,
   Sparkles,
-  Bookmark,
-  Plus,
-  Send,
-  Building2,
-  Layers,
-  MapPin,
-  Check,
+  CheckCircle2,
+  ExternalLink,
 } from 'lucide-react';
-import { cleanWhatsAppDigits } from '@/lib/phone-utils';
-import { PLATFORM_CATEGORIES, PlatformCategoryId, matchesPlatformCategory } from '@/lib/platform-directory';
 import FreelancerLeadFeed from '@/components/freelancer/FreelancerLeadFeed';
 import LeadDetailModal from '@/components/leads/LeadDetailModal';
 import EmailOutreachModal from '@/components/EmailOutreachModal';
@@ -38,16 +17,9 @@ import DeliverablesStudioModal from '@/components/DeliverablesStudioModal';
 import JobScopeAnalyzerModal from '@/components/JobScopeAnalyzerModal';
 
 export default function CustomerLeadsPage() {
-  const [activeTab, setActiveTab] = useState<'live' | 'saved'>('live');
-  const [selectedCategory, setSelectedCategory] = useState<PlatformCategoryId | 'all'>('all');
   const [savedLeads, setSavedLeads] = useState<CustomerLeadRecord[]>([]);
   const [liveLeads, setLiveLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [platformFilter, setPlatformFilter] = useState('all');
-  const [selectedLead, setSelectedLead] = useState<CustomerLeadRecord | null>(null);
-  const [editNotes, setEditNotes] = useState('');
   const [savingLeadId, setSavingLeadId] = useState<string | null>(null);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
 
@@ -111,128 +83,7 @@ export default function CustomerLeadsPage() {
     }
   };
 
-  const handleUpdateStatus = async (leadId: string, nextStatus: CustomerLeadRecord['status']) => {
-    try {
-      const res = await fetch('/api/customer/leads', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ leadId, status: nextStatus }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSavedLeads((prev) =>
-          prev.map((l) => (l.id === leadId || l.leadId === leadId ? { ...l, status: nextStatus } : l))
-        );
-      }
-    } catch (err: any) {
-      alert(err?.message || 'Error updating stage');
-    }
-  };
-
-  const handleSaveNotes = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedLead) return;
-
-    try {
-      const res = await fetch('/api/customer/leads', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ leadId: selectedLead.id, notes: editNotes }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setSavedLeads((prev) =>
-          prev.map((l) =>
-            l.id === selectedLead.id || l.leadId === selectedLead.id ? { ...l, notes: editNotes } : l
-          )
-        );
-        setSelectedLead(null);
-      }
-    } catch (err: any) {
-      alert(err?.message || 'Error saving notes');
-    }
-  };
-
-  const handleDeleteLead = async (leadId: string) => {
-    if (!window.confirm('Are you sure you want to remove this lead from your workspace?')) return;
-
-    try {
-      const res = await fetch(`/api/customer/leads?leadId=${leadId}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (data.success) {
-        setSavedLeads((prev) => prev.filter((l) => l.id !== leadId && l.leadId !== leadId));
-      }
-    } catch (err: any) {
-      alert(err?.message || 'Error deleting lead');
-    }
-  };
-
-  const handleExportCsv = () => {
-    const listToExport = activeTab === 'saved' ? filteredSavedLeads : filteredLiveLeads;
-    if (listToExport.length === 0) {
-      alert('No leads available to export.');
-      return;
-    }
-
-    const headers = ['Business Name', 'Category', 'Country', 'City', 'Platform', 'Email', 'Phone', 'Website'];
-    const rows = listToExport.map((l: any) => [
-      `"${(l.businessName || l.title || '').replace(/"/g, '""')}"`,
-      `"${l.category}"`,
-      `"${l.country}"`,
-      `"${l.city || ''}"`,
-      `"${l.platform}"`,
-      `"${l.contact?.email || ''}"`,
-      `"${l.contact?.phone || ''}"`,
-      `"${l.contact?.website || ''}"`,
-    ]);
-
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((e) => e.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
-    const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
-    link.setAttribute('download', `samvero-enterprise-leads-${new Date().toISOString().slice(0, 10)}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   const savedLeadIdSet = new Set(savedLeads.map((s) => s.leadId || s.id));
-
-  // Filtered live leads
-  const filteredLiveLeads = liveLeads.filter((l) => {
-    const term = searchTerm.toLowerCase();
-    const matchesSearch =
-      !term ||
-      l.businessName.toLowerCase().includes(term) ||
-      l.title.toLowerCase().includes(term) ||
-      l.category.toLowerCase().includes(term) ||
-      l.country.toLowerCase().includes(term) ||
-      (l.city || '').toLowerCase().includes(term) ||
-      (l.contact?.email || '').toLowerCase().includes(term) ||
-      (l.contact?.phone || '').toLowerCase().includes(term);
-
-    const matchesCategory = selectedCategory === 'all' || matchesPlatformCategory(l.platform, selectedCategory);
-    const matchesPlatform = platformFilter === 'all' || l.platform.toLowerCase().includes(platformFilter.toLowerCase());
-    return matchesSearch && matchesCategory && matchesPlatform;
-  });
-
-  // Filtered saved leads
-  const filteredSavedLeads = savedLeads.filter((l) => {
-    const term = searchTerm.toLowerCase();
-    const matchesSearch =
-      !term ||
-      l.businessName.toLowerCase().includes(term) ||
-      l.category.toLowerCase().includes(term) ||
-      l.country.toLowerCase().includes(term) ||
-      (l.city || '').toLowerCase().includes(term) ||
-      (l.contact?.email || '').toLowerCase().includes(term) ||
-      (l.contact?.phone || '').toLowerCase().includes(term);
-
-    const matchesCategory = selectedCategory === 'all' || matchesPlatformCategory(l.platform, selectedCategory);
-    const matchesStatus = statusFilter === 'all' || l.status === statusFilter;
-    const matchesPlatform = platformFilter === 'all' || l.platform.toLowerCase().includes(platformFilter.toLowerCase());
-    return matchesSearch && matchesCategory && matchesStatus && matchesPlatform;
-  });
 
   return (
     <CustomerLayout
@@ -292,7 +143,8 @@ export default function CustomerLeadsPage() {
           onOpenWebsiteModal={(lead) => setWebsiteModalLead(lead)}
           onOpenJobScopeModal={(lead) => setJobScopeModalLead(lead)}
           onInspectLead={(lead) => setInspectDetailLead(lead)}
-          initialCategoryTab={activeTab === 'saved' ? 'saved' : 'all'}
+          initialCategoryTab="all"
+          isLoading={loading}
           isRefreshingLive={loading}
           onRefreshLiveLeads={() => {
             fetchSavedLeads();
@@ -348,45 +200,6 @@ export default function CustomerLeadsPage() {
               setEmailModalLead(l);
             }}
           />
-        )}
-
-        {/* MODAL: Notes Editor */}
-        {selectedLead && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm">
-            <div className="bg-[#0b1222] border border-slate-700 rounded-2xl p-6 max-w-md w-full shadow-2xl">
-              <h3 className="text-base font-semibold text-white mb-1">Lead Notes & Strategy</h3>
-              <p className="text-xs text-slate-400 mb-4">{selectedLead.businessName}</p>
-
-              <form onSubmit={handleSaveNotes} className="space-y-4">
-                <div>
-                  <label className="block text-[11px] font-mono uppercase text-slate-400 mb-1">Private Notes</label>
-                  <textarea
-                    rows={4}
-                    value={editNotes}
-                    onChange={(e) => setEditNotes(e.target.value)}
-                    placeholder="e.g. Sent personalized proposal on Tuesday. Next follow-up on Friday."
-                    className="w-full bg-[#080d1a] border border-slate-700 rounded-lg p-3 text-xs text-white focus:outline-none focus:border-amber-400"
-                  />
-                </div>
-
-                <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedLead(null)}
-                    className="px-3 py-1.5 rounded-lg text-xs font-mono text-slate-400 hover:text-white"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-lg text-xs font-mono transition"
-                  >
-                    Save Notes
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
         )}
       </div>
     </CustomerLayout>

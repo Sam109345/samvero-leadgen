@@ -11,9 +11,6 @@ import TopNavigation from '@/components/navigation/TopNavigation';
 
 // Core SaaS Views
 import FreelancerLeadFeed from '@/components/freelancer/FreelancerLeadFeed';
-import ExecutiveDashboard from '@/components/dashboard/ExecutiveDashboard';
-import LeadManagementView from '@/components/leads/LeadManagementView';
-import DiscoverLeadsView from '@/components/discovery/DiscoverLeadsView';
 import IntegrationsView from '@/components/system/IntegrationsView';
 import ApiConfigurationView from '@/components/system/ApiConfigurationView';
 import SyncHistoryView from '@/components/system/SyncHistoryView';
@@ -280,12 +277,12 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
   // Page header titles & subtitles based on active view
   const viewTitles: Record<string, { title: string; subtitle: string }> = {
     dashboard: {
-      title: 'Executive Dashboard',
-      subtitle: 'Real-time overview of discovered leads, conversion funnel, and platform integrations health.',
+      title: 'Live Lead Opportunities',
+      subtitle: 'Real-time feed of client project requirements, verified decision-maker contacts, and outreach tools.',
     },
     'all-leads': {
-      title: 'All Leads Management',
-      subtitle: 'Manage and filter genuine business leads discovered across all connected engines.',
+      title: 'All Leads Feed',
+      subtitle: 'Explore and filter verified opportunities across Upwork, Fiverr, Google Maps, Contra, LinkedIn, and more.',
     },
     'my-leads': {
       title: 'My Assigned Leads',
@@ -467,6 +464,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                 initialSearchQuery={searchQuery}
                 onOpenInbox={() => handleSelectView('messages')}
                 inboxCount={3}
+                isLoading={loading}
                 isRefreshingLive={isRefreshingLive}
                 onRefreshLiveLeads={() => fetchLeads(true)}
               />
@@ -487,6 +485,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
                 initialSearchQuery={searchQuery}
                 onOpenInbox={() => handleSelectView('messages')}
                 inboxCount={3}
+                isLoading={loading}
                 isRefreshingLive={isRefreshingLive}
                 onRefreshLiveLeads={() => fetchLeads(true)}
               />

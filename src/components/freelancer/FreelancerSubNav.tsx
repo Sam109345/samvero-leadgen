@@ -55,7 +55,7 @@ export default function FreelancerSubNav({
   inboxCount,
 }: FreelancerSubNavProps) {
   return (
-    <div className="bg-white dark:bg-[#111927] border-b border-slate-200 dark:border-[#24334a] shadow-xs sticky top-16 z-40 transition-colors">
+    <div className="bg-white dark:bg-[#111927] border-b border-slate-200 dark:border-[#24334a] shadow-xs sticky top-0 z-30 transition-colors">
       <div className="max-w-[1600px] mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
         
         {/* Lead Categories Tabs (Requirement 1 & 7) */}

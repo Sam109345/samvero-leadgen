@@ -33,6 +33,7 @@ export interface FreelancerLeadFeedProps {
   initialSearchQuery?: string;
   onOpenInbox?: () => void;
   inboxCount?: number;
+  isLoading?: boolean;
   isRefreshingLive?: boolean;
   onRefreshLiveLeads?: () => void;
   showRightPanel?: boolean;
@@ -52,6 +53,7 @@ export default function FreelancerLeadFeed({
   initialSearchQuery = '',
   onOpenInbox,
   inboxCount = 0,
+  isLoading = false,
   isRefreshingLive = false,
   onRefreshLiveLeads,
   showRightPanel = true,
@@ -456,7 +458,27 @@ export default function FreelancerLeadFeed({
               </div>
 
               {/* Feed List */}
-              {filteredLeads.length === 0 ? (
+              {isLoading && filteredLeads.length === 0 ? (
+                <div className="space-y-4">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className="p-5 bg-white dark:bg-[#141d2b] border border-slate-200/90 dark:border-[#223147] rounded-xl animate-pulse space-y-3"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex gap-2">
+                          <div className="h-5 w-24 bg-slate-200 dark:bg-slate-700 rounded" />
+                          <div className="h-5 w-20 bg-slate-200 dark:bg-slate-700 rounded" />
+                        </div>
+                        <div className="h-5 w-16 bg-slate-200 dark:bg-slate-700 rounded" />
+                      </div>
+                      <div className="h-6 w-3/4 bg-slate-200 dark:bg-slate-700 rounded" />
+                      <div className="h-4 w-1/2 bg-slate-200 dark:bg-slate-700 rounded" />
+                      <div className="h-12 bg-slate-100 dark:bg-slate-800 rounded" />
+                    </div>
+                  ))}
+                </div>
+              ) : filteredLeads.length === 0 ? (
                 <div className="bg-white dark:bg-[#111927] border border-dashed border-slate-300 dark:border-slate-800 rounded-2xl p-12 text-center space-y-3">
                   <div className="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/50 text-[#3B6FF5] flex items-center justify-center mx-auto">
                     <Search className="w-6 h-6" />
