@@ -10,6 +10,7 @@ import UnifiedSidebar, { NavViewId } from '@/components/navigation/UnifiedSideba
 import TopNavigation from '@/components/navigation/TopNavigation';
 
 // Core SaaS Views
+import FreelancerLeadFeed from '@/components/freelancer/FreelancerLeadFeed';
 import ExecutiveDashboard from '@/components/dashboard/ExecutiveDashboard';
 import LeadManagementView from '@/components/leads/LeadManagementView';
 import DiscoverLeadsView from '@/components/discovery/DiscoverLeadsView';
@@ -430,62 +431,64 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
 
           {/* Dynamic Content Pane */}
           <main className="flex-1 overflow-y-auto bg-slate-50 dark:bg-[#090f1d] transition-colors duration-200">
-            {/* 1. DASHBOARD */}
-            {activeView === 'dashboard' && (
-              <ExecutiveDashboard
+            {/* 1. FREELANCER.COM-STYLE LEAD FEED (Primary View across Leads, Dashboard & Discovery) */}
+            {(activeView === 'dashboard' ||
+              activeView === 'all-leads' ||
+              activeView === 'feed' ||
+              activeView === 'hot-leads' ||
+              activeView === 'qualified-leads' ||
+              activeView === 'qualified' ||
+              activeView === 'extra-leads' ||
+              activeView === 'needs-verification' ||
+              activeView === 'discover' ||
+              activeView === 'search-companies' ||
+              activeView === 'search-contacts') && (
+              <FreelancerLeadFeed
                 leads={displayedLeads}
-                onSelectLead={(l) => setInspectDetailLead(l)}
-                onNavigateToView={handleSelectView}
-              />
-            )}
-
-            {/* 2. ALL LEADS & MY LEADS */}
-            {(activeView === 'all-leads' || activeView === 'feed') && (
-              <LeadManagementView
-                leads={displayedLeads}
-                onUpdateLeadStage={handleMoveStage}
-                onDeleteLead={handleDeleteLead}
-                onArchiveLead={handleArchiveLead}
+                savedLeadIds={savedLeadIds}
+                onToggleSaveLead={handleToggleSaveLead}
+                onMoveStage={handleMoveStage}
                 onOpenEmailModal={(l) => setEmailModalLead(l)}
                 onOpenWebsiteModal={(l) => setWebsiteModalLead(l)}
+                onOpenJobScopeModal={(l) => setJobScopeModalLead(l)}
                 onInspectLead={(l) => setInspectDetailLead(l)}
+                onOpenNewLeadModal={() => setCreateLeadModalOpen(true)}
+                initialCategoryTab={
+                  activeView === 'hot-leads'
+                    ? 'hot'
+                    : activeView === 'qualified-leads' || activeView === 'qualified'
+                    ? 'qualified'
+                    : activeView === 'extra-leads'
+                    ? 'extra'
+                    : activeView === 'needs-verification'
+                    ? 'needs_verification'
+                    : 'all'
+                }
+                initialSearchQuery={searchQuery}
+                onOpenInbox={() => handleSelectView('messages')}
+                inboxCount={3}
+                isRefreshingLive={isRefreshingLive}
+                onRefreshLiveLeads={() => fetchLeads(true)}
               />
             )}
 
             {activeView === 'my-leads' && (
-              <LeadManagementView
+              <FreelancerLeadFeed
                 leads={myLeads}
-                onUpdateLeadStage={handleMoveStage}
-                onDeleteLead={handleDeleteLead}
-                onArchiveLead={handleArchiveLead}
+                savedLeadIds={savedLeadIds}
+                onToggleSaveLead={handleToggleSaveLead}
+                onMoveStage={handleMoveStage}
                 onOpenEmailModal={(l) => setEmailModalLead(l)}
                 onOpenWebsiteModal={(l) => setWebsiteModalLead(l)}
+                onOpenJobScopeModal={(l) => setJobScopeModalLead(l)}
                 onInspectLead={(l) => setInspectDetailLead(l)}
-              />
-            )}
-
-            {/* 3. DISCOVERY */}
-            {activeView === 'discover' && (
-              <DiscoverLeadsView
-                onImportLead={handleToggleSaveLead}
-                savedLeadIds={savedLeadIds}
-                initialType="all"
-              />
-            )}
-
-            {activeView === 'search-companies' && (
-              <DiscoverLeadsView
-                onImportLead={handleToggleSaveLead}
-                savedLeadIds={savedLeadIds}
-                initialType="company"
-              />
-            )}
-
-            {activeView === 'search-contacts' && (
-              <DiscoverLeadsView
-                onImportLead={handleToggleSaveLead}
-                savedLeadIds={savedLeadIds}
-                initialType="contact"
+                onOpenNewLeadModal={() => setCreateLeadModalOpen(true)}
+                initialCategoryTab="all"
+                initialSearchQuery={searchQuery}
+                onOpenInbox={() => handleSelectView('messages')}
+                inboxCount={3}
+                isRefreshingLive={isRefreshingLive}
+                onRefreshLiveLeads={() => fetchLeads(true)}
               />
             )}
 
