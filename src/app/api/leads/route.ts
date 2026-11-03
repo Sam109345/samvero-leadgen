@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchGmbLeads } from '@/lib/gmb-service';
-import { fetchFreelanceJobs } from '@/lib/jobs-service';
-import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
-import { getLeadsFromSupabase } from '@/lib/supabase';
 import { Lead } from '@/types';
 import { getPortalUserById, getLeadAssignedUser } from '@/lib/user-store';
-import { getSubscriptionById, canCustomerConsumeLead } from '@/lib/saas-store';
-import { getAuthenticatedSession } from '@/lib/session';
+import { getSubscriptionById } from '@/lib/saas-store';
 import { getEffectiveUser } from '@/lib/auth-user';
 import { getAllUserLeadStates, computeLeadWorkspaceStats } from '@/lib/lead-workspace-store';
+import { loadAllStoredLeads, persistDiscoveredLeads, deleteStoredLead, updateStoredLead, extractCanonicalDomain, normalizeEmailKey, normalizePhoneKey } from '@/lib/leads-persistent-store';
+import { executeCentralLeadPipeline } from '@/lib/pipeline/central-lead-pipeline';
+import { calculateExplainableLeadScore } from '@/lib/explainable-scoring';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,59 +20,34 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category') || 'all';
     const businessAge = searchParams.get('businessAge') || 'all';
     const platform = searchParams.get('platform') || 'all';
-    const type = searchParams.get('type') || 'all'; // 'gmb', 'job', 'all'
+    const type = searchParams.get('type') || 'all';
     const query = searchParams.get('q') || '';
     const hasWebsite = searchParams.get('hasWebsite') || 'all';
-    const statusParam = searchParams.get('status'); // 'new', 'all', or specific status
+    const statusParam = searchParams.get('status');
     const requestedUserId = searchParams.get('userId') || request.cookies.get('samvero_user_id')?.value;
-    const requestedScope = searchParams.get('scope'); // 'all' | 'mine'
+    const requestedScope = searchParams.get('scope');
 
     const refresh = searchParams.get('refresh');
     const forceRefresh = refresh === 'live';
 
-    let allLeads: Lead[] = [];
+    let allLeads: Lead[] = loadAllStoredLeads();
 
-    // 1. Fetch 100% REAL-TIME LIVE LEADS from multi-platform aggregator
-    try {
-      const liveLeads = await getMasterRealTimeLiveLeads({
-        query,
-        country,
-        category,
-        platform,
-        forceRefresh,
-      });
+    // If store is completely empty or forceRefresh requested, execute live discovery across operational sources
+    if (allLeads.length === 0 || forceRefresh) {
+      try {
+        const pipelineResult = await executeCentralLeadPipeline({
+          query: query || undefined,
+          country: country !== 'all' ? country : undefined,
+          category: category !== 'all' ? category : undefined,
+          limit: 15,
+          autoPersist: true,
+        });
 
-      if (liveLeads && liveLeads.length > 0) {
-        if (type === 'gmb') {
-          allLeads = liveLeads.filter((l) => l.type === 'gmb');
-        } else if (type === 'job') {
-          allLeads = liveLeads.filter((l) => l.type === 'job');
-        } else {
-          allLeads = liveLeads;
+        if (pipelineResult.leads.length > 0) {
+          allLeads = loadAllStoredLeads();
         }
-      }
-    } catch (err) {
-      console.warn('Real-time live aggregator issue, proceeding to fallback:', err);
-    }
-
-    // 2. Check if Supabase PostgreSQL database is connected and populated
-    if (allLeads.length === 0) {
-      const supabaseLeads = await getLeadsFromSupabase();
-      if (supabaseLeads && supabaseLeads.length > 0) {
-        allLeads = supabaseLeads;
-      } else {
-        // 3. Fallback to active services if live leads pool is empty
-        if (type === 'gmb') {
-          allLeads = await fetchGmbLeads({ query, country, category });
-        } else if (type === 'job') {
-          allLeads = await fetchFreelanceJobs({ query, country, category, platform });
-        } else {
-          const [gmbLeads, jobLeads] = await Promise.all([
-            fetchGmbLeads({ query, country, category }),
-            fetchFreelanceJobs({ query, country, category, platform }),
-          ]);
-          allLeads = [...gmbLeads, ...jobLeads];
-        }
+      } catch (err) {
+        console.warn('Pipeline discovery during lead fetch encounter:', err);
       }
     }
 
@@ -101,11 +74,10 @@ export async function GET(request: NextRequest) {
       allLeads = allLeads.filter((l: any) => l.currentStatus === statusParam);
     }
 
-    // 3. User Permission & Role Check
+    // Role & Subscription check
     const portalRole = request.cookies.get('samvero_portal_role')?.value;
     const isGlobalCookie = request.cookies.get('samvero_is_global')?.value === 'true';
 
-    // Customer Plan & Expiry Enforcement (Phase 9, 12, 13, 14)
     if (portalRole === 'customer') {
       const customerId = requestedUserId || 'user-client-101';
       const sub = getSubscriptionById(customerId);
@@ -117,7 +89,7 @@ export async function GET(request: NextRequest) {
           return NextResponse.json(
             {
               success: false,
-              error: 'Your subscription has expired. New lead discovery is restricted until renewed.',
+              error: 'Your subscription has expired. Please renew to continue.',
               isExpired: true,
               leads: [],
               total: 0,
@@ -130,7 +102,7 @@ export async function GET(request: NextRequest) {
           return NextResponse.json(
             {
               success: false,
-              error: `You have reached your maximum lead allocation limit of ${sub.leadQuota} leads. Please upgrade your package or request a quota expansion.`,
+              error: `You have reached your maximum lead allocation limit of ${sub.leadQuota} leads.`,
               quotaExceeded: true,
               leads: [],
               total: 0,
@@ -138,51 +110,45 @@ export async function GET(request: NextRequest) {
             { status: 403 }
           );
         }
-
-        // Enforce package entitlements on lead discovery (Enterprise has unrestricted access to all 70+ sources)
-        if (sub.entitlements && sub.planName !== 'Enterprise' && (sub as any).slug !== 'enterprise') {
-          const allowedSources = new Set((sub.entitlements.allowedSources || []).map((s: string) => s.toLowerCase()));
-          const allowedCountries = new Set((sub.entitlements.allowedCountries || []).map((c: string) => c.toLowerCase()));
-
-          allLeads = allLeads.filter((l) => {
-            const matchesSource = allowedSources.size === 0 || allowedSources.has(l.platform.toLowerCase()) || allowedSources.has('all');
-            const matchesCountry = allowedCountries.size === 0 || allowedCountries.has(l.country.toLowerCase()) || allowedCountries.has('global');
-            return matchesSource && matchesCountry;
-          });
-        }
       }
     }
 
     const activeUser = requestedUserId ? getPortalUserById(requestedUserId) : undefined;
     const isCustomer = portalRole === 'customer' || (activeUser && (activeUser.role as string) === 'customer') || requestedUserId === 'user-client-101';
-    const isSuperAdminOrGlobal = 
+    const isSuperAdminOrGlobal =
       isCustomer ||
       requestedScope === 'all' ||
-      !activeUser || 
-      activeUser.isGlobalUser || 
-      activeUser.role === 'admin' || 
+      !activeUser ||
+      activeUser.isGlobalUser ||
+      activeUser.role === 'admin' ||
       activeUser.role === 'global_user' ||
       portalRole === 'admin' ||
       isGlobalCookie;
 
-    // If staff user and NOT global: strictly filter to ONLY their assigned leads!
     if (!isCustomer && !isSuperAdminOrGlobal && activeUser && activeUser.role === 'staff') {
       allLeads = allLeads.filter((l) => l.assignedToUserId === activeUser.id);
     }
 
     // Apply country filter
     if (country !== 'all') {
-      allLeads = allLeads.filter((l) => l.country.toLowerCase() === country.toLowerCase());
+      allLeads = allLeads.filter((l) => l.country?.toLowerCase() === country.toLowerCase());
     }
 
     // Apply category filter
     if (category !== 'all') {
-      allLeads = allLeads.filter((l) => l.category.toLowerCase().includes(category.toLowerCase()));
+      allLeads = allLeads.filter((l) => l.category?.toLowerCase().includes(category.toLowerCase()));
     }
 
     // Apply platform filter
     if (platform !== 'all') {
-      allLeads = allLeads.filter((l) => l.platform.toLowerCase() === platform.toLowerCase());
+      allLeads = allLeads.filter((l) => l.platform?.toLowerCase().includes(platform.toLowerCase()));
+    }
+
+    // Apply type filter
+    if (type === 'gmb') {
+      allLeads = allLeads.filter((l) => l.type === 'gmb');
+    } else if (type === 'job') {
+      allLeads = allLeads.filter((l) => l.type === 'job');
     }
 
     // Apply business age filter
@@ -200,22 +166,57 @@ export async function GET(request: NextRequest) {
 
     // Apply website presence filter
     if (hasWebsite === 'no-site') {
-      allLeads = allLeads.filter((l) => !l.contact.hasWebsite);
+      allLeads = allLeads.filter((l) => !l.contact?.hasWebsite);
     } else if (hasWebsite === 'has-site') {
-      allLeads = allLeads.filter((l) => l.contact.hasWebsite);
+      allLeads = allLeads.filter((l) => l.contact?.hasWebsite);
     }
 
-    // Strict de-duplication: Ensure ZERO duplicate leads by ID or Business/Title
-    const seenKeys = new Set<string>();
+    // Apply query search
+    if (query) {
+      const q = query.toLowerCase();
+      allLeads = allLeads.filter(
+        (l) =>
+          l.businessName?.toLowerCase().includes(q) ||
+          l.title?.toLowerCase().includes(q) ||
+          l.city?.toLowerCase().includes(q) ||
+          l.category?.toLowerCase().includes(q) ||
+          l.platform?.toLowerCase().includes(q) ||
+          l.description?.toLowerCase().includes(q) ||
+          l.contact?.email?.toLowerCase().includes(q) ||
+          l.contact?.contactPerson?.toLowerCase().includes(q)
+      );
+    }
+
+    // Multi-attribute deduplication across ID, domain, email, phone, and business name
+    const seenIds = new Set<string>();
+    const seenEmails = new Set<string>();
+    const seenDomains = new Set<string>();
+    const seenPhones = new Set<string>();
+    const seenBusinessKeys = new Set<string>();
     const deduplicatedLeads: Lead[] = [];
 
     for (const lead of allLeads) {
-      const primaryKey = lead.id.trim().toLowerCase();
-      const contentKey = `${(lead.businessName || lead.title || '').trim().toLowerCase()}::${(lead.city || '').trim().toLowerCase()}`;
-      
-      if (!seenKeys.has(primaryKey) && !seenKeys.has(contentKey)) {
-        seenKeys.add(primaryKey);
-        seenKeys.add(contentKey);
+      const primaryKey = (lead.id || '').trim().toLowerCase();
+      const emailKey = normalizeEmailKey(lead.contact?.email);
+      const domainKey = extractCanonicalDomain(lead.contact?.website);
+      const phoneKey = normalizePhoneKey(lead.contact?.phone);
+      const nameStr = (lead.businessName || lead.title || '').trim().toLowerCase();
+      const locStr = (lead.city || lead.country || '').trim().toLowerCase();
+      const businessKey = nameStr ? `${nameStr}::${locStr}` : '';
+
+      const isDuplicate =
+        (primaryKey && seenIds.has(primaryKey)) ||
+        (emailKey && seenEmails.has(emailKey)) ||
+        (domainKey && seenDomains.has(domainKey)) ||
+        (phoneKey && seenPhones.has(phoneKey)) ||
+        (businessKey && seenBusinessKeys.has(businessKey));
+
+      if (!isDuplicate) {
+        if (primaryKey) seenIds.add(primaryKey);
+        if (emailKey) seenEmails.add(emailKey);
+        if (domainKey) seenDomains.add(domainKey);
+        if (phoneKey) seenPhones.add(phoneKey);
+        if (businessKey) seenBusinessKeys.add(businessKey);
         deduplicatedLeads.push(lead);
       }
     }
@@ -233,7 +234,7 @@ export async function GET(request: NextRequest) {
         totalGmb: deduplicatedLeads.filter((l) => l.type === 'gmb').length,
         totalJobs: deduplicatedLeads.filter((l) => l.type === 'job').length,
         newBusinesses: deduplicatedLeads.filter((l) => l.businessAge?.isNew).length,
-        noWebsiteOpportunity: deduplicatedLeads.filter((l) => !l.contact.hasWebsite).length,
+        noWebsiteOpportunity: deduplicatedLeads.filter((l) => !l.contact?.hasWebsite).length,
         uaeLeads: deduplicatedLeads.filter((l) => l.country === 'UAE').length,
         pakistanLeads: deduplicatedLeads.filter((l) => l.country === 'Pakistan').length,
         usLeads: deduplicatedLeads.filter((l) => l.country === 'US').length,
@@ -250,7 +251,7 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST /api/leads - Create new lead with duplicate checking
+ * POST /api/leads - Create new lead with duplicate checking and persistence
  */
 export async function POST(request: NextRequest) {
   try {
@@ -287,13 +288,16 @@ export async function POST(request: NextRequest) {
       postedAt: 'Just now',
       contact: contact || { hasWebsite: false },
       rating: 5.0,
-      reviewCount: 10,
-      tags: body.tags || ['Direct Lead'],
+      reviewCount: 1,
+      tags: body.tags || ['Direct Lead', 'User Created'],
       verified: true,
       pipelineStage: body.pipelineStage || 'new',
       status: 'new',
       createdAt: new Date().toISOString(),
     };
+
+    newLead.scoreBreakdown = calculateExplainableLeadScore(newLead);
+    persistDiscoveredLeads([newLead]);
 
     return NextResponse.json({ success: true, lead: newLead });
   } catch (err: any) {
@@ -313,10 +317,16 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'leadId is required' }, { status: 400 });
     }
 
+    const updated = updateStoredLead(leadId, {
+      pipelineStage,
+      tags: tags || undefined,
+    });
+
     return NextResponse.json({
       success: true,
       leadId,
       updatedStage: pipelineStage,
+      updated,
       updatedAt: new Date().toISOString(),
     });
   } catch (err: any) {
@@ -335,6 +345,8 @@ export async function DELETE(request: NextRequest) {
     if (!leadId) {
       return NextResponse.json({ success: false, error: 'id query parameter required' }, { status: 400 });
     }
+
+    deleteStoredLead(leadId);
 
     return NextResponse.json({
       success: true,

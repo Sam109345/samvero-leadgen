@@ -54,6 +54,8 @@ interface LeadDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   onLeadStatusChanged?: (leadId: string, newStatus: LeadStatusOption) => void;
+  onUpdateLeadStatus?: (leadId: string, status: any) => void;
+  onOpenEmailModal?: (lead: Lead) => void;
 }
 
 export default function LeadDetailModal({
@@ -61,6 +63,8 @@ export default function LeadDetailModal({
   isOpen,
   onClose,
   onLeadStatusChanged,
+  onUpdateLeadStatus,
+  onOpenEmailModal,
 }: LeadDetailModalProps) {
   // Navigation tabs inside Lead Detail
   const [activeTab, setActiveTab] = useState<'overview' | 'email_pitch' | 'bid_proposal' | 'followups' | 'notes' | 'history'>('overview');

@@ -193,7 +193,7 @@ export interface SourceEvidence {
   retrievedValue: string;
   sourceUrl: string;
   sourceProvider: string;
-  sourceType: 'official_website' | 'gmb' | 'freelance_platform' | 'public_directory' | 'dns_mx' | 'social_media' | 'manual_input' | 'scraped_website' | 'official_domain' | 'verified_business' | 'web_search_enriched' | 'verified_directory';
+  sourceType: 'official_website' | 'gmb' | 'freelance_platform' | 'public_directory' | 'dns_mx' | 'social_media' | 'manual_input' | 'scraped_website' | 'official_domain' | 'verified_business' | 'web_search_enriched' | 'verified_directory' | 'b2b_database';
   pageTitle?: string;
   retrievalTimestamp: string;
   verificationStatus: EmailVerificationStatus | PhoneVerificationStatus | string;

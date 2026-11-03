@@ -116,6 +116,7 @@ interface EmailOutreachModalProps {
   previewUrl?: string;
   isOpen: boolean;
   onClose: () => void;
+  onEmailSent?: () => void;
 }
 
 export default function EmailOutreachModal({
@@ -123,6 +124,7 @@ export default function EmailOutreachModal({
   previewUrl,
   isOpen,
   onClose,
+  onEmailSent,
 }: EmailOutreachModalProps) {
   const [template, setTemplate] = useState<'website' | 'mobile' | 'branding'>('website');
   const [toEmail, setToEmail] = useState('');
@@ -264,6 +266,9 @@ export default function EmailOutreachModal({
           message: data.message || 'Email successfully sent!',
           provider: data.provider,
         });
+        if (onEmailSent) {
+          onEmailSent();
+        }
       } else {
         setResult({
           success: false,

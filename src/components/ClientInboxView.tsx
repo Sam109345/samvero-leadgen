@@ -41,7 +41,7 @@ import {
 import { EmailThread, EmailMessage, ChatAttachment, VoiceNoteData } from '@/types';
 
 interface ClientInboxViewProps {
-  onOpenWebsitePreview: (previewUrl: string) => void;
+  onOpenWebsitePreview?: (previewUrl: string) => void;
   onClientReplyReceived?: (clientName: string, snippet: string) => void;
 }
 
@@ -256,7 +256,9 @@ function VoiceNotePlayer({
 }
 
 export default function ClientInboxView({
-  onOpenWebsitePreview,
+  onOpenWebsitePreview = (url: string) => {
+    if (typeof window !== 'undefined') window.open(url, '_blank');
+  },
   onClientReplyReceived,
 }: ClientInboxViewProps) {
   const [threads, setThreads] = useState<EmailThread[]>([]);

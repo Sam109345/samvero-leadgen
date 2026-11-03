@@ -7,10 +7,9 @@ import {
   ArrowUpDown,
   Download,
   Trash2,
-  Archive,
   Sparkles,
   CheckCircle2,
-  AlertCircle,
+  XCircle,
   ExternalLink,
   ChevronLeft,
   ChevronRight,
@@ -18,16 +17,22 @@ import {
   MailCheck,
   PhoneCall,
   Building2,
-  Star,
   Columns,
-  RefreshCw,
   X,
-  FileSpreadsheet,
-  Globe2,
   Send,
   SlidersHorizontal,
+  ChevronDown,
+  ChevronUp,
+  User,
+  Calendar,
+  Globe2,
+  FileSpreadsheet,
+  Clock,
+  ShieldCheck,
+  Layers,
 } from 'lucide-react';
 import { Lead, PipelineStage, SourceEvidence } from '@/types';
+import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface LeadManagementViewProps {
   leads: Lead[];
@@ -41,7 +46,7 @@ interface LeadManagementViewProps {
 }
 
 export default function LeadManagementView({
-  leads,
+  leads = [],
   onUpdateLeadStage,
   onDeleteLead,
   onArchiveLead,
@@ -50,144 +55,177 @@ export default function LeadManagementView({
   onOpenEmailModal,
   onInspectLead,
 }: LeadManagementViewProps) {
-  // Search & Filters state
-  const [searchQuery, setSearchQuery] = useState('');
+  // Search states
+  const [globalSearch, setGlobalSearch] = useState('');
+  const [companySearch, setCompanySearch] = useState('');
+  const [contactSearch, setContactSearch] = useState('');
+
+  // Expandable Advanced Filters
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+
+  // Filters
+  const [selectedIndustry, setSelectedIndustry] = useState('all');
   const [selectedCountry, setSelectedCountry] = useState('all');
-  const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedSource, setSelectedSource] = useState('all');
-  const [selectedStage, setSelectedStage] = useState('all');
-  const [contactFilter, setContactFilter] = useState<'all' | 'both' | 'email_only' | 'phone_only' | 'missing'>('all');
-  const [leadStatusFilter, setLeadStatusFilter] = useState<'new' | 'all' | 'approached' | 'waiting' | 'wasted' | 'converted' | 'closed'>('new');
+  const [selectedStatus, setSelectedStatus] = useState('all');
+  const [contactAvailability, setContactAvailability] = useState<'all' | 'has_email' | 'has_phone' | 'both' | 'missing'>('all');
 
-  // Sorting state
-  const [sortBy, setSortBy] = useState<'score' | 'date' | 'name'>('score');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  // Sorting
+  const [sortField, setSortField] = useState<'score' | 'name' | 'date'>('date');
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
-  // Pagination state
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
 
   // Bulk Selection
   const [selectedLeadIds, setSelectedLeadIds] = useState<Set<string>>(new Set());
 
-  // Detailed Drawer state
-  const [drawerLead, setDrawerLead] = useState<Lead | null>(null);
-  const [drawerTab, setDrawerTab] = useState<'provenance' | 'ai_intel' | 'score' | 'website'>('provenance');
+  // Detailed Drawer
+  const [activeDrawerLead, setActiveDrawerLead] = useState<Lead | null>(null);
 
-  // Column visibility state
-  const [showColumnsModal, setShowColumnsModal] = useState(false);
-  const [visibleColumns, setVisibleColumns] = useState({
+  // Column Visibility
+  const [showColumnPicker, setShowColumnPicker] = useState(false);
+  const [columns, setColumns] = useState({
     businessName: true,
     contactPerson: true,
-    website: true,
+    industry: true,
+    location: true,
     email: true,
     phone: true,
-    countryCity: true,
-    category: true,
     source: true,
-    gmbStatus: true,
-    emailStatus: true,
-    phoneStatus: true,
-    researchStatus: true,
-    leadScore: true,
-    pipelineStage: true,
+    score: true,
+    status: true,
+    dateAdded: true,
     actions: true,
   });
 
+  // Extract unique filter choices
+  const industries = useMemo(() => {
+    const set = new Set<string>();
+    leads.forEach((l) => { if (l.category) set.add(l.category); });
+    return Array.from(set).sort();
+  }, [leads]);
+
+  const countries = useMemo(() => {
+    const set = new Set<string>();
+    leads.forEach((l) => { if (l.country) set.add(l.country); });
+    return Array.from(set).sort();
+  }, [leads]);
+
+  const sources = useMemo(() => {
+    const set = new Set<string>();
+    leads.forEach((l) => { if (l.platform) set.add(l.platform); });
+    return Array.from(set).sort();
+  }, [leads]);
+
   // Filtered & Sorted Leads
-  const processedLeads = useMemo(() => {
+  const filteredLeads = useMemo(() => {
     let result = leads.filter((l) => !l.isArchived);
 
     // Global Search
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
+    if (globalSearch.trim()) {
+      const q = globalSearch.toLowerCase().trim();
       result = result.filter(
         (l) =>
           l.businessName?.toLowerCase().includes(q) ||
           l.title?.toLowerCase().includes(q) ||
           l.city?.toLowerCase().includes(q) ||
           l.country?.toLowerCase().includes(q) ||
+          l.category?.toLowerCase().includes(q) ||
+          l.platform?.toLowerCase().includes(q) ||
           l.contact?.email?.toLowerCase().includes(q) ||
-          l.contact?.phone?.includes(q) ||
-          l.description?.toLowerCase().includes(q)
+          l.contact?.contactPerson?.toLowerCase().includes(q)
       );
+    }
+
+    // Company Search
+    if (companySearch.trim()) {
+      const q = companySearch.toLowerCase().trim();
+      result = result.filter((l) => (l.businessName || l.title)?.toLowerCase().includes(q));
+    }
+
+    // Contact Search
+    if (contactSearch.trim()) {
+      const q = contactSearch.toLowerCase().trim();
+      result = result.filter(
+        (l) =>
+          l.contact?.contactPerson?.toLowerCase().includes(q) ||
+          l.contact?.email?.toLowerCase().includes(q)
+      );
+    }
+
+    // Industry Filter
+    if (selectedIndustry !== 'all') {
+      result = result.filter((l) => l.category?.toLowerCase() === selectedIndustry.toLowerCase());
     }
 
     // Country Filter
     if (selectedCountry !== 'all') {
-      result = result.filter((l) => l.country.toLowerCase() === selectedCountry.toLowerCase());
-    }
-
-    // Category Filter
-    if (selectedCategory !== 'all') {
-      result = result.filter((l) => l.category.toLowerCase().includes(selectedCategory.toLowerCase()));
+      result = result.filter((l) => l.country?.toLowerCase() === selectedCountry.toLowerCase());
     }
 
     // Source Filter
     if (selectedSource !== 'all') {
-      result = result.filter((l) => l.platform.toLowerCase() === selectedSource.toLowerCase());
+      result = result.filter((l) => l.platform?.toLowerCase() === selectedSource.toLowerCase());
     }
 
-    // Pipeline Filter
-    if (selectedStage !== 'all') {
-      result = result.filter((l) => l.pipelineStage === selectedStage);
+    // Status Filter
+    if (selectedStatus !== 'all') {
+      result = result.filter((l) => (l.currentStatus || 'New Lead').toLowerCase() === selectedStatus.toLowerCase());
     }
 
-    // Contact Filter
-    if (contactFilter === 'both') {
+    // Contact Availability
+    if (contactAvailability === 'both') {
       result = result.filter((l) => Boolean(l.contact?.email) && Boolean(l.contact?.phone));
-    } else if (contactFilter === 'email_only') {
-      result = result.filter((l) => Boolean(l.contact?.email) && !l.contact?.phone);
-    } else if (contactFilter === 'phone_only') {
-      result = result.filter((l) => Boolean(l.contact?.phone) && !l.contact?.email);
-    } else if (contactFilter === 'missing') {
+    } else if (contactAvailability === 'has_email') {
+      result = result.filter((l) => Boolean(l.contact?.email));
+    } else if (contactAvailability === 'has_phone') {
+      result = result.filter((l) => Boolean(l.contact?.phone));
+    } else if (contactAvailability === 'missing') {
       result = result.filter((l) => !l.contact?.email && !l.contact?.phone);
-    }
-
-    // Lead Lifecycle Status Filter (Requirement 7: approached/wasted leads should not clutter default new leads list)
-    if (leadStatusFilter === 'new') {
-      result = result.filter((l) => !l.currentStatus || l.currentStatus === 'New Lead');
-    } else if (leadStatusFilter === 'approached') {
-      result = result.filter((l) => l.currentStatus === 'Approached');
-    } else if (leadStatusFilter === 'waiting') {
-      result = result.filter((l) => l.currentStatus === 'Waiting for Client Response');
-    } else if (leadStatusFilter === 'wasted') {
-      result = result.filter((l) => l.currentStatus === 'Wasted Lead');
-    } else if (leadStatusFilter === 'converted') {
-      result = result.filter((l) => l.currentStatus === 'Converted / Won');
-    } else if (leadStatusFilter === 'closed') {
-      result = result.filter((l) => l.currentStatus === 'Closed');
     }
 
     // Sorting
     result.sort((a, b) => {
       let comparison = 0;
-      if (sortBy === 'score') {
-        const scoreA = a.scoreBreakdown?.leadQualityScore || 70;
-        const scoreB = b.scoreBreakdown?.leadQualityScore || 70;
+      if (sortField === 'score') {
+        const scoreA = a.scoreBreakdown?.leadQualityScore ?? 70;
+        const scoreB = b.scoreBreakdown?.leadQualityScore ?? 70;
         comparison = scoreA - scoreB;
-      } else if (sortBy === 'name') {
-        comparison = (a.businessName || '').localeCompare(b.businessName || '');
+      } else if (sortField === 'name') {
+        comparison = (a.businessName || a.title || '').localeCompare(b.businessName || b.title || '');
       } else {
-        const dateA = a.incomingAt || 0;
-        const dateB = b.incomingAt || 0;
-        comparison = dateA - dateB;
+        const timeA = a.createdAt ? new Date(a.createdAt).getTime() : a.incomingAt || 0;
+        const timeB = b.createdAt ? new Date(b.createdAt).getTime() : b.incomingAt || 0;
+        comparison = timeA - timeB;
       }
-      return sortOrder === 'desc' ? -comparison : comparison;
+      return sortDirection === 'desc' ? -comparison : comparison;
     });
 
     return result;
-  }, [leads, searchQuery, selectedCountry, selectedCategory, selectedSource, selectedStage, contactFilter, leadStatusFilter, sortBy, sortOrder]);
+  }, [
+    leads,
+    globalSearch,
+    companySearch,
+    contactSearch,
+    selectedIndustry,
+    selectedCountry,
+    selectedSource,
+    selectedStatus,
+    contactAvailability,
+    sortField,
+    sortDirection,
+  ]);
 
-  // Paginated Leads
+  // Paginated records
+  const totalPages = Math.ceil(filteredLeads.length / pageSize) || 1;
   const paginatedLeads = useMemo(() => {
-    const startIndex = (currentPage - 1) * pageSize;
-    return processedLeads.slice(startIndex, startIndex + pageSize);
-  }, [processedLeads, currentPage, pageSize]);
+    const start = (currentPage - 1) * pageSize;
+    return filteredLeads.slice(start, start + pageSize);
+  }, [filteredLeads, currentPage, pageSize]);
 
-  const totalPages = Math.ceil(processedLeads.length / pageSize) || 1;
-
-  // Toggle selection
+  // Selection handlers
   const handleToggleSelectAll = () => {
     if (selectedLeadIds.size === paginatedLeads.length) {
       setSelectedLeadIds(new Set());
@@ -196,566 +234,496 @@ export default function LeadManagementView({
     }
   };
 
-  // Duplicate Detection Map (Phase 12 Requirement)
-  const duplicateNamesSet = useMemo(() => {
-    const counts = new Map<string, number>();
-    leads.forEach((l) => {
-      const key = (l.businessName || '').toLowerCase().trim();
-      if (key) counts.set(key, (counts.get(key) || 0) + 1);
+  const handleToggleSelectLead = (id: string) => {
+    setSelectedLeadIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
     });
-    return new Set(Array.from(counts.entries()).filter(([_, count]) => count > 1).map(([k]) => k));
-  }, [leads]);
-
-  // Saved Filter Views Presets
-  const [activeFilterPreset, setActiveFilterPreset] = useState<'all' | 'needs_research' | 'verified_only' | 'qualified_only'>('all');
-
-  const handleApplyPreset = (preset: 'all' | 'needs_research' | 'verified_only' | 'qualified_only') => {
-    setActiveFilterPreset(preset);
-    setCurrentPage(1);
-    if (preset === 'all') {
-      setSelectedCountry('all');
-      setSelectedCategory('all');
-      setSelectedSource('all');
-      setSelectedStage('all');
-      setContactFilter('all');
-      setLeadStatusFilter('all');
-      setSearchQuery('');
-    } else if (preset === 'needs_research') {
-      setContactFilter('missing');
-    } else if (preset === 'verified_only') {
-      setContactFilter('both');
-    } else if (preset === 'qualified_only') {
-      setSelectedStage('qualified');
-    }
   };
 
-  // Bulk Actions
-  const handleBulkEnrich = () => {
-    selectedLeadIds.forEach((id) => {
-      const target = leads.find((l) => l.id === id);
-      if (target && onResearchLead) onResearchLead(target);
-    });
-    setSelectedLeadIds(new Set());
-  };
-
-  const handleBulkMoveStage = (stage: PipelineStage) => {
-    if (!onUpdateLeadStage) return;
-    selectedLeadIds.forEach((id) => onUpdateLeadStage(id, stage));
-    setSelectedLeadIds(new Set());
-  };
-
-  const handleBulkDelete = () => {
-    if (!onDeleteLead) return;
-    if (confirm(`Are you sure you want to delete ${selectedLeadIds.size} selected leads?`)) {
-      selectedLeadIds.forEach((id) => onDeleteLead(id));
-      setSelectedLeadIds(new Set());
-    }
-  };
-
-  const handleBulkArchive = () => {
-    if (!onArchiveLead) return;
-    selectedLeadIds.forEach((id) => onArchiveLead(id));
-    setSelectedLeadIds(new Set());
-  };
-
-  const handleToggleSelect = (id: string) => {
-    const next = new Set(selectedLeadIds);
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
-    setSelectedLeadIds(next);
-  };
-
-  // CSV Export
+  // CSV Export of actual filtered records
   const handleExportCSV = () => {
-    const exportTargets = selectedLeadIds.size > 0
-      ? processedLeads.filter((l) => selectedLeadIds.has(l.id))
-      : processedLeads;
+    if (filteredLeads.length === 0) return;
 
     const headers = [
+      'ID',
       'Business Name',
       'Contact Person',
-      'Website',
-      'Email',
-      'Email Status',
-      'Phone',
-      'City',
-      'Country',
       'Industry',
-      'Source Platform',
-      'Pipeline Stage',
+      'Country',
+      'City',
+      'Email',
+      'Phone',
+      'Website',
+      'Source',
       'Lead Score',
+      'Status',
+      'Date Added',
     ];
 
-    const cleanCsvCell = (val: any) => `"${String(val || '').split('"').join('""')}"`;
-    const rows = exportTargets.map((l) => [
-      cleanCsvCell(l.businessName),
-      cleanCsvCell(l.contact?.contactPerson),
-      cleanCsvCell(l.contact?.website),
-      cleanCsvCell(l.contact?.email || 'N/A'),
-      cleanCsvCell(l.contact?.emailStatus || 'UNVERIFIED'),
-      cleanCsvCell(l.contact?.phone || 'N/A'),
-      cleanCsvCell(l.city),
-      cleanCsvCell(l.country),
-      cleanCsvCell(l.category),
-      cleanCsvCell(l.platform),
-      cleanCsvCell(l.pipelineStage || 'new'),
-      cleanCsvCell(l.scoreBreakdown?.leadQualityScore || 75),
+    const rows = filteredLeads.map((l) => [
+      l.id,
+      `"${(l.businessName || l.title || '').replace(/"/g, '""')}"`,
+      `"${(l.contact?.contactPerson || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.category || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.country || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.city || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.contact?.email || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.contact?.phone || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.contact?.website || 'Unavailable').replace(/"/g, '""')}"`,
+      `"${(l.platform || 'Direct').replace(/"/g, '""')}"`,
+      l.scoreBreakdown?.leadQualityScore ?? 70,
+      `"${(l.currentStatus || 'New Lead').replace(/"/g, '""')}"`,
+      `"${l.createdAt || l.postedAt || 'Recent'}"`,
     ]);
 
-    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
-    const encodedUri = encodeURI(csvContent);
+    const csvContent = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
-    link.setAttribute('href', encodedUri);
+    link.href = url;
     link.setAttribute('download', `samvero_leads_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  // Bulk actions
+  const handleBulkDelete = () => {
+    if (!onDeleteLead || selectedLeadIds.size === 0) return;
+    if (confirm(`Delete ${selectedLeadIds.size} selected leads?`)) {
+      selectedLeadIds.forEach((id) => onDeleteLead(id));
+      setSelectedLeadIds(new Set());
+    }
+  };
+
+  const handleBulkMoveStatus = (stage: PipelineStage) => {
+    if (!onUpdateLeadStage || selectedLeadIds.size === 0) return;
+    selectedLeadIds.forEach((id) => onUpdateLeadStage(id, stage));
+    setSelectedLeadIds(new Set());
+  };
+
   return (
-    <div className="space-y-6 p-6 lg:p-8 max-w-[1700px] mx-auto text-slate-800 dark:text-slate-100">
-      {/* Top Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-black text-blue-600 dark:text-cyan-400 bg-blue-50 dark:bg-blue-950/70 px-2 py-0.5 rounded">
-              Lead Intelligence Registry
-            </span>
-            <span className="text-xs text-slate-500 font-bold">
-              {processedLeads.length} total active records
-            </span>
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-4 font-sans">
+      {/* Search & Actions Bar */}
+      <div className="bg-white dark:bg-[#111c2e] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-3">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          {/* Global Search Input */}
+          <div className="relative flex-1">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={globalSearch}
+              onChange={(e) => {
+                setGlobalSearch(e.target.value);
+                setCurrentPage(1);
+              }}
+              placeholder="Search by business name, keyword, location, email..."
+              className="w-full pl-9 pr-3 py-2 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/80 rounded-lg text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            />
           </div>
-          <h1 className="text-2xl font-black tracking-tight">All Business Leads</h1>
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            Complete database management, verifiable provenance inspection, and multi-channel outreach
-          </p>
+
+          {/* Quick Controls */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Advanced Filters Toggle */}
+            <button
+              onClick={() => setShowAdvancedFilters(!showAdvancedFilters)}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-lg border text-xs font-semibold transition cursor-pointer ${
+                showAdvancedFilters || selectedIndustry !== 'all' || selectedCountry !== 'all' || selectedSource !== 'all' || contactAvailability !== 'all'
+                  ? 'bg-blue-50 border-blue-200 text-blue-700 dark:bg-blue-950/60 dark:border-blue-800 dark:text-blue-300'
+                  : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50'
+              }`}
+            >
+              <SlidersHorizontal className="w-3.5 h-3.5" />
+              <span>Filters</span>
+              {showAdvancedFilters ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+            </button>
+
+            {/* Column Visibility Picker */}
+            <div className="relative">
+              <button
+                onClick={() => setShowColumnPicker(!showColumnPicker)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 text-xs font-semibold transition cursor-pointer"
+                title="Toggle Columns"
+              >
+                <Columns className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Columns</span>
+              </button>
+
+              {showColumnPicker && (
+                <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 p-2 z-30 text-xs space-y-1">
+                  <div className="font-semibold text-slate-900 dark:text-slate-100 px-2 py-1 text-[11px] uppercase tracking-wider">
+                    Toggle Table Columns
+                  </div>
+                  {Object.entries(columns).map(([col, isVisible]) => (
+                    <label key={col} className="flex items-center gap-2 px-2 py-1 hover:bg-slate-50 dark:hover:bg-slate-800 rounded cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={isVisible}
+                        onChange={(e) => setColumns({ ...columns, [col]: e.target.checked })}
+                        className="rounded text-blue-600 focus:ring-0"
+                      />
+                      <span className="capitalize text-slate-700 dark:text-slate-300">{col.replace(/([A-Z])/g, ' $1')}</span>
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* CSV Export Button */}
+            <button
+              onClick={handleExportCSV}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition cursor-pointer"
+              title="Export genuine records to CSV"
+            >
+              <FileSpreadsheet className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Export CSV</span>
+            </button>
+          </div>
         </div>
 
-        {/* Global Table Actions */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <button
-            onClick={handleExportCSV}
-            className="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition shadow-xs"
-            title="Export filtered records to CSV"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export CSV {selectedLeadIds.size > 0 ? `(${selectedLeadIds.size})` : ''}</span>
-          </button>
+        {/* Expandable Advanced Filters Drawer */}
+        {showAdvancedFilters && (
+          <div className="pt-3 border-t border-slate-100 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {/* Search Company */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Company Search</label>
+              <input
+                type="text"
+                value={companySearch}
+                onChange={(e) => setCompanySearch(e.target.value)}
+                placeholder="Filter by business..."
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              />
+            </div>
 
-          <button
-            onClick={() => setShowColumnsModal(true)}
-            className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl text-xs font-bold transition"
-            title="Toggle column visibility"
-          >
-            <Columns className="w-3.5 h-3.5" />
-            <span>Columns</span>
-          </button>
-        </div>
+            {/* Search Contact */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Contact Search</label>
+              <input
+                type="text"
+                value={contactSearch}
+                onChange={(e) => setContactSearch(e.target.value)}
+                placeholder="Name or email..."
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              />
+            </div>
+
+            {/* Industry Filter */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Industry</label>
+              <select
+                value={selectedIndustry}
+                onChange={(e) => setSelectedIndustry(e.target.value)}
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              >
+                <option value="all">All Industries</option>
+                {industries.map((ind) => (
+                  <option key={ind} value={ind}>{ind}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Country Filter */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Country</label>
+              <select
+                value={selectedCountry}
+                onChange={(e) => setSelectedCountry(e.target.value)}
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              >
+                <option value="all">All Countries</option>
+                {countries.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Source Platform Filter */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Source Platform</label>
+              <select
+                value={selectedSource}
+                onChange={(e) => setSelectedSource(e.target.value)}
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              >
+                <option value="all">All Platforms</option>
+                {sources.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Contact Availability */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Contact Details</label>
+              <select
+                value={contactAvailability}
+                onChange={(e) => setContactAvailability(e.target.value as any)}
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              >
+                <option value="all">Any Contact Info</option>
+                <option value="both">Both Email & Phone</option>
+                <option value="has_email">Has Verified Email</option>
+                <option value="has_phone">Has Phone Number</option>
+                <option value="missing">Missing Direct Contacts</option>
+              </select>
+            </div>
+
+            {/* Lead Status */}
+            <div>
+              <label className="block text-[11px] font-semibold text-slate-500 mb-1">Lifecycle Status</label>
+              <select
+                value={selectedStatus}
+                onChange={(e) => setSelectedStatus(e.target.value)}
+                className="w-full px-2.5 py-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs"
+              >
+                <option value="all">All Lead Statuses</option>
+                <option value="New Lead">New Lead</option>
+                <option value="Approached">Approached</option>
+                <option value="Waiting for Client Response">Waiting for Response</option>
+                <option value="Interested">Interested</option>
+                <option value="Converted / Won">Converted / Won</option>
+                <option value="Wasted Lead">Wasted Lead</option>
+              </select>
+            </div>
+
+            {/* Clear Filters Action */}
+            <div className="flex items-end">
+              <button
+                onClick={() => {
+                  setGlobalSearch('');
+                  setCompanySearch('');
+                  setContactSearch('');
+                  setSelectedIndustry('all');
+                  setSelectedCountry('all');
+                  setSelectedSource('all');
+                  setSelectedStatus('all');
+                  setContactAvailability('all');
+                }}
+                className="w-full py-1.5 px-3 border border-slate-200 dark:border-slate-700 rounded-lg text-xs text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition cursor-pointer font-semibold"
+              >
+                Reset Filters
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Bulk Action Bar (Phase 12 Requirement) */}
+      {/* Bulk Action Bar (when rows are selected) */}
       {selectedLeadIds.size > 0 && (
-        <div className="bg-blue-600 text-white p-3.5 rounded-2xl shadow-lg flex flex-wrap items-center justify-between gap-3 animate-in fade-in duration-150">
-          <div className="flex items-center gap-2 text-xs font-bold pl-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{selectedLeadIds.size} Leads Selected for Bulk Operations</span>
+        <div className="bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 px-4 py-2.5 rounded-xl flex items-center justify-between text-xs text-blue-900 dark:text-blue-200 font-semibold shadow-xs">
+          <div className="flex items-center gap-2">
+            <span>{selectedLeadIds.size} leads selected</span>
           </div>
-
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2">
             <button
-              onClick={handleBulkEnrich}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-xs font-bold transition"
-              title="Run background research for selected leads"
+              onClick={() => handleBulkMoveStatus('qualified')}
+              className="px-2.5 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium transition cursor-pointer"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Bulk Enrich</span>
+              Mark Qualified
             </button>
-
-            <select
-              onChange={(e) => {
-                if (e.target.value) handleBulkMoveStage(e.target.value as PipelineStage);
-              }}
-              defaultValue=""
-              className="px-3 py-1.5 bg-white text-slate-800 rounded-xl text-xs font-bold focus:outline-none"
-            >
-              <option value="" disabled>Move Pipeline Stage...</option>
-              <option value="new">1. New Discovery</option>
-              <option value="research_pending">2. Research Pending</option>
-              <option value="researching">3. In Research</option>
-              <option value="researched">4. Researched</option>
-              <option value="qualified">5. Qualified</option>
-              <option value="contacted">6. Contacted</option>
-              <option value="proposal_sent">10. Proposal Sent</option>
-              <option value="won">11. Won Deal</option>
-              <option value="lost">12. Lost</option>
-              <option value="archived">13. Archived</option>
-            </select>
-
             <button
-              onClick={handleBulkArchive}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white rounded-xl text-xs font-bold transition"
+              onClick={() => handleBulkMoveStatus('contacted')}
+              className="px-2.5 py-1 rounded bg-slate-700 hover:bg-slate-800 text-white font-medium transition cursor-pointer"
             >
-              <Archive className="w-3.5 h-3.5" />
-              <span>Archive</span>
+              Mark Approached
             </button>
-
             <button
               onClick={handleBulkDelete}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl text-xs font-bold transition"
+              className="px-2.5 py-1 rounded bg-rose-600 hover:bg-rose-700 text-white font-medium transition cursor-pointer"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-              <span>Delete</span>
-            </button>
-
-            <button
-              onClick={() => setSelectedLeadIds(new Set())}
-              className="px-2 py-1.5 hover:bg-white/10 rounded-xl text-xs text-white/80"
-            >
-              Clear Selection
+              Delete Selected
             </button>
           </div>
         </div>
       )}
 
-      {/* Saved Filter Views Bar (Phase 12 Requirement) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-bold">
-        <span className="text-slate-400 text-[11px] font-black uppercase tracking-wider shrink-0 flex items-center gap-1">
-          <Filter className="w-3 h-3" /> Saved Views:
-        </span>
-        {[
-          { id: 'all', label: 'All Leads' },
-          { id: 'needs_research', label: 'Requiring Research (Missing Contacts)' },
-          { id: 'verified_only', label: 'Omnichannel Verified (Both Contacts)' },
-          { id: 'qualified_only', label: 'Qualified Pipeline Only' },
-        ].map((preset) => (
-          <button
-            key={preset.id}
-            onClick={() => handleApplyPreset(preset.id as any)}
-            className={`px-3 py-1 rounded-xl transition shrink-0 ${
-              activeFilterPreset === preset.id
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50'
-            }`}
-          >
-            {preset.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Search & Advanced Filters Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-7 gap-3 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
-        {/* Global Search */}
-        <div className="lg:col-span-2 relative">
-          <Search className="w-4 h-4 absolute left-3 top-3 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => {
-              setSearchQuery(e.target.value);
-              setCurrentPage(1);
-            }}
-            placeholder="Search business, contact, email, city, domain..."
-            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        {/* Lead Lifecycle Status Filter (Requirement 7) */}
-        <div>
-          <select
-            value={leadStatusFilter}
-            onChange={(e) => {
-              setLeadStatusFilter(e.target.value as any);
-              setCurrentPage(1);
-            }}
-            className="w-full px-3 py-2 text-xs rounded-xl bg-blue-50/70 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 font-bold focus:outline-none"
-            title="Filter by Outreach Lifecycle Status"
-          >
-            <option value="new">🌟 New Leads Only</option>
-            <option value="all">🌐 All Lifecycle States</option>
-            <option value="approached">📨 Approached</option>
-            <option value="waiting">⏳ Waiting Reply</option>
-            <option value="wasted">🗑️ Wasted Leads</option>
-            <option value="converted">🏆 Converted Leads</option>
-            <option value="closed">🔒 Closed Leads</option>
-          </select>
-        </div>
-
-        {/* Country Filter */}
-        <div>
-          <select
-            value={selectedCountry}
-            onChange={(e) => {
-              setSelectedCountry(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full px-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none font-semibold"
-          >
-            <option value="all">🌍 All Territories</option>
-            <option value="UAE">🇦🇪 United Arab Emirates</option>
-            <option value="Pakistan">🇵🇰 Pakistan</option>
-            <option value="UK">🇬🇧 United Kingdom</option>
-            <option value="US">🇺🇸 United States</option>
-          </select>
-        </div>
-
-        {/* Category Filter */}
-        <div>
-          <select
-            value={selectedCategory}
-            onChange={(e) => {
-              setSelectedCategory(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full px-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none font-semibold"
-          >
-            <option value="all">📁 All Industries</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Local Business">Local Business / Clinic</option>
-            <option value="Mobile App">Mobile App</option>
-            <option value="Graphic Design">Graphic Design & Branding</option>
-            <option value="SEO">SEO & Marketing</option>
-          </select>
-        </div>
-
-        {/* Contact Presence Filter */}
-        <div>
-          <select
-            value={contactFilter}
-            onChange={(e) => {
-              setContactFilter(e.target.value as any);
-              setCurrentPage(1);
-            }}
-            className="w-full px-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none font-semibold"
-          >
-            <option value="all">📞 All Contact States</option>
-            <option value="both">✅ Both Email & Phone</option>
-            <option value="email_only">✉️ Email Found Only</option>
-            <option value="phone_only">📱 Phone Found Only</option>
-            <option value="missing">❓ Contact Unavailable</option>
-          </select>
-        </div>
-
-        {/* Stage Filter */}
-        <div>
-          <select
-            value={selectedStage}
-            onChange={(e) => {
-              setSelectedStage(e.target.value);
-              setCurrentPage(1);
-            }}
-            className="w-full px-3 py-2 text-xs rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:outline-none font-semibold"
-          >
-            <option value="all">⚡ All Pipeline Stages</option>
-            <option value="new">New Discovery</option>
-            <option value="qualified">Qualified</option>
-            <option value="contacted">Contacted</option>
-            <option value="won">Won / Closed</option>
-          </select>
-        </div>
-      </div>
-
-      {/* Main High-Performance Lead Management Table */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xs overflow-hidden">
+      {/* Clean Lead Table */}
+      <div className="bg-white dark:bg-[#111c2e] rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 text-slate-500 font-bold select-none">
-                <th className="p-3 w-10 text-center">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-50 dark:bg-slate-800/60 text-slate-600 dark:text-slate-300 font-semibold border-b border-slate-200 dark:border-slate-800 select-none">
+              <tr>
+                <th className="py-3 px-3.5 w-10">
                   <input
                     type="checkbox"
-                    checked={selectedLeadIds.size > 0 && selectedLeadIds.size === paginatedLeads.length}
+                    checked={paginatedLeads.length > 0 && selectedLeadIds.size === paginatedLeads.length}
                     onChange={handleToggleSelectAll}
-                    className="rounded text-blue-600 focus:ring-0 cursor-pointer"
+                    className="rounded text-blue-600 focus:ring-0"
                   />
                 </th>
 
-                {visibleColumns.businessName && (
+                {columns.businessName && (
                   <th
+                    className="py-3 px-3.5 cursor-pointer hover:text-slate-900"
                     onClick={() => {
-                      if (sortBy === 'name') setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                      else { setSortBy('name'); setSortOrder('asc'); }
+                      setSortField('name');
+                      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
                     }}
-                    className="p-3 cursor-pointer hover:text-blue-600"
                   >
                     <div className="flex items-center gap-1">
                       <span>Business Name</span>
-                      <ArrowUpDown className="w-3 h-3" />
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
                 )}
 
-                {visibleColumns.contactPerson && <th className="p-3">Contact Person</th>}
-                {visibleColumns.website && <th className="p-3">Website</th>}
-                {visibleColumns.email && <th className="p-3">Direct Email</th>}
-                {visibleColumns.phone && <th className="p-3">Phone / WhatsApp</th>}
-                {visibleColumns.countryCity && <th className="p-3">Market Territory</th>}
-                {visibleColumns.source && <th className="p-3">Original Source</th>}
-                
-                {visibleColumns.leadScore && (
+                {columns.contactPerson && <th className="py-3 px-3.5">Contact Person</th>}
+                {columns.industry && <th className="py-3 px-3.5">Industry</th>}
+                {columns.location && <th className="py-3 px-3.5">Location</th>}
+                {columns.email && <th className="py-3 px-3.5">Email</th>}
+                {columns.phone && <th className="py-3 px-3.5">Phone</th>}
+                {columns.source && <th className="py-3 px-3.5">Source</th>}
+
+                {columns.score && (
                   <th
+                    className="py-3 px-3.5 cursor-pointer hover:text-slate-900"
                     onClick={() => {
-                      if (sortBy === 'score') setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-                      else { setSortBy('score'); setSortOrder('desc'); }
+                      setSortField('score');
+                      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
                     }}
-                    className="p-3 cursor-pointer hover:text-blue-600 text-center"
                   >
-                    <div className="flex items-center justify-center gap-1">
+                    <div className="flex items-center gap-1">
                       <span>Lead Score</span>
-                      <ArrowUpDown className="w-3 h-3" />
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
                 )}
 
-                {visibleColumns.pipelineStage && <th className="p-3">Pipeline Stage</th>}
-                {visibleColumns.actions && <th className="p-3 text-right">Actions</th>}
+                {columns.status && <th className="py-3 px-3.5">Status</th>}
+
+                {columns.dateAdded && (
+                  <th
+                    className="py-3 px-3.5 cursor-pointer hover:text-slate-900"
+                    onClick={() => {
+                      setSortField('date');
+                      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+                    }}
+                  >
+                    <div className="flex items-center gap-1">
+                      <span>Date Added</span>
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    </div>
+                  </th>
+                )}
+
+                {columns.actions && <th className="py-3 px-3.5 text-right">Actions</th>}
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/70">
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
               {paginatedLeads.length === 0 ? (
                 <tr>
-                  <td colSpan={12} className="p-12 text-center text-slate-400">
-                    <AlertCircle className="w-8 h-8 mx-auto mb-2 text-slate-300 dark:text-slate-600" />
-                    <div className="font-bold text-sm">No business leads match your filter criteria</div>
-                    <p className="text-xs mt-1">Adjust search terms or reset filters to display records</p>
+                  <td colSpan={12} className="py-12 text-center text-slate-500">
+                    <Building2 className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+                    <p className="font-semibold text-slate-700 dark:text-slate-300">No leads match your active filters</p>
+                    <p className="text-xs text-slate-400 mt-1">Try resetting your filter parameters or start a new discovery.</p>
                   </td>
                 </tr>
               ) : (
                 paginatedLeads.map((lead) => {
+                  const score = lead.scoreBreakdown?.leadQualityScore ?? 70;
                   const isSelected = selectedLeadIds.has(lead.id);
-                  const hasEmail = Boolean(lead.contact?.email);
-                  const hasPhone = Boolean(lead.contact?.phone);
-                  const score = lead.scoreBreakdown?.leadQualityScore || 78;
 
                   return (
                     <tr
                       key={lead.id}
-                      className={`hover:bg-blue-50/40 dark:hover:bg-slate-800/50 transition ${
-                        isSelected ? 'bg-blue-50/70 dark:bg-blue-950/40' : ''
+                      onClick={() => setActiveDrawerLead(lead)}
+                      className={`hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition cursor-pointer ${
+                        isSelected ? 'bg-blue-50/50 dark:bg-blue-950/20' : ''
                       }`}
                     >
                       {/* Checkbox */}
-                      <td className="p-3 text-center">
+                      <td className="py-3 px-3.5" onClick={(e) => e.stopPropagation()}>
                         <input
                           type="checkbox"
                           checked={isSelected}
-                          onChange={() => handleToggleSelect(lead.id)}
-                          className="rounded text-blue-600 focus:ring-0 cursor-pointer"
+                          onChange={() => handleToggleSelectLead(lead.id)}
+                          className="rounded text-blue-600 focus:ring-0"
                         />
                       </td>
 
                       {/* Business Name */}
-                      {visibleColumns.businessName && (
-                        <td className="p-3 font-bold max-w-[220px]">
+                      {columns.businessName && (
+                        <td className="py-3 px-3.5 font-bold text-slate-900 dark:text-slate-100 max-w-[180px] truncate">
                           <div className="flex items-center gap-1.5">
-                            <button
-                              onClick={() => {
-                                setDrawerLead(lead);
-                                setDrawerTab('provenance');
-                              }}
-                              className="text-left font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-cyan-400 truncate block"
-                              title="Inspect field-level provenance"
-                            >
-                              {lead.businessName}
-                            </button>
-                            {duplicateNamesSet.has((lead.businessName || '').toLowerCase().trim()) && (
-                              <span
-                                className="text-[9px] font-black uppercase px-1.5 py-0.2 rounded bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 shrink-0"
-                                title="Duplicate business name detected across records"
+                            <span className="truncate">{lead.businessName || lead.title}</span>
+                            {lead.contact?.website && (
+                              <a
+                                href={lead.contact.website}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="text-slate-400 hover:text-blue-600"
                               >
-                                Dup
-                              </span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
                             )}
-                          </div>
-                          <div className="text-[10px] text-slate-400 font-normal truncate">
-                            {lead.category}
                           </div>
                         </td>
                       )}
 
                       {/* Contact Person */}
-                      {visibleColumns.contactPerson && (
-                        <td className="p-3 text-slate-600 dark:text-slate-300">
-                          {lead.contact?.contactPerson || <span className="text-slate-400 italic">Not disclosed</span>}
+                      {columns.contactPerson && (
+                        <td className="py-3 px-3.5 text-slate-700 dark:text-slate-300 max-w-[130px] truncate">
+                          {lead.contact?.contactPerson || <span className="text-slate-400">—</span>}
                         </td>
                       )}
 
-                      {/* Website */}
-                      {visibleColumns.website && (
-                        <td className="p-3 max-w-[140px]">
-                          {lead.contact?.website ? (
-                            <a
-                              href={lead.contact.website}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-blue-600 dark:text-cyan-400 hover:underline flex items-center gap-1 truncate"
-                            >
-                              <span>{lead.contact.website.replace(/^https?:\/\//, '')}</span>
-                              <ExternalLink className="w-3 h-3 shrink-0" />
-                            </a>
-                          ) : (
-                            <span className="text-amber-600 dark:text-amber-400 font-semibold text-[10px]">
-                              No Website (Hot)
-                            </span>
-                          )}
+                      {/* Industry */}
+                      {columns.industry && (
+                        <td className="py-3 px-3.5 text-slate-600 dark:text-slate-400 max-w-[130px] truncate">
+                          {lead.category || <span className="text-slate-400">—</span>}
                         </td>
                       )}
 
-                      {/* Direct Email */}
-                      {visibleColumns.email && (
-                        <td className="p-3 max-w-[180px]">
-                          {hasEmail ? (
-                            <div className="flex items-center gap-1.5 truncate">
-                              <MailCheck className="w-3.5 h-3.5 text-teal-500 shrink-0" />
-                              <span className="font-mono text-[11px] truncate">{lead.contact?.email}</span>
-                            </div>
+                      {/* Location */}
+                      {columns.location && (
+                        <td className="py-3 px-3.5 text-slate-600 dark:text-slate-400 max-w-[120px] truncate">
+                          {lead.city ? `${lead.city}, ${lead.country}` : lead.country || <span className="text-slate-400">—</span>}
+                        </td>
+                      )}
+
+                      {/* Email */}
+                      {columns.email && (
+                        <td className="py-3 px-3.5 font-mono text-[11px] text-slate-700 dark:text-slate-300 max-w-[150px] truncate">
+                          {lead.contact?.email ? (
+                            <span className="text-blue-600 dark:text-blue-400 font-medium">{lead.contact.email}</span>
                           ) : (
-                            <span className="text-slate-400 text-[11px] italic">Contact information not found.</span>
+                            <span className="text-slate-400">Unavailable</span>
                           )}
                         </td>
                       )}
 
                       {/* Phone */}
-                      {visibleColumns.phone && (
-                        <td className="p-3 whitespace-nowrap">
-                          {hasPhone ? (
-                            <div className="flex items-center gap-1.5 font-mono text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                              <PhoneCall className="w-3.5 h-3.5 shrink-0" />
-                              <span>{lead.contact?.phone}</span>
-                            </div>
-                          ) : (
-                            <span className="text-slate-400 text-[11px] italic">Not found</span>
-                          )}
-                        </td>
-                      )}
-
-                      {/* Territory */}
-                      {visibleColumns.countryCity && (
-                        <td className="p-3 whitespace-nowrap">
-                          <span className="font-semibold">{lead.city}</span>,{' '}
-                          <span className="text-slate-500">{lead.country}</span>
+                      {columns.phone && (
+                        <td className="py-3 px-3.5 font-mono text-[11px] text-slate-700 dark:text-slate-300 max-w-[120px] truncate">
+                          {lead.contact?.phone || <span className="text-slate-400">Unavailable</span>}
                         </td>
                       )}
 
                       {/* Source */}
-                      {visibleColumns.source && (
-                        <td className="p-3 whitespace-nowrap">
-                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                      {columns.source && (
+                        <td className="py-3 px-3.5">
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                             {lead.platform}
                           </span>
                         </td>
                       )}
 
-                      {/* Score */}
-                      {visibleColumns.leadScore && (
-                        <td className="p-3 text-center whitespace-nowrap">
+                      {/* Lead Score */}
+                      {columns.score && (
+                        <td className="py-3 px-3.5">
                           <span
-                            className={`text-xs font-black px-2 py-0.5 rounded-full ${
+                            className={`px-2 py-0.5 rounded-md font-bold text-[11px] ${
                               score >= 80
-                                ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
+                                ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400'
                                 : score >= 65
-                                ? 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300'
-                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600'
+                                ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400'
+                                : 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400'
                             }`}
                           >
                             {score}
@@ -763,80 +731,54 @@ export default function LeadManagementView({
                         </td>
                       )}
 
-                      {/* Pipeline Stage */}
-                      {visibleColumns.pipelineStage && (
-                        <td className="p-3 whitespace-nowrap">
-                          <select
-                            value={lead.pipelineStage || 'new'}
-                            onChange={(e) => onUpdateLeadStage?.(lead.id, e.target.value as PipelineStage)}
-                            className="text-[11px] font-bold px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 border-none focus:ring-1 focus:ring-blue-500 cursor-pointer"
-                          >
-                            <option value="new">New</option>
-                            <option value="research_pending">Research Pending</option>
-                            <option value="qualified">Qualified</option>
-                            <option value="contacted">Contacted</option>
-                            <option value="proposal_sent">Proposal Sent</option>
-                            <option value="won">Won</option>
-                            <option value="lost">Lost</option>
-                          </select>
+                      {/* Status */}
+                      {columns.status && (
+                        <td className="py-3 px-3.5">
+                          <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400">
+                            {lead.currentStatus || 'New Lead'}
+                          </span>
+                        </td>
+                      )}
+
+                      {/* Date Added */}
+                      {columns.dateAdded && (
+                        <td className="py-3 px-3.5 text-slate-500 text-[11px]">
+                          {lead.createdAt ? new Date(lead.createdAt).toLocaleDateString() : lead.postedAt || 'Recent'}
                         </td>
                       )}
 
                       {/* Actions */}
-                      {visibleColumns.actions && (
-                        <td className="p-3 text-right whitespace-nowrap">
-                          <div className="flex items-center justify-end gap-1">
+                      {columns.actions && (
+                        <td className="py-3 px-3.5 text-right space-x-1" onClick={(e) => e.stopPropagation()}>
+                          <button
+                            onClick={() => setActiveDrawerLead(lead)}
+                            className="p-1 rounded text-slate-400 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                            title="Inspect Lead"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                          </button>
+
+                          {onOpenEmailModal && lead.contact?.email && (
+                            <button
+                              onClick={() => onOpenEmailModal(lead)}
+                              className="p-1 rounded text-slate-400 hover:text-emerald-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                              title="Send Email Proposal"
+                            >
+                              <Send className="w-3.5 h-3.5" />
+                            </button>
+                          )}
+
+                          {onDeleteLead && (
                             <button
                               onClick={() => {
-                                setDrawerLead(lead);
-                                setDrawerTab('provenance');
+                                if (confirm('Delete lead record?')) onDeleteLead(lead.id);
                               }}
-                              title="Inspect Field-Level Source Provenance"
-                              className="p-1.5 rounded-lg text-slate-400 hover:text-blue-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                              className="p-1 rounded text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
+                              title="Delete Lead"
                             >
-                              <Eye className="w-3.5 h-3.5" />
+                              <Trash2 className="w-3.5 h-3.5" />
                             </button>
-
-                            {onInspectLead && (
-                              <button
-                                onClick={() => onInspectLead(lead)}
-                                title="Open 9-Section Lead Detail, AI Pitch & Proposal"
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-amber-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                              >
-                                <SlidersHorizontal className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-
-                            {onOpenEmailModal && hasEmail && (
-                              <button
-                                onClick={() => onOpenEmailModal(lead)}
-                                title="Dispatch Outreach Pitch"
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-emerald-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                              >
-                                <Send className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-
-                            {onResearchLead && (
-                              <button
-                                onClick={() => onResearchLead(lead)}
-                                title="Run Background Deep Enrichment"
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-cyan-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                              >
-                                <Sparkles className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-
-                            {onDeleteLead && (
-                              <button
-                                onClick={() => onDeleteLead(lead.id)}
-                                title="Delete Lead"
-                                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
-                              >
-                                <Trash2 className="w-3.5 h-3.5" />
-                              </button>
-                            )}
-                          </div>
+                          )}
                         </td>
                       )}
                     </tr>
@@ -847,217 +789,247 @@ export default function LeadManagementView({
           </table>
         </div>
 
-        {/* Pagination & Summary Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-xs">
-          <div className="text-slate-500">
-            Showing <strong>{(currentPage - 1) * pageSize + 1}</strong> to{' '}
-            <strong>{Math.min(currentPage * pageSize, processedLeads.length)}</strong> of{' '}
-            <strong>{processedLeads.length}</strong> records
+        {/* Pagination Controls */}
+        <div className="p-3.5 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+          <div>
+            Showing <span className="font-semibold text-slate-800 dark:text-slate-200">{filteredLeads.length > 0 ? (currentPage - 1) * pageSize + 1 : 0}</span> to{' '}
+            <span className="font-semibold text-slate-800 dark:text-slate-200">{Math.min(currentPage * pageSize, filteredLeads.length)}</span> of{' '}
+            <span className="font-semibold text-slate-800 dark:text-slate-200">{filteredLeads.length}</span> leads
           </div>
 
           <div className="flex items-center gap-2">
+            <span className="text-slate-400">Rows per page:</span>
             <select
               value={pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value));
                 setCurrentPage(1);
               }}
-              className="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold"
+              className="px-2 py-1 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded text-xs"
             >
-              <option value={10}>10 per page</option>
-              <option value={15}>15 per page</option>
-              <option value={25}>25 per page</option>
-              <option value={50}>50 per page</option>
+              <option value={15}>15</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
             </select>
 
             <button
               onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={currentPage === 1}
-              className="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+              disabled={currentPage <= 1}
+              className="p-1.5 rounded border border-slate-200 dark:border-slate-700 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+              aria-label="Previous Page"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5" />
             </button>
-            <span className="px-2 font-bold">
-              {currentPage} / {totalPages}
+
+            <span className="font-medium">
+              Page {currentPage} of {totalPages}
             </span>
+
             <button
               onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={currentPage === totalPages}
-              className="p-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 disabled:opacity-40"
+              disabled={currentPage >= totalPages}
+              className="p-1.5 rounded border border-slate-200 dark:border-slate-700 disabled:opacity-40 hover:bg-slate-50 dark:hover:bg-slate-800 transition"
+              aria-label="Next Page"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
       </div>
 
-      {/* Field-Level Source Provenance & Intelligence Drawer */}
-      {drawerLead && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end">
-          <div className="w-full max-w-xl bg-white dark:bg-slate-900 h-full shadow-2xl flex flex-col p-6 overflow-y-auto animate-in slide-in-from-right duration-200">
+      {/* Lead Details Drawer / Modal */}
+      {activeDrawerLead && (
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex justify-end transition-opacity">
+          <div className="w-full max-w-xl bg-white dark:bg-[#111c2e] h-full shadow-2xl flex flex-col font-sans border-l border-slate-200 dark:border-slate-800 overflow-hidden">
             {/* Drawer Header */}
-            <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800">
+            <div className="h-16 px-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between shrink-0">
               <div>
-                <span className="text-[10px] font-black uppercase text-blue-600 tracking-wider">
-                  Traceable Field Provenance & Audit
-                </span>
-                <h2 className="text-xl font-black mt-0.5">{drawerLead.businessName}</h2>
-                <p className="text-xs text-slate-500">
-                  {drawerLead.city}, {drawerLead.country} • {drawerLead.platform}
-                </p>
+                <h3 className="font-bold text-sm text-slate-900 dark:text-slate-100 truncate max-w-sm">
+                  {activeDrawerLead.businessName || activeDrawerLead.title}
+                </h3>
+                <p className="text-[11px] text-slate-500">Source: {activeDrawerLead.platform}</p>
               </div>
               <button
-                onClick={() => setDrawerLead(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800"
+                onClick={() => setActiveDrawerLead(null)}
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 transition"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Drawer Tabs */}
-            <div className="flex gap-2 my-4 border-b border-slate-200 dark:border-slate-800 pb-2 text-xs font-bold">
-              <button
-                onClick={() => setDrawerTab('provenance')}
-                className={`px-3 py-1.5 rounded-lg transition ${
-                  drawerTab === 'provenance'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-              >
-                Source Provenance
-              </button>
-              <button
-                onClick={() => setDrawerTab('score')}
-                className={`px-3 py-1.5 rounded-lg transition ${
-                  drawerTab === 'score'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-              >
-                Score Breakdown
-              </button>
-              <button
-                onClick={() => setDrawerTab('ai_intel')}
-                className={`px-3 py-1.5 rounded-lg transition ${
-                  drawerTab === 'ai_intel'
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-              >
-                AI Intelligence
-              </button>
-            </div>
-
-            {/* Tab 1: Source Provenance */}
-            {drawerTab === 'provenance' && (
-              <div className="space-y-4">
-                <div className="p-3 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 text-xs">
-                  <div className="font-bold text-blue-900 dark:text-blue-300">Absolute Real-Data Verification</div>
-                  <p className="text-blue-800/80 dark:text-blue-300/80 text-[11px] mt-0.5">
-                    Every contact field originated from a traceable corporate website, DNS MX record, or public registry listing.
-                  </p>
-                </div>
-
-                {/* Field Records */}
-                <div className="space-y-3">
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-                    <div className="text-[10px] font-black uppercase text-slate-400">Corporate Email Origin</div>
-                    <div className="font-mono text-xs font-bold text-slate-900 dark:text-white">
-                      {drawerLead.contact?.email || 'Contact information not found.'}
-                    </div>
-                    <div className="text-[11px] text-slate-500">
-                      Status: <strong className="text-teal-600">{drawerLead.contact?.emailStatus || 'VERIFIED Active MX'}</strong>
-                    </div>
-                    {drawerLead.contact?.website && (
-                      <div className="text-[10px] text-slate-400">
-                        Discovered via: <a href={drawerLead.contact.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">{drawerLead.contact.website}</a>
-                      </div>
+            {/* Drawer Body */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-6 text-xs">
+              {/* Section 1: Company Information */}
+              <div className="space-y-3">
+                <h4 className="font-bold uppercase tracking-wider text-[11px] text-slate-400 border-b pb-1">
+                  Company Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Company Name</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">{activeDrawerLead.businessName || 'Unavailable'}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Industry</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">{activeDrawerLead.category || 'Unavailable'}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Location</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.city ? `${activeDrawerLead.city}, ${activeDrawerLead.country}` : activeDrawerLead.country || 'Unavailable'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Official Website</span>
+                    {activeDrawerLead.contact?.website ? (
+                      <a href={activeDrawerLead.contact.website} target="_blank" rel="noreferrer" className="text-blue-600 font-medium hover:underline truncate block">
+                        {activeDrawerLead.contact.website}
+                      </a>
+                    ) : (
+                      <span className="text-slate-400">Unavailable</span>
                     )}
                   </div>
-
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-                    <div className="text-[10px] font-black uppercase text-slate-400">Direct Telephone / WhatsApp Origin</div>
-                    <div className="font-mono text-xs font-bold text-emerald-600 dark:text-emerald-400">
-                      {drawerLead.contact?.phone || 'Contact information not found.'}
-                    </div>
-                    <div className="text-[11px] text-slate-500">
-                      Format: <strong className="text-emerald-600">ITU-T E.164 Validated Format</strong>
-                    </div>
+                </div>
+                {activeDrawerLead.description && (
+                  <div>
+                    <span className="text-slate-400 block text-[11px] mb-1">Company Description</span>
+                    <p className="p-2.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-slate-700 dark:text-slate-300 leading-relaxed">
+                      {activeDrawerLead.description}
+                    </p>
                   </div>
+                )}
+              </div>
 
-                  <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 space-y-1">
-                    <div className="text-[10px] font-black uppercase text-slate-400">Original Platform Evidence</div>
-                    <div className="text-xs font-bold">{drawerLead.platform}</div>
-                    <div className="text-[11px] text-slate-500">Listing Title: {drawerLead.title}</div>
-                    {drawerLead.sourcePlatformUrl && (
+              {/* Section 2: Contact Information */}
+              <div className="space-y-3">
+                <h4 className="font-bold uppercase tracking-wider text-[11px] text-slate-400 border-b pb-1">
+                  Contact Information
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Contact Person</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.contact?.contactPerson || 'Unavailable'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Job Title</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.jobType || 'Decision Maker'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Business Email</span>
+                    <span className="font-mono text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.contact?.email || 'Unavailable'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Email Verification</span>
+                    <span className="font-semibold">
+                      {activeDrawerLead.contact?.email ? (
+                        <span className="text-emerald-600 flex items-center gap-1">
+                          <CheckCircle2 className="w-3.5 h-3.5" /> Verified
+                        </span>
+                      ) : (
+                        <span className="text-slate-400">Unavailable</span>
+                      )}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Phone Number</span>
+                    <span className="font-mono text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.contact?.phone || 'Unavailable'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">WhatsApp Outreach</span>
+                    {activeDrawerLead.contact?.phone ? (
                       <a
-                        href={drawerLead.sourcePlatformUrl}
+                        href={`https://wa.me/${cleanWhatsAppDigits(activeDrawerLead.contact.phone, activeDrawerLead.country)}`}
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-1 text-[11px] text-blue-600 hover:underline mt-1"
+                        className="text-emerald-600 hover:underline font-semibold"
                       >
-                        Inspect Original Source Listing <ExternalLink className="w-3 h-3" />
+                        Start WhatsApp Chat
                       </a>
+                    ) : (
+                      <span className="text-slate-400">Unavailable</span>
                     )}
                   </div>
                 </div>
               </div>
-            )}
 
-            {/* Tab 2: Explainable Lead Score */}
-            {drawerTab === 'score' && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60">
+              {/* Section 3: Lead Information */}
+              <div className="space-y-3">
+                <h4 className="font-bold uppercase tracking-wider text-[11px] text-slate-400 border-b pb-1">
+                  Lead Intelligence
+                </h4>
+                <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <div className="text-xs font-bold text-amber-900 dark:text-amber-300">Overall Lead Quality Score</div>
-                    <div className="text-2xl font-black text-amber-700 dark:text-amber-400">
-                      {drawerLead.scoreBreakdown?.leadQualityScore || 82} / 100
+                    <span className="text-slate-400 block text-[11px]">Source Platform</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">{activeDrawerLead.platform}</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Lead Quality Score</span>
+                    <span className="text-base font-bold text-blue-600">
+                      {activeDrawerLead.scoreBreakdown?.leadQualityScore ?? 70} / 100
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Qualification Status</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.pipelineStage || 'New'}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[11px]">Discovery Date</span>
+                    <span className="font-semibold text-slate-800 dark:text-slate-200">
+                      {activeDrawerLead.createdAt ? new Date(activeDrawerLead.createdAt).toLocaleString() : 'Recent'}
+                    </span>
+                  </div>
+                </div>
+
+                {activeDrawerLead.sourceEvidenceList && activeDrawerLead.sourceEvidenceList.length > 0 && (
+                  <div>
+                    <span className="text-slate-400 block text-[11px] mb-1">Source Evidence</span>
+                    <div className="p-2 bg-slate-50 dark:bg-slate-800/60 rounded-lg space-y-1">
+                      {activeDrawerLead.sourceEvidenceList.map((ev, i) => (
+                        <div key={i} className="text-[11px] text-slate-600 dark:text-slate-400 flex items-center justify-between">
+                          <span>{ev.fieldName}: <strong className="text-slate-800 dark:text-slate-200">{ev.retrievedValue}</strong></span>
+                          <span className="text-emerald-600 text-[10px] font-bold">{ev.verificationStatus}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                  <div className="text-right text-xs text-amber-900/80 dark:text-amber-300/80">
-                    <div>Match Confidence: <strong>{drawerLead.scoreBreakdown?.businessMatchConfidence || 85}%</strong></div>
-                    <div>Research: <strong>{drawerLead.scoreBreakdown?.researchCompleteness || 90}%</strong></div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="text-xs font-bold uppercase text-slate-400">Scoring Factor Breakdown:</div>
-                  {(drawerLead.scoreBreakdown?.explanation || [
-                    'Confirmed business entity with physical market presence (+12 pts)',
-                    'Omnichannel contact reachability verified (+10 pts)',
-                    'High commercial intent detected in project scope (+15 pts)',
-                    'High-priority operating territory (+10 pts)',
-                  ]).map((exp, i) => (
-                    <div key={i} className="flex items-start gap-2 text-xs p-2 rounded-lg bg-slate-50 dark:bg-slate-800">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{exp}</span>
-                    </div>
-                  ))}
-                </div>
+                )}
               </div>
-            )}
+            </div>
 
-            {/* Tab 3: AI Intelligence */}
-            {drawerTab === 'ai_intel' && (
-              <div className="space-y-4 text-xs">
-                <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 space-y-1">
-                  <div className="font-bold text-slate-400 uppercase text-[10px]">Observed Commercial Facts</div>
-                  <ul className="list-disc list-inside space-y-0.5 text-slate-600 dark:text-slate-300">
-                    <li>Entity operates in {drawerLead.city}, {drawerLead.country}</li>
-                    <li>Industry: {drawerLead.category}</li>
-                    <li>Web Presence: {drawerLead.contact?.hasWebsite ? 'Active domain' : 'Zero digital portal detected'}</li>
-                  </ul>
-                </div>
-
-                <div className="p-3 rounded-xl border border-slate-200 dark:border-slate-800 space-y-2">
-                  <div className="font-bold text-blue-600 dark:text-cyan-400 uppercase text-[10px]">Tailored Pitch Strategy</div>
-                  <p className="text-slate-700 dark:text-slate-300 leading-relaxed">
-                    {drawerLead.aiIntelligence?.suggestedPitch ||
-                      `Present a turnkey Next.js 14 performance redesign for ${drawerLead.businessName} that accelerates digital consultation booking conversions with automated WhatsApp lead capture.`}
-                  </p>
-                </div>
-              </div>
-            )}
+            {/* Drawer Footer Actions */}
+            <div className="p-4 border-t border-slate-200 dark:border-slate-800 shrink-0 flex items-center justify-between gap-3">
+              {onOpenEmailModal && activeDrawerLead.contact?.email ? (
+                <button
+                  onClick={() => {
+                    onOpenEmailModal(activeDrawerLead);
+                    setActiveDrawerLead(null);
+                  }}
+                  className="flex-1 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold text-xs transition cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Send Proposal</span>
+                </button>
+              ) : (
+                <div className="text-xs text-slate-400">Direct proposal sending unavailable without email</div>
+              )}
+              <button
+                onClick={() => setActiveDrawerLead(null)}
+                className="py-2 px-4 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-lg text-xs font-semibold transition cursor-pointer"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}

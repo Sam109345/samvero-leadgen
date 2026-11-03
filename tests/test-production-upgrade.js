@@ -237,6 +237,114 @@ async function runTestSuite() {
   const aggContent = fs.readFileSync(aggPath, 'utf8');
   assert(!aggContent.includes('613) 241-2828'), 'Zero hardcoded Canadian placeholder phone numbers in live-lead-aggregator.ts');
 
+  // TEST 12: Multi-Attribute Deduplication & Enrichment Normalization
+  console.log('\n🔍 Test 12: Multi-Attribute Deduplication & Enrichment Normalization');
+  const {
+    extractCanonicalDomain,
+    normalizePhoneKey,
+    normalizeEmailKey,
+    persistDiscoveredLeads,
+    deleteStoredLead,
+  } = require('../src/lib/leads-persistent-store');
+
+  assert(extractCanonicalDomain('https://www.AcmeCorp.com/about?ref=g') === 'acmecorp.com', 'extractCanonicalDomain strips protocol, www, and query params');
+  assert(extractCanonicalDomain('http://sub.domain.co.uk/') === 'sub.domain.co.uk', 'extractCanonicalDomain handles subdomains and paths');
+  assert(extractCanonicalDomain('') === '', 'extractCanonicalDomain handles empty/null');
+
+  assert(normalizePhoneKey('+1 (415) 555-2671') === '4155552671', 'normalizePhoneKey extracts normalized 10-digit number');
+  assert(normalizePhoneKey('04 222 3344') === '042223344', 'normalizePhoneKey extracts national number format');
+  assert(normalizePhoneKey('123') === '', 'normalizePhoneKey rejects numbers shorter than 7 digits');
+
+  assert(normalizeEmailKey('  John.Doe@Company.COM ') === 'john.doe@company.com', 'normalizeEmailKey normalizes casing and trimming');
+  assert(normalizeEmailKey('invalid-email') === '', 'normalizeEmailKey rejects strings without @');
+
+  // Test deduplication and contact enrichment in memory
+  // Clean up any existing test leads first for idempotency
+  deleteStoredLead('lead-test-alpha-1');
+  deleteStoredLead('lead-test-alpha-2-duplicate-domain');
+
+  const testBatch = [
+    {
+      id: 'lead-test-alpha-1',
+      businessName: 'Alpha Tech Group',
+      platform: 'google-places',
+      sourceListingId: 'place-abc-123',
+      contact: {
+        website: 'https://alphatech.io',
+        phone: '+1 555 100 2000',
+        email: 'info@alphatech.io',
+      },
+    },
+    {
+      id: 'lead-test-alpha-2-duplicate-domain',
+      businessName: 'Alpha Tech Group LLC',
+      platform: 'apollo',
+      sourceListingId: 'apollo-xyz-999',
+      contact: {
+        website: 'https://www.alphatech.io/contact', // duplicate domain
+        phone: '+1 555 100 2000',
+        email: 'founder@alphatech.io',
+        contactPerson: 'Alex Alpha',
+      },
+    },
+  ];
+
+  const dedupResult = persistDiscoveredLeads(testBatch);
+  assert(dedupResult.savedCount >= 1, `persistDiscoveredLeads saves initial unique lead (saved: ${dedupResult.savedCount})`);
+  assert(dedupResult.duplicatesSkipped >= 1, `persistDiscoveredLeads detects domain duplicate and skips re-insert (skipped: ${dedupResult.duplicatesSkipped})`);
+
+  // Clean up test leads after test
+  deleteStoredLead('lead-test-alpha-1');
+  deleteStoredLead('lead-test-alpha-2-duplicate-domain');
+
+  // TEST 13: Fetch Timeout Signals Across All API Connector Clients
+  console.log('\n⏱️ Test 13: AbortSignal.timeout Protection on API Clients');
+  const clientFiles = [
+    'apollo.ts',
+    'hunter.ts',
+    'serpapi.ts',
+    'foursquare.ts',
+    'yelp.ts',
+    'opencorporates.ts',
+    'github.ts',
+    'osm.ts',
+    'wikidata.ts',
+    'huggingface.ts',
+    'google-places.ts',
+  ];
+  clientFiles.forEach((file) => {
+    const filePath = path.join(__dirname, '..', 'src', 'lib', 'integrations', 'clients', file);
+    const content = fs.readFileSync(filePath, 'utf8');
+    assert(
+      content.includes('AbortSignal.timeout'),
+      `API client ${file} implements AbortSignal.timeout(8000) against hanging TCP sockets`
+    );
+  });
+
+  // TEST 14: Advanced Discovery Filter Propagation
+  console.log('\n🎯 Test 14: Advanced Discovery Filters in Pipeline and API');
+  const pipelinePath = path.join(__dirname, '..', 'src', 'lib', 'pipeline', 'central-lead-pipeline.ts');
+  const pipelineCode = fs.readFileSync(pipelinePath, 'utf8');
+  assert(pipelineCode.includes('jobTitle?: string'), 'PipelineSearchQuery interface supports jobTitle');
+  assert(pipelineCode.includes('companySize?: string'), 'PipelineSearchQuery interface supports companySize');
+  assert(pipelineCode.includes('companyType?: string'), 'PipelineSearchQuery interface supports companyType');
+
+  const discoverRoutePath = path.join(__dirname, '..', 'src', 'app', 'api', 'discover', 'route.ts');
+  const discoverRouteCode = fs.readFileSync(discoverRoutePath, 'utf8');
+  assert(discoverRouteCode.includes('jobTitle'), 'api/discover parses jobTitle parameter');
+  assert(discoverRouteCode.includes('companySize'), 'api/discover parses companySize parameter');
+  assert(discoverRouteCode.includes('companyType'), 'api/discover parses companyType parameter');
+
+  // TEST 15: SyncHistoryView Platform Matching
+  console.log('\n🔄 Test 15: SyncHistoryView Platform Matching Logic');
+  const syncViewPath = path.join(__dirname, '..', 'src', 'components', 'system', 'SyncHistoryView.tsx');
+  const syncViewCode = fs.readFileSync(syncViewPath, 'utf8');
+  assert(
+    syncViewCode.includes('log.platformId !== platformFilter') &&
+      syncViewCode.includes('log.platformName !== platformFilter'),
+    'SyncHistoryView matches both platformId and platformName in filter'
+  );
+
   console.log('\n====================================================');
   console.log(`📊 Verification Suite Summary: ${passedTests}/${totalTests} Passed (${failedTests} Failed)`);
   console.log('====================================================');

@@ -2,10 +2,9 @@
  * SAMVERO Modular Real Lead Discovery Connectors
  * 
  * Modular architecture for live opportunity discovery:
- * - Remotive Public API (Software, Marketing, Design, Web)
- * - Freelancer.com Public API (Active client listings)
- * - OpenStreetMap Nominatim (Verified local businesses)
- * - Curated Public Index Connectors (Upwork, PeoplePerHour, Bark, Fiverr, LinkedIn)
+ * - 7 Primary Platforms: Apollo.io, Hunter.io, SerpApi, Foursquare, Yelp Fusion, OpenCorporates, GitHub REST API
+ * - Free Sources: OpenStreetMap Nominatim, Wikidata, Hugging Face, Google Places
+ * - Active Remote RFPs: Remotive, Freelancer.com
  * 
  * STRICT REAL-DATA ENFORCEMENT:
  * - Every detail has original source URL and platform evidence
@@ -13,22 +12,34 @@
  * - Zero hallucinated or synthesized contacts
  */
 
-import { Lead, LeadSource, LeadCategory, LeadCountry, EntityType, SourceEvidence } from '@/types';
-import { calculateBusinessAge } from './gmb-age-calculator';
+import { Lead, LeadSource, LeadCategory, LeadCountry, SourceEvidence } from '@/types';
 import { calculateExplainableLeadScore } from './explainable-scoring';
+import { executeCentralLeadPipeline } from './pipeline/central-lead-pipeline';
+import { searchApolloLeads } from './integrations/clients/apollo';
+import { searchHunterDomain } from './integrations/clients/hunter';
+import { searchSerpApiLeads } from './integrations/clients/serpapi';
+import { searchFoursquareLeads } from './integrations/clients/foursquare';
+import { searchYelpLeads } from './integrations/clients/yelp';
+import { searchOpenCorporatesLeads } from './integrations/clients/opencorporates';
+import { searchGitHubLeads } from './integrations/clients/github';
+import { searchOsmLeads } from './integrations/clients/osm';
+import { searchWikidataLeads } from './integrations/clients/wikidata';
+import { searchHuggingFaceLeads } from './integrations/clients/huggingface';
+import { searchGooglePlacesLeads } from './integrations/clients/google-places';
 
 export interface DiscoveryQuery {
   platform?: string;
   query?: string;
   category?: string;
   country?: string;
+  city?: string;
   limit?: number;
 }
 
 export interface SourceConnector {
   id: string;
   name: string;
-  platform: LeadSource;
+  platform: LeadSource | string;
   search: (options: DiscoveryQuery) => Promise<Lead[]>;
 }
 
@@ -96,7 +107,6 @@ export const RemotiveConnector: SourceConnector = {
           },
           description: (j.description || '').replace(/<[^>]*>?/gm, ' ').slice(0, 320) + '...',
           postedAt: j.publication_date ? new Date(j.publication_date).toLocaleDateString() : 'Recent',
-          // REAL-DATA RULE: Do NOT invent email/phone/contactPerson when not in listing
           contact: {
             hasWebsite: Boolean(j.url),
             website: j.url,
@@ -192,7 +202,6 @@ export const FreelancerConnector: SourceConnector = {
           },
           description: (p.preview_description || p.description || '').replace(/<[^>]*>?/gm, ' ').slice(0, 300) + '...',
           postedAt: 'Just now',
-          // REAL-DATA RULE: Direct email/phone not published on job card -> NULL
           contact: {
             hasWebsite: true,
             website: projectUrl,
@@ -220,111 +229,160 @@ export const FreelancerConnector: SourceConnector = {
 };
 
 /**
- * 3. OpenStreetMap Nominatim Local Business Connector
+ * 3. OpenStreetMap Nominatim Connector
  */
 export const NominatimConnector: SourceConnector = {
   id: 'nominatim',
   name: 'OpenStreetMap Places Live Explorer',
   platform: 'Google My Business',
   search: async (opts) => {
-    try {
-      const q = `${opts.category || opts.query || 'clinic'} ${opts.country === 'UAE' ? 'Dubai' : opts.country === 'UK' ? 'London' : 'Lahore'}`;
-      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=${opts.limit || 8}`;
-
-      const res = await fetch(url, {
-        headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' },
-      });
-
-      if (!res.ok) return [];
-      const places = await res.json();
-
-      return places.map((place: any, i: number) => {
-        const id = `osm-gmb-${place.place_id || i}`;
-        const name = place.name || place.display_name.split(',')[0].trim();
-        const address = place.display_name;
-        const now = new Date().toISOString();
-
-        const evidence: SourceEvidence = {
-          id: `ev-${id}`,
-          leadId: id,
-          fieldName: 'business_name',
-          retrievedValue: name,
-          sourceUrl: `https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lon}`,
-          sourceProvider: 'OpenStreetMap Nominatim',
-          sourceType: 'gmb',
-          retrievalTimestamp: now,
-          verificationStatus: 'VERIFIED',
-          matchConfidence: 98,
-          lastCheckedTimestamp: now,
-        };
-
-        const lead: Lead = {
-          id,
-          title: name,
-          businessName: name,
-          type: 'gmb',
-          platform: 'Google My Business',
-          category: (opts.category as LeadCategory) || 'Local Business',
-          country: (opts.country as LeadCountry) || 'Pakistan',
-          city: opts.country === 'UAE' ? 'Dubai' : opts.country === 'UK' ? 'London' : 'Lahore',
-          address,
-          businessAge: {
-            years: 1,
-            months: 0,
-            isNew: true,
-            label: '✨ Newly Opened',
-            badgeColor: 'emerald',
-          },
-          description: `Verified physical location entry: ${address}. Suitable for direct web presence audit.`,
-          postedAt: 'Active Listing',
-          contact: {
-            hasWebsite: false,
-            gmbUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + address)}`,
-            contactPerson: undefined,
-          },
-          rating: undefined,
-          reviewCount: undefined,
-          tags: ['Physical Location Verified', 'Local Enterprise'],
-          verified: true,
-          pipelineStage: 'new',
-          status: 'new',
-          entityType: 'registered_business',
-          sourceListingId: String(place.place_id),
-          sourcePlatformUrl: `https://www.openstreetmap.org/?mlat=${place.lat}&mlon=${place.lon}`,
-          sourceEvidenceList: [evidence],
-        };
-
-        lead.scoreBreakdown = calculateExplainableLeadScore(lead);
-        return lead;
-      });
-    } catch {
-      return [];
-    }
+    return searchOsmLeads({
+      query: opts.query,
+      city: opts.city,
+      country: opts.country,
+      category: opts.category,
+      limit: opts.limit,
+    });
   },
 };
 
 /**
- * Registry of available connectors
+ * 4. Apollo.io Connector
+ */
+export const ApolloConnector: SourceConnector = {
+  id: 'apollo',
+  name: 'Apollo.io Decision-Maker Discovery',
+  platform: 'Apollo.io',
+  search: async (opts) => searchApolloLeads(opts),
+};
+
+/**
+ * 5. Hunter.io Connector
+ */
+export const HunterConnector: SourceConnector = {
+  id: 'hunter',
+  name: 'Hunter.io Domain Search & Verifier',
+  platform: 'Hunter.io',
+  search: async (opts) => {
+    const domain = opts.query?.includes('.') ? opts.query : undefined;
+    const company = !domain ? opts.query || opts.category : undefined;
+    return searchHunterDomain({ domain, company, limit: opts.limit });
+  },
+};
+
+/**
+ * 6. SerpApi Connector
+ */
+export const SerpApiConnector: SourceConnector = {
+  id: 'serpapi',
+  name: 'SerpApi Google Search & Maps Radar',
+  platform: 'SerpApi',
+  search: async (opts) => searchSerpApiLeads(opts),
+};
+
+/**
+ * 7. Foursquare Connector
+ */
+export const FoursquareConnector: SourceConnector = {
+  id: 'foursquare',
+  name: 'Foursquare Places Global Discovery',
+  platform: 'Foursquare',
+  search: async (opts) => searchFoursquareLeads(opts),
+};
+
+/**
+ * 8. Yelp Fusion Connector
+ */
+export const YelpConnector: SourceConnector = {
+  id: 'yelp',
+  name: 'Yelp Fusion Local Business Explorer',
+  platform: 'Yelp Fusion',
+  search: async (opts) => searchYelpLeads(opts),
+};
+
+/**
+ * 9. OpenCorporates Connector
+ */
+export const OpenCorporatesConnector: SourceConnector = {
+  id: 'opencorporates',
+  name: 'OpenCorporates Registered Companies',
+  platform: 'OpenCorporates',
+  search: async (opts) => searchOpenCorporatesLeads(opts),
+};
+
+/**
+ * 10. GitHub REST API Connector
+ */
+export const GitHubConnector: SourceConnector = {
+  id: 'github',
+  name: 'GitHub Software & Agency Discovery',
+  platform: 'GitHub',
+  search: async (opts) => searchGitHubLeads(opts),
+};
+
+/**
+ * 11. Wikidata Connector
+ */
+export const WikidataConnector: SourceConnector = {
+  id: 'wikidata',
+  name: 'Wikidata Knowledge Graph',
+  platform: 'Wikidata',
+  search: async (opts) => searchWikidataLeads(opts),
+};
+
+/**
+ * 12. Hugging Face Connector
+ */
+export const HuggingFaceConnector: SourceConnector = {
+  id: 'huggingface',
+  name: 'Hugging Face AI Labs & Agencies',
+  platform: 'Hugging Face',
+  search: async (opts) => searchHuggingFaceLeads(opts),
+};
+
+/**
+ * 13. Google Places API Connector
+ */
+export const GooglePlacesConnector: SourceConnector = {
+  id: 'google_places',
+  name: 'Google Places API Radar',
+  platform: 'Google Places',
+  search: async (opts) => searchGooglePlacesLeads(opts),
+};
+
+/**
+ * Registry of all available connectors
  */
 export const CONNECTORS: SourceConnector[] = [
-  RemotiveConnector,
-  FreelancerConnector,
+  ApolloConnector,
+  HunterConnector,
+  SerpApiConnector,
+  FoursquareConnector,
+  YelpConnector,
+  OpenCorporatesConnector,
+  GitHubConnector,
   NominatimConnector,
+  WikidataConnector,
+  HuggingFaceConnector,
+  GooglePlacesConnector,
+  FreelancerConnector,
+  RemotiveConnector,
 ];
 
 /**
- * Execute discovery search across registered connectors
+ * Execute discovery search across registered connectors using the centralized pipeline
  */
 export async function executeMultiSourceDiscovery(query: DiscoveryQuery): Promise<Lead[]> {
-  const chosenConnector = query.platform
-    ? CONNECTORS.find((c) => c.platform.toLowerCase() === query.platform?.toLowerCase() || c.id === query.platform)
-    : undefined;
+  const platforms = query.platform ? [query.platform] : undefined;
+  const result = await executeCentralLeadPipeline({
+    query: query.query,
+    category: query.category,
+    country: query.country,
+    city: query.city,
+    platforms,
+    limit: query.limit || 12,
+    autoPersist: true,
+  });
 
-  if (chosenConnector) {
-    return chosenConnector.search(query);
-  }
-
-  // Multi-source parallel discovery
-  const results = await Promise.all(CONNECTORS.map((c) => c.search(query)));
-  return results.flat();
+  return result.leads;
 }

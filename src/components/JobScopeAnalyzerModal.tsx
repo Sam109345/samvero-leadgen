@@ -36,8 +36,8 @@ interface JobScopeAnalyzerModalProps {
   lead: Lead | null;
   isOpen: boolean;
   onClose: () => void;
-  onOpenDeliverablesStudio: (lead: Lead) => void;
-  onOpenEmailPitch: (lead: Lead, previewUrl: string) => void;
+  onOpenDeliverablesStudio?: (lead: Lead) => void;
+  onOpenEmailPitch?: (lead: Lead, previewUrl: string) => void;
 }
 
 export default function JobScopeAnalyzerModal({
@@ -443,7 +443,7 @@ export default function JobScopeAnalyzerModal({
             <button
               onClick={() => {
                 onClose();
-                onOpenDeliverablesStudio(lead);
+                onOpenDeliverablesStudio?.(lead);
               }}
               className="freelancer-btn-secondary text-xs sm:text-sm py-2 px-3 flex items-center gap-1.5 bg-white dark:bg-[#1a2638] border border-slate-300 dark:border-[#2e415d] hover:bg-slate-50 dark:hover:bg-[#24354d] text-slate-700 dark:text-slate-200 dark:hover:text-white rounded-md"
             >
@@ -454,7 +454,7 @@ export default function JobScopeAnalyzerModal({
             <button
               onClick={() => {
                 onClose();
-                onOpenEmailPitch(lead, previewUrl);
+                onOpenEmailPitch?.(lead, previewUrl);
               }}
               className="freelancer-btn-primary text-xs sm:text-sm py-2 px-4 flex items-center gap-1.5"
             >

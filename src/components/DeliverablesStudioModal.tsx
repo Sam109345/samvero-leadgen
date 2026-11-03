@@ -45,7 +45,7 @@ interface DeliverablesStudioModalProps {
   lead: Lead | null;
   isOpen: boolean;
   onClose: () => void;
-  onDispatchOutreach: (lead: Lead, deliverableType: string, previewUrl: string) => void;
+  onDispatchOutreach?: (lead: Lead, deliverableType: string, previewUrl: string) => void;
 }
 
 export default function DeliverablesStudioModal({
@@ -256,7 +256,7 @@ export default function DeliverablesStudioModal({
             <button
               onClick={() => {
                 onClose();
-                onDispatchOutreach(lead, activeTab, fullLiveUrl);
+                onDispatchOutreach?.(lead, activeTab, fullLiveUrl);
               }}
               className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#007FED] to-blue-600 text-white font-bold transition shadow-sm hover:from-blue-600 hover:to-blue-700"
             >
@@ -842,7 +842,7 @@ export default function DeliverablesStudioModal({
             <button
               onClick={() => {
                 onClose();
-                onDispatchOutreach(lead, activeTab, fullLiveUrl);
+                onDispatchOutreach?.(lead, activeTab, fullLiveUrl);
               }}
               className="flex items-center gap-1.5 px-5 py-2 rounded-xl bg-[#007FED] hover:bg-blue-600 text-white font-bold text-xs transition shadow-md shadow-blue-500/20"
             >
