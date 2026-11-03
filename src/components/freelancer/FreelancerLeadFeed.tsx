@@ -99,15 +99,17 @@ export default function FreelancerLeadFeed({
   const [feedLeads, setFeedLeads] = useState<Lead[]>(leads);
   const [isLiveSearching, setIsLiveSearching] = useState(false);
 
+  // Sync initialSearchQuery if changed externally (e.g. from TopNavigation)
+  useEffect(() => {
+    if (initialSearchQuery !== undefined) {
+      setSearchQuery(initialSearchQuery);
+    }
+  }, [initialSearchQuery]);
+
   // Sync leads from parent prop
   useEffect(() => {
-    if (leads && leads.length > 0) {
-      setFeedLeads((prev) => {
-        const idMap = new Map<string, Lead>();
-        prev.forEach((l) => idMap.set(l.id.toLowerCase(), l));
-        leads.forEach((l) => idMap.set(l.id.toLowerCase(), l));
-        return Array.from(idMap.values());
-      });
+    if (leads) {
+      setFeedLeads(leads);
     }
   }, [leads]);
 
@@ -232,21 +234,22 @@ export default function FreelancerLeadFeed({
       if (selectedCountry !== 'all') {
         const country = (lead.country || '').toLowerCase();
         const city = (lead.city || '').toLowerCase();
+        const address = (lead.address || '').toLowerCase();
         if (selectedCountry === 'UAE') {
-          if (!country.includes('uae') && !country.includes('emirates') && !city.includes('dubai') && !city.includes('abu dhabi')) {
+          if (!country.includes('uae') && !country.includes('emirates') && !city.includes('dubai') && !city.includes('abu dhabi') && !address.includes('dubai') && !address.includes('uae')) {
             return false;
           }
         } else if (selectedCountry === 'Pakistan') {
           const pkCities = ['lahore', 'karachi', 'islamabad', 'rawalpindi', 'faisalabad', 'peshawar', 'multan'];
-          if (!country.includes('pakistan') && !pkCities.some((c) => city.includes(c))) {
+          if (!country.includes('pakistan') && !pkCities.some((c) => city.includes(c) || address.includes(c))) {
             return false;
           }
         } else if (selectedCountry === 'US') {
-          if (!country.includes('us') && !country.includes('united states') && !country.includes('usa')) {
+          if (!country.includes('us') && !country.includes('united states') && !country.includes('usa') && !city.includes('new york') && !city.includes('san francisco') && !address.includes('us')) {
             return false;
           }
         } else if (selectedCountry === 'UK') {
-          if (!country.includes('uk') && !country.includes('united kingdom') && !city.includes('london')) {
+          if (!country.includes('uk') && !country.includes('united kingdom') && !city.includes('london') && !address.includes('london') && !address.includes('england')) {
             return false;
           }
         }

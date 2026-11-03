@@ -233,6 +233,8 @@ export async function fetchLiveFreelancerProjects(options: LiveSearchOptions = {
         verified: true,
         pipelineStage: 'new',
         status: 'new',
+        sourceListingId: String(p.id || idx),
+        sourcePlatformUrl: projectUrl,
         incomingAt: (p.submitdate || Math.floor(Date.now() / 1000)) * 1000,
       };
 
@@ -359,6 +361,8 @@ export async function fetchLiveRemoteOkJobs(options: LiveSearchOptions = {}): Pr
         verified: true,
         pipelineStage: 'new',
         status: 'new',
+        sourceListingId: String(job.id || idx),
+        sourcePlatformUrl: job.url || targetWebsite,
         incomingAt: job.date ? new Date(job.date).getTime() : Date.now(),
       };
 
@@ -475,6 +479,8 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
         verified: true,
         pipelineStage: 'new',
         status: 'new',
+        sourceListingId: String(job.id || idx),
+        sourcePlatformUrl: job.url,
         incomingAt: job.publication_date ? new Date(job.publication_date).getTime() : Date.now(),
       };
 
@@ -592,6 +598,8 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         verified: true,
         pipelineStage: !hasWebsite ? 'hot' : 'new',
         status: 'new',
+        sourceListingId: String(place.place_id || idx),
+        sourcePlatformUrl: place.osm_type ? `https://www.openstreetmap.org/${place.osm_type}/${place.osm_id}` : undefined,
         incomingAt: Date.now(),
       };
 
@@ -695,6 +703,8 @@ export async function fetchLiveRedditJobs(options: LiveSearchOptions = {}): Prom
       verified: true,
       pipelineStage: 'new',
       status: 'new',
+      sourceListingId: String(p.id || idx),
+      sourcePlatformUrl: url,
       incomingAt: (p.created_utc || Math.floor(Date.now() / 1000)) * 1000,
     };
 
@@ -785,10 +795,15 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
   const uniqueLeads: Lead[] = [];
   for (const l of combinedLeads) {
     const idKey = (l.id || '').toLowerCase().trim();
-    const nameKey = ((l.businessName || l.title || '') + '::' + (l.city || l.country || '')).toLowerCase().trim();
-    if (idKey && !seen.has(idKey) && !seen.has(nameKey)) {
+    const rawName = (l.businessName || '').toLowerCase().trim();
+    const isGenericName = !rawName || ['direct client', 'enterprise client', 'client', 'partner', 'software organization', 'registered corporation'].includes(rawName);
+    const nameKey = isGenericName
+      ? `${idKey}::${(l.title || '').toLowerCase().trim()}`
+      : `${rawName}::${(l.city || l.country || '').toLowerCase().trim()}`;
+
+    if (idKey && !seen.has(idKey) && (!nameKey || !seen.has(nameKey))) {
       seen.add(idKey);
-      seen.add(nameKey);
+      if (nameKey) seen.add(nameKey);
       uniqueLeads.push(l);
     }
   }

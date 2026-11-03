@@ -36,14 +36,45 @@ export function saveAllStoredLeads(leads: Lead[]): void {
   }
 }
 
+export const AGGREGATOR_PLATFORM_DOMAINS = new Set([
+  'freelancer.com',
+  'remoteok.com',
+  'remoteok.io',
+  'remotive.com',
+  'remotive.io',
+  'reddit.com',
+  'github.com',
+  'openstreetmap.org',
+  'opencorporates.com',
+  'google.com',
+  'upwork.com',
+  'fiverr.com',
+  'contra.com',
+  'peopleperhour.com',
+  'linkedin.com',
+  'twitter.com',
+  'x.com',
+  'facebook.com',
+  'instagram.com',
+  'youtube.com',
+  'toptal.com',
+  'guru.com',
+  'wellfound.com',
+  'angel.co',
+]);
+
 /**
  * Extract normalized canonical domain from a website URL (e.g. "https://www.example.com/about" -> "example.com")
+ * Ignores aggregator and public marketplace domains so individual postings are not falsely deduplicated.
  */
 export function extractCanonicalDomain(url?: string | null): string {
   if (!url || typeof url !== 'string') return '';
   try {
     const withoutProto = url.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '');
     const domain = withoutProto.split('/')[0].split('?')[0].split('#')[0].trim();
+    if (AGGREGATOR_PLATFORM_DOMAINS.has(domain)) {
+      return '';
+    }
     return domain;
   } catch {
     return '';
@@ -113,8 +144,9 @@ export function persistDiscoveredLeads(newLeads: Lead[]): { savedCount: number; 
     if (phoneKey) phoneMap.set(phoneKey, idx);
 
     const nameStr = (l.businessName || l.title || '').toLowerCase().trim();
+    const isGenericName = !nameStr || ['direct client', 'enterprise client', 'client', 'partner', 'software organization', 'registered corporation'].includes(nameStr);
     const locStr = (l.city || l.country || '').toLowerCase().trim();
-    if (nameStr) {
+    if (nameStr && !isGenericName) {
       businessKeyMap.set(`${nameStr}::${locStr}`, idx);
     }
   });
@@ -131,8 +163,9 @@ export function persistDiscoveredLeads(newLeads: Lead[]): { savedCount: number; 
     const domainKey = extractCanonicalDomain(lead.contact?.website);
     const phoneKey = normalizePhoneKey(lead.contact?.phone);
     const nameStr = (lead.businessName || lead.title || '').toLowerCase().trim();
+    const isGenericName = !nameStr || ['direct client', 'enterprise client', 'client', 'partner', 'software organization', 'registered corporation'].includes(nameStr);
     const locStr = (lead.city || lead.country || '').toLowerCase().trim();
-    const businessKey = nameStr ? `${nameStr}::${locStr}` : '';
+    const businessKey = (!isGenericName && nameStr) ? `${nameStr}::${locStr}` : '';
 
     // Check existing match
     let matchIdx: number | undefined;

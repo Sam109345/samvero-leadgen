@@ -56,9 +56,10 @@ export async function GET(request: NextRequest) {
       return true;
     }).length;
 
-    // If store is low on records, forceRefresh requested, or user searched a specific query/location with few stored matches:
+    // If store is low on records, lacks job/marketplace leads, forceRefresh requested, or user searched a specific query/location with few stored matches:
     // execute live central pipeline and real-time aggregators across active online APIs and persist new leads
-    const shouldFetchLive = allLeads.length < 35 || forceRefresh || (isFilteredSearch && matchingCount < 6);
+    const hasJobLeads = allLeads.some((l) => l.type === 'job' || l.platform === 'Freelancer.com' || l.platform === 'Remote OK' || l.platform === 'Remotive' || l.platform === 'Reddit');
+    const shouldFetchLive = allLeads.length < 50 || !hasJobLeads || forceRefresh || (isFilteredSearch && matchingCount < 8);
     if (shouldFetchLive) {
       try {
         await Promise.allSettled([
@@ -240,8 +241,9 @@ export async function GET(request: NextRequest) {
       const domainKey = extractCanonicalDomain(lead.contact?.website);
       const phoneKey = normalizePhoneKey(lead.contact?.phone);
       const nameStr = (lead.businessName || lead.title || '').trim().toLowerCase();
+      const isGenericName = !nameStr || ['direct client', 'enterprise client', 'client', 'partner', 'software organization', 'registered corporation'].includes(nameStr);
       const locStr = (lead.city || lead.country || '').trim().toLowerCase();
-      const businessKey = nameStr ? `${nameStr}::${locStr}` : '';
+      const businessKey = (!isGenericName && nameStr) ? `${nameStr}::${locStr}` : '';
 
       const isDuplicate =
         (primaryKey && seenIds.has(primaryKey)) ||

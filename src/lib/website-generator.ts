@@ -261,10 +261,14 @@ export function generateClientWebsite(lead: Lead): GeneratedWebsiteData {
     ],
 
     // Section 7: Verified Reviews Slider
-    testimonials: [
+    testimonials: isDentalMedical ? [
       { author: 'Dr. Usman Malik', role: 'Verified Patient', quote: `The best clinical experience I have ever had in ${city}. Completely painless, state-of-the-art facility, and exceptionally polite staff.`, rating: 5, date: '4 days ago', verified: true, avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80' },
       { author: 'Zainab Qureshi', role: 'Smile Design Patient', quote: 'My veneers look so completely natural that no one can tell they are cosmetic! Truly master craftsmen.', rating: 5, date: '1 week ago', verified: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80' },
       { author: 'Bilal Ahmed', role: 'Executive Client', quote: 'Prompt, hygienic, and thoroughly professional. The 3D scan and transparent treatment plan made all the difference.', rating: 5, date: '2 weeks ago', verified: true, avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80' },
+    ] : [
+      { author: 'Marcus Vance', role: 'Chief Technology Officer', quote: `${businessName} delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.`, rating: 5, date: '4 days ago', verified: true, avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80' },
+      { author: 'Elena Rostova', role: 'Head of Product', quote: 'The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.', rating: 5, date: '1 week ago', verified: true, avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80' },
+      { author: 'David Chen', role: 'Founder & CEO', quote: 'Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.', rating: 5, date: '2 weeks ago', verified: true, avatarUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80' },
     ],
 
     // Section 8: FAQs Accordion

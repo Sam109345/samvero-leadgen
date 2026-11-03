@@ -283,6 +283,28 @@ export async function queryWebSearchForBusiness(query: string): Promise<{ domain
   }
 }
 
+function findDirectoryMatch(businessName: string): { domain: string; defaultEmailPrefix: string; phone: string } | undefined {
+  if (!businessName) return undefined;
+  const normalized = businessName.toLowerCase().trim();
+  const words = normalized.split(/[^a-z0-9]+/).filter(Boolean);
+
+  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
+    const isGenericShortWord = ['austin', 'epic', 'foster', 'nature', 'postman'].includes(key);
+    if (isGenericShortWord) {
+      if (key === 'austin' && words.includes('austin') && words.includes('dental')) return record;
+      if (key === 'foster' && words.includes('foster') && (words.includes('partners') || words.includes('architecture'))) return record;
+      if (key === 'epic' && words.includes('epic') && (words.includes('systems') || words.includes('ehr'))) return record;
+      if (key === 'nature' && words.includes('nature') && (words.includes('publishing') || words.includes('journal') || words.includes('springer'))) return record;
+      if (key === 'postman' && words.includes('postman') && (words.includes('api') || words.includes('software') || words.includes('technologies'))) return record;
+    } else {
+      if (words.includes(key) || normalized === key) {
+        return record;
+      }
+    }
+  }
+  return undefined;
+}
+
 /**
  * Automated Google Business & Web Search Enrichment Mechanism
  * Looks up the company/listing online, finds their live corporate domain,
@@ -292,14 +314,7 @@ export async function searchAndEnrichBusinessContact(info: BusinessInfo): Promis
   const { businessName, website, country = 'Pakistan', city = 'Lahore', category = '', phone } = info;
   
   // Check directory first for verified record if business matches
-  const nameLower = (businessName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-  let directoryMatch: { domain: string; defaultEmailPrefix: string; phone: string } | undefined;
-  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
-    if (nameLower.includes(key)) {
-      directoryMatch = record;
-      break;
-    }
-  }
+  const directoryMatch = findDirectoryMatch(businessName);
 
   const cleanPhone = phone || directoryMatch?.phone || '';
   const whatsappDigits = cleanPhone ? cleanWhatsAppDigits(cleanPhone, country) : '';
@@ -384,14 +399,7 @@ export function resolveLegitimateBusinessEmail(info: BusinessInfo): ResolvedCont
   const domain = extractCleanDomain(website);
 
   // Check directory first for verified record if business matches
-  const nameLower = (businessName || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-  let directoryMatch: { domain: string; defaultEmailPrefix: string; phone: string } | undefined;
-  for (const [key, record] of Object.entries(VERIFIED_DIRECTORY)) {
-    if (nameLower.includes(key)) {
-      directoryMatch = record;
-      break;
-    }
-  }
+  const directoryMatch = findDirectoryMatch(businessName);
 
   const cleanPhone = phone || directoryMatch?.phone || '';
   const whatsappDigits = cleanPhone ? cleanWhatsAppDigits(cleanPhone, country || 'Pakistan') : '';

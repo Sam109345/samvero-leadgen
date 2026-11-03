@@ -101,7 +101,7 @@ export function generateDeliverablesPackage(lead: Lead): DeliverablesPackage {
       screenType: 'detail',
       categoryTag: 'Core Experience',
       visualType: 'detail-showcase',
-      headerText: isEcommerce ? 'Imperial Reserve 360' : 'Swiss Porcelain Architecture',
+      headerText: isEcommerce ? 'Imperial Reserve 360' : isDentalOrMedical ? 'Swiss Porcelain Architecture' : 'Production Cloud Architecture',
       imageUrl: isDentalOrMedical 
         ? 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80'
         : isEcommerce 
@@ -110,22 +110,22 @@ export function generateDeliverablesPackage(lead: Lead): DeliverablesPackage {
       bgColor: 'from-slate-900 via-blue-950 to-slate-950',
       accentColor: '#38BDF8',
       elements: [
-        { type: 'stat', label: 'Optical Balance & Longevity', detail: '25-Year Written Warranty' },
-        { type: 'list', label: '100% Biocompatible Materials', detail: 'Certified Swiss & German Dental Grade' },
-        { type: 'button', label: 'Instant Booking / Add to Bag', detail: 'Priority Delivery' },
+        { type: 'stat', label: isDentalOrMedical ? 'Optical Balance & Longevity' : 'Production Reliability SLA', detail: isDentalOrMedical ? '25-Year Written Warranty' : '99.99% Uptime Guarantee' },
+        { type: 'list', label: isDentalOrMedical ? '100% Biocompatible Materials' : 'Zero-Latency Edge Architecture', detail: isDentalOrMedical ? 'Certified Swiss & German Dental Grade' : 'Sub-100ms Global CDN Latency' },
+        { type: 'button', label: isDentalOrMedical ? 'Instant Consultation Booking' : isEcommerce ? 'Add to Bag' : 'Request Architecture Review', detail: 'Priority Scheduling' },
       ],
     },
 
-    // --- STAGE 2: CLINICAL PROOF & SPECIALIST PITCH (Screens 5 to 7) ---
+    // --- STAGE 2: CLINICAL / ENGINEERING PROOF & SPECIALIST PITCH (Screens 5 to 7) ---
     {
       id: 'screen-05-before-after',
       screenNumber: 5,
       title: 'Before & After Transformations',
-      subtitle: 'Interactive side-by-side comparison with real clinical outcome data',
+      subtitle: 'Interactive side-by-side comparison with real performance outcome data',
       screenType: 'case_study',
       categoryTag: 'Core Experience',
       visualType: 'before-after-split',
-      headerText: 'Verified Clinical Outcomes',
+      headerText: isDentalOrMedical ? 'Verified Clinical Outcomes' : isEcommerce ? 'Packaging & Brand Outcomes' : 'Platform Engineering Benchmarks',
       imageUrl: isDentalOrMedical 
         ? 'https://images.unsplash.com/photo-1598256989800-fe5f95da9787?auto=format&fit=crop&w=800&q=80'
         : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
@@ -135,9 +135,9 @@ export function generateDeliverablesPackage(lead: Lead): DeliverablesPackage {
       bgColor: 'from-slate-950 via-slate-900 to-slate-950',
       accentColor: '#10B981',
       elements: [
-        { type: 'banner', label: 'Case Study: Full Arch Makeover', detail: '100% Patient Confidence Restored' },
-        { type: 'stat', label: 'Treatment Duration', detail: '2 Sessions (Painless Micro-Anesthesia)' },
-        { type: 'button', label: 'Schedule Digital Smile Simulation', detail: 'Free 3D Scan' },
+        { type: 'banner', label: isDentalOrMedical ? 'Case Study: Full Arch Makeover' : 'Case Study: High-Conversion Platform', detail: isDentalOrMedical ? '100% Patient Confidence Restored' : '4.8x Higher Inbound Pipeline' },
+        { type: 'stat', label: isDentalOrMedical ? 'Treatment Duration' : 'Delivery Timeline', detail: isDentalOrMedical ? '2 Sessions (Painless Micro-Anesthesia)' : '2 - 3 Weeks (Sprint Model)' },
+        { type: 'button', label: isDentalOrMedical ? 'Schedule Digital Smile Simulation' : 'Request System Architecture Spec', detail: isDentalOrMedical ? 'Free 3D Scan' : 'Full SOW Scope' },
       ],
     },
     {

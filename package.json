@@ -13,7 +13,8 @@
     "test:saas": "node tests/test-saas-complete.js",
     "test:qa": "node tests/qa-verification.js",
     "test:functional": "node tests/test-functional-upgrade.js",
-    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js && node tests/test-functional-upgrade.js"
+    "test:live": "node tests/test-live-sources.js",
+    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js && node tests/test-functional-upgrade.js && node tests/test-live-sources.js"
   },
   "keywords": [],
   "author": "",
