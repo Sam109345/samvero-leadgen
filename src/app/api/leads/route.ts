@@ -33,6 +33,15 @@ export async function GET(request: NextRequest) {
 
     let allLeads: Lead[] = loadAllStoredLeads();
 
+    const idParam = searchParams.get('id');
+    if (idParam) {
+      const singleLead = allLeads.find((l) => l.id?.toLowerCase() === idParam.toLowerCase());
+      if (singleLead) {
+        return NextResponse.json({ success: true, lead: singleLead, leads: [singleLead], total: 1 });
+      }
+      return NextResponse.json({ success: false, error: 'Lead not found', leads: [], total: 0 }, { status: 404 });
+    }
+
     const isFilteredSearch = (country !== 'all') || (category !== 'all') || (city && city.length > 0) || (query && query.length > 0);
     const matchingCount = allLeads.filter((l) => {
       if (country !== 'all' && l.country?.toLowerCase() !== country.toLowerCase()) return false;

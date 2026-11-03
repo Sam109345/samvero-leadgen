@@ -1,6 +1,6 @@
 import { Lead } from '@/types';
 import { fetchLiveMarketplaceJobs } from './live-lead-aggregator';
-import { INITIAL_LEADS } from './mock-data';
+import { loadAllStoredLeads } from './leads-persistent-store';
 
 interface JobSearchParams {
   query?: string;
@@ -27,16 +27,27 @@ export async function fetchFreelanceJobs(params: JobSearchParams): Promise<Lead[
     console.warn('Live freelance jobs aggregator fallback:', err);
   }
 
-  // 2. Verified authentic baseline job dataset
-  let jobs = INITIAL_LEADS.filter((l) => l.type === 'job');
+  // 2. Verified real job records from persistent store
+  const storedJobs = loadAllStoredLeads().filter((l) => l.type === 'job');
+  const pool = [...liveJobs, ...storedJobs];
+
+  // Deduplicate by ID
+  const seenIds = new Set<string>();
+  let jobs: Lead[] = [];
+  for (const j of pool) {
+    if (j && j.id && !seenIds.has(j.id.toLowerCase())) {
+      seenIds.add(j.id.toLowerCase());
+      jobs.push(j);
+    }
+  }
 
   // Filter based on parameters
   if (country && country !== 'all' && country !== 'Global') {
-    jobs = jobs.filter((j) => j.country.toLowerCase() === country.toLowerCase());
+    jobs = jobs.filter((j) => j.country?.toLowerCase() === country.toLowerCase());
   }
 
   if (category && category !== 'all') {
-    jobs = jobs.filter((j) => j.category.toLowerCase().includes(category.toLowerCase()));
+    jobs = jobs.filter((j) => j.category?.toLowerCase().includes(category.toLowerCase()));
   }
 
   if (jobType && jobType !== 'all') {
@@ -44,21 +55,17 @@ export async function fetchFreelanceJobs(params: JobSearchParams): Promise<Lead[
   }
 
   if (platform && platform !== 'all') {
-    jobs = jobs.filter((j) => j.platform.toLowerCase() === platform.toLowerCase());
+    jobs = jobs.filter((j) => j.platform?.toLowerCase().includes(platform.toLowerCase()));
   }
 
   if (query) {
     const q = query.toLowerCase();
     jobs = jobs.filter((j) =>
-      j.title.toLowerCase().includes(q) ||
-      j.businessName.toLowerCase().includes(q) ||
-      j.description.toLowerCase().includes(q) ||
-      j.tags.some((t) => t.toLowerCase().includes(q))
+      j.title?.toLowerCase().includes(q) ||
+      j.businessName?.toLowerCase().includes(q) ||
+      j.description?.toLowerCase().includes(q) ||
+      j.tags?.some((t) => t.toLowerCase().includes(q))
     );
-  }
-
-  if (liveJobs.length > 0) {
-    return liveJobs;
   }
 
   return jobs;

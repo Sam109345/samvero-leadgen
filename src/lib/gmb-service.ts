@@ -4,7 +4,7 @@ import { calculateBusinessAge } from './gmb-age-calculator';
 import { generateClientWebsite } from './website-generator';
 import { searchAndEnrichBusinessContact, resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { fetchLiveLocalBusinesses } from './live-lead-aggregator';
-import { INITIAL_LEADS } from './mock-data';
+import { loadAllStoredLeads } from './leads-persistent-store';
 
 interface GmbSearchParams {
   query?: string;
@@ -115,8 +115,8 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
     console.warn('Live places aggregator fallback:', err);
   }
 
-  // 2. Intelligent Filtered Fallback Dataset (Instant, zero-latency, realistic leads)
-  let results = [...INITIAL_LEADS].filter((lead) => lead.type === 'gmb');
+  // 2. Query verified authentic stored leads from persistent store
+  let results = loadAllStoredLeads().filter((lead) => lead.type === 'gmb');
 
   if (country && country !== 'Global' && country !== 'all') {
     results = results.filter((lead) => lead.country.toLowerCase() === country.toLowerCase());

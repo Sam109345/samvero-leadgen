@@ -33,7 +33,8 @@ import {
   CheckCircle2,
   Wifi,
   Battery,
-  Play
+  Play,
+  Search
 } from 'lucide-react';
 import { Lead, MobileAppScreen, LogoConcept } from '@/types';
 
@@ -60,59 +61,15 @@ export default function WebsitePreviewPage({ params }: Props) {
 
   // Find lead by id in global registry or verified dataset
   const initialLead = getLeadById(id) || INITIAL_LEADS.find((l) => l.id.toLowerCase() === id.toLowerCase());
-  const [lead, setLead] = useState<Lead>(() => {
-    if (initialLead) return initialLead;
+  const [lead, setLead] = useState<Lead | null>(initialLead || null);
+  const [loadingLead, setLoadingLead] = useState(!initialLead);
+  const [notFound, setNotFound] = useState(false);
 
-    // Check if UAE lead pattern
-    const isUae = id.toLowerCase().includes('uae') || id.toLowerCase().includes('dubai');
-    const isUk = id.toLowerCase().includes('uk') || id.toLowerCase().includes('london');
-    const isUs = id.toLowerCase().includes('us') || id.toLowerCase().includes('austin');
-
-    const cleanName = id.replace(/^(site-|stream-lead-|custom-)/, '').replace(/-/g, ' ');
-    const formattedName = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
-    const country = isUae ? 'UAE' : isUk ? 'UK' : isUs ? 'US' : 'Pakistan';
-    const city = isUae ? 'Dubai' : isUk ? 'London' : isUs ? 'Austin' : 'Lahore';
-    const resolved = resolveLegitimateBusinessEmail({
-      businessName: formattedName,
-      country,
-      city,
-      category: 'Local Business',
-    });
-
-    return {
-      id,
-      title: `${formattedName} Bespoke Digital Architecture`,
-      businessName: formattedName,
-      type: 'gmb',
-      platform: 'Google My Business',
-      category: 'Local Business',
-      country,
-      city,
-      address: isUae ? 'Jumeirah 1, Dubai, UAE' : isUk ? 'Mayfair, London, UK' : isUs ? 'Downtown, Austin, TX' : 'DHA Phase 5, Lahore, Pakistan',
-      businessAge: {
-        years: 2,
-        months: 0,
-        isNew: true,
-        label: '✨ Newly Opened',
-        badgeColor: 'emerald',
-      },
-      description: `Premier client showcase synthesized for ${formattedName}. Complete 9-section responsive digital presence with booking portal.`,
-      postedAt: 'Today',
-      contact: {
-        email: resolved.email,
-        phone: resolved.phone,
-        whatsapp: resolved.whatsapp,
-        hasWebsite: false,
-        contactPerson: 'Managing Director & Founder',
-      },
-      tags: ['Verified Partner', 'High Growth', 'Custom Prototype'],
-      verified: true,
-    };
-  });
-
-  // Client-side hydration lookup from active state
+  // Client-side hydration lookup from active state or server API
   useEffect(() => {
-    if (typeof window !== 'undefined' && !initialLead) {
+    if (lead) return;
+
+    if (typeof window !== 'undefined') {
       try {
         const cached = localStorage.getItem('samvero_active_leads');
         if (cached) {
@@ -120,11 +77,55 @@ export default function WebsitePreviewPage({ params }: Props) {
           const found = list.find((l) => l.id.toLowerCase() === id.toLowerCase());
           if (found) {
             setLead(found);
+            setLoadingLead(false);
+            return;
           }
         }
       } catch (e) {}
     }
-  }, [id, initialLead]);
+
+    fetch(`/api/leads/${encodeURIComponent(id)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.lead) {
+          setLead(data.lead);
+        } else {
+          setNotFound(true);
+        }
+      })
+      .catch(() => setNotFound(true))
+      .finally(() => setLoadingLead(false));
+  }, [id, lead]);
+
+  if (notFound || (!lead && !loadingLead)) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center text-slate-300 font-sans">
+        <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 mb-4">
+          <Search className="w-8 h-8 text-blue-500" />
+        </div>
+        <h2 className="text-xl font-bold text-white mb-2">Lead Record Not Found</h2>
+        <p className="text-sm text-slate-400 max-w-md mb-6">
+          No verifiable lead was found for ID &ldquo;{id}&rdquo;. In accordance with Samvero&apos;s real-data policy, placeholder records are not synthesized.
+        </p>
+        <Link
+          href="/leads"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg transition"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Return to All Leads</span>
+        </Link>
+      </div>
+    );
+  }
+
+  if (!lead) {
+    return (
+      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-6 text-center text-slate-300 font-sans">
+        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <p className="text-sm text-slate-400">Loading verified prospect intelligence...</p>
+      </div>
+    );
+  }
 
   const deliverables = generateDeliverablesPackage(lead);
   const site = deliverables.website;

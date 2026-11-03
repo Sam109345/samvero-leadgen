@@ -15,7 +15,9 @@ export type PlatformId =
   | 'huggingface'
   | 'google_places'
   | 'gemini_ai'
-  | 'smtp';
+  | 'smtp'
+  | 'freelancer'
+  | 'remotive';
 
 export type IntegrationStatus =
   | 'operational'

@@ -438,6 +438,42 @@ async function runFunctionalUpgradeTests() {
   const adminLayoutContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'components', 'admin', 'AdminLayout.tsx'), 'utf8');
   assert(!adminLayoutContent.includes("{ name: 'Integrations'"), 'Integrations removed from AdminLayout navigation');
 
+  // TEST 10: Zero Mock Data Enforcement, Discovered Leads Pipeline & Zero-Key Registry
+  console.log('\n🔒 TEST 10: Zero Mock Data Policy, Discovered Leads & Zero-Key Registry');
+  
+  // 1. preview/[id]/page.tsx must NOT synthesize fake dummy leads
+  const previewContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'app', 'preview', '[id]', 'page.tsx'), 'utf8');
+  assert(!previewContent.includes('Bespoke Digital Architecture'), 'Zero synthesized dummy company names in preview/[id]');
+  assert(!previewContent.includes("isUae ? 'Jumeirah 1, Dubai, UAE'"), 'Zero synthesized dummy addresses in preview/[id]');
+  assert(previewContent.includes('Lead Record Not Found'), 'Honest empty state displayed when lead ID is not in database');
+
+  // 2. jobs-service and gmb-service must NOT fall back to INITIAL_LEADS
+  const jobsServiceContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'lib', 'jobs-service.ts'), 'utf8');
+  assert(!jobsServiceContent.includes('INITIAL_LEADS'), 'jobs-service does NOT import or fall back to mock INITIAL_LEADS');
+  assert(jobsServiceContent.includes('loadAllStoredLeads'), 'jobs-service uses genuine stored leads');
+
+  const gmbServiceContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'lib', 'gmb-service.ts'), 'utf8');
+  assert(!gmbServiceContent.includes('INITIAL_LEADS'), 'gmb-service does NOT import or fall back to mock INITIAL_LEADS');
+  assert(gmbServiceContent.includes('loadAllStoredLeads'), 'gmb-service uses genuine stored leads');
+
+  // 3. lead-store.ts must integrate loadAllStoredLeads
+  const leadStoreContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'lib', 'lead-store.ts'), 'utf8');
+  assert(leadStoreContent.includes('loadAllStoredLeads'), 'lead-store integrates loadAllStoredLeads');
+  assert(leadStoreContent.includes('leadsRegistry.set(key, lead)'), 'lead-store caches discovered stored leads in registry');
+
+  // 4. PLATFORM_REGISTRY must register legitimate zero-key platforms
+  const credsStoreContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'lib', 'integrations', 'credentials-store.ts'), 'utf8');
+  assert(credsStoreContent.includes("id: 'freelancer'"), 'Freelancer.com registered in PLATFORM_REGISTRY');
+  assert(credsStoreContent.includes("id: 'remotive'"), 'Remotive registered in PLATFORM_REGISTRY');
+
+  // 5. /api/leads/[id]/route.ts exists for RESTful lead lookup
+  const leadIdRouteExists = fs.existsSync(path.join(__dirname, '..', 'src', 'app', 'api', 'leads', '[id]', 'route.ts'));
+  assert(leadIdRouteExists, 'Dedicated /api/leads/[id]/route.ts exists');
+
+  // 6. /api/leads/route.ts handles idParam
+  const leadsApiContent = fs.readFileSync(path.join(__dirname, '..', 'src', 'app', 'api', 'leads', 'route.ts'), 'utf8');
+  assert(leadsApiContent.includes("searchParams.get('id')"), '/api/leads handles ?id= search parameter');
+
   console.log('\n====================================================');
   console.log(`📊 Functional Verification Summary: ${passedTests}/${totalTests} Passed (${failedTests} Failed)`);
   console.log('====================================================\n');

@@ -248,6 +248,30 @@ export const PLATFORM_REGISTRY: Record<PlatformId, PlatformConfig> = {
     ],
     defaultRateLimitPerMin: 20,
   },
+  freelancer: {
+    id: 'freelancer',
+    name: 'Freelancer.com Feed',
+    category: 'free_directory',
+    description: 'Real-time commercial client project discovery, verified budgets, and active freelance RFPs.',
+    website: 'https://www.freelancer.com',
+    docsUrl: 'https://developers.freelancer.com',
+    isPrimary: false,
+    isFree: true,
+    requiredCredentials: [],
+    defaultRateLimitPerMin: 60,
+  },
+  remotive: {
+    id: 'remotive',
+    name: 'Remotive Global Tech Feed',
+    category: 'free_directory',
+    description: 'Verified remote company listings, tech vacancies, and developer opportunities.',
+    website: 'https://remotive.com',
+    docsUrl: 'https://remotive.com/api/remote-jobs',
+    isPrimary: false,
+    isFree: true,
+    requiredCredentials: [],
+    defaultRateLimitPerMin: 60,
+  },
 };
 
 interface PersistentIntegrationStore {

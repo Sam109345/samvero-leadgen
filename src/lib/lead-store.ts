@@ -1,5 +1,6 @@
 import { Lead } from '@/types';
 import { INITIAL_LEADS } from './mock-data';
+import { loadAllStoredLeads } from './leads-persistent-store';
 import { 
   getLeadAssignedUser, 
   canUserAccessLead, 
@@ -19,12 +20,24 @@ INITIAL_LEADS.forEach((lead) => {
 initializeDefaultAssignments(INITIAL_LEADS);
 
 export function registerLead(lead: Lead): void {
-  leadsRegistry.set(lead.id.toLowerCase(), lead);
+  if (lead && lead.id) {
+    leadsRegistry.set(lead.id.toLowerCase(), lead);
+  }
 }
 
 export function getLeadById(id: string): Lead | undefined {
   if (!id) return undefined;
-  const lead = leadsRegistry.get(id.toLowerCase());
+  const key = id.toLowerCase();
+  let lead = leadsRegistry.get(key);
+
+  if (!lead) {
+    const stored = loadAllStoredLeads();
+    lead = stored.find((l) => l.id?.toLowerCase() === key);
+    if (lead) {
+      leadsRegistry.set(key, lead);
+    }
+  }
+
   if (!lead) return undefined;
 
   const assignedUser = getLeadAssignedUser(lead.id);
@@ -36,6 +49,15 @@ export function getLeadById(id: string): Lead | undefined {
 }
 
 export function getAllRegisteredLeads(): Lead[] {
+  try {
+    const stored = loadAllStoredLeads();
+    for (const l of stored) {
+      if (l && l.id && !leadsRegistry.has(l.id.toLowerCase())) {
+        leadsRegistry.set(l.id.toLowerCase(), l);
+      }
+    }
+  } catch {}
+
   return Array.from(leadsRegistry.values()).map((lead) => {
     const assignedUser = getLeadAssignedUser(lead.id);
     return {
