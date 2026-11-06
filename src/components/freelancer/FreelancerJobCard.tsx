@@ -135,8 +135,11 @@ export default function FreelancerJobCard({
     e.stopPropagation();
     const cleanPhone = cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country);
     if (!cleanPhone) return;
+    const origin = (typeof window !== 'undefined' && !window.location.origin.includes('localhost'))
+      ? window.location.origin
+      : (process.env.NEXT_PUBLIC_APP_URL || 'https://hit-qui-requested-miracle.trycloudflare.com');
     const text = encodeURIComponent(
-      `Hello ${lead.contact.contactPerson || lead.businessName}, I saw your business requirement for "${lead.title}". We have prepared an interactive digital proposal & mobile app preview for you: ${typeof window !== 'undefined' ? window.location.origin : ''}${previewUrl}`
+      `Hello ${lead.contact.contactPerson || lead.businessName}, I saw your business requirement for "${lead.title}". We have prepared an interactive digital proposal & mobile app preview for you: ${origin}${previewUrl}`
     );
     window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
   };

@@ -95,7 +95,11 @@ export default function DeliverablesStudioModal({
   const websiteHtml = compileStandaloneHtml(deliverables.website);
   
   // Resolve active client preview URL (Live tunnel prioritized over localhost)
-  const baseOrigin = publicUrl || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+  const baseOrigin = (publicUrl && !publicUrl.includes('localhost'))
+    ? publicUrl
+    : ((typeof window !== 'undefined' && !window.location.origin.includes('localhost'))
+        ? window.location.origin
+        : (process.env.NEXT_PUBLIC_APP_URL || 'https://hit-qui-requested-miracle.trycloudflare.com'));
   const previewPath = `/preview/${lead.id}`;
   const fullLiveUrl = `${baseOrigin.replace(/\/$/, '')}${previewPath}`;
 

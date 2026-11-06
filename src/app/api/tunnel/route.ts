@@ -6,17 +6,26 @@ import { spawn } from 'child_process';
 export const dynamic = 'force-dynamic';
 
 // Global memory cache for tunnel process across requests
-let activeTunnelUrl: string = process.env.PUBLIC_LIVE_URL || 'https://situations-tongue-reservations-laws.trycloudflare.com';
+let activeTunnelUrl: string = process.env.PUBLIC_LIVE_URL || 'https://hit-qui-requested-miracle.trycloudflare.com';
 let tunnelProcess: any = null;
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const leadId = searchParams.get('leadId') || 'pk-gmb-101';
+    const leadId = searchParams.get('leadId') || 'live-nearme-1-bhattihospital';
 
-    // Check environment first
+    // 1. Detect origin from request headers (if client reached via cloudflare tunnel or LAN IP)
+    const host = request.headers.get('x-forwarded-host') || request.headers.get('host') || '';
+    const proto = request.headers.get('x-forwarded-proto') || (request.url.startsWith('https') ? 'https' : 'http');
+    const incomingOrigin = host && !host.includes('localhost') && !host.includes('127.0.0.1')
+      ? `${proto}://${host}`
+      : '';
+
+    // 2. Check environment next
     const envPublicUrl = process.env.PUBLIC_LIVE_URL || (process.env.NEXT_PUBLIC_APP_URL && !process.env.NEXT_PUBLIC_APP_URL.includes('localhost') ? process.env.NEXT_PUBLIC_APP_URL : '');
-    const currentUrl = activeTunnelUrl || envPublicUrl || 'http://localhost:3000';
+    
+    // 3. Priority: incoming public origin > active tunnel > env > localhost
+    const currentUrl = incomingOrigin || activeTunnelUrl || envPublicUrl || 'http://localhost:3000';
     const isLive = !currentUrl.includes('localhost') && !currentUrl.includes('127.0.0.1');
 
     return NextResponse.json({
@@ -26,6 +35,7 @@ export async function GET(request: NextRequest) {
       previewUrl: `${currentUrl}/preview/${leadId}`,
       isTunnelActive: Boolean(tunnelProcess) || isLive,
       tunnelDomain: isLive ? new URL(currentUrl).hostname : 'localhost',
+      localNetworkUrl: 'http://10.10.30.43:3000',
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err?.message }, { status: 500 });

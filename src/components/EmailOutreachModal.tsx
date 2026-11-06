@@ -225,7 +225,11 @@ export default function EmailOutreachModal({
 
   if (!isOpen || !lead) return null;
 
-  const effectiveOrigin = publicLiveOrigin || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+  const effectiveOrigin = (publicLiveOrigin && !publicLiveOrigin.includes('localhost'))
+    ? publicLiveOrigin
+    : ((typeof window !== 'undefined' && !window.location.origin.includes('localhost'))
+        ? window.location.origin
+        : (process.env.NEXT_PUBLIC_APP_URL || 'https://hit-qui-requested-miracle.trycloudflare.com'));
   const cleanPath = previewUrl?.startsWith('/') ? previewUrl : `/${previewUrl || ''}`;
   const resolvedPreviewUrl = previewUrl?.startsWith('http')
     ? (publicLiveOrigin && previewUrl.includes('localhost')

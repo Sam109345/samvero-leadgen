@@ -57,6 +57,17 @@ export default function WebsitePreviewPage({ params }: Props) {
   // Logo Concepts State
   const [logoBgMode, setLogoBgMode] = useState<'dark' | 'light'>('dark');
   const [copiedSvgId, setCopiedSvgId] = useState<string | null>(null);
+  const [copiedShareUrl, setCopiedShareUrl] = useState(false);
+
+  const handleCopyShareUrl = () => {
+    if (typeof window !== 'undefined') {
+      const publicOrigin = process.env.NEXT_PUBLIC_APP_URL || (window.location.origin.includes('localhost') ? 'https://hit-qui-requested-miracle.trycloudflare.com' : window.location.origin);
+      const urlToShare = `${publicOrigin.replace(/\/$/, '')}/preview/${encodeURIComponent(id)}`;
+      navigator.clipboard.writeText(urlToShare);
+      setCopiedShareUrl(true);
+      setTimeout(() => setCopiedShareUrl(false), 3000);
+    }
+  };
 
   // Find lead by id in real in-memory registry or stored dataset
   const initialLead = getLeadById(id);
@@ -213,6 +224,18 @@ export default function WebsitePreviewPage({ params }: Props) {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={handleCopyShareUrl}
+              className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl border transition shadow-sm cursor-pointer ${
+                copiedShareUrl
+                  ? 'bg-emerald-600 text-white border-emerald-500'
+                  : 'bg-slate-800 hover:bg-slate-700 text-cyan-300 border-cyan-800/60'
+              }`}
+              title="Copy public URL that can be opened by clients or on any computer/mobile worldwide"
+            >
+              {copiedShareUrl ? <Check className="w-3.5 h-3.5" /> : <ExternalLink className="w-3.5 h-3.5" />}
+              <span>{copiedShareUrl ? 'Public Link Copied!' : 'Copy Client Link'}</span>
+            </button>
             <a
               href={`tel:${site.contactPhone}`}
               className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition"

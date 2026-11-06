@@ -13,10 +13,10 @@
     "wikidata": {
       "id": "wikidata",
       "status": "operational",
-      "totalRecordsFetched": 30,
-      "totalRecordsSaved": 13,
+      "totalRecordsFetched": 52,
+      "totalRecordsSaved": 23,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-03T14:47:04.402Z",
+      "lastSyncAt": "2026-11-06T12:37:16.083Z",
       "lastError": null
     },
     "opencorporates": {
@@ -25,34 +25,34 @@
       "totalRecordsFetched": 0,
       "totalRecordsSaved": 0,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-03T14:47:04.389Z",
+      "lastSyncAt": "2026-11-06T12:37:16.086Z",
       "lastError": null
     },
     "github": {
       "id": "github",
       "status": "operational",
-      "totalRecordsFetched": 20,
-      "totalRecordsSaved": 9,
+      "totalRecordsFetched": 40,
+      "totalRecordsSaved": 19,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-03T14:47:04.436Z",
+      "lastSyncAt": "2026-11-06T12:37:16.136Z",
       "lastError": null
     },
     "osm": {
       "id": "osm",
       "status": "operational",
-      "totalRecordsFetched": 30,
-      "totalRecordsSaved": 24,
+      "totalRecordsFetched": 44,
+      "totalRecordsSaved": 31,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-03T14:47:04.377Z",
+      "lastSyncAt": "2026-11-06T12:37:16.100Z",
       "lastError": null
     },
     "remotive": {
       "id": "remotive",
       "status": "operational",
-      "totalRecordsFetched": 10,
-      "totalRecordsSaved": 8,
+      "totalRecordsFetched": 34,
+      "totalRecordsSaved": 9,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-03T14:47:04.366Z",
+      "lastSyncAt": "2026-11-06T12:37:16.070Z",
       "lastError": null
     },
     "reddit": {
@@ -67,10 +67,10 @@
     "freelancer": {
       "id": "freelancer",
       "status": "operational",
-      "totalRecordsFetched": 15,
-      "totalRecordsSaved": 15,
+      "totalRecordsFetched": 45,
+      "totalRecordsSaved": 32,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-03T14:47:04.414Z",
+      "lastSyncAt": "2026-11-06T12:37:16.121Z",
       "lastError": null
     },
     "remoteok": {
