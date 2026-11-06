@@ -6,6 +6,7 @@ import {
   toggleUserAccountStatus,
   manuallyAssignPackageToCustomer,
   extendCustomerSubscription,
+  createSaasCustomer,
   hashPassword,
 } from '@/lib/saas-store';
 import { getAuthenticatedSession } from '@/lib/session';
@@ -105,5 +106,62 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ success: false, error: 'Unknown action' }, { status: 400 });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err?.message || 'Server error' }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = getAuthenticatedSession(request);
+    if (!session || (session.role !== 'admin' && session.role !== 'super_admin')) {
+      return NextResponse.json({ success: false, error: 'Unauthorized. Admin access required.' }, { status: 403 });
+    }
+
+    const adminEmail = request.cookies.get('samvero_portal_user')?.value || session.email || 'Admin';
+    const body = await request.json();
+    const {
+      name,
+      email,
+      password,
+      businessName,
+      phone,
+      whatsapp,
+      country,
+      planId,
+      billingDuration,
+      leadQuotaOverride,
+      notes,
+    } = body;
+
+    if (!name || !name.trim()) {
+      return NextResponse.json({ success: false, error: 'Client full name is required.' }, { status: 400 });
+    }
+    if (!email || !email.trim() || !email.includes('@')) {
+      return NextResponse.json({ success: false, error: 'A valid email address is required.' }, { status: 400 });
+    }
+
+    const result = createSaasCustomer({
+      name,
+      email,
+      password,
+      businessName,
+      phone,
+      whatsapp,
+      country,
+      planId: planId || 'plan-starter',
+      billingDuration: billingDuration || 'monthly',
+      leadQuotaOverride: leadQuotaOverride ? Number(leadQuotaOverride) : undefined,
+      adminEmail,
+      notes,
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: `Client ${result.user.name} created successfully!`,
+      user: result.user,
+      subscription: result.subscription,
+      temporaryPassword: result.temporaryPassword,
+    });
+  } catch (err: any) {
+    return NextResponse.json({ success: false, error: err?.message || 'Failed to create client' }, { status: 400 });
   }
 }

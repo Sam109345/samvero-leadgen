@@ -625,7 +625,7 @@
       "planName": "Enterprise",
       "billingCycle": "monthly",
       "startDate": "2026-10-30T13:19:36.639Z",
-      "expiryDate": "2027-11-03T13:43:22.224Z",
+      "expiryDate": "2027-11-06T14:35:03.860Z",
       "gracePeriodDays": 3,
       "status": "active",
       "leadQuota": 60000,
@@ -1222,6 +1222,85 @@
       "reason": "Initial customer onboarding from application APP-2026-2077. Payment confirmed.",
       "performedBy": "Sameer (Executive Admin)",
       "timestamp": "2026-10-30T14:57:01.221Z"
+    },
+    {
+      "id": "hist-1793975718347",
+      "subscriptionId": "sub-1793975718347",
+      "customerId": "user-1793975718275-lrnc",
+      "action": "created",
+      "newState": {
+        "id": "sub-1793975718347",
+        "customerId": "user-1793975718275-lrnc",
+        "customerEmail": "tariq.apex@agency.pk",
+        "customerName": "Tariq Mehmood",
+        "planId": "plan_starter",
+        "planName": "Starter",
+        "billingCycle": "monthly",
+        "startDate": "2026-11-06T14:35:18.347Z",
+        "expiryDate": "2026-12-06T14:35:18.347Z",
+        "gracePeriodDays": 3,
+        "status": "active",
+        "leadQuota": 750,
+        "leadsConsumed": 0,
+        "renewalStatus": "none",
+        "entitlements": {
+          "id": "plan_starter",
+          "name": "Starter",
+          "slug": "starter",
+          "tagline": "Outbound SDRs & Boutique Agencies",
+          "description": "Targeted multi-channel prospecting with high-accuracy phone validation and export capability.",
+          "prices": {
+            "monthly": 99,
+            "quarterly": 269,
+            "half_yearly": 499,
+            "annual": 899
+          },
+          "maxLeadsQuota": 750,
+          "allowedSources": [
+            "Google My Business",
+            "LinkedIn",
+            "Upwork",
+            "Fiverr"
+          ],
+          "allowedIndustries": [
+            "Web Development",
+            "WordPress Development",
+            "Digital Marketing",
+            "Local Business",
+            "Graphic Design"
+          ],
+          "allowedCountries": [
+            "US",
+            "UK",
+            "UAE",
+            "Pakistan",
+            "Global"
+          ],
+          "hasBusinessResearch": true,
+          "hasGmbResearch": true,
+          "hasEmailDiscovery": true,
+          "hasPhoneDiscovery": true,
+          "hasEmailVerification": true,
+          "hasPhoneValidation": true,
+          "hasCsvExport": true,
+          "hasAdvancedAnalytics": false,
+          "hasAiAnalysis": true,
+          "hasBulkResearch": true,
+          "concurrentResearchJobs": 5,
+          "prioritySupport": false,
+          "isFeatured": false,
+          "isActive": true,
+          "customDurationSupported": false,
+          "sortOrder": 2,
+          "updatedAt": "2026-10-30T13:19:36.472Z"
+        },
+        "createdBy": "sameer.centric@gmail.com",
+        "createdAt": "2026-11-06T14:35:18.347Z",
+        "updatedAt": "2026-11-06T14:35:18.347Z"
+      },
+      "reason": "Package Starter directly assigned by sameer.centric@gmail.com",
+      "performedBy": "sameer.centric@gmail.com",
+      "timestamp": "2026-11-06T14:35:18.347Z"
     }
   ],
   "payments": [
@@ -2965,6 +3044,16 @@
     }
   ],
   "notifications": [
+    {
+      "id": "notif-1793975718350-gdly",
+      "recipientRole": "admin",
+      "type": "general",
+      "title": "New Client Created: Tariq Mehmood",
+      "message": "New client account created for Tariq Mehmood (tariq.apex@agency.pk) with Starter package by sameer.centric@gmail.com.",
+      "link": "/admin/users",
+      "isRead": false,
+      "createdAt": "2026-11-06T14:35:18.350Z"
+    },
     {
       "id": "notif-1793713402246-g836",
       "recipientRole": "admin",

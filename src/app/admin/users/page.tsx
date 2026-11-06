@@ -19,6 +19,9 @@ import {
   X,
   RefreshCw,
   Plus,
+  UserPlus,
+  Copy,
+  Check,
 } from 'lucide-react';
 
 export default function AdminUsersPage() {
@@ -33,6 +36,29 @@ export default function AdminUsersPage() {
   const [assignPackageModalOpen, setAssignPackageModalOpen] = useState(false);
   const [extendSubModalOpen, setExtendSubModalOpen] = useState(false);
   const [targetUserForAction, setTargetUserForAction] = useState<any | null>(null);
+
+  // Add Client Modal & Form state
+  const [addClientModalOpen, setAddClientModalOpen] = useState(false);
+  const [isCreatingClient, setIsCreatingClient] = useState(false);
+  const [createClientError, setCreateClientError] = useState<string | null>(null);
+  const [createdClientAlert, setCreatedClientAlert] = useState<{
+    name: string;
+    email: string;
+    temporaryPassword?: string;
+    planName?: string;
+  } | null>(null);
+  const [copiedPassword, setCopiedPassword] = useState(false);
+
+  const [newClientName, setNewClientName] = useState('');
+  const [newClientEmail, setNewClientEmail] = useState('');
+  const [newClientBusiness, setNewClientBusiness] = useState('');
+  const [newClientPassword, setNewClientPassword] = useState('');
+  const [newClientPhone, setNewClientPhone] = useState('');
+  const [newClientCountry, setNewClientCountry] = useState('Pakistan');
+  const [newClientPlanId, setNewClientPlanId] = useState('plan_starter');
+  const [newClientDuration, setNewClientDuration] = useState<BillingCycle>('monthly');
+  const [newClientQuotaOverride, setNewClientQuotaOverride] = useState('');
+  const [newClientNotes, setNewClientNotes] = useState('');
 
   // Form states
   const [newPlanId, setNewPlanId] = useState('');
@@ -52,7 +78,10 @@ export default function AdminUsersPage() {
         }
         if (planData.success && Array.isArray(planData.plans)) {
           setPlans(planData.plans);
-          if (planData.plans.length > 0) setNewPlanId(planData.plans[0].id);
+          if (planData.plans.length > 0) {
+            setNewPlanId(planData.plans[0].id);
+            setNewClientPlanId((prev) => prev || planData.plans[0].id);
+          }
         }
       })
       .catch((err) => console.warn(err))
@@ -62,6 +91,64 @@ export default function AdminUsersPage() {
   useEffect(() => {
     fetchUsers();
   }, []);
+
+  const handleCreateClientSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsCreatingClient(true);
+    setCreateClientError(null);
+
+    try {
+      const res = await fetch('/api/admin/customers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newClientName,
+          email: newClientEmail,
+          password: newClientPassword.trim() || undefined,
+          businessName: newClientBusiness,
+          phone: newClientPhone,
+          country: newClientCountry,
+          planId: newClientPlanId,
+          billingDuration: newClientDuration,
+          leadQuotaOverride: newClientQuotaOverride ? Number(newClientQuotaOverride) : undefined,
+          notes: newClientNotes,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setCreatedClientAlert({
+          name: data.user.name,
+          email: data.user.email,
+          temporaryPassword: data.temporaryPassword,
+          planName: data.subscription?.planName || 'Configured Plan',
+        });
+        setAddClientModalOpen(false);
+
+        // Reset form
+        setNewClientName('');
+        setNewClientEmail('');
+        setNewClientBusiness('');
+        setNewClientPassword('');
+        setNewClientPhone('');
+        setNewClientQuotaOverride('');
+        setNewClientNotes('');
+        fetchUsers();
+      } else {
+        setCreateClientError(data.error || 'Failed to create client');
+      }
+    } catch (err: any) {
+      setCreateClientError(err?.message || 'Network error occurred');
+    } finally {
+      setIsCreatingClient(false);
+    }
+  };
+
+  const handleCopyPassword = (pass: string) => {
+    navigator.clipboard.writeText(pass);
+    setCopiedPassword(true);
+    setTimeout(() => setCopiedPassword(false), 3000);
+  };
 
   const handleToggleStatus = async (userId: string, currentStatus: string) => {
     const nextStatus = currentStatus === 'active' ? 'suspended' : 'active';
@@ -195,8 +282,59 @@ export default function AdminUsersPage() {
               <option value="active">Active Only</option>
               <option value="suspended">Suspended Only</option>
             </select>
+
+            <button
+              type="button"
+              onClick={() => {
+                setCreateClientError(null);
+                setAddClientModalOpen(true);
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold text-xs shadow-lg transition cursor-pointer shrink-0"
+            >
+              <UserPlus className="w-4 h-4" />
+              <span>Add New Client</span>
+            </button>
           </div>
         </div>
+
+        {/* Client Creation Alert Banner */}
+        {createdClientAlert && (
+          <div className="p-4 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 text-xs text-emerald-200 flex items-start justify-between gap-3 shadow-lg">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                <span className="font-bold text-white text-sm">
+                  Client Account Created: {createdClientAlert.name} ({createdClientAlert.email})
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-400/20 text-amber-300 border border-amber-400/30">
+                  {createdClientAlert.planName}
+                </span>
+              </div>
+              {createdClientAlert.temporaryPassword && (
+                <div className="flex items-center gap-2 pt-1 font-mono text-[11px] text-slate-300">
+                  <span>Generated Password:</span>
+                  <code className="px-2 py-0.5 rounded bg-slate-900 border border-slate-700 text-amber-300 font-bold">
+                    {createdClientAlert.temporaryPassword}
+                  </code>
+                  <button
+                    onClick={() => handleCopyPassword(createdClientAlert.temporaryPassword!)}
+                    className="p-1 text-slate-400 hover:text-white transition cursor-pointer"
+                    title="Copy Password"
+                  >
+                    {copiedPassword ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
+                  <span className="text-[10px] text-slate-400">(Share this temporary password with the client)</span>
+                </div>
+              )}
+            </div>
+            <button
+              onClick={() => setCreatedClientAlert(null)}
+              className="text-slate-400 hover:text-white p-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
         {/* Customer Table */}
         <div className="rounded-2xl border border-slate-800 bg-[#090d1a] overflow-hidden shadow-xl">
@@ -560,6 +698,212 @@ export default function AdminUsersPage() {
                   Close
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Modal 4: Add New Client */}
+        {addClientModalOpen && (
+          <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+            <div className="w-full max-w-xl bg-[#090d1a] border border-slate-800 rounded-2xl p-6 shadow-2xl space-y-5 my-8">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div className="flex items-center gap-2.5">
+                  <div className="p-2 rounded-xl bg-amber-400/10 text-amber-400 border border-amber-400/20">
+                    <UserPlus className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-white">Add New Client Account</h3>
+                    <p className="text-xs text-slate-400">
+                      Create customer credentials and assign lead generation quota.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setAddClientModalOpen(false)}
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {createClientError && (
+                <div className="p-3 rounded-xl bg-rose-950/80 border border-rose-500/40 text-xs text-rose-200 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                  <span>{createClientError}</span>
+                </div>
+              )}
+
+              <form onSubmit={handleCreateClientSubmit} className="space-y-4 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {/* Full Name */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">
+                      Client Full Name <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newClientName}
+                      onChange={(e) => setNewClientName(e.target.value)}
+                      placeholder="e.g. Ali Raza"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">
+                      Email Address (Login ID) <span className="text-rose-400">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={newClientEmail}
+                      onChange={(e) => setNewClientEmail(e.target.value)}
+                      placeholder="e.g. client@agency.com"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  {/* Business Name */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">Business / Company Name</label>
+                    <input
+                      type="text"
+                      value={newClientBusiness}
+                      onChange={(e) => setNewClientBusiness(e.target.value)}
+                      placeholder="e.g. Tariq Web Labs"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                    />
+                  </div>
+
+                  {/* Password */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">
+                      Password <span className="text-slate-500 font-normal">(Optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={newClientPassword}
+                      onChange={(e) => setNewClientPassword(e.target.value)}
+                      placeholder="Leave blank to auto-generate"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono text-[11px]"
+                    />
+                  </div>
+
+                  {/* Phone / WhatsApp */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">WhatsApp / Phone Number</label>
+                    <input
+                      type="text"
+                      value={newClientPhone}
+                      onChange={(e) => setNewClientPhone(e.target.value)}
+                      placeholder="e.g. +92 300 1234567"
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono text-[11px]"
+                    />
+                  </div>
+
+                  {/* Country */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">Country</label>
+                    <select
+                      value={newClientCountry}
+                      onChange={(e) => setNewClientCountry(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="Pakistan">Pakistan</option>
+                      <option value="United States">United States</option>
+                      <option value="United Kingdom">United Kingdom</option>
+                      <option value="UAE">United Arab Emirates (UAE)</option>
+                      <option value="Canada">Canada</option>
+                      <option value="Australia">Australia</option>
+                      <option value="Germany">Germany</option>
+                      <option value="Global">Global / Other</option>
+                    </select>
+                  </div>
+
+                  {/* Plan / Package */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">Assigned Package / Plan</label>
+                    <select
+                      value={newClientPlanId}
+                      onChange={(e) => setNewClientPlanId(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      {plans.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name} ({p.maxLeadsQuota.toLocaleString()} leads)
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Billing Duration */}
+                  <div>
+                    <label className="block text-slate-300 font-bold mb-1">Billing Duration</label>
+                    <select
+                      value={newClientDuration}
+                      onChange={(e) => setNewClientDuration(e.target.value as BillingCycle)}
+                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white focus:outline-none focus:border-amber-400"
+                    >
+                      <option value="monthly">Monthly (30 Days)</option>
+                      <option value="quarterly">Quarterly (90 Days)</option>
+                      <option value="half_yearly">Half-Yearly (180 Days)</option>
+                      <option value="annual">Annual (365 Days)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Quota Override */}
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">
+                    Custom Leads Quota Override <span className="text-slate-500 font-normal">(Optional - defaults to plan quota)</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="10"
+                    max="1000000"
+                    value={newClientQuotaOverride}
+                    onChange={(e) => setNewClientQuotaOverride(e.target.value)}
+                    placeholder="e.g. 50000"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 font-mono text-[11px]"
+                  />
+                </div>
+
+                {/* Notes */}
+                <div>
+                  <label className="block text-slate-300 font-bold mb-1">Admin Notes</label>
+                  <input
+                    type="text"
+                    value={newClientNotes}
+                    onChange={(e) => setNewClientNotes(e.target.value)}
+                    placeholder="e.g. Direct onboarded client, verified payment via wire transfer"
+                    className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-amber-400"
+                  />
+                </div>
+
+                <div className="pt-3 border-t border-slate-800/80 flex items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setAddClientModalOpen(false)}
+                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-bold transition"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isCreatingClient}
+                    className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-black font-extrabold shadow-lg transition cursor-pointer disabled:opacity-50"
+                  >
+                    {isCreatingClient ? (
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <UserPlus className="w-4 h-4" />
+                    )}
+                    <span>{isCreatingClient ? 'Creating Client...' : 'Create Client Account'}</span>
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

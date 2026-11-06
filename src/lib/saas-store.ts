@@ -119,6 +119,7 @@ export interface SaasUser {
   status: UserStatus;
   passwordHash: string;
   mustChangePassword: boolean;
+  notes?: string;
   resetToken?: string;
   resetTokenExpires?: string;
   lastLoginAt?: string;
@@ -869,7 +870,20 @@ export function getAllPlans(): PlanConfig[] {
 
 export function getPlanById(id: string): PlanConfig | undefined {
   ensureSaasStoreInitialized();
-  return db.plans.find((p) => p.id === id || p.slug === id);
+  if (!id) return undefined;
+  const clean = id.toLowerCase().trim();
+  const normalized = clean.replace(/-/g, '_');
+  const hyphens = clean.replace(/_/g, '-');
+  return db.plans.find(
+    (p) =>
+      p.id.toLowerCase() === clean ||
+      p.id.toLowerCase() === normalized ||
+      p.id.toLowerCase() === hyphens ||
+      p.slug.toLowerCase() === clean ||
+      p.slug.toLowerCase() === normalized ||
+      p.slug.toLowerCase() === hyphens ||
+      p.name.toLowerCase() === clean
+  );
 }
 
 export function updatePlanConfig(planId: string, updates: Partial<PlanConfig>, adminEmail = 'admin'): PlanConfig {
@@ -1326,6 +1340,92 @@ export function toggleUserAccountStatus(userId: string, status: UserStatus, admi
   });
 
   return user;
+}
+
+export function createSaasCustomer(params: {
+  name: string;
+  email: string;
+  password?: string;
+  businessName?: string;
+  phone?: string;
+  whatsapp?: string;
+  country?: string;
+  planId?: string;
+  billingDuration?: BillingCycle;
+  leadQuotaOverride?: number;
+  adminEmail?: string;
+  notes?: string;
+}): { user: SaasUser; subscription?: SaasSubscription; temporaryPassword?: string } {
+  ensureSaasStoreInitialized();
+
+  const trimmedEmail = params.email.trim().toLowerCase();
+  const trimmedName = params.name.trim();
+
+  if (!trimmedEmail) throw new Error('Email is required');
+  if (!trimmedName) throw new Error('Customer full name is required');
+
+  const existing = db.users.find((u) => u.email.toLowerCase() === trimmedEmail);
+  if (existing) {
+    throw new Error(`A user or client account with email "${trimmedEmail}" already exists.`);
+  }
+
+  const userId = `user-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
+  let tempPass: string | undefined;
+  let finalPassword = params.password?.trim();
+
+  if (!finalPassword) {
+    tempPass = `Samvero#${Math.floor(100000 + Math.random() * 900000)}!`;
+    finalPassword = tempPass;
+  }
+
+  const passwordHash = hashPassword(finalPassword);
+  const now = new Date().toISOString();
+
+  const newUser: SaasUser = {
+    id: userId,
+    email: trimmedEmail,
+    name: trimmedName,
+    businessName: params.businessName?.trim() || '',
+    phone: params.phone?.trim() || '',
+    whatsapp: params.whatsapp?.trim() || params.phone?.trim() || '',
+    country: params.country || 'Pakistan',
+    role: 'customer',
+    status: 'active',
+    passwordHash,
+    mustChangePassword: Boolean(tempPass),
+    notes: params.notes || `Created directly by Admin (${params.adminEmail || 'Admin'})`,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  db.users.push(newUser);
+
+  let subscription: SaasSubscription | undefined;
+  if (params.planId) {
+    subscription = manuallyAssignPackageToCustomer({
+      userId,
+      planId: params.planId,
+      billingDuration: params.billingDuration || 'monthly',
+      adminEmail: params.adminEmail || 'Admin',
+      overrideLeadQuota: params.leadQuotaOverride,
+    });
+  }
+
+  saveDatabaseToFile();
+
+  createSystemNotification({
+    recipientRole: 'admin',
+    type: 'general',
+    title: `New Client Created: ${newUser.name}`,
+    message: `New client account created for ${newUser.name} (${newUser.email}) with ${subscription ? subscription.planName : 'No Plan'} package by ${params.adminEmail || 'Admin'}.`,
+    link: '/admin/users',
+  });
+
+  return {
+    user: newUser,
+    subscription,
+    temporaryPassword: tempPass,
+  };
 }
 
 export function manuallyAssignPackageToCustomer(params: {
