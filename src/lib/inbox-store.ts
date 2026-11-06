@@ -1,129 +1,7 @@
 import { EmailThread, EmailMessage, Lead, ChatAttachment, VoiceNoteData } from '@/types';
 
-// In-memory thread storage for active session
-let inboxThreads: EmailThread[] = [
-  {
-    id: 'thread-pk-101',
-    leadId: 'pk-gmb-101',
-    businessName: 'Dr. Zeeshan Aesthetics & Dental Care',
-    clientEmail: 'info@chughtailab.com',
-    contactPerson: 'Dr. Zeeshan Ali (Founder)',
-    city: 'Lahore',
-    country: 'Pakistan',
-    lastMessageSnippet: 'Loved the mobile preview! Sent a quick voice memo regarding Friday Zoom call.',
-    lastMessageAt: '12 mins ago',
-    unread: true,
-    status: 'hot_reply',
-    sentiment: 'booking',
-    messages: [
-      {
-        id: 'msg-1',
-        sender: 'user',
-        senderName: 'SAMVERO Acquisition Team',
-        senderEmail: 'outreach@samvero.com',
-        subject: 'Custom Digital Proposal & Website Showcase for Dr. Zeeshan Aesthetics',
-        content: `Hi Dr. Zeeshan,\n\nWe noticed your premier clinic in DHA Phase 3 Lahore and noticed you rely largely on walk-in patients and Instagram DMs.\n\nOur team has pre-configured a bespoke, mobile-optimized patient booking portal tailored exclusively for your treatments.\n\nYou can explore your live interactive preview here: /preview/pk-gmb-101\n\nLet us know if you'd like to activate this on your custom domain!`,
-        timestamp: '1 hour ago',
-        previewUrl: '/preview/pk-gmb-101',
-      },
-      {
-        id: 'msg-2',
-        sender: 'client',
-        senderName: 'Dr. Zeeshan Ali',
-        senderEmail: 'info@chughtailab.com',
-        subject: 'Re: Custom Digital Proposal & Website Showcase for Dr. Zeeshan Aesthetics',
-        content: `Hello SAMVERO team,\n\nThank you for putting this together! I just checked the live preview on my iPhone and it looks remarkably clean—especially the WhatsApp consultation button and services grid.\n\nI recorded a quick voice note outlining what treatments we need to prioritize. Are you available for a brief Zoom or WhatsApp call this Friday at 4:30 PM PKT?`,
-        timestamp: '12 mins ago',
-        sentiment: 'booking',
-        voiceNote: {
-          url: '/audio/dr-zeeshan-voicenote.wav',
-          durationSeconds: 15,
-        },
-      },
-    ],
-  },
-  {
-    id: 'thread-us-202',
-    leadId: 'us-job-202',
-    businessName: 'CognitiveScale Dynamics Inc.',
-    clientEmail: 'talent@cognitivescaledynamics.io',
-    contactPerson: 'Elena Rostova (Head of Growth)',
-    city: 'San Francisco',
-    country: 'US',
-    lastMessageSnippet: 'Attached our Brand Design Guide PDF. What is your turnaround time for Next.js revamp?',
-    lastMessageAt: '45 mins ago',
-    unread: true,
-    status: 'hot_reply',
-    sentiment: 'pricing',
-    messages: [
-      {
-        id: 'msg-3',
-        sender: 'user',
-        senderName: 'SAMVERO Technical Solutions',
-        senderEmail: 'outreach@samvero.com',
-        subject: 'Next.js 14 + Tailwind Redesign for CognitiveScale Dynamics',
-        content: `Hi Elena,\n\nI reviewed your Upwork listing for the B2B SaaS corporate redesign. We specialize in glassmorphic Next.js + Tailwind architectures.\n\nWe synthesized a preliminary visual component mockup here: /preview/us-job-202\n\nHappy to walk through our technical roadmap whenever convenient.`,
-        timestamp: '3 hours ago',
-        previewUrl: '/preview/us-job-202',
-      },
-      {
-        id: 'msg-4',
-        sender: 'client',
-        senderName: 'Elena Rostova',
-        senderEmail: 'talent@cognitivescaledynamics.io',
-        subject: 'Re: Next.js 14 + Tailwind Redesign for CognitiveScale Dynamics',
-        content: `Hi Sameer,\n\nThanks for reaching out with a working prototype so quickly! The glassmorphism card styling is right in line with what our design director is looking for.\n\nI have attached our complete Brand Guidelines and Design System PDF below. Could you give me an estimate on turnaround time for an 8-10 page migration?\n\nBest,\nElena Rostova\nHead of Growth, CognitiveScale`,
-        timestamp: '45 mins ago',
-        sentiment: 'pricing',
-        attachments: [
-          {
-            id: 'att-1',
-            name: 'CognitiveScale_Brand_Identity_v3.pdf',
-            size: '3.8 MB',
-            type: 'pdf',
-            url: '/docs/CognitiveScale_Brand_Identity_v3.pdf',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'thread-uk-301',
-    leadId: 'uk-gmb-301',
-    businessName: 'Kensington Aesthetic Medicine',
-    clientEmail: 'consultations@kensingtonaesthetic.co.uk',
-    contactPerson: 'Dr. Charlotte Bell (Medical Director)',
-    city: 'London',
-    country: 'UK',
-    lastMessageSnippet: 'Very interested in the luxury aesthetic. Can you share case studies?',
-    lastMessageAt: '2 hours ago',
-    unread: false,
-    status: 'hot_reply',
-    sentiment: 'positive',
-    messages: [
-      {
-        id: 'msg-5',
-        sender: 'user',
-        senderName: 'SAMVERO UK Partner Desk',
-        senderEmail: 'outreach@samvero.com',
-        subject: 'Exclusive Harley Street Digital Storefront for Kensington Aesthetic Medicine',
-        content: `Dear Dr. Bell,\n\nCongratulations on the launch of your Harley Street clinic! We noticed you currently do not have a live bespoke website.\n\nWe put together a luxury digital showcase: /preview/uk-gmb-301\n\nWould you be open to reviewing this with your clinic management?`,
-        timestamp: '5 hours ago',
-        previewUrl: '/preview/uk-gmb-301',
-      },
-      {
-        id: 'msg-6',
-        sender: 'client',
-        senderName: 'Dr. Charlotte Bell',
-        senderEmail: 'consultations@kensingtonaesthetic.co.uk',
-        subject: 'Re: Exclusive Harley Street Digital Storefront for Kensington Aesthetic Medicine',
-        content: `Dear SAMVERO Team,\n\nThank you for your thoughtful email. The preview website reflects the luxury, discreet aesthetic we maintain on Harley Street.\n\nI am presenting our digital roadmap to our partners tomorrow morning. Could you email over a PDF overview of your pricing packages and any references from other UK clinics?\n\nWarm regards,\nDr. Charlotte Bell\nMedical Director`,
-        timestamp: '2 hours ago',
-        sentiment: 'positive',
-      },
-    ],
-  },
-];
+// In-memory thread storage for active session (zero mock data: initialized empty, populated by genuine outreach)
+let inboxThreads: EmailThread[] = [];
 
 export function getInboxThreads(): EmailThread[] {
   return inboxThreads;
@@ -207,32 +85,19 @@ export function simulateClientReply(threadId: string): { success: boolean; threa
     voiceNote?: VoiceNoteData;
   }> = [
     {
-      content: `Hi Sameer!\n\nI reviewed the live website draft you sent over and I'm very impressed with the speed and layout. Can you send over a contract and pricing breakdown? We want to get started next week.\n\nBest,\n${thread.contactPerson}`,
+      content: `Hello!\n\nI reviewed the live website draft you sent over and I'm very impressed with the speed and layout. Can you send over a contract and pricing breakdown? We want to get started next week.\n\nBest,\n${thread.contactPerson}`,
       snippet: 'Very impressed with the website draft! Can you send pricing?',
       sentiment: 'positive',
     },
     {
-      content: `Hello,\n\nThanks for following up. Are you available for a 15-minute phone or WhatsApp consultation tomorrow afternoon? I also sent a brief voice note with clinic timing.\n\nCheers,\n${thread.contactPerson}`,
-      snippet: 'Available for a 15-minute consultation tomorrow? (Sent voice memo)',
+      content: `Hello,\n\nThanks for following up. Are you available for a 15-minute consultation tomorrow afternoon?\n\nCheers,\n${thread.contactPerson}`,
+      snippet: 'Available for a 15-minute consultation tomorrow?',
       sentiment: 'booking',
-      voiceNote: {
-        url: '/audio/dr-zeeshan-voicenote.wav',
-        durationSeconds: 15,
-      },
     },
     {
-      content: `Hey Sameer,\n\nWe reviewed the vector logo concepts and the interactive prototype you synthesized for us. Absolutely stellar work! I have attached our specification sheet below. What are your rates and delivery timeline to finalize this?\n\nRegards,\n${thread.contactPerson}`,
-      snippet: 'Attached spec sheet & loved prototype! What are your rates?',
+      content: `Hello,\n\nWe reviewed the proposal and prototype you shared. What are your rates and delivery timeline to finalize this?\n\nRegards,\n${thread.contactPerson}`,
+      snippet: 'Loved the proposal & prototype! What are your rates?',
       sentiment: 'pricing',
-      attachments: [
-        {
-          id: `att-client-${Date.now()}`,
-          name: `${thread.businessName.replace(/[^a-zA-Z0-9]/g, '_')}_Specs.pdf`,
-          size: '1.9 MB',
-          type: 'pdf',
-          url: '/docs/Client_Specification_Guidelines.pdf',
-        },
-      ],
     },
   ];
 
@@ -265,7 +130,7 @@ export function simulateClientReply(threadId: string): { success: boolean; threa
 }
 
 /**
- * Sends a reply back to the client from Sameerly / SAMVERO
+ * Sends a reply back to the client
  */
 export function sendReplyToClient(
   threadId: string, 
@@ -283,8 +148,8 @@ export function sendReplyToClient(
   const userReply: EmailMessage = {
     id: `msg-reply-${Date.now()}`,
     sender: 'user',
-    senderName: 'SAMVERO Partner Director',
-    senderEmail: 'outreach@samvero.com',
+    senderName: 'Outreach Specialist',
+    senderEmail: process.env.SMTP_FROM || 'outreach@samvero.com',
     subject: `Re: Digital Proposal Discussion - ${thread.businessName}`,
     content: contentText,
     timestamp: 'Just now',
@@ -328,7 +193,6 @@ export function deleteMessageFromThread(
   if (mode === 'permanent') {
     thread.messages.splice(msgIndex, 1);
   } else {
-    // Delete for everyone: recall text and revoke files/audio/links
     targetMsg.isDeletedForEveryone = true;
     targetMsg.deletedAt = 'Just now';
     targetMsg.deletedBy = targetMsg.sender === 'user' ? 'You' : targetMsg.senderName;

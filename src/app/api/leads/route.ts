@@ -8,6 +8,7 @@ import { loadAllStoredLeads, persistDiscoveredLeads, deleteStoredLead, updateSto
 import { executeCentralLeadPipeline } from '@/lib/pipeline/central-lead-pipeline';
 import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
 import { calculateExplainableLeadScore } from '@/lib/explainable-scoring';
+import { matchesCountry } from '@/lib/country-matcher';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,7 +46,7 @@ export async function GET(request: NextRequest) {
 
     const isFilteredSearch = (country !== 'all') || (category !== 'all') || (city && city.length > 0) || (query && query.length > 0);
     const matchingCount = allLeads.filter((l) => {
-      if (country !== 'all' && l.country?.toLowerCase() !== country.toLowerCase()) return false;
+      if (country !== 'all' && !matchesCountry(l.country, l.city, l.address, country, l.contact?.phone)) return false;
       if (city && !l.city?.toLowerCase().includes(city.toLowerCase())) return false;
       if (category !== 'all' && !l.category?.toLowerCase().includes(category.toLowerCase())) return false;
       if (query) {
@@ -87,7 +88,7 @@ export async function GET(request: NextRequest) {
 
     // Attach real assigned user attribution and canonical user workspace status to each lead
     allLeads = allLeads.map((lead) => {
-      const assignedUser = getLeadAssignedUser(lead.id);
+      const assignedUser = getLeadAssignedUser(lead.id) || (lead.assignedToUserId ? getPortalUserById(lead.assignedToUserId) : undefined);
       const uState = userStates[lead.id];
       const currentStatus = uState?.status || 'New Lead';
       return {
@@ -96,8 +97,8 @@ export async function GET(request: NextRequest) {
         approachedAt: uState?.approachedAt,
         lastContactDate: uState?.lastContactDate,
         nextFollowupDate: uState?.nextFollowupDate,
-        assignedToUserId: assignedUser?.id,
-        assignedToUserName: assignedUser?.name,
+        assignedToUserId: assignedUser?.id || lead.assignedToUserId || undefined,
+        assignedToUserName: assignedUser?.name || lead.assignedToUserName || undefined,
       };
     });
 
@@ -165,7 +166,7 @@ export async function GET(request: NextRequest) {
 
     // Apply country filter
     if (country !== 'all') {
-      allLeads = allLeads.filter((l) => l.country?.toLowerCase() === country.toLowerCase());
+      allLeads = allLeads.filter((l) => matchesCountry(l.country, l.city, l.address, country, l.contact?.phone));
     }
 
     // Apply city filter
@@ -276,10 +277,10 @@ export async function GET(request: NextRequest) {
         totalJobs: deduplicatedLeads.filter((l) => l.type === 'job').length,
         newBusinesses: deduplicatedLeads.filter((l) => l.businessAge?.isNew).length,
         noWebsiteOpportunity: deduplicatedLeads.filter((l) => !l.contact?.hasWebsite).length,
-        uaeLeads: deduplicatedLeads.filter((l) => l.country === 'UAE').length,
-        pakistanLeads: deduplicatedLeads.filter((l) => l.country === 'Pakistan').length,
-        usLeads: deduplicatedLeads.filter((l) => l.country === 'US').length,
-        ukLeads: deduplicatedLeads.filter((l) => l.country === 'UK').length,
+        uaeLeads: deduplicatedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, 'UAE', l.contact?.phone)).length,
+        pakistanLeads: deduplicatedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, 'Pakistan', l.contact?.phone)).length,
+        usLeads: deduplicatedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, 'US', l.contact?.phone)).length,
+        ukLeads: deduplicatedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, 'UK', l.contact?.phone)).length,
       },
     });
   } catch (error: any) {

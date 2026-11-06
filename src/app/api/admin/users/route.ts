@@ -86,17 +86,19 @@ export async function POST(request: NextRequest) {
 
     if (action === 'assign_lead') {
       const { leadId, userId } = body;
-      if (!leadId || !userId) {
+      if (!leadId) {
         return NextResponse.json(
-          { success: false, error: 'leadId and userId are required' },
+          { success: false, error: 'leadId is required' },
           { status: 400 }
         );
       }
 
-      const result = assignLeadToUser(leadId, userId);
+      const result = assignLeadToUser(leadId, userId || undefined);
       return NextResponse.json({
         success: true,
-        message: `Lead successfully assigned exclusively to ${result.userName}`,
+        message: result.userName
+          ? `Lead successfully assigned exclusively to ${result.userName}`
+          : 'Lead returned to unassigned pool',
         result,
         users: getPortalUsers(),
       });

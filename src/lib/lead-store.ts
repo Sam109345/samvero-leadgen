@@ -10,7 +10,6 @@ import {
 // Global in-memory registry of all leads (streaming + live discovered + user-created)
 const leadsRegistry = new Map<string, Lead>();
 
-// Initialize strictly from real stored leads in persistent storage (zero mock data)
 try {
   const initialStored = loadAllStoredLeads();
   initialStored.forEach((lead) => {
@@ -18,9 +17,6 @@ try {
       leadsRegistry.set(lead.id.toLowerCase(), lead);
     }
   });
-  if (initialStored.length > 0) {
-    initializeDefaultAssignments(initialStored);
-  }
 } catch (e) {
   console.warn('Failed to initialize leadsRegistry from persistent store:', e);
 }
@@ -46,11 +42,11 @@ export function getLeadById(id: string): Lead | undefined {
 
   if (!lead) return undefined;
 
-  const assignedUser = getLeadAssignedUser(lead.id);
+  const assignedUser = getLeadAssignedUser(lead.id) || (lead.assignedToUserId ? getPortalUserById(lead.assignedToUserId) : undefined);
   return {
     ...lead,
-    assignedToUserId: assignedUser?.id,
-    assignedToUserName: assignedUser?.name,
+    assignedToUserId: assignedUser?.id || lead.assignedToUserId || undefined,
+    assignedToUserName: assignedUser?.name || lead.assignedToUserName || undefined,
   };
 }
 
@@ -65,11 +61,11 @@ export function getAllRegisteredLeads(): Lead[] {
   } catch {}
 
   return Array.from(leadsRegistry.values()).map((lead) => {
-    const assignedUser = getLeadAssignedUser(lead.id);
+    const assignedUser = getLeadAssignedUser(lead.id) || (lead.assignedToUserId ? getPortalUserById(lead.assignedToUserId) : undefined);
     return {
       ...lead,
-      assignedToUserId: assignedUser?.id,
-      assignedToUserName: assignedUser?.name,
+      assignedToUserId: assignedUser?.id || lead.assignedToUserId || undefined,
+      assignedToUserName: assignedUser?.name || lead.assignedToUserName || undefined,
     };
   });
 }

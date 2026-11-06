@@ -677,6 +677,14 @@ export const SPECIALIZED_WEB_PLATFORMS: PlatformDefinition[] = [
 // 7. Pakistan-Based Platforms
 export const PAKISTAN_PLATFORMS: PlatformDefinition[] = [
   {
+    id: 'kamaion',
+    name: 'Kamaion Pakistan',
+    website: 'https://kamaion.com',
+    category: 'pakistan',
+    purpose: 'Pakistani freelance services, gig marketplace, and remote talent exchange.',
+    liveStatus: 'direct_portal',
+  },
+  {
     id: 'rozee',
     name: 'Rozee.pk',
     website: 'https://www.rozee.pk',

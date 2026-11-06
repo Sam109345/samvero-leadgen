@@ -40,6 +40,7 @@ import {
 
 import { persistDiscoveredLeads } from '../leads-persistent-store';
 import { calculateExplainableLeadScore } from '../explainable-scoring';
+import { MULTI_PLATFORM_ADAPTERS } from '../integrations/multi-platform-adapters';
 
 export interface PipelineSearchQuery {
   query?: string;
@@ -237,6 +238,11 @@ async function executeSinglePlatformDiscovery(
 
     if (pId === 'reddit') {
       const leads = await fetchLiveRedditJobs({ limit });
+      return { leads };
+    }
+
+    if (MULTI_PLATFORM_ADAPTERS[pId]) {
+      const leads = await MULTI_PLATFORM_ADAPTERS[pId].search({ query, category, country, city, limit });
       return { leads };
     }
 

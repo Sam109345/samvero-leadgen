@@ -218,16 +218,24 @@ export function toggleGlobalUser(id: string, isGlobal: boolean): PortalUser | un
 }
 
 /**
- * Assigns a lead exclusively to a specific user.
+ * Assigns a lead exclusively to a specific user, or unassigns it if userId is empty.
  * Overwrites any previous user assignment so no two staff members have the same lead!
  */
-export function assignLeadToUser(leadId: string, userId: string): { success: boolean; leadId: string; userId: string; userName: string } {
+export function assignLeadToUser(leadId: string, userId?: string | null): { success: boolean; leadId: string; userId?: string; userName?: string } {
+  if (!userId) {
+    leadAssignmentIndex.delete(leadId);
+    return {
+      success: true,
+      leadId,
+    };
+  }
+
   const targetUser = portalUsers.find((u) => u.id === userId);
   if (!targetUser) {
     throw new Error(`User with ID ${userId} not found`);
   }
 
-  // Remove previous assignment from index
+  // Set exclusive assignment in index
   leadAssignmentIndex.set(leadId, userId);
 
   return {
@@ -236,6 +244,14 @@ export function assignLeadToUser(leadId: string, userId: string): { success: boo
     userId,
     userName: targetUser.name,
   };
+}
+
+/**
+ * Removes assignment for a specific lead, returning it to the unassigned pool.
+ */
+export function unassignLead(leadId: string): { success: boolean; leadId: string } {
+  leadAssignmentIndex.delete(leadId);
+  return { success: true, leadId };
 }
 
 /**
@@ -333,10 +349,11 @@ export function getUserAssignedLeadIds(userId: string): string[] {
 }
 
 /**
- * Pre-assigns initial balanced distribution so each staff user starts with exclusive leads
+ * Optional manual lead distribution helper.
+ * Leads remain Unassigned by default unless explicitly assigned by an administrator or claimed by a user.
  */
-export function initializeDefaultAssignments(allLeads: Lead[]): void {
-  if (leadAssignmentIndex.size > 0) return;
+export function initializeDefaultAssignments(allLeads: Lead[], force: boolean = false): void {
+  if (!force || leadAssignmentIndex.size > 0) return;
 
   const staff = portalUsers.filter((u) => !u.isGlobalUser && u.role === 'staff');
   if (staff.length === 0) return;

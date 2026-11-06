@@ -44,6 +44,8 @@ export interface FreelancerFiltersSidebarProps {
   onCategoryChange: (cat: string) => void;
   onResetFilters: () => void;
   totalFilteredCount: number;
+  onSearchNearMe?: () => void;
+  isSearchingNearMe?: boolean;
 }
 
 export default function FreelancerFiltersSidebar({
@@ -71,6 +73,8 @@ export default function FreelancerFiltersSidebar({
   onCategoryChange,
   onResetFilters,
   totalFilteredCount,
+  onSearchNearMe,
+  isSearchingNearMe = false,
 }: FreelancerFiltersSidebarProps) {
   const [mobileExpanded, setMobileExpanded] = React.useState(false);
 
@@ -257,6 +261,7 @@ export default function FreelancerFiltersSidebar({
           </optgroup>
 
           <optgroup label="7. Pakistan Market Platforms">
+            <option value="Kamaion">Kamaion Pakistan</option>
             <option value="Rozee.pk">Rozee.pk</option>
             <option value="Mustakbil">Mustakbil</option>
             <option value="BrightSpyre">BrightSpyre</option>
@@ -265,6 +270,22 @@ export default function FreelancerFiltersSidebar({
           </optgroup>
         </select>
       </div>
+
+      {/* Near Me Local Discovery Button */}
+      {onSearchNearMe && (
+        <div className="pt-0.5 pb-1">
+          <button
+            type="button"
+            onClick={onSearchNearMe}
+            disabled={isSearchingNearMe}
+            className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-98 cursor-pointer disabled:opacity-60"
+            title="Scan businesses near your physical location via Google Places & OSM"
+          >
+            <MapPin className={`w-3.5 h-3.5 ${isSearchingNearMe ? 'animate-bounce text-amber-300' : 'text-white'}`} />
+            <span>{isSearchingNearMe ? 'Detecting Location...' : '📍 Near Me (Local Businesses)'}</span>
+          </button>
+        </div>
+      )}
 
       {/* 2. Country / Territory */}
       <div className="space-y-1.5">

@@ -363,12 +363,10 @@ export default function FreelancerJobCard({
             <span>WhatsApp Ready</span>
           </button>
         )}
-        {lead.assignedToUserName && (
-          <span className="flex items-center gap-1 text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 px-2.5 py-0.5 rounded text-[11px] font-bold border border-indigo-200 dark:border-indigo-800/60 ml-auto">
-            <UserCheck className="w-3.5 h-3.5" />
-            <span>Assigned: {lead.assignedToUserName}</span>
-          </span>
-        )}
+        <span className="flex items-center gap-1 text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-[#1a2638] px-2.5 py-0.5 rounded text-[11px] font-semibold border border-slate-200 dark:border-[#24334a] ml-auto">
+          <UserCheck className="w-3.5 h-3.5 text-[#007FED]" />
+          <span>{lead.assignedToUserName ? `Assigned: ${lead.assignedToUserName}` : lead.assignedToUserId ? `Assigned: ${lead.assignedToUserId}` : 'Unassigned'}</span>
+        </span>
       </div>
 
       {/* 6. Bottom Action Footer Row */}

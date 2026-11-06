@@ -8,6 +8,7 @@ import { matchesPlatformCategory, PlatformCategoryId } from './platform-director
 import { persistDiscoveredLeads } from './leads-persistent-store';
 import { searchOpenCorporatesLeads } from './integrations/clients/opencorporates';
 import { searchGitHubLeads } from './integrations/clients/github';
+import { matchesCountry, normalizeCountryName } from './country-matcher';
 
 interface LiveSearchOptions {
   query?: string;
@@ -500,17 +501,46 @@ export async function fetchLiveRemotiveJobs(options: LiveSearchOptions = {}): Pr
 /**
  * 4. Fetch live local businesses from OpenStreetMap Nominatim
  */
+export function resolveNominatimCategory(query?: string, category?: string): string {
+  if (query && query.trim()) return query.trim();
+  if (!category || category === 'all' || category.toLowerCase() === 'local business') {
+    return 'commercial';
+  }
+  const cLower = category.toLowerCase();
+  if (cLower.includes('clinic') || cLower.includes('health') || cLower.includes('dental')) return 'clinic';
+  if (cLower.includes('software') || cLower.includes('web') || cLower.includes('tech') || cLower.includes('app')) return 'software';
+  if (cLower.includes('restaurant') || cLower.includes('cafe') || cLower.includes('food')) return 'restaurant';
+  if (cLower.includes('store') || cLower.includes('retail') || cLower.includes('shop') || cLower.includes('mart')) return 'shop';
+  if (cLower.includes('hotel') || cLower.includes('resort')) return 'hotel';
+  return category;
+}
+
 export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}): Promise<Lead[]> {
   const { query = '', city = 'Lahore', country = 'Pakistan', category = 'Local Business', limit = 10 } = options;
 
   try {
-    const targetCat = query || category || 'commercial';
+    const isPakistan = country?.toLowerCase() === 'pakistan' || country?.toLowerCase() === 'pk';
+    const isUae = country?.toLowerCase() === 'uae' || country?.toLowerCase() === 'ae';
+    const isUk = country?.toLowerCase() === 'uk' || country?.toLowerCase() === 'gb';
+    const isUs = country?.toLowerCase() === 'us' || country?.toLowerCase() === 'usa';
+
+    let countryCodeParam = '';
+    if (isPakistan) countryCodeParam = '&countrycodes=pk';
+    else if (isUae) countryCodeParam = '&countrycodes=ae';
+    else if (isUk) countryCodeParam = '&countrycodes=gb';
+    else if (isUs) countryCodeParam = '&countrycodes=us';
+
+    let targetCat = resolveNominatimCategory(query, category);
+    if (targetCat === 'commercial' && isPakistan) {
+      targetCat = 'hospital';
+    }
+
     const locTokens = [city, country].filter(Boolean);
     const searchTerm = locTokens.length > 0 ? `${targetCat}, ${locTokens.join(', ')}` : targetCat;
-    const apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
+    const apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`;
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 4500);
+    const timeout = setTimeout(() => controller.abort(), 8000);
 
     const res = await fetch(apiUrl, {
       signal: controller.signal,
@@ -521,20 +551,24 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
     });
     clearTimeout(timeout);
 
-    if (!res.ok) return [];
-
-    let places = await res.json();
+    let places = res.ok ? await res.json() : [];
     if (!Array.isArray(places) || places.length === 0) {
-      // Fallback query without country if empty
-      if (city) {
+      // Fallback query across high-yield commercial sectors
+      const fallbackCategories = isPakistan 
+        ? ['hospital', 'clinic', 'technology', 'store', 'restaurant']
+        : [targetCat, 'clinic', 'hospital', 'store', 'commercial'];
+
+      for (const fbCat of fallbackCategories) {
+        const targetCity = city || (isPakistan ? 'Lahore' : 'London');
         try {
-          const fallbackRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${targetCat} ${city}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}`, {
+          const fallbackRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${fbCat} ${targetCity}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`, {
             headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' }
           });
           if (fallbackRes.ok) {
             const fallbackData = await fallbackRes.json();
             if (Array.isArray(fallbackData) && fallbackData.length > 0) {
               places = fallbackData;
+              break;
             }
           }
         } catch {}
@@ -562,6 +596,7 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
 
       const finalEmail = osmEmail || resolved.email;
       const finalPhone = rawPhone || resolved.phone;
+      const normalizedCountry = normalizeCountryName(country, city, fullAddress, finalPhone) as LeadCountry;
 
       const base: Lead = {
         id: `live-osm-${place.place_id || idx}`,
@@ -570,7 +605,7 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         type: 'gmb',
         platform: 'Google My Business',
         category: (category as any) || 'Local Business',
-        country: (country as any) || 'Pakistan',
+        country: normalizedCountry,
         city,
         address: fullAddress,
         businessAge: {
@@ -586,7 +621,7 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
         contact: {
           email: finalEmail,
           phone: finalPhone,
-          whatsapp: finalPhone ? cleanWhatsAppDigits(resolved.whatsapp || finalPhone, country as LeadCountry) : undefined,
+          whatsapp: finalPhone ? cleanWhatsAppDigits(resolved.whatsapp || finalPhone, normalizedCountry) : undefined,
           website: hasWebsite ? rawWebsite : undefined,
           hasWebsite,
           gmbUrl: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + ' ' + city)}`,
@@ -732,9 +767,10 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
   // Determine local search targets based on requested country and city
   const localSearchTargets: { city: string; country: string }[] = [];
   if (country && country !== 'all') {
-    if (country === 'Pakistan') {
+    if (matchesCountry('Pakistan', undefined, undefined, country)) {
       localSearchTargets.push({ city: city || 'Lahore', country: 'Pakistan' });
-      if (!city) localSearchTargets.push({ city: 'Karachi', country: 'Pakistan' });
+      localSearchTargets.push({ city: city ? city : 'Karachi', country: 'Pakistan' });
+      if (!city) localSearchTargets.push({ city: 'Islamabad', country: 'Pakistan' });
     } else if (country === 'UAE') {
       localSearchTargets.push({ city: city || 'Dubai', country: 'UAE' });
     } else if (country === 'UK') {
@@ -748,6 +784,7 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     // Default multi-national coverage: Pakistan, UAE, UK, US
     localSearchTargets.push(
       { city: 'Lahore', country: 'Pakistan' },
+      { city: 'Karachi', country: 'Pakistan' },
       { city: 'Dubai', country: 'UAE' },
       { city: 'London', country: 'UK' },
       { city: 'New York', country: 'US' }
@@ -847,8 +884,8 @@ function filterLeads(
   let filtered = [...leads];
 
   if (options.country && options.country !== 'all' && options.country !== 'Global') {
-    filtered = filtered.filter(
-      (l) => l.country.toLowerCase() === options.country!.toLowerCase()
+    filtered = filtered.filter((l) =>
+      matchesCountry(l.country, l.city, l.address, options.country, l.contact?.phone)
     );
   }
 

@@ -836,8 +836,10 @@ export default function ClientInboxView({
                 );
               })
             ) : (
-              <div className="p-8 text-center text-xs text-slate-400">
-                No matching conversations found.
+              <div className="p-8 text-center text-xs text-slate-400 space-y-2">
+                <Mail className="w-8 h-8 text-slate-300 dark:text-slate-600 mx-auto" />
+                <p className="font-semibold text-slate-600 dark:text-slate-300">No client messages yet</p>
+                <p className="text-[11px] text-slate-400">When you send a proposal or pitch a lead, conversations will appear here.</p>
               </div>
             )}
           </div>
@@ -1401,8 +1403,14 @@ export default function ClientInboxView({
           </div>
         </>
         ) : (
-          <div className="flex-1 flex items-center justify-center text-xs text-slate-400">
-            Select a conversation to view thread.
+          <div className="flex-1 flex flex-col items-center justify-center p-8 text-center text-xs text-slate-400 space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-blue-50 dark:bg-slate-800 flex items-center justify-center text-[#1877F2]">
+              <MessageSquare className="w-7 h-7" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-700 dark:text-slate-200">No Conversation Selected</h4>
+            <p className="max-w-sm text-slate-500 dark:text-slate-400 text-[11px]">
+              Active discussions with prospective clients, email thread replies, and project inquiries will be displayed here in real time.
+            </p>
           </div>
         )}
       </div>

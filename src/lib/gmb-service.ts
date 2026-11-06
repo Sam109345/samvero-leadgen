@@ -5,6 +5,7 @@ import { generateClientWebsite } from './website-generator';
 import { searchAndEnrichBusinessContact, resolveLegitimateBusinessEmail } from './gmb-email-resolver';
 import { fetchLiveLocalBusinesses } from './live-lead-aggregator';
 import { loadAllStoredLeads } from './leads-persistent-store';
+import { matchesCountry } from './country-matcher';
 
 interface GmbSearchParams {
   query?: string;
@@ -119,7 +120,7 @@ export async function fetchGmbLeads(params: GmbSearchParams): Promise<Lead[]> {
   let results = loadAllStoredLeads().filter((lead) => lead.type === 'gmb');
 
   if (country && country !== 'Global' && country !== 'all') {
-    results = results.filter((lead) => lead.country.toLowerCase() === country.toLowerCase());
+    results = results.filter((lead) => matchesCountry(lead.country, lead.city, lead.address, country, lead.contact?.phone));
   }
 
   if (city && city !== 'all') {

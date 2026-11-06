@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { Lead, PipelineStage } from '@/types';
+import { matchesCountry } from '@/lib/country-matcher';
 import FreelancerSubNav, { LeadCategoryTab } from './FreelancerSubNav';
 import FreelancerFiltersSidebar from './FreelancerFiltersSidebar';
 import FreelancerJobCard from './FreelancerJobCard';
@@ -16,7 +17,8 @@ import {
   Inbox, 
   CheckCircle2,
   TrendingUp,
-  Flame
+  Flame,
+  MapPin
 } from 'lucide-react';
 
 export interface FreelancerLeadFeedProps {
@@ -98,6 +100,79 @@ export default function FreelancerLeadFeed({
 
   const [feedLeads, setFeedLeads] = useState<Lead[]>(leads);
   const [isLiveSearching, setIsLiveSearching] = useState(false);
+  const [isSearchingNearMe, setIsSearchingNearMe] = useState(false);
+  const [nearMeToast, setNearMeToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null);
+
+  const handleSearchNearMe = async () => {
+    setIsSearchingNearMe(true);
+    setNearMeToast({ message: 'Requesting device coordinates & scanning nearby businesses...', type: 'info' });
+
+    const runNearMeFetch = async (lat?: number, lon?: number) => {
+      try {
+        const params = new URLSearchParams();
+        if (lat !== undefined && lon !== undefined) {
+          params.set('lat', String(lat));
+          params.set('lon', String(lon));
+        }
+        if (selectedCity.trim()) params.set('city', selectedCity.trim());
+        if (selectedCountry !== 'all') params.set('country', selectedCountry);
+        if (searchQuery.trim()) params.set('q', searchQuery.trim());
+        if (categoryFilter !== 'all') params.set('category', categoryFilter);
+
+        const res = await fetch(`/api/leads/near-me?${params.toString()}`);
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
+          setFeedLeads((prev) => {
+            const idMap = new Map<string, Lead>();
+            data.leads.forEach((l: Lead) => idMap.set(l.id.toLowerCase(), l));
+            prev.forEach((l) => {
+              if (!idMap.has(l.id.toLowerCase())) {
+                idMap.set(l.id.toLowerCase(), l);
+              }
+            });
+            return Array.from(idMap.values());
+          });
+
+          const locLabel = data.location?.locality || data.location?.city || 'your area';
+          setNearMeToast({
+            message: `📍 Successfully discovered ${data.count} verified businesses in ${locLabel}!`,
+            type: 'success',
+          });
+          setTimeout(() => setNearMeToast(null), 5500);
+        } else {
+          setNearMeToast({
+            message: data.message || 'No nearby businesses found for this location.',
+            type: 'info',
+          });
+          setTimeout(() => setNearMeToast(null), 4500);
+        }
+      } catch (err: any) {
+        setNearMeToast({
+          message: 'Unable to connect to nearby places directory.',
+          type: 'error',
+        });
+        setTimeout(() => setNearMeToast(null), 4500);
+      } finally {
+        setIsSearchingNearMe(false);
+      }
+    };
+
+    if (typeof window !== 'undefined' && 'geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          runNearMeFetch(pos.coords.latitude, pos.coords.longitude);
+        },
+        (err) => {
+          console.warn('Geolocation denied or unavailable, searching local city region:', err.message);
+          runNearMeFetch();
+        },
+        { timeout: 7000, enableHighAccuracy: false }
+      );
+    } else {
+      runNearMeFetch();
+    }
+  };
 
   // Sync initialSearchQuery if changed externally (e.g. from TopNavigation)
   useEffect(() => {
@@ -232,26 +307,8 @@ export default function FreelancerLeadFeed({
 
       // 3. Country Filter
       if (selectedCountry !== 'all') {
-        const country = (lead.country || '').toLowerCase();
-        const city = (lead.city || '').toLowerCase();
-        const address = (lead.address || '').toLowerCase();
-        if (selectedCountry === 'UAE') {
-          if (!country.includes('uae') && !country.includes('emirates') && !city.includes('dubai') && !city.includes('abu dhabi') && !address.includes('dubai') && !address.includes('uae')) {
-            return false;
-          }
-        } else if (selectedCountry === 'Pakistan') {
-          const pkCities = ['lahore', 'karachi', 'islamabad', 'rawalpindi', 'faisalabad', 'peshawar', 'multan'];
-          if (!country.includes('pakistan') && !pkCities.some((c) => city.includes(c) || address.includes(c))) {
-            return false;
-          }
-        } else if (selectedCountry === 'US') {
-          if (!country.includes('us') && !country.includes('united states') && !country.includes('usa') && !city.includes('new york') && !city.includes('san francisco') && !address.includes('us')) {
-            return false;
-          }
-        } else if (selectedCountry === 'UK') {
-          if (!country.includes('uk') && !country.includes('united kingdom') && !city.includes('london') && !address.includes('london') && !address.includes('england')) {
-            return false;
-          }
+        if (!matchesCountry(lead.country, lead.city, lead.address, selectedCountry, lead.contact?.phone)) {
+          return false;
         }
       }
 
@@ -483,11 +540,37 @@ export default function FreelancerLeadFeed({
               onCategoryChange={setCategoryFilter}
               onResetFilters={handleResetFilters}
               totalFilteredCount={filteredLeads.length}
+              onSearchNearMe={handleSearchNearMe}
+              isSearchingNearMe={isSearchingNearMe}
             />
 
             {/* Center: Main Project Feed */}
             <div className="flex-1 min-w-0 space-y-4 w-full">
               
+              {/* Near Me Feedback Banner */}
+              {nearMeToast && (
+                <div
+                  className={`p-3 rounded-xl text-xs font-bold flex items-center justify-between gap-2 shadow-xs transition-all animate-in fade-in ${
+                    nearMeToast.type === 'success'
+                      ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800'
+                      : nearMeToast.type === 'error'
+                      ? 'bg-rose-50 dark:bg-rose-950/80 text-rose-800 dark:text-rose-200 border border-rose-300 dark:border-rose-800'
+                      : 'bg-blue-50 dark:bg-blue-950/80 text-blue-800 dark:text-blue-200 border border-blue-300 dark:border-blue-800'
+                  }`}
+                >
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 shrink-0 text-[#3B6FF5]" />
+                    <span>{nearMeToast.message}</span>
+                  </div>
+                  <button
+                    onClick={() => setNearMeToast(null)}
+                    className="text-[11px] underline opacity-75 hover:opacity-100"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
+
               {/* Feed Header Stats Row */}
               <div className="flex items-center justify-between bg-white dark:bg-[#111927] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
                 <div className="flex items-center gap-2">
@@ -508,6 +591,17 @@ export default function FreelancerLeadFeed({
                 </div>
 
                 <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={handleSearchNearMe}
+                    disabled={isSearchingNearMe}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/60 dark:hover:bg-blue-900/60 text-[#3B6FF5] text-xs font-bold border border-blue-200 dark:border-blue-800 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+                    title="Scan businesses near your physical location"
+                  >
+                    <MapPin className={`w-3.5 h-3.5 ${isSearchingNearMe ? 'animate-bounce text-amber-500' : 'text-[#3B6FF5]'}`} />
+                    <span>{isSearchingNearMe ? 'Locating...' : 'Near Me'}</span>
+                  </button>
+
                   {onRefreshLiveLeads && (
                     <button
                       onClick={onRefreshLiveLeads}

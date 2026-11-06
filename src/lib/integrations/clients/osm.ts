@@ -3,6 +3,7 @@ import { TestConnectionResult } from '../types';
 import { updatePlatformState } from '../credentials-store';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 import { calculateExplainableLeadScore } from '@/lib/explainable-scoring';
+import { normalizeCountryName } from '@/lib/country-matcher';
 
 export async function testOsmConnection(): Promise<TestConnectionResult> {
   const start = Date.now();
@@ -59,6 +60,20 @@ export async function testOsmConnection(): Promise<TestConnectionResult> {
   }
 }
 
+function getOsmCategory(query?: string, category?: string, isPakistan?: boolean): string {
+  if (query && query.trim()) return query.trim();
+  if (!category || category === 'all' || category.toLowerCase() === 'local business') {
+    return isPakistan ? 'hospital' : 'clinic';
+  }
+  const cLower = category.toLowerCase();
+  if (cLower.includes('clinic') || cLower.includes('health') || cLower.includes('dental')) return 'clinic';
+  if (cLower.includes('software') || cLower.includes('web') || cLower.includes('tech') || cLower.includes('app')) return 'software';
+  if (cLower.includes('restaurant') || cLower.includes('cafe') || cLower.includes('food')) return 'restaurant';
+  if (cLower.includes('store') || cLower.includes('retail') || cLower.includes('shop') || cLower.includes('mart')) return 'shop';
+  if (cLower.includes('hotel') || cLower.includes('resort')) return 'hotel';
+  return category;
+}
+
 export async function searchOsmLeads(options: {
   query?: string;
   city?: string;
@@ -68,15 +83,20 @@ export async function searchOsmLeads(options: {
 }): Promise<Lead[]> {
   const { query, city, country, category, limit = 10 } = options;
 
-  // Build clean comma-separated search terms for Nominatim.
-  // Nominatim treats "in" as a literal address component, causing queries like "clinic in Lahore" to fail with 0 results.
-  // Using comma-delimited tokens ("clinic, Lahore, Pakistan") resolves directly to POI entries.
-  const targetCategory = query || category || 'clinic';
-  const locationTokens = [city, country].filter(Boolean);
+  const cLower = (country || '').toLowerCase();
+  const isPakistan = cLower === 'pakistan' || cLower === 'pk';
+  const targetCategory = getOsmCategory(query, category, isPakistan);
+  const locationTokens = [city || (isPakistan ? 'Lahore' : undefined), country].filter(Boolean);
   const searchTerm = locationTokens.length > 0 ? `${targetCategory}, ${locationTokens.join(', ')}` : targetCategory;
 
+  let countryCodeParam = '';
+  if (isPakistan) countryCodeParam = '&countrycodes=pk';
+  else if (cLower === 'uae' || cLower === 'ae') countryCodeParam = '&countrycodes=ae';
+  else if (cLower === 'uk' || cLower === 'gb') countryCodeParam = '&countrycodes=gb';
+  else if (cLower === 'us' || cLower === 'usa') countryCodeParam = '&countrycodes=us';
+
   try {
-    let apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
+    let apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`;
     let res = await fetch(apiUrl, {
       headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' },
       signal: AbortSignal.timeout(8000),
@@ -85,8 +105,9 @@ export async function searchOsmLeads(options: {
     let places = res.ok ? await res.json() : [];
 
     // Fallback: If comma search returned empty and city was provided, try city + category without country
-    if ((!Array.isArray(places) || places.length === 0) && city) {
-      const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${targetCategory} ${city}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}`;
+    if ((!Array.isArray(places) || places.length === 0) && (city || country)) {
+      const fallbackTarget = city || (cLower === 'pakistan' ? 'Lahore' : 'London');
+      const fallbackUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${targetCategory} ${fallbackTarget}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`;
       const fallbackRes = await fetch(fallbackUrl, {
         headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' },
         signal: AbortSignal.timeout(8000),
@@ -107,7 +128,7 @@ export async function searchOsmLeads(options: {
       const name = place.name || place.display_name.split(',')[0].trim();
       const address = place.display_name;
       const resolvedCity = place.address?.city || place.address?.town || place.address?.municipality || place.address?.suburb || city || 'London';
-      const resolvedCountry = place.address?.country || country || 'UK';
+      const resolvedCountry = normalizeCountryName(place.address?.country || country, resolvedCity, address);
 
       const rawWebsite = place.extratags?.website || place.extratags?.['contact:website'] || place.extratags?.url;
       const rawPhone = place.extratags?.phone || place.extratags?.['contact:phone'];
