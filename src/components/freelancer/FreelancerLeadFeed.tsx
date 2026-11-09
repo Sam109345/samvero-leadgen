@@ -18,7 +18,16 @@ import {
   CheckCircle2,
   TrendingUp,
   Flame,
-  MapPin
+  MapPin,
+  History,
+  ChevronLeft,
+  ChevronRight,
+  Play,
+  Pause,
+  Clock,
+  Undo2,
+  X,
+  AlertCircle
 } from 'lucide-react';
 
 export interface FreelancerLeadFeedProps {
@@ -78,18 +87,27 @@ export default function FreelancerLeadFeed({
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
 
-  // Streaming radar 10s simulation
+  // Streaming radar 10s simulation & Auto-Rotation
   const [secondsLeft, setSecondsLeft] = useState(10);
   const [isStreaming, setIsStreaming] = useState(true);
   const [soundEnabled, setSoundEnabled] = useState(false);
 
-  useEffect(() => {
-    if (!isStreaming) return;
-    const interval = setInterval(() => {
-      setSecondsLeft((prev) => (prev <= 1 ? 10 : prev - 1));
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isStreaming]);
+  // History Navigation (Max 5 Snapshots)
+  interface FeedSnapshot {
+    id: string;
+    timestamp: number;
+    timeString: string;
+    leads: Lead[];
+    summary: string;
+  }
+  const [historyStack, setHistoryStack] = useState<FeedSnapshot[]>([]);
+  const [historyStep, setHistoryStep] = useState<number>(0); // 0 = Live, 1..5 = Previous steps
+  const [liveLeadsBackup, setLiveLeadsBackup] = useState<Lead[]>([]);
+  const [isHistoryModalOpen, setIsHistoryModalOpen] = useState(false);
+
+  // Near Me Active state
+  const [nearMeActive, setNearMeActive] = useState(false);
+  const [nearMeLeadsCount, setNearMeLeadsCount] = useState(0);
 
   // Sync initialCategoryTab if changed externally
   useEffect(() => {
@@ -102,6 +120,143 @@ export default function FreelancerLeadFeed({
   const [isLiveSearching, setIsLiveSearching] = useState(false);
   const [isSearchingNearMe, setIsSearchingNearMe] = useState(false);
   const [nearMeToast, setNearMeToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null);
+
+  // Auto-Cycle leads every 10 seconds
+  const cycleNextLeads = async () => {
+    if (feedLeads.length === 0) return;
+
+    // 1. Save current snapshot to history (max 5 snapshots)
+    setHistoryStack((prev) => {
+      const snap: FeedSnapshot = {
+        id: `snap_${Date.now()}`,
+        timestamp: Date.now(),
+        timeString: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+        leads: [...feedLeads],
+        summary:
+          feedLeads
+            .slice(0, 3)
+            .map((l) => l.businessName || l.title)
+            .filter(Boolean)
+            .join(', ') || `${feedLeads.length} leads`,
+      };
+      return [snap, ...prev.slice(0, 4)];
+    });
+
+    // 2. Fetch fresh live leads from APIs or rotate feed order
+    try {
+      const res = await fetch(`/api/leads?refresh=live&limit=30`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
+          setFeedLeads((prev) => {
+            // Keep pinned near-me leads at the top
+            const pinned = prev.filter(
+              (l) =>
+                (l as any).isNearMe ||
+                (l as any).pinnedNearMe ||
+                (l.tags || []).some((t) => t.toLowerCase().includes('near me'))
+            );
+            const others = data.leads.filter(
+              (l: Lead) => !pinned.some((p) => p.id.toLowerCase() === l.id.toLowerCase())
+            );
+            return [...pinned, ...others];
+          });
+          return;
+        }
+      }
+    } catch {
+      // Ignore network errors in auto-stream
+    }
+
+    // Fallback rotation if network is offline or throttled:
+    setFeedLeads((prev) => {
+      if (prev.length <= 2) return prev;
+      const pinned = prev.filter(
+        (l) =>
+          (l as any).isNearMe ||
+          (l as any).pinnedNearMe ||
+          (l.tags || []).some((t) => t.toLowerCase().includes('near me'))
+      );
+      const unpinned = prev.filter(
+        (l) =>
+          !(l as any).isNearMe &&
+          !(l as any).pinnedNearMe &&
+          !(l.tags || []).some((t) => t.toLowerCase().includes('near me'))
+      );
+      if (unpinned.length <= 1) return prev;
+      const cycled = [unpinned[unpinned.length - 1], ...unpinned.slice(0, unpinned.length - 1)];
+      return [...pinned, ...cycled];
+    });
+  };
+
+  // 10-second countdown interval (pauses when user navigates Previous history)
+  useEffect(() => {
+    if (!isStreaming || historyStep > 0) return;
+
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => {
+        if (prev <= 1) {
+          cycleNextLeads();
+          return 10;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isStreaming, historyStep, feedLeads]);
+
+  // History Navigation Handlers
+  const handleGoPrevious = () => {
+    if (historyStep >= 5 || historyStack.length === 0 || historyStep >= historyStack.length) {
+      return;
+    }
+    const nextStep = historyStep + 1;
+    if (historyStep === 0) {
+      setLiveLeadsBackup(feedLeads);
+    }
+    const targetSnapshot = historyStack[nextStep - 1];
+    if (targetSnapshot) {
+      setHistoryStep(nextStep);
+      setFeedLeads(targetSnapshot.leads);
+    }
+  };
+
+  const handleGoNext = () => {
+    if (historyStep <= 0) return;
+    const nextStep = historyStep - 1;
+    if (nextStep === 0) {
+      setHistoryStep(0);
+      if (liveLeadsBackup.length > 0) {
+        setFeedLeads(liveLeadsBackup);
+      }
+    } else {
+      const targetSnapshot = historyStack[nextStep - 1];
+      if (targetSnapshot) {
+        setHistoryStep(nextStep);
+        setFeedLeads(targetSnapshot.leads);
+      }
+    }
+  };
+
+  const handleJumpToLive = () => {
+    setHistoryStep(0);
+    if (liveLeadsBackup.length > 0) {
+      setFeedLeads(liveLeadsBackup);
+    }
+    setIsStreaming(true);
+    setSecondsLeft(10);
+  };
+
+  const handleRestoreSnapshot = (snapshotIndex: number) => {
+    if (snapshotIndex < 0 || snapshotIndex >= historyStack.length) return;
+    if (historyStep === 0) {
+      setLiveLeadsBackup(feedLeads);
+    }
+    setHistoryStep(snapshotIndex + 1);
+    setFeedLeads(historyStack[snapshotIndex].leads);
+    setIsHistoryModalOpen(false);
+  };
 
   const handleSearchNearMe = async () => {
     setIsSearchingNearMe(true);
@@ -123,9 +278,16 @@ export default function FreelancerLeadFeed({
         const data = await res.json();
 
         if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
+          const formattedNearMeLeads = data.leads.map((l: Lead) => ({
+            ...l,
+            isNearMe: true,
+            pinnedNearMe: true,
+            tags: Array.from(new Set([...(l.tags || []), 'Near Me', 'Local Business'])),
+          }));
+
           setFeedLeads((prev) => {
             const idMap = new Map<string, Lead>();
-            data.leads.forEach((l: Lead) => idMap.set(l.id.toLowerCase(), l));
+            formattedNearMeLeads.forEach((l: Lead) => idMap.set(l.id.toLowerCase(), l));
             prev.forEach((l) => {
               if (!idMap.has(l.id.toLowerCase())) {
                 idMap.set(l.id.toLowerCase(), l);
@@ -134,12 +296,16 @@ export default function FreelancerLeadFeed({
             return Array.from(idMap.values());
           });
 
+          setNearMeActive(true);
+          setNearMeLeadsCount(formattedNearMeLeads.length);
+          setActiveCategoryTab('all');
+
           const locLabel = data.location?.locality || data.location?.city || 'your area';
           setNearMeToast({
-            message: `📍 Successfully discovered ${data.count} verified businesses in ${locLabel}!`,
+            message: `📍 Successfully discovered ${data.count} verified businesses in ${locLabel} — Pinned to Top!`,
             type: 'success',
           });
-          setTimeout(() => setNearMeToast(null), 5500);
+          setTimeout(() => setNearMeToast(null), 6000);
         } else {
           setNearMeToast({
             message: data.message || 'No nearby businesses found for this location.',
@@ -362,6 +528,22 @@ export default function FreelancerLeadFeed({
 
       return true;
     }).sort((a, b) => {
+      // Priority 1: Near Me Businesses ALWAYS pinned to the absolute top (ooper ooper)
+      const aNear = Boolean(
+        (a as any).isNearMe ||
+        (a as any).pinnedNearMe ||
+        (a.tags || []).some((t) => t.toLowerCase().includes('near me')) ||
+        a.businessAge?.label?.toLowerCase().includes('near me')
+      );
+      const bNear = Boolean(
+        (b as any).isNearMe ||
+        (b as any).pinnedNearMe ||
+        (b.tags || []).some((t) => t.toLowerCase().includes('near me')) ||
+        b.businessAge?.label?.toLowerCase().includes('near me')
+      );
+      if (aNear && !bNear) return -1;
+      if (!aNear && bNear) return 1;
+
       if (sortBy === 'quality_desc') {
         const scoreA = a.scoreBreakdown?.leadQualityScore ?? (a as any).score ?? 0;
         const scoreB = b.scoreBreakdown?.leadQualityScore ?? (b as any).score ?? 0;
@@ -564,9 +746,40 @@ export default function FreelancerLeadFeed({
                   </div>
                   <button
                     onClick={() => setNearMeToast(null)}
-                    className="text-[11px] underline opacity-75 hover:opacity-100"
+                    className="text-[11px] underline opacity-75 hover:opacity-100 cursor-pointer"
                   >
                     Dismiss
+                  </button>
+                </div>
+              )}
+
+              {/* Pinned Near Me Alert Banner */}
+              {nearMeActive && (
+                <div className="p-3.5 rounded-xl bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 border-2 border-emerald-500/50 dark:border-emerald-500/40 flex items-center justify-between gap-3 shadow-sm animate-in fade-in">
+                  <div className="flex items-center gap-2.5">
+                    <span className="flex h-3 w-3 relative">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                    <div>
+                      <p className="text-xs font-extrabold text-emerald-950 dark:text-emerald-200 flex items-center gap-1.5">
+                        <span>📍 Pinned to Top: {nearMeLeadsCount} Local Businesses Discovered Near You</span>
+                      </p>
+                      <p className="text-[11px] text-emerald-800/80 dark:text-emerald-300/80">
+                        Local GMB entities and physical businesses are pinned at the very top of your feed with prominent badges.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setNearMeActive(false);
+                      setFeedLeads((prev) =>
+                        prev.map((l) => ({ ...l, isNearMe: false, pinnedNearMe: false }))
+                      );
+                    }}
+                    className="text-[11px] font-bold px-3 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-900/60 dark:hover:bg-emerald-800 text-emerald-900 dark:text-emerald-200 transition cursor-pointer"
+                  >
+                    Clear Pinned
                   </button>
                 </div>
               )}
@@ -619,6 +832,196 @@ export default function FreelancerLeadFeed({
                   )}
                 </div>
               </div>
+
+              {/* 10-Second Auto-Rotation Bar & Previous/History Navigation Toolbar */}
+              <div className="flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-[#111927] p-3 rounded-xl border border-slate-200 dark:border-slate-800 text-xs shadow-xs">
+                {/* Left: 10s Countdown or History Banner */}
+                <div className="flex items-center gap-2.5">
+                  {historyStep === 0 ? (
+                    <div className="flex items-center gap-2">
+                      <span className="flex h-2.5 w-2.5 relative">
+                        {isStreaming && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>}
+                        <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isStreaming ? 'bg-emerald-500' : 'bg-amber-500'}`}></span>
+                      </span>
+                      <span className="font-semibold text-slate-700 dark:text-slate-300">
+                        {isStreaming ? (
+                          <>
+                            Auto-rotating leads in{' '}
+                            <span className="font-mono font-bold text-[#3B6FF5] text-xs px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900">
+                              {secondsLeft}s
+                            </span>
+                          </>
+                        ) : (
+                          <span className="text-amber-600 dark:text-amber-400 font-bold">Auto-rotation Paused</span>
+                        )}
+                      </span>
+                      <button
+                        onClick={() => setIsStreaming(!isStreaming)}
+                        className="p-1 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-700 dark:text-slate-400 transition cursor-pointer"
+                        title={isStreaming ? 'Pause 10s auto-rotation' : 'Resume 10s auto-rotation'}
+                      >
+                        {isStreaming ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 text-emerald-500" />}
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-300 px-2.5 py-1 rounded-lg">
+                      <Clock className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
+                      <span className="font-bold">Viewing History Snapshot (Step {historyStep}/5)</span>
+                      <button
+                        onClick={handleJumpToLive}
+                        className="ml-1 text-[11px] underline font-extrabold text-[#3B6FF5] hover:text-blue-700 cursor-pointer"
+                      >
+                        Return to Live Feed
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: Previous (max 5 times), Next, Live, and History Modal */}
+                <div className="flex items-center gap-1.5">
+                  {/* Previous Button (max 5 steps) */}
+                  <button
+                    onClick={handleGoPrevious}
+                    disabled={historyStep >= 5 || historyStack.length === 0 || historyStep >= historyStack.length}
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed transition cursor-pointer"
+                    title={
+                      historyStep >= 5
+                        ? 'Maximum limit of 5 previous steps reached'
+                        : historyStack.length === 0
+                        ? 'History is empty. Wait for first 10-second rotation.'
+                        : 'Go to previous batch of leads (up to 5 times)'
+                    }
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span>Previous {historyStep > 0 ? `(${historyStep}/5)` : ''}</span>
+                  </button>
+
+                  {/* Next Button (when browsing history) */}
+                  {historyStep > 0 && (
+                    <button
+                      onClick={handleGoNext}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs transition cursor-pointer"
+                      title="Move forward towards live leads"
+                    >
+                      <span>Next</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+
+                  {/* Return to Live Button */}
+                  {historyStep > 0 && (
+                    <button
+                      onClick={handleJumpToLive}
+                      className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition shadow-xs cursor-pointer"
+                      title="Resume live 10-second feed stream"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Live</span>
+                    </button>
+                  )}
+
+                  {/* Dedicated History Option Button */}
+                  <button
+                    onClick={() => setIsHistoryModalOpen(true)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/60 dark:hover:bg-purple-900/60 text-purple-700 dark:text-purple-300 font-bold text-xs border border-purple-200 dark:border-purple-800 transition cursor-pointer"
+                    title="Open Lead Batch History Drawer (Last 5 Snapshots)"
+                  >
+                    <History className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
+                    <span>History</span>
+                    {historyStack.length > 0 && (
+                      <span className="w-4 h-4 rounded-full bg-purple-600 text-white text-[10px] flex items-center justify-center font-mono">
+                        {historyStack.length}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              {/* History Modal / Drawer */}
+              {isHistoryModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in">
+                  <div className="bg-white dark:bg-[#111927] border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden">
+                    <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#162032]">
+                      <div className="flex items-center gap-2">
+                        <History className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                        <div>
+                          <h3 className="font-bold text-sm text-slate-900 dark:text-white">Lead Feed Snapshots History</h3>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                            Previous 5 auto-saved lead batches (capped at 5 steps)
+                          </p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => setIsHistoryModalOpen(false)}
+                        className="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-700 dark:text-slate-400 cursor-pointer"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+
+                    <div className="p-4 space-y-3 max-h-[60vh] overflow-y-auto">
+                      {historyStack.length === 0 ? (
+                        <div className="text-center py-8 text-slate-500 dark:text-slate-400 space-y-2">
+                          <History className="w-8 h-8 mx-auto text-slate-400 opacity-60" />
+                          <p className="text-xs font-semibold">No previous snapshots recorded yet.</p>
+                          <p className="text-[11px] text-slate-400">
+                            Snapshots are automatically saved every 10 seconds during auto-rotation (up to 5 batches).
+                          </p>
+                        </div>
+                      ) : (
+                        historyStack.map((snap, idx) => (
+                          <div
+                            key={snap.id}
+                            className={`p-3.5 rounded-xl border transition flex items-center justify-between gap-3 ${
+                              historyStep === idx + 1
+                                ? 'border-[#3B6FF5] bg-blue-50/60 dark:bg-blue-950/40 ring-1 ring-blue-500'
+                                : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-[#141e30]'
+                            }`}
+                          >
+                            <div className="min-w-0 flex-1 space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span className="font-mono text-xs font-bold text-purple-600 dark:text-purple-400 bg-purple-100 dark:bg-purple-950/80 px-2 py-0.5 rounded-md">
+                                  Step {idx + 1} of 5
+                                </span>
+                                <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 font-medium">
+                                  <Clock className="w-3 h-3" />
+                                  {snap.timeString}
+                                </span>
+                                {historyStep === idx + 1 && (
+                                  <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900/60 px-1.5 py-0.5 rounded">
+                                    Current View
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                {snap.leads.length} leads: {snap.summary}
+                              </p>
+                            </div>
+                            <button
+                              onClick={() => handleRestoreSnapshot(idx)}
+                              className="shrink-0 px-3 py-1.5 rounded-lg bg-[#3B6FF5] hover:bg-blue-600 text-white text-xs font-bold transition active:scale-95 cursor-pointer"
+                            >
+                              Restore
+                            </button>
+                          </div>
+                        ))
+                      )}
+                    </div>
+
+                    <div className="p-3 bg-slate-50 dark:bg-[#162032] border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                        {historyStack.length}/5 snapshots in memory
+                      </span>
+                      <button
+                        onClick={() => setIsHistoryModalOpen(false)}
+                        className="px-3.5 py-1.5 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 text-xs font-bold cursor-pointer"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Feed List */}
               {isLoading && filteredLeads.length === 0 ? (

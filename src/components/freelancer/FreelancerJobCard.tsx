@@ -152,8 +152,14 @@ export default function FreelancerJobCard({
     }
   };
 
+  const isNearMe = (lead as any).isNearMe || (lead.tags || []).some((t) => t.includes('Near Me')) || lead.businessAge?.label?.includes('Near Me');
+
   return (
-    <article className="freelancer-project-card p-5 sm:p-5.5 bg-white dark:bg-[#141d2b] border border-slate-200/90 dark:border-[#223147] rounded-xl hover:border-[#007FED] dark:hover:border-[#007FED] hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-200 flex flex-col justify-between gap-3.5 group">
+    <article className={`freelancer-project-card p-5 sm:p-5.5 bg-white dark:bg-[#141d2b] rounded-xl hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-200 flex flex-col justify-between gap-3.5 group ${
+      isNearMe
+        ? 'border-2 border-emerald-500 dark:border-emerald-500 shadow-md shadow-emerald-500/10'
+        : 'border border-slate-200/90 dark:border-[#223147] hover:border-[#007FED] dark:hover:border-[#007FED]'
+    }`}>
       
       {/* 1. Origin Platform & Service Discipline Header Bar */}
       <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-slate-100 dark:border-[#24334a]">
@@ -211,6 +217,14 @@ export default function FreelancerJobCard({
             {(lead.timeAgo?.includes('sec') || lead.postedAt?.includes('sec') || lead.postedAt?.includes('Just now')) && (
               <span className="bg-[#ff0055] text-white text-[10px] font-extrabold px-1.5 py-0.2 rounded uppercase animate-pulse">
                 NEW
+              </span>
+            )}
+
+            {/* Near Me Badge */}
+            {((lead as any).isNearMe || (lead.tags || []).some((t) => t.includes('Near Me')) || lead.businessAge?.label?.includes('Near Me')) && (
+              <span className="inline-flex items-center gap-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded shadow-sm animate-pulse">
+                <MapPin className="w-3 h-3 text-amber-300 fill-current" />
+                <span>📍 NEAR YOU</span>
               </span>
             )}
 
