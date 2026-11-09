@@ -12,6 +12,9 @@ import { matchesCountry } from '@/lib/country-matcher';
 
 export const dynamic = 'force-dynamic';
 
+let lastLiveFetchAt = 0;
+const LIVE_SYNC_INTERVAL_MS = 30 * 1000; // 30s auto-refresh interval for live external APIs
+
 export async function GET(request: NextRequest) {
   try {
     const effectiveUser = getEffectiveUser(request);
@@ -60,8 +63,11 @@ export async function GET(request: NextRequest) {
     // If store is low on records, lacks job/marketplace leads, forceRefresh requested, or user searched a specific query/location with few stored matches:
     // execute live central pipeline and real-time aggregators across active online APIs and persist new leads
     const hasJobLeads = allLeads.some((l) => l.type === 'job' || l.platform === 'Freelancer.com' || l.platform === 'Remote OK' || l.platform === 'Remotive' || l.platform === 'Reddit');
-    const shouldFetchLive = allLeads.length < 50 || !hasJobLeads || forceRefresh || (isFilteredSearch && matchingCount < 8);
+    const timeSinceLastFetch = Date.now() - lastLiveFetchAt;
+    const isStale = timeSinceLastFetch > LIVE_SYNC_INTERVAL_MS;
+    const shouldFetchLive = forceRefresh || isStale || allLeads.length < 50 || !hasJobLeads || (isFilteredSearch && matchingCount < 8);
     if (shouldFetchLive) {
+      lastLiveFetchAt = Date.now();
       try {
         await Promise.allSettled([
           getMasterRealTimeLiveLeads({

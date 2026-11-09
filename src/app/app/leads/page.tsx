@@ -58,6 +58,11 @@ export default function CustomerLeadsPage() {
   useEffect(() => {
     fetchSavedLeads();
     fetchLiveLeads();
+    // Automatically poll real-time platforms every 40 seconds
+    const interval = setInterval(() => {
+      fetchLiveLeads();
+    }, 40000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleSaveToWorkspace = async (lead: Lead) => {

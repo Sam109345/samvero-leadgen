@@ -138,8 +138,13 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
     }
   }, []);
 
+  // Fetch live leads immediately on mount, and automatically poll every 40 seconds
   useEffect(() => {
-    fetchLeads();
+    fetchLeads(true);
+    const interval = setInterval(() => {
+      fetchLeads(true);
+    }, 40000);
+    return () => clearInterval(interval);
   }, [fetchLeads]);
 
   // Load saved shortlist

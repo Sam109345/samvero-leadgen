@@ -104,7 +104,7 @@ let memoryCache: {
   timestamp: number;
 } | null = null;
 
-const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+const CACHE_TTL_MS = 30 * 1000; // 30 seconds freshness window for real-time live APIs
 
 /**
  * Buffer of live streaming leads for the 10-second ticker
@@ -791,7 +791,7 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     );
   }
 
-  // Fetch in parallel across all 7 real-time active sources
+  // Fetch in parallel across all real-time active sources with resilient error isolation
   const [
     flProjects,
     roJobs,
@@ -801,14 +801,26 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
     ghLeads,
     ...localBatches
   ] = await Promise.all([
-    fetchLiveFreelancerProjects({ query, category, limit: 15 }),
-    fetchLiveRemoteOkJobs({ limit: 15 }),
-    fetchLiveRemotiveJobs({ query, category, limit: 12 }),
-    fetchLiveRedditJobs({ limit: 10 }),
-    searchOpenCorporatesLeads({ query: query || category || 'Software', category, country: country !== 'all' ? country : undefined, limit: 8 }),
-    searchGitHubLeads({ query: query || undefined, category: category || undefined, city: city || undefined, country: country !== 'all' ? country : undefined, limit: 8 }),
+    fetchLiveFreelancerProjects({ query, category, limit: 25 }).catch((e) => {
+      console.warn('Freelancer fetch warning:', e?.message);
+      return [];
+    }),
+    fetchLiveRemoteOkJobs({ limit: 20 }).catch((e) => {
+      console.warn('Remote OK fetch warning:', e?.message);
+      return [];
+    }),
+    fetchLiveRemotiveJobs({ query, category, limit: 16 }).catch((e) => {
+      console.warn('Remotive fetch warning:', e?.message);
+      return [];
+    }),
+    fetchLiveRedditJobs({ limit: 14 }).catch((e) => {
+      console.warn('Reddit fetch warning:', e?.message);
+      return [];
+    }),
+    searchOpenCorporatesLeads({ query: query || category || 'Software', category, country: country !== 'all' ? country : undefined, limit: 8 }).catch(() => []),
+    searchGitHubLeads({ query: query || undefined, category: category || undefined, city: city || undefined, country: country !== 'all' ? country : undefined, limit: 8 }).catch(() => []),
     ...localSearchTargets.map(target =>
-      fetchLiveLocalBusinesses({ query, city: target.city, country: target.country, category, limit: 6 })
+      fetchLiveLocalBusinesses({ query, city: target.city, country: target.country, category, limit: 6 }).catch(() => [])
     )
   ]);
 

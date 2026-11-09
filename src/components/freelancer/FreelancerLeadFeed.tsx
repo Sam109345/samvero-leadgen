@@ -572,10 +572,14 @@ export default function FreelancerLeadFeed({
               )}
 
               {/* Feed Header Stats Row */}
-              <div className="flex items-center justify-between bg-white dark:bg-[#111927] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white dark:bg-[#111927] p-4 rounded-xl border border-slate-200 dark:border-slate-800 shadow-xs">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="font-extrabold text-sm sm:text-base text-slate-900 dark:text-white">
                     {filteredLeads.length} {filteredLeads.length === 1 ? 'Opportunity' : 'Opportunities'} Available
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Auto-Updating Live Feed
                   </span>
                   {activeCategoryTab !== 'all' && (
                     <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#3B6FF5] border border-blue-200 dark:border-blue-900 capitalize">
@@ -606,10 +610,11 @@ export default function FreelancerLeadFeed({
                     <button
                       onClick={onRefreshLiveLeads}
                       disabled={isRefreshingLive}
-                      className="text-xs text-[#3B6FF5] hover:underline font-bold flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                      className="px-3.5 py-1.5 bg-[#3B6FF5] hover:bg-blue-600 text-white text-xs font-bold rounded-lg shadow-sm flex items-center gap-1.5 transition active:scale-95 disabled:opacity-50 cursor-pointer"
+                      title="Fetch brand-new live client projects from Freelancer, RemoteOK, Remotive & Reddit"
                     >
                       <Sparkles className={`w-3.5 h-3.5 ${isRefreshingLive ? 'animate-spin' : ''}`} />
-                      <span>{isRefreshingLive ? 'Refreshing...' : 'Live Sync'}</span>
+                      <span>{isRefreshingLive ? 'Fetching Live APIs...' : 'Fetch New Leads'}</span>
                     </button>
                   )}
                 </div>
