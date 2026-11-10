@@ -1,5 +1,1603 @@
 [
   {
+    "id": "live-fl-40811481",
+    "title": "Local Booking SEO Optimization",
+    "businessName": "Local Booking SEO Optimizati...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Graphic Design",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$30 - $250 USD",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "My website nubexcloud.ae already converts well once visitors arrive, but it’s buried when people in a single city search for services like mine. I want it to rank noticeably higher for very specific, local intent keywords so those nearby users end up booking appointments directly through the site or our built-in scheduling tool. Here’s what I need from you: ...",
+    "postedAt": "1m ago",
+    "timeAgo": "1m ago",
+    "contact": {
+      "email": "contact@localbookingseoo.com",
+      "phone": "+1 (415) 818-850",
+      "whatsapp": "15121885281",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/keyword-research/Local-Booking-SEO-Optimization"
+    },
+    "reviewCount": 25,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Graphic Design",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811481",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/keyword-research/Local-Booking-SEO-Optimization",
+    "incomingAt": 1794309701000,
+    "generatedWebsite": {
+      "slug": "site-local-booking-seo-optimizati",
+      "businessName": "Local Booking SEO Optimizati...",
+      "tagline": "Artisan Quality &bull; Handcrafted Perfection &bull; Fast Delivery",
+      "heroHeadline": "Discover Authentic Excellence Handcrafted for Connoisseurs",
+      "heroSubheadline": "Experience the finest selection of signature collections curated by Local Booking SEO Optimizati.... Ethically sourced, rigorously tested, and delivered directly to your doorstep in San Francisco and worldwide.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Founded with a relentless commitment to purity and heritage, Local Booking SEO Optimizati... blends traditional craftsmanship with modern luxury. We partner directly with artisan producers to bring you unparalleled quality without compromise.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "luxury-gold",
+      "createdAt": "Just now",
+      "isEcommerce": true,
+      "announcementText": "✨ Complimentary Express Shipping on all orders over $ 2,500 across US &bull; Use code SAMVERO15 for 15% off",
+      "valueProps": [
+        {
+          "title": "100% Pure & Certified",
+          "subtitle": "Lab-tested artisan botanical & material purity",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Same-Day Express Dispatch",
+          "subtitle": "Next-day doorstep arrival in San Francisco",
+          "icon": "Zap"
+        },
+        {
+          "title": "Zero-Risk Guarantee",
+          "subtitle": "30-day hassle-free returns & replacement",
+          "icon": "RotateCcw"
+        },
+        {
+          "title": "Direct WhatsApp Concierge",
+          "subtitle": "Real-time ordering & dedicated client support",
+          "icon": "MessageCircle"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod-1",
+          "name": "Imperial Reserve Blend (250g Tin)",
+          "price": "$ 2,450",
+          "oldPrice": "$ 2,900",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
+          "isNew": true,
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-2",
+          "name": "Artisan Botanical Infusion Pack",
+          "price": "$ 1,850",
+          "oldPrice": "$ 2,200",
+          "rating": 4.9,
+          "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        },
+        {
+          "id": "prod-3",
+          "name": "Handcrafted Heritage Ceramic Jar Set",
+          "price": "$ 3,800",
+          "oldPrice": "$ 4,500",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-4",
+          "name": "Connoisseur Tasting Box (4 Varieties)",
+          "price": "$ 4,200",
+          "oldPrice": "$ 5,000",
+          "rating": 4.8,
+          "image": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Master Blender Reserve Spotlight",
+        "subtitle": "Hand-Harvested at 6,000ft Above Sea Level",
+        "description": "Each leaf in our reserve selection is hand-picked at peak morning mist, slow-withered in cedar rooms, and sealed under inert atmosphere to lock in delicate floral terpenes.",
+        "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Zero artificial additives or chemical flavor spray",
+          "Certified organic soil test documentation included",
+          "Airtight gold-foil canisters with wax stamp seal",
+          "Same-day temperature controlled dispatch"
+        ],
+        "ctaText": "Claim Your Collector Batch &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Commercial Mass Grade vs. Artisan Reserve",
+          "metric": "3.4x Higher Antioxidant Density",
+          "beforeText": "Broken dust grades treated with synthetic flavor boosters",
+          "afterText": "Whole-leaf silver needle tips with natural floral honey notes",
+          "imageBefore": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Luxury Corporate Gifting Transformation",
+          "metric": "98% Client Re-order Rate",
+          "beforeText": "Generic factory corporate hampers forgotten within days",
+          "afterText": "Handmade velvet gift boxes engraved with client crest",
+          "imageBefore": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Ayesha Khan",
+          "role": "Verified Purchaser",
+          "quote": "The aroma and packaging of Local Booking SEO Optimizati... blew me away. Truly international standard luxury right here in San Francisco!",
+          "rating": 5,
+          "date": "3 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Hamza Farooq",
+          "role": "Private Collector",
+          "quote": "Ordered the Imperial Reserve set for my office. Every guest asks where I got it. Sensational quality.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Dr. Sarah Tariq",
+          "role": "Verified Buyer",
+          "quote": "Fast delivery, exquisite packaging, and the purest flavor I have experienced in years.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How long does delivery take to San Francisco?",
+          "answer": "Orders placed before 2:00 PM are dispatched the same day. Standard delivery takes 24 to 48 hours across major cities in US."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept Cash on Delivery (COD), Direct Bank Transfer, Visa, MasterCard, and Apple Pay."
+        },
+        {
+          "question": "Are your products 100% natural and preservative-free?",
+          "answer": "Yes! Absolutely zero artificial flavoring, additives, or preservatives are used in any of our blends or materials."
+        },
+        {
+          "question": "Do you offer custom corporate gift packages?",
+          "answer": "Yes, we curate custom engraved corporate hampers for executive events, weddings, and annual client appreciation gifts."
+        }
+      ],
+      "services": [
+        {
+          "title": "Artisan Purity Guarantee",
+          "description": "Small-batch harvested, tested, and sealed to preserve peak fragrance and flavor.",
+          "icon": "CheckCircle"
+        },
+        {
+          "title": "Custom Corporate Gifting",
+          "description": "Bespoke branded gift boxes, velvet ribbon packaging, and custom wax seals.",
+          "icon": "Gift"
+        },
+        {
+          "title": "Subscription Drop Program",
+          "description": "Receive fresh seasonal harvests delivered automatically to your home every month.",
+          "icon": "Calendar"
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811480",
+    "title": "Optimize Meta Ads for Qualified Taxi Leads",
+    "businessName": "Optimize Meta Ads for Qualif...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Meta Ads & Marketing",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "₹1,500 - ₹12,500 INR",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "# Meta Ads Expert Needed – Optimize Existing Taxi App Lead Generation Campaign **Company:** Ishsys Technologies **Project Type:** One-time campaign audit + optimization (potential ongoing work) We are looking for an experienced Meta Ads specialist to optimize our existing Facebook and Instagram advertising campaign for a white-label Taxi Booking App. ### Cur...",
+    "postedAt": "1m ago",
+    "timeAgo": "1m ago",
+    "contact": {
+      "email": "contact@optimizemetaadsf.com",
+      "phone": "+1 (415) 845-410",
+      "whatsapp": "15124541693",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/lead-generation/Optimize-Meta-Ads-for-Qualified"
+    },
+    "reviewCount": 3,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Meta Ads & Marketing",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811480",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/lead-generation/Optimize-Meta-Ads-for-Qualified",
+    "incomingAt": 1794309697000,
+    "generatedWebsite": {
+      "slug": "site-optimize-meta-ads-for-qualif",
+      "businessName": "Optimize Meta Ads for Qualif...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Optimize Meta Ads for Qualif... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Optimize Meta Ads for Qualif... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811478",
+    "title": "Pelatihan Freelancer Sosmed &Iklan",
+    "businessName": "Pelatihan Freelancer Sosmed ...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Social Media Management",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$15 - $25 USD",
+    "jobType": "Hourly",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "Saya baru di platform ini dan membutuhkan bimbingan praktis cara memakai Freelancer secara efektif, khususnya untuk proyek-proyek pemasaran dan administrasi. Fokus utama saya adalah: • Langkah demi langkah membuat proyek di Freelancer—mulai dari menulis deskripsi hingga memilih kategori yang tepat. • Strategi mencari dan menyeleksi freelancer terbaik di bida...",
+    "postedAt": "1m ago",
+    "timeAgo": "1m ago",
+    "contact": {
+      "email": "contact@pelatihanfreelan.com",
+      "phone": "+1 (415) 898-570",
+      "whatsapp": "15129857014",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/social-media-management/Pelatihan-Freelancer-Sosmed-Iklan"
+    },
+    "reviewCount": 4,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Social Media Management",
+      "Hourly"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811478",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/social-media-management/Pelatihan-Freelancer-Sosmed-Iklan",
+    "incomingAt": 1794309665000,
+    "generatedWebsite": {
+      "slug": "site-pelatihan-freelancer-sosmed",
+      "businessName": "Pelatihan Freelancer Sosmed ...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Pelatihan Freelancer Sosmed ... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Pelatihan Freelancer Sosmed ... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811477",
+    "title": "Design & Development of an Enterprise-Grade Autonomous AI Business Operating System",
+    "businessName": "Design & Development of an E...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Web Development",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "₹400 - ₹750 INR",
+    "jobType": "Hourly",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "# THE AUTONOMOUS BUSINESS ENGINE ## Engineering Self-Governing Digital Operations Beyond Traditional AI Automation ### Introduction: The End of Traditional Automation For years, automation meant connecting applications, configuring triggers, and executing predefined actions. But businesses are becoming more complex. Information changes continuously, customer...",
+    "postedAt": "2m ago",
+    "timeAgo": "2m ago",
+    "contact": {
+      "email": "contact@designdevelopmen.com",
+      "phone": "+1 (415) 868-380",
+      "whatsapp": "15126838964",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/machine-learning/Design-Development-Enterprise-Grade"
+    },
+    "reviewCount": 8,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Web Development",
+      "Hourly"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811477",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/machine-learning/Design-Development-Enterprise-Grade",
+    "incomingAt": 1794309605000,
+    "generatedWebsite": {
+      "slug": "site-design-development-of-an-e",
+      "businessName": "Design & Development of an E...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Design & Development of an E... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Design & Development of an E... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811467",
+    "title": "Accurate Document Retyping Needed",
+    "businessName": "Accurate Document Retyping N...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Web Development",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$250 - $750 USD",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "I have a batch of printed documents that need to be retyped from scratch. Accuracy is the priority; I’m looking for an exact transcription of every word, but I do NOT need the original formatting reproduced—plain text is fine. You may work in whichever editor you prefer (Word, Google Docs, or a simple .txt file); I’ll convert it on my end once the text is cl...",
+    "postedAt": "3m ago",
+    "timeAgo": "3m ago",
+    "contact": {
+      "email": "contact@accuratedocument.com",
+      "phone": "+1 (415) 886-030",
+      "whatsapp": "15128603683",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/transcription/Accurate-Document-Retyping-Needed"
+    },
+    "reviewCount": 20,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Web Development",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811467",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/transcription/Accurate-Document-Retyping-Needed",
+    "incomingAt": 1794309538000,
+    "generatedWebsite": {
+      "slug": "site-accurate-document-retyping-n",
+      "businessName": "Accurate Document Retyping N...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Accurate Document Retyping N... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Accurate Document Retyping N... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811472",
+    "title": "Business Strategist / Venture Builder for Idea Selection and Demand Testing",
+    "businessName": "Business Strategist / Ventur...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Web Development",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$2 - $8 USD",
+    "jobType": "Hourly",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "Business Strategist / Venture Builder for Idea Selection and Demand Testing I am at the idea stage and need help finding a good business idea and testing demand. I want hands-on business building, not only a prototype. My current starting points are a Japan-related idea and 19pine.ai/work, and I am unsure what to do with them. The Pulaski entrepreneur center...",
+    "postedAt": "4m ago",
+    "timeAgo": "4m ago",
+    "contact": {
+      "email": "contact@businessstrategi.com",
+      "phone": "+1 (415) 871-470",
+      "whatsapp": "15127147761",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/business-strategy/Business-Strategist-Venture-Builder-for"
+    },
+    "reviewCount": 4,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Web Development",
+      "Hourly"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811472",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/business-strategy/Business-Strategist-Venture-Builder-for",
+    "incomingAt": 1794309475000,
+    "generatedWebsite": {
+      "slug": "site-business-strategist-ventur",
+      "businessName": "Business Strategist / Ventur...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Business Strategist / Ventur... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Business Strategist / Ventur... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811464",
+    "title": "Arma Reforger Dev Team Needed",
+    "businessName": "Arma Reforger Dev Team Neede...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Graphic Design",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$30 - $250 USD",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "I’m building a brand-new Arma Reforger PvE milsim server and want to assemble a small, dependable team who can take the idea from concept to a smooth, public launch. First milestone My immediate priority is the technical backbone: full server setup, clean mod integration, and rock-solid stability. If crashes crop up or Enforce scripts misbehave, I need them ...",
+    "postedAt": "5m ago",
+    "timeAgo": "5m ago",
+    "contact": {
+      "email": "contact@armareforgerdevt.com",
+      "phone": "+1 (415) 849-830",
+      "whatsapp": "15124983184",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/game-development/Arma-Reforger-Dev-Team-Needed"
+    },
+    "reviewCount": 29,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Graphic Design",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811464",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/game-development/Arma-Reforger-Dev-Team-Needed",
+    "incomingAt": 1794309409000,
+    "generatedWebsite": {
+      "slug": "site-arma-reforger-dev-team-neede",
+      "businessName": "Arma Reforger Dev Team Neede...",
+      "tagline": "Artisan Quality &bull; Handcrafted Perfection &bull; Fast Delivery",
+      "heroHeadline": "Discover Authentic Excellence Handcrafted for Connoisseurs",
+      "heroSubheadline": "Experience the finest selection of signature collections curated by Arma Reforger Dev Team Neede.... Ethically sourced, rigorously tested, and delivered directly to your doorstep in San Francisco and worldwide.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Founded with a relentless commitment to purity and heritage, Arma Reforger Dev Team Neede... blends traditional craftsmanship with modern luxury. We partner directly with artisan producers to bring you unparalleled quality without compromise.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "luxury-gold",
+      "createdAt": "Just now",
+      "isEcommerce": true,
+      "announcementText": "✨ Complimentary Express Shipping on all orders over $ 2,500 across US &bull; Use code SAMVERO15 for 15% off",
+      "valueProps": [
+        {
+          "title": "100% Pure & Certified",
+          "subtitle": "Lab-tested artisan botanical & material purity",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Same-Day Express Dispatch",
+          "subtitle": "Next-day doorstep arrival in San Francisco",
+          "icon": "Zap"
+        },
+        {
+          "title": "Zero-Risk Guarantee",
+          "subtitle": "30-day hassle-free returns & replacement",
+          "icon": "RotateCcw"
+        },
+        {
+          "title": "Direct WhatsApp Concierge",
+          "subtitle": "Real-time ordering & dedicated client support",
+          "icon": "MessageCircle"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod-1",
+          "name": "Imperial Reserve Blend (250g Tin)",
+          "price": "$ 2,450",
+          "oldPrice": "$ 2,900",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
+          "isNew": true,
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-2",
+          "name": "Artisan Botanical Infusion Pack",
+          "price": "$ 1,850",
+          "oldPrice": "$ 2,200",
+          "rating": 4.9,
+          "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        },
+        {
+          "id": "prod-3",
+          "name": "Handcrafted Heritage Ceramic Jar Set",
+          "price": "$ 3,800",
+          "oldPrice": "$ 4,500",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-4",
+          "name": "Connoisseur Tasting Box (4 Varieties)",
+          "price": "$ 4,200",
+          "oldPrice": "$ 5,000",
+          "rating": 4.8,
+          "image": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Master Blender Reserve Spotlight",
+        "subtitle": "Hand-Harvested at 6,000ft Above Sea Level",
+        "description": "Each leaf in our reserve selection is hand-picked at peak morning mist, slow-withered in cedar rooms, and sealed under inert atmosphere to lock in delicate floral terpenes.",
+        "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Zero artificial additives or chemical flavor spray",
+          "Certified organic soil test documentation included",
+          "Airtight gold-foil canisters with wax stamp seal",
+          "Same-day temperature controlled dispatch"
+        ],
+        "ctaText": "Claim Your Collector Batch &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Commercial Mass Grade vs. Artisan Reserve",
+          "metric": "3.4x Higher Antioxidant Density",
+          "beforeText": "Broken dust grades treated with synthetic flavor boosters",
+          "afterText": "Whole-leaf silver needle tips with natural floral honey notes",
+          "imageBefore": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Luxury Corporate Gifting Transformation",
+          "metric": "98% Client Re-order Rate",
+          "beforeText": "Generic factory corporate hampers forgotten within days",
+          "afterText": "Handmade velvet gift boxes engraved with client crest",
+          "imageBefore": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Ayesha Khan",
+          "role": "Verified Purchaser",
+          "quote": "The aroma and packaging of Arma Reforger Dev Team Neede... blew me away. Truly international standard luxury right here in San Francisco!",
+          "rating": 5,
+          "date": "3 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Hamza Farooq",
+          "role": "Private Collector",
+          "quote": "Ordered the Imperial Reserve set for my office. Every guest asks where I got it. Sensational quality.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Dr. Sarah Tariq",
+          "role": "Verified Buyer",
+          "quote": "Fast delivery, exquisite packaging, and the purest flavor I have experienced in years.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How long does delivery take to San Francisco?",
+          "answer": "Orders placed before 2:00 PM are dispatched the same day. Standard delivery takes 24 to 48 hours across major cities in US."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept Cash on Delivery (COD), Direct Bank Transfer, Visa, MasterCard, and Apple Pay."
+        },
+        {
+          "question": "Are your products 100% natural and preservative-free?",
+          "answer": "Yes! Absolutely zero artificial flavoring, additives, or preservatives are used in any of our blends or materials."
+        },
+        {
+          "question": "Do you offer custom corporate gift packages?",
+          "answer": "Yes, we curate custom engraved corporate hampers for executive events, weddings, and annual client appreciation gifts."
+        }
+      ],
+      "services": [
+        {
+          "title": "Artisan Purity Guarantee",
+          "description": "Small-batch harvested, tested, and sealed to preserve peak fragrance and flavor.",
+          "icon": "CheckCircle"
+        },
+        {
+          "title": "Custom Corporate Gifting",
+          "description": "Bespoke branded gift boxes, velvet ribbon packaging, and custom wax seals.",
+          "icon": "Gift"
+        },
+        {
+          "title": "Subscription Drop Program",
+          "description": "Receive fresh seasonal harvests delivered automatically to your home every month.",
+          "icon": "Calendar"
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811470",
+    "title": "Targeted B2B Cold Email Outreach",
+    "businessName": "Targeted B2B Cold Email Outr...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Graphic Design",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "₹1,500 - ₹12,500 INR",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "I’m kicking off a trial cold-email campaign to introduce our premium furniture line to decision-makers in the hospitality and commercial sectors. For the next two weeks I need about 500 fresh, verified contacts collected and emailed each day. Scope • Audience focus: hotels, restaurants, cafés, resorts, offices and coworking spaces across the United Kingdom a...",
+    "postedAt": "6m ago",
+    "timeAgo": "6m ago",
+    "contact": {
+      "email": "contact@targetedb2bcolde.com",
+      "phone": "+1 (415) 847-560",
+      "whatsapp": "15124756936",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/lead-generation/Targeted-Cold-Email-Outreach"
+    },
+    "reviewCount": 4,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Graphic Design",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811470",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/lead-generation/Targeted-Cold-Email-Outreach",
+    "incomingAt": 1794309384000,
+    "generatedWebsite": {
+      "slug": "site-targeted-b2b-cold-email-outr",
+      "businessName": "Targeted B2B Cold Email Outr...",
+      "tagline": "Artisan Quality &bull; Handcrafted Perfection &bull; Fast Delivery",
+      "heroHeadline": "Discover Authentic Excellence Handcrafted for Connoisseurs",
+      "heroSubheadline": "Experience the finest selection of signature collections curated by Targeted B2B Cold Email Outr.... Ethically sourced, rigorously tested, and delivered directly to your doorstep in San Francisco and worldwide.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Founded with a relentless commitment to purity and heritage, Targeted B2B Cold Email Outr... blends traditional craftsmanship with modern luxury. We partner directly with artisan producers to bring you unparalleled quality without compromise.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "luxury-gold",
+      "createdAt": "Just now",
+      "isEcommerce": true,
+      "announcementText": "✨ Complimentary Express Shipping on all orders over $ 2,500 across US &bull; Use code SAMVERO15 for 15% off",
+      "valueProps": [
+        {
+          "title": "100% Pure & Certified",
+          "subtitle": "Lab-tested artisan botanical & material purity",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Same-Day Express Dispatch",
+          "subtitle": "Next-day doorstep arrival in San Francisco",
+          "icon": "Zap"
+        },
+        {
+          "title": "Zero-Risk Guarantee",
+          "subtitle": "30-day hassle-free returns & replacement",
+          "icon": "RotateCcw"
+        },
+        {
+          "title": "Direct WhatsApp Concierge",
+          "subtitle": "Real-time ordering & dedicated client support",
+          "icon": "MessageCircle"
+        }
+      ],
+      "products": [
+        {
+          "id": "prod-1",
+          "name": "Imperial Reserve Blend (250g Tin)",
+          "price": "$ 2,450",
+          "oldPrice": "$ 2,900",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
+          "isNew": true,
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-2",
+          "name": "Artisan Botanical Infusion Pack",
+          "price": "$ 1,850",
+          "oldPrice": "$ 2,200",
+          "rating": 4.9,
+          "image": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        },
+        {
+          "id": "prod-3",
+          "name": "Handcrafted Heritage Ceramic Jar Set",
+          "price": "$ 3,800",
+          "oldPrice": "$ 4,500",
+          "rating": 5,
+          "image": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80",
+          "isBestSeller": true
+        },
+        {
+          "id": "prod-4",
+          "name": "Connoisseur Tasting Box (4 Varieties)",
+          "price": "$ 4,200",
+          "oldPrice": "$ 5,000",
+          "rating": 4.8,
+          "image": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "isNew": true
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Master Blender Reserve Spotlight",
+        "subtitle": "Hand-Harvested at 6,000ft Above Sea Level",
+        "description": "Each leaf in our reserve selection is hand-picked at peak morning mist, slow-withered in cedar rooms, and sealed under inert atmosphere to lock in delicate floral terpenes.",
+        "image": "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Zero artificial additives or chemical flavor spray",
+          "Certified organic soil test documentation included",
+          "Airtight gold-foil canisters with wax stamp seal",
+          "Same-day temperature controlled dispatch"
+        ],
+        "ctaText": "Claim Your Collector Batch &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Commercial Mass Grade vs. Artisan Reserve",
+          "metric": "3.4x Higher Antioxidant Density",
+          "beforeText": "Broken dust grades treated with synthetic flavor boosters",
+          "afterText": "Whole-leaf silver needle tips with natural floral honey notes",
+          "imageBefore": "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Luxury Corporate Gifting Transformation",
+          "metric": "98% Client Re-order Rate",
+          "beforeText": "Generic factory corporate hampers forgotten within days",
+          "afterText": "Handmade velvet gift boxes engraved with client crest",
+          "imageBefore": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Ayesha Khan",
+          "role": "Verified Purchaser",
+          "quote": "The aroma and packaging of Targeted B2B Cold Email Outr... blew me away. Truly international standard luxury right here in San Francisco!",
+          "rating": 5,
+          "date": "3 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Hamza Farooq",
+          "role": "Private Collector",
+          "quote": "Ordered the Imperial Reserve set for my office. Every guest asks where I got it. Sensational quality.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Dr. Sarah Tariq",
+          "role": "Verified Buyer",
+          "quote": "Fast delivery, exquisite packaging, and the purest flavor I have experienced in years.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How long does delivery take to San Francisco?",
+          "answer": "Orders placed before 2:00 PM are dispatched the same day. Standard delivery takes 24 to 48 hours across major cities in US."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept Cash on Delivery (COD), Direct Bank Transfer, Visa, MasterCard, and Apple Pay."
+        },
+        {
+          "question": "Are your products 100% natural and preservative-free?",
+          "answer": "Yes! Absolutely zero artificial flavoring, additives, or preservatives are used in any of our blends or materials."
+        },
+        {
+          "question": "Do you offer custom corporate gift packages?",
+          "answer": "Yes, we curate custom engraved corporate hampers for executive events, weddings, and annual client appreciation gifts."
+        }
+      ],
+      "services": [
+        {
+          "title": "Artisan Purity Guarantee",
+          "description": "Small-batch harvested, tested, and sealed to preserve peak fragrance and flavor.",
+          "icon": "CheckCircle"
+        },
+        {
+          "title": "Custom Corporate Gifting",
+          "description": "Bespoke branded gift boxes, velvet ribbon packaging, and custom wax seals.",
+          "icon": "Gift"
+        },
+        {
+          "title": "Subscription Drop Program",
+          "description": "Receive fresh seasonal harvests delivered automatically to your home every month.",
+          "icon": "Calendar"
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
     "id": "live-fl-40811466",
     "title": "PDFs to Clean Word",
     "businessName": "PDFs to Clean Word Client",
