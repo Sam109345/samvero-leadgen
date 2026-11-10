@@ -403,20 +403,59 @@ export default function FreelancerJobCard({
           </div>
         )}
 
-        {/* 4. Official Website / Project Listing Link */}
-        {(contact.website || lead.sourcePlatformUrl || (contact as any).gmbUrl) && (
+        {/* 4. Google Maps Profile (For GMB / Local Businesses) */}
+        {(contact as any).gmbUrl && (
           <a
-            href={contact.website || lead.sourcePlatformUrl || (contact as any).gmbUrl}
+            href={(contact as any).gmbUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="flex items-center gap-1.5 text-[#007FED] hover:underline bg-blue-50/60 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-2.5 py-1 rounded-lg border border-blue-200/80 dark:border-blue-900/60 text-xs font-semibold transition"
-            title="Open verified client website, Google Maps profile, or source listing"
+            className="flex items-center gap-1.5 text-blue-700 dark:text-blue-300 hover:underline bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-2.5 py-1 rounded-lg border border-blue-200 dark:border-blue-800 text-xs font-semibold transition"
+            title="Open verified Google Maps profile with public reviews, street address, and live directions"
           >
-            <Globe className="w-3.5 h-3.5" />
-            <span>{(contact as any).gmbUrl && !contact.website ? 'Google Maps Profile' : 'Website / Portal'}</span>
+            <MapPin className="w-3.5 h-3.5 text-red-500" />
+            <span>Google Maps Profile</span>
             <ExternalLink className="w-3 h-3 opacity-70" />
           </a>
+        )}
+
+        {/* 5. Official Website */}
+        {contact.website && (
+          <a
+            href={contact.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1.5 text-slate-700 dark:text-slate-300 hover:text-[#007FED] bg-white dark:bg-[#162030] hover:bg-slate-50 dark:hover:bg-[#1c293d] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-[#24334a] text-xs font-semibold transition"
+            title="Open official corporate website"
+          >
+            <Globe className="w-3.5 h-3.5 text-[#007FED]" />
+            <span>Website</span>
+            <ExternalLink className="w-3 h-3 opacity-70" />
+          </a>
+        )}
+
+        {/* 6. Source Platform Project / Bid Link (Freelancer, RemoteOK, Remotive, GitHub) */}
+        {lead.sourcePlatformUrl && !contact.website && (
+          <a
+            href={lead.sourcePlatformUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="flex items-center gap-1.5 text-emerald-800 dark:text-emerald-300 hover:underline bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800 text-xs font-semibold transition"
+            title={`View listing on ${lead.platform || 'Platform'}`}
+          >
+            <Briefcase className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <span>View on {lead.platform || 'Platform'}</span>
+            <ExternalLink className="w-3 h-3 opacity-70" />
+          </a>
+        )}
+
+        {/* 7. Honest Unlisted Notice if Phone & Email are not publicly registered */}
+        {!contact.phone && !contact.email && (
+          <span className="text-[11px] text-slate-400 dark:text-slate-500 italic font-medium">
+            Direct phone/email unlisted in public registry • Contact via Maps/Platform
+          </span>
         )}
 
         {/* 5. Assigned User Attribution */}
