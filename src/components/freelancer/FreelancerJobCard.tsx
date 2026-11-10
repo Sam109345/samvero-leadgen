@@ -33,7 +33,7 @@ import {
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
-import { cleanWhatsAppDigits } from '@/lib/phone-utils';
+import { cleanWhatsAppDigits, isWhatsAppMobileNumber, isLandlineOfficeNumber } from '@/lib/phone-utils';
 import { formatLeadTimeAgo, isLeadBrandNew } from '@/lib/time-formatter';
 import { enrichLeadContact } from '@/lib/contact-enricher';
 
@@ -56,11 +56,8 @@ export default function FreelancerJobCard({
   onInspect,
   onInspectJobScope,
 }: FreelancerJobCardProps) {
-  // Ensure contact details are always 100% complete and authentic
+  // Ensure contact details are verified, classified (Mobile WhatsApp vs Office Landline)
   const contact = useMemo(() => {
-    if (lead.contact && (lead.contact.phone || lead.contact.email || lead.contact.whatsapp)) {
-      return lead.contact;
-    }
     return enrichLeadContact(lead).contact;
   }, [lead]);
 
@@ -355,28 +352,34 @@ export default function FreelancerJobCard({
       <div className="flex items-center gap-2.5 text-xs bg-slate-50 dark:bg-[#0e1624] px-3.5 py-2.5 rounded-xl border border-slate-200/80 dark:border-[#24334a] flex-wrap">
         <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Direct Contact:</span>
 
-        {/* 1. Phone */}
+        {/* 1. Phone (Office Landline or Mobile Direct) */}
         {contact.phone && (
           <a
             href={`tel:${contact.phone}`}
             onClick={(e) => e.stopPropagation()}
             className="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200 hover:text-[#007FED] transition bg-white dark:bg-[#162030] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-[#24334a]"
-            title="Dial direct client phone number"
+            title={isLandlineOfficeNumber(contact.phone, lead.country) ? 'Dial direct office desk landline' : 'Dial direct mobile line'}
           >
-            <Phone className="w-3.5 h-3.5 text-emerald-500" />
+            <Phone className={`w-3.5 h-3.5 ${isLandlineOfficeNumber(contact.phone, lead.country) ? 'text-blue-500' : 'text-emerald-500'}`} />
+            <span className="text-[10px] font-semibold text-slate-400 uppercase">
+              {isLandlineOfficeNumber(contact.phone, lead.country) ? 'Office Desk:' : 'Phone:'}
+            </span>
             <span>{contact.phone}</span>
           </a>
         )}
 
-        {/* 2. WhatsApp */}
-        {contact.whatsapp && (
+        {/* 2. WhatsApp (Strictly Mobile Cellular Verified Numbers) */}
+        {contact.whatsapp && isWhatsAppMobileNumber(contact.whatsapp, lead.country) && (
           <button
             onClick={handleWhatsApp}
-            className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 px-2.5 py-1 rounded-lg text-xs font-bold border border-emerald-300 dark:border-emerald-800/80 transition cursor-pointer"
-            title="Open direct WhatsApp conversation (wa.me link ready)"
+            className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 px-2.5 py-1 rounded-lg text-xs font-bold border border-emerald-300 dark:border-emerald-800/80 transition cursor-pointer shadow-xs"
+            title={`Open direct WhatsApp conversation (wa.me/${contact.whatsapp})`}
           >
-            <MessageCircle className="w-3.5 h-3.5 fill-current" />
+            <MessageCircle className="w-3.5 h-3.5 fill-current text-emerald-600 dark:text-emerald-400" />
             <span>WhatsApp Ready</span>
+            <span className="text-[10px] font-mono text-emerald-700 dark:text-emerald-300 bg-emerald-100/70 dark:bg-emerald-900/50 px-1.5 py-0.2 rounded">
+              +{contact.whatsapp}
+            </span>
           </button>
         )}
 

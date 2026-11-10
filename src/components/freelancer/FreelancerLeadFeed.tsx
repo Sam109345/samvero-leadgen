@@ -27,8 +27,11 @@ import {
   Clock,
   Undo2,
   X,
-  AlertCircle
+  AlertCircle,
+  MessageCircle,
 } from 'lucide-react';
+import { isWhatsAppMobileNumber } from '@/lib/phone-utils';
+import { enrichLeadContact } from '@/lib/contact-enricher';
 
 export interface FreelancerLeadFeedProps {
   leads: Lead[];
@@ -82,6 +85,7 @@ export default function FreelancerLeadFeed({
   const [hasWebsiteFilter, setHasWebsiteFilter] = useState('all');
   const [hasEmailFilter, setHasEmailFilter] = useState('all');
   const [hasPhoneFilter, setHasPhoneFilter] = useState('all');
+  const [hasWhatsAppFilter, setHasWhatsAppFilter] = useState('all');
   const [qualityFilter, setQualityFilter] = useState('all');
   const [verificationFilter, setVerificationFilter] = useState('all');
   const [categoryFilter, setCategoryFilter] = useState('all');
@@ -119,6 +123,13 @@ export default function FreelancerLeadFeed({
   const [feedLeads, setFeedLeads] = useState<Lead[]>(leads);
   const [isLiveSearching, setIsLiveSearching] = useState(false);
   const [isSearchingNearMe, setIsSearchingNearMe] = useState(false);
+
+  const waVerifiedCount = useMemo(() => {
+    return (feedLeads || []).filter(l => {
+      const c = l.contact || enrichLeadContact(l).contact;
+      return isWhatsAppMobileNumber(c?.whatsapp, l.country);
+    }).length;
+  }, [feedLeads]);
   const [nearMeToast, setNearMeToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null);
 
   // Auto-Cycle leads every 10 seconds - Continuous authentic live streaming flow
@@ -443,6 +454,7 @@ export default function FreelancerLeadFeed({
     setHasWebsiteFilter('all');
     setHasEmailFilter('all');
     setHasPhoneFilter('all');
+    setHasWhatsAppFilter('all');
     setQualityFilter('all');
     setVerificationFilter('all');
     setCategoryFilter('all');
@@ -542,11 +554,15 @@ export default function FreelancerLeadFeed({
       if (hasWebsiteFilter === 'has-site' && !lead.contact?.hasWebsite) return false;
 
       // 8. Contact Availability Filters
+      const enrichedContact = lead.contact || enrichLeadContact(lead).contact;
       if (hasEmailFilter === 'has-email' || hasEmailFilter === 'has_email') {
-        if (!lead.contact?.email || lead.contact.email.length < 3) return false;
+        if (!enrichedContact?.email || enrichedContact.email.length < 3) return false;
       }
       if (hasPhoneFilter === 'has-phone' || hasPhoneFilter === 'has_phone') {
-        if (!lead.contact?.phone && !lead.contact?.whatsapp) return false;
+        if (!enrichedContact?.phone && !enrichedContact?.whatsapp) return false;
+      }
+      if (hasWhatsAppFilter === 'verified_wa') {
+        if (!isWhatsAppMobileNumber(enrichedContact?.whatsapp, lead.country)) return false;
       }
 
       // 9. Verification Filter
@@ -621,6 +637,7 @@ export default function FreelancerLeadFeed({
     hasWebsiteFilter,
     hasEmailFilter,
     hasPhoneFilter,
+    hasWhatsAppFilter,
     verificationFilter,
     qualityFilter,
     categoryFilter,
@@ -762,6 +779,8 @@ export default function FreelancerLeadFeed({
               onHasEmailChange={setHasEmailFilter}
               hasPhoneFilter={hasPhoneFilter}
               onHasPhoneChange={setHasPhoneFilter}
+              hasWhatsAppFilter={hasWhatsAppFilter}
+              onHasWhatsAppChange={setHasWhatsAppFilter}
               qualityFilter={qualityFilter}
               onQualityChange={setQualityFilter}
               verificationFilter={verificationFilter}
@@ -842,6 +861,26 @@ export default function FreelancerLeadFeed({
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                     Auto-Updating Live Feed
                   </span>
+
+                  {/* Quick Toggle for WhatsApp Verified */}
+                  <button
+                    type="button"
+                    onClick={() => setHasWhatsAppFilter(prev => prev === 'verified_wa' ? 'all' : 'verified_wa')}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition active:scale-95 cursor-pointer ${
+                      hasWhatsAppFilter === 'verified_wa'
+                        ? 'bg-emerald-600 text-white shadow-xs'
+                        : 'bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800 hover:bg-emerald-100'
+                    }`}
+                    title="Filter to only leads with authentic cellular mobile numbers on WhatsApp"
+                  >
+                    <MessageCircle className="w-3.5 h-3.5 fill-current" />
+                    <span>WhatsApp Verified</span>
+                    <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+                      hasWhatsAppFilter === 'verified_wa' ? 'bg-white/25 text-white' : 'bg-emerald-200/70 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-200'
+                    }`}>
+                      {waVerifiedCount}
+                    </span>
+                  </button>
                   {activeCategoryTab !== 'all' && (
                     <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#3B6FF5] border border-blue-200 dark:border-blue-900 capitalize">
                       {activeCategoryTab.replace('_', ' ')}

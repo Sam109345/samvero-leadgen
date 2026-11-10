@@ -16,7 +16,8 @@ import {
   Phone,
   ShieldCheck,
   Star,
-  MapPin
+  MapPin,
+  MessageCircle
 } from 'lucide-react';
 
 export interface FreelancerFiltersSidebarProps {
@@ -36,6 +37,8 @@ export interface FreelancerFiltersSidebarProps {
   onHasEmailChange?: (val: string) => void;
   hasPhoneFilter?: string;
   onHasPhoneChange?: (val: string) => void;
+  hasWhatsAppFilter?: string;
+  onHasWhatsAppChange?: (val: string) => void;
   qualityFilter?: string;
   onQualityChange?: (val: string) => void;
   verificationFilter?: string;
@@ -65,6 +68,8 @@ export default function FreelancerFiltersSidebar({
   onHasEmailChange,
   hasPhoneFilter = 'all',
   onHasPhoneChange,
+  hasWhatsAppFilter = 'all',
+  onHasWhatsAppChange,
   qualityFilter = 'all',
   onQualityChange,
   verificationFilter = 'all',
@@ -366,7 +371,7 @@ export default function FreelancerFiltersSidebar({
             <Mail className="w-3.5 h-3.5 text-[#3B6FF5]" />
             Direct Contact Filters
           </label>
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="grid grid-cols-3 gap-1.5 text-xs">
             <button
               type="button"
               onClick={() => onHasEmailChange(hasEmailFilter === 'has_email' || hasEmailFilter === 'has-email' ? 'all' : 'has-email')}
@@ -391,6 +396,20 @@ export default function FreelancerFiltersSidebar({
               <Phone className="w-3.5 h-3.5" />
               <span className="text-[10px]">Has Phone</span>
             </button>
+            {onHasWhatsAppChange && (
+              <button
+                type="button"
+                onClick={() => onHasWhatsAppChange(hasWhatsAppFilter === 'verified_wa' ? 'all' : 'verified_wa')}
+                className={`p-2 rounded-xl border text-center transition cursor-pointer flex flex-col items-center gap-1 ${
+                  hasWhatsAppFilter === 'verified_wa'
+                    ? 'bg-emerald-600 text-white border-emerald-600 font-bold shadow-xs'
+                    : 'border-slate-200 dark:border-slate-800 text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-950/30 hover:bg-emerald-100/50'
+                }`}
+              >
+                <MessageCircle className="w-3.5 h-3.5 fill-current" />
+                <span className="text-[10px]">WA Verified</span>
+              </button>
+            )}
           </div>
         </div>
       )}

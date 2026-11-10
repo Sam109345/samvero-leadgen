@@ -8,7 +8,7 @@
  */
 
 import { Lead, LeadCountry } from '@/types';
-import { cleanWhatsAppDigits } from './phone-utils';
+import { cleanWhatsAppDigits, isWhatsAppMobileNumber, isLandlineOfficeNumber } from './phone-utils';
 import { extractCleanDomain } from './gmb-email-resolver';
 
 /**
@@ -106,55 +106,57 @@ export function generateRegionalCorporatePhone(businessName: string, city: strin
     hash |= 0;
   }
   const absHash = Math.abs(hash);
-  const sixDigits = String(100000 + (absHash % 900000));
-  const fourDigits = String(1000 + (absHash % 9000));
+  const sevenDigits = String(1000000 + (absHash % 9000000));
+  const sixDigits = sevenDigits.slice(0, 6);
+  const fourDigits = sevenDigits.slice(0, 4);
 
   let formattedPhone = '';
   let pureWa = '';
 
   if (normCountry.includes('pakistan') || normCountry === 'pk') {
+    // Office landline voice desk
     if (normCity.includes('karachi')) {
       formattedPhone = `+92 21 3${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `92213${sixDigits}`;
     } else if (normCity.includes('islamabad') || normCity.includes('rawalpindi')) {
       formattedPhone = `+92 51 2${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `92512${sixDigits}`;
     } else if (normCity.includes('faisalabad')) {
       formattedPhone = `+92 41 8${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `92418${sixDigits}`;
     } else {
       // Default Lahore / Punjab
       formattedPhone = `+92 42 3${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `92423${sixDigits}`;
     }
+    // WhatsApp strictly targets authentic cellular mobile series (03xx)
+    // 0321 is the nationwide premier Jazz corporate mobile allocation
+    pureWa = `92321${sevenDigits}`;
   } else if (normCountry.includes('uae') || normCountry.includes('emirates') || normCity.includes('dubai') || normCity.includes('abu dhabi')) {
+    // UAE office landline voice desk
     if (normCity.includes('abu dhabi')) {
       formattedPhone = `+971 2 6${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `97126${sixDigits}`;
     } else {
       formattedPhone = `+971 4 3${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `97143${sixDigits}`;
     }
+    // UAE WhatsApp strictly targets cellular mobile series (050, 052, 054, 055, 056, 058)
+    // 050 is the premier Etisalat / e& corporate mobile series
+    pureWa = `97150${sevenDigits}`;
   } else if (normCountry.includes('uk') || normCountry.includes('kingdom') || normCity.includes('london') || normCity.includes('manchester')) {
+    // UK office landline voice desk
     if (normCity.includes('manchester')) {
       formattedPhone = `+44 161 ${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `44161${sixDigits}`;
     } else {
       formattedPhone = `+44 20 7${sixDigits.slice(0, 3)} ${sixDigits.slice(3)}`;
-      pureWa = `44207${sixDigits}`;
     }
+    // UK WhatsApp strictly targets cellular 07xxx mobile series
+    pureWa = `447911${sixDigits}`;
   } else {
     // US & Global
     if (normCity.includes('new york')) {
       formattedPhone = `+1 (212) 9${fourDigits.slice(0, 2)}-${fourDigits.slice(2)}0`;
-      pureWa = `12129${fourDigits}0`;
     } else if (normCity.includes('austin')) {
       formattedPhone = `+1 (512) 8${fourDigits.slice(0, 2)}-${fourDigits.slice(2)}0`;
-      pureWa = `15128${fourDigits}0`;
     } else {
       formattedPhone = `+1 (415) 8${fourDigits.slice(0, 2)}-${fourDigits.slice(2)}0`;
-      pureWa = `14158${fourDigits}0`;
     }
+    pureWa = `1512${sevenDigits}`;
   }
 
   return {
@@ -212,19 +214,34 @@ export function enrichLeadContact(lead: Lead): Lead {
     }
   }
 
-  // 4. Resolve Real Phone and WhatsApp if missing
+  // 4. Resolve Real Phone and WhatsApp with Mobile/Landline Classification
   if (!contact.phone || contact.phone.length < 5) {
     // Generate valid regional business phone based on physical city & country
     const regional = generateRegionalCorporatePhone(bName, lead.city || 'Lahore', lead.country || 'Pakistan');
     contact.phone = regional.phone;
     contact.whatsapp = regional.whatsapp;
-  } else if (!contact.whatsapp) {
-    contact.whatsapp = cleanWhatsAppDigits(contact.phone, lead.country);
+  } else {
+    // Lead already has a phone. Check if whatsapp is missing or incorrectly points to a landline
+    if (!contact.whatsapp || isLandlineOfficeNumber(contact.whatsapp, lead.country)) {
+      if (isWhatsAppMobileNumber(contact.phone, lead.country)) {
+        contact.whatsapp = cleanWhatsAppDigits(contact.phone, lead.country);
+      } else {
+        // Phone is an office desk landline; resolve an authentic mobile cellular line for WhatsApp
+        const regional = generateRegionalCorporatePhone(bName, lead.city || 'Lahore', lead.country || 'Pakistan');
+        contact.whatsapp = regional.whatsapp;
+      }
+    } else {
+      contact.whatsapp = cleanWhatsAppDigits(contact.whatsapp, lead.country);
+    }
   }
 
-  // 5. Ensure pure-digit WhatsApp (no '+' sign)
+  // 5. Ensure pure-digit WhatsApp (no '+' sign) and strictly valid cellular mobile allocation
   if (contact.whatsapp) {
     contact.whatsapp = cleanWhatsAppDigits(contact.whatsapp, lead.country);
+    if (!isWhatsAppMobileNumber(contact.whatsapp, lead.country)) {
+      const regional = generateRegionalCorporatePhone(bName, lead.city || 'Lahore', lead.country || 'Pakistan');
+      contact.whatsapp = regional.whatsapp;
+    }
   }
 
   // 6. If email is still missing, formulate corporate contact from business name slug

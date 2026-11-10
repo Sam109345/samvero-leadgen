@@ -53,6 +53,49 @@ export function cleanWhatsAppDigits(phone?: string | null, country: string | nul
 }
 
 /**
+ * Validates whether a phone number is an authentic cellular mobile series compatible with WhatsApp.
+ * Distinguishes fixed landlines (PSTN) from mobile numbers.
+ */
+export function isWhatsAppMobileNumber(phone?: string | null, country: string | null = ''): boolean {
+  if (!phone) return false;
+  const digits = cleanWhatsAppDigits(phone, country);
+  if (!digits || digits.length < 9) return false;
+
+  const c = (country || '').toLowerCase();
+
+  // Pakistan (+92): Only 03xx / 923xx series is mobile WhatsApp! 042 (Lahore), 021 (Karachi), 051 (Islamabad) are landlines.
+  if (digits.startsWith('92') || c.includes('pak')) {
+    return /^923\d{9}$/.test(digits);
+  }
+
+  // UAE (+971): Only 050, 052, 054, 055, 056, 058 mobile series have WhatsApp! 04 (Dubai), 02 (Abu Dhabi) are landlines.
+  if (digits.startsWith('971') || c.includes('uae') || c.includes('dubai') || c.includes('emirates')) {
+    return /^9715[024568]\d{7}$/.test(digits);
+  }
+
+  // UK (+44): Only 07xxx mobile series has WhatsApp! 020 (London), 0161 (Manchester) are landlines.
+  if (digits.startsWith('44') || c.includes('uk') || c.includes('britain')) {
+    return /^447\d{9}$/.test(digits);
+  }
+
+  // US/Canada (+1): Standard 10-digit NANP numbers
+  if (digits.startsWith('1') || c.includes('us') || c.includes('united states')) {
+    const subscriber = digits.startsWith('1') ? digits.slice(1) : digits;
+    return subscriber.length === 10;
+  }
+
+  return digits.length >= 9 && digits.length <= 15;
+}
+
+/**
+ * Checks whether a phone number is a fixed office desk / landline.
+ */
+export function isLandlineOfficeNumber(phone?: string | null, country: string | null = ''): boolean {
+  if (!phone) return false;
+  return !isWhatsAppMobileNumber(phone, country);
+}
+
+/**
  * Construct valid WhatsApp URL (wa.me) with pure numeric digits and optional message
  */
 export function formatWhatsAppUrl(phone?: string | null, text: string = '', country: string | null = ''): string {
