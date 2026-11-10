@@ -18,6 +18,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { Lead } from '@/types';
+import { formatLeadTimeAgo } from '@/lib/time-formatter';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 
 interface LeadCardProps {

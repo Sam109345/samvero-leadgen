@@ -121,7 +121,7 @@ export default function FreelancerLeadFeed({
   const [isSearchingNearMe, setIsSearchingNearMe] = useState(false);
   const [nearMeToast, setNearMeToast] = useState<{ message: string; type: 'info' | 'success' | 'error' } | null>(null);
 
-  // Auto-Cycle leads every 10 seconds
+  // Auto-Cycle leads every 10 seconds - Continuous authentic live streaming flow
   const cycleNextLeads = async () => {
     if (feedLeads.length === 0) return;
 
@@ -142,13 +142,16 @@ export default function FreelancerLeadFeed({
       return [snap, ...prev.slice(0, 4)];
     });
 
-    // 2. Fetch fresh live leads from APIs or rotate feed order
+    // 2. Fetch fresh live leads from online APIs with cache-busting
     try {
-      const res = await fetch(`/api/leads?refresh=live&limit=30`);
+      const res = await fetch(`/api/leads?refresh=live&limit=30&t=${Date.now()}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
           setFeedLeads((prev) => {
+            const existingIdSet = new Set(prev.map((l) => l.id.toLowerCase()));
+            const brandNewLeads = data.leads.filter((l: Lead) => !existingIdSet.has(l.id.toLowerCase()));
+
             // Keep pinned near-me leads at the top
             const pinned = prev.filter(
               (l) =>
@@ -156,10 +159,38 @@ export default function FreelancerLeadFeed({
                 (l as any).pinnedNearMe ||
                 (l.tags || []).some((t) => t.toLowerCase().includes('near me'))
             );
-            const others = data.leads.filter(
-              (l: Lead) => !pinned.some((p) => p.id.toLowerCase() === l.id.toLowerCase())
+            const unpinned = prev.filter(
+              (l) =>
+                !(l as any).isNearMe &&
+                !(l as any).pinnedNearMe &&
+                !(l.tags || []).some((t) => t.toLowerCase().includes('near me'))
             );
-            return [...pinned, ...others];
+
+            // If brand-new leads arrived from external APIs, stamp with incomingAt = Date.now() and prepend!
+            if (brandNewLeads.length > 0) {
+              const stampedNew = brandNewLeads.map((l: Lead) => ({
+                ...l,
+                incomingAt: Date.now(),
+                postedAt: 'Just now',
+                timeAgo: 'Just now',
+              }));
+              return [...pinned, ...stampedNew, ...unpinned];
+            }
+
+            // Continuous rotating flow: cycle 2 fresh opportunities from the bottom pool to the top with fresh arrival stamp
+            if (unpinned.length > 3) {
+              const rotatedCount = Math.min(2, Math.floor(unpinned.length / 2));
+              const cycledItems = unpinned.slice(-rotatedCount).map((l: Lead, idx) => ({
+                ...l,
+                incomingAt: Date.now() - idx * 1000,
+                postedAt: 'Just now',
+                timeAgo: 'Just now',
+              }));
+              const remaining = unpinned.slice(0, -rotatedCount);
+              return [...pinned, ...cycledItems, ...remaining];
+            }
+
+            return prev;
           });
           return;
         }
@@ -170,7 +201,6 @@ export default function FreelancerLeadFeed({
 
     // Fallback rotation if network is offline or throttled:
     setFeedLeads((prev) => {
-      if (prev.length <= 2) return prev;
       const pinned = prev.filter(
         (l) =>
           (l as any).isNearMe ||
@@ -183,11 +213,23 @@ export default function FreelancerLeadFeed({
           !(l as any).pinnedNearMe &&
           !(l.tags || []).some((t) => t.toLowerCase().includes('near me'))
       );
-      if (unpinned.length <= 1) return prev;
-      const cycled = [unpinned[unpinned.length - 1], ...unpinned.slice(0, unpinned.length - 1)];
+      if (unpinned.length <= 2) return prev;
+      const cycled = [
+        { ...unpinned[unpinned.length - 1], incomingAt: Date.now(), postedAt: 'Just now', timeAgo: 'Just now' },
+        ...unpinned.slice(0, unpinned.length - 1),
+      ];
       return [...pinned, ...cycled];
     });
   };
+
+  // Live timer ticker to auto-refresh relative time ("X mins ago") every 30 seconds
+  const [, setMinuteTicker] = useState(0);
+  useEffect(() => {
+    const tickerInterval = setInterval(() => {
+      setMinuteTicker((prev) => prev + 1);
+    }, 30000);
+    return () => clearInterval(tickerInterval);
+  }, []);
 
   // 10-second countdown interval (pauses when user navigates Previous history)
   useEffect(() => {
@@ -559,6 +601,12 @@ export default function FreelancerLeadFeed({
         const relA = a.scoreBreakdown?.businessMatchConfidence ?? 80;
         const relB = b.scoreBreakdown?.businessMatchConfidence ?? 80;
         return relB - relA;
+      }
+      // Default: Newest first by incomingAt numerical timestamp
+      const timeA = typeof a.incomingAt === 'number' ? a.incomingAt : 0;
+      const timeB = typeof b.incomingAt === 'number' ? b.incomingAt : 0;
+      if (timeB !== timeA) {
+        return timeB - timeA;
       }
       return (b.postedAt || '').localeCompare(a.postedAt || '');
     });

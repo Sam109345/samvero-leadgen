@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { Lead } from '@/types';
+import { enrichLeadContact } from './contact-enricher';
 
 const LEADS_FILE = path.join(process.cwd(), 'data', 'leads-store.json');
 
@@ -18,7 +19,7 @@ export function loadAllStoredLeads(): Lead[] {
       const raw = fs.readFileSync(LEADS_FILE, 'utf8');
       const leads: Lead[] = JSON.parse(raw);
       if (Array.isArray(leads)) {
-        return leads;
+        return leads.map(enrichLeadContact);
       }
     } catch (err) {
       console.warn('Error reading leads-store.json:', err);
@@ -219,7 +220,7 @@ export function persistDiscoveredLeads(newLeads: Lead[]): { savedCount: number; 
     if (phoneKey) phoneMap.set(phoneKey, newIdx);
     if (businessKey) businessKeyMap.set(businessKey, newIdx);
 
-    toAdd.push(lead);
+    toAdd.push(enrichLeadContact(lead));
     savedCount++;
   }
 

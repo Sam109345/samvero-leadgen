@@ -269,6 +269,13 @@ export async function GET(request: NextRequest) {
       }
     }
 
+    // Sort by newest incoming arrival timestamp so fresh live leads appear first
+    deduplicatedLeads.sort((a, b) => {
+      const timeA = typeof a.incomingAt === 'number' ? a.incomingAt : 0;
+      const timeB = typeof b.incomingAt === 'number' ? b.incomingAt : 0;
+      return timeB - timeA;
+    });
+
     return NextResponse.json({
       success: true,
       isLiveSynced: true,
