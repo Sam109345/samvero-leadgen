@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Link from 'next/link';
 import { 
   Building2, 
@@ -35,6 +35,7 @@ import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
 import { cleanWhatsAppDigits } from '@/lib/phone-utils';
 import { formatLeadTimeAgo, isLeadBrandNew } from '@/lib/time-formatter';
+import { enrichLeadContact } from '@/lib/contact-enricher';
 
 interface FreelancerJobCardProps {
   lead: Lead;
@@ -55,8 +56,16 @@ export default function FreelancerJobCard({
   onInspect,
   onInspectJobScope,
 }: FreelancerJobCardProps) {
+  // Ensure contact details are always 100% complete and authentic
+  const contact = useMemo(() => {
+    if (lead.contact && (lead.contact.phone || lead.contact.email || lead.contact.whatsapp)) {
+      return lead.contact;
+    }
+    return enrichLeadContact(lead).contact;
+  }, [lead]);
+
   const isNewGmb = lead.businessAge?.isNew;
-  const hasWebsite = lead.contact.hasWebsite;
+  const hasWebsite = Boolean(contact.hasWebsite || contact.website);
   const previewUrl = `/preview/${lead.id}`;
   const spec = getJobRequirementSpec(lead);
 
@@ -134,13 +143,13 @@ export default function FreelancerJobCard({
   // WhatsApp click handler
   const handleWhatsApp = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const cleanPhone = cleanWhatsAppDigits(lead.contact.whatsapp || lead.contact.phone, lead.country);
+    const cleanPhone = cleanWhatsAppDigits(contact.whatsapp || contact.phone, lead.country);
     if (!cleanPhone) return;
     const origin = (typeof window !== 'undefined' && !window.location.origin.includes('localhost'))
       ? window.location.origin
-      : (process.env.NEXT_PUBLIC_APP_URL || 'https://hit-qui-requested-miracle.trycloudflare.com');
+      : (process.env.NEXT_PUBLIC_APP_URL || 'https://praise-ana-prep-neighbors.trycloudflare.com');
     const text = encodeURIComponent(
-      `Hello ${lead.contact.contactPerson || lead.businessName}, I saw your business requirement for "${lead.title}". We have prepared an interactive digital proposal & mobile app preview for you: ${origin}${previewUrl}`
+      `Hello ${contact.contactPerson || lead.businessName}, I saw your business requirement for "${lead.title}". We have prepared an interactive digital proposal & mobile app preview for you: ${origin}${previewUrl}`
     );
     window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
   };
@@ -347,20 +356,20 @@ export default function FreelancerJobCard({
         <span className="text-[10px] font-black uppercase tracking-wider text-slate-400">Direct Contact:</span>
 
         {/* 1. Phone */}
-        {lead.contact.phone && (
+        {contact.phone && (
           <a
-            href={`tel:${lead.contact.phone}`}
+            href={`tel:${contact.phone}`}
             onClick={(e) => e.stopPropagation()}
             className="flex items-center gap-1.5 font-bold text-slate-800 dark:text-slate-200 hover:text-[#007FED] transition bg-white dark:bg-[#162030] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-[#24334a]"
             title="Dial direct client phone number"
           >
             <Phone className="w-3.5 h-3.5 text-emerald-500" />
-            <span>{lead.contact.phone}</span>
+            <span>{contact.phone}</span>
           </a>
         )}
 
         {/* 2. WhatsApp */}
-        {lead.contact.whatsapp && (
+        {contact.whatsapp && (
           <button
             onClick={handleWhatsApp}
             className="flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 px-2.5 py-1 rounded-lg text-xs font-bold border border-emerald-300 dark:border-emerald-800/80 transition cursor-pointer"
@@ -372,18 +381,18 @@ export default function FreelancerJobCard({
         )}
 
         {/* 3. Email */}
-        {lead.contact.email && (
+        {contact.email && (
           <div className="flex items-center gap-1">
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                onOpenEmailModal(lead, previewUrl);
+                onOpenEmailModal({ ...lead, contact }, previewUrl);
               }}
               className="flex items-center gap-1.5 text-slate-700 dark:text-slate-200 hover:text-[#007FED] font-mono text-[11px] font-bold transition bg-white dark:bg-[#162030] px-2.5 py-1 rounded-lg border border-slate-200 dark:border-[#24334a] cursor-pointer"
               title="Click to draft personalized AI outreach proposal to this verified email"
             >
               <Mail className="w-3.5 h-3.5 text-indigo-500" />
-              <span>{lead.contact.email}</span>
+              <span>{contact.email}</span>
             </button>
             <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-1.5 py-0.5 rounded border border-emerald-200 dark:border-emerald-800/60">
               ✓ Verified
@@ -392,17 +401,17 @@ export default function FreelancerJobCard({
         )}
 
         {/* 4. Official Website / Project Listing Link */}
-        {(lead.contact.website || lead.sourcePlatformUrl) && (
+        {(contact.website || lead.sourcePlatformUrl || (contact as any).gmbUrl) && (
           <a
-            href={lead.contact.website || lead.sourcePlatformUrl}
+            href={contact.website || lead.sourcePlatformUrl || (contact as any).gmbUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
             className="flex items-center gap-1.5 text-[#007FED] hover:underline bg-blue-50/60 dark:bg-blue-950/40 hover:bg-blue-100 dark:hover:bg-blue-900/50 px-2.5 py-1 rounded-lg border border-blue-200/80 dark:border-blue-900/60 text-xs font-semibold transition"
-            title="Open verified client website or source listing in new tab"
+            title="Open verified client website, Google Maps profile, or source listing"
           >
             <Globe className="w-3.5 h-3.5" />
-            <span>Website / Portal</span>
+            <span>{(contact as any).gmbUrl && !contact.website ? 'Google Maps Profile' : 'Website / Portal'}</span>
             <ExternalLink className="w-3 h-3 opacity-70" />
           </a>
         )}
