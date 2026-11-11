@@ -186,9 +186,21 @@ export async function GET(request: NextRequest) {
       allLeads = allLeads.filter((l) => l.category?.toLowerCase().includes(category.toLowerCase()));
     }
 
-    // Apply platform filter
+    // Apply platform filter (with intelligent alias handling)
     if (platform !== 'all') {
-      allLeads = allLeads.filter((l) => l.platform?.toLowerCase().includes(platform.toLowerCase()));
+      const pFilter = platform.toLowerCase().trim();
+      allLeads = allLeads.filter((l) => {
+        const leadPlat = (l.platform || '').toLowerCase().trim();
+        const isGmbMatch =
+          (pFilter.includes('google') || pFilter.includes('gmb') || pFilter.includes('maps')) &&
+          (leadPlat.includes('google') || leadPlat.includes('gmb') || leadPlat.includes('maps') || l.type === 'gmb');
+        const isFreelancerMatch = pFilter.includes('freelancer') && leadPlat.includes('freelancer');
+        const isLinkedInMatch = pFilter.includes('linkedin') && leadPlat.includes('linkedin');
+        const isApolloMatch = pFilter.includes('apollo') && leadPlat.includes('apollo');
+        const isRozeeMatch = pFilter.includes('rozee') && leadPlat.includes('rozee');
+        const isExactOrSub = leadPlat.includes(pFilter) || pFilter.includes(leadPlat);
+        return isGmbMatch || isFreelancerMatch || isLinkedInMatch || isApolloMatch || isRozeeMatch || isExactOrSub;
+      });
     }
 
     // Apply type filter

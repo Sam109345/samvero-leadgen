@@ -540,9 +540,37 @@ export default function FreelancerLeadFeed({
         if (!(lead.city || '').toLowerCase().includes(c)) return false;
       }
 
-      // 5. Platform Filter
+      // 5. Platform Filter (Intelligent Alias-Aware Matching)
       if (selectedPlatform !== 'all') {
-        if (!(lead.platform || '').toLowerCase().includes(selectedPlatform.toLowerCase())) {
+        const pFilter = selectedPlatform.toLowerCase().trim();
+        const leadPlat = (lead.platform || '').toLowerCase().trim();
+
+        // Handle Google Maps / Google My Business alias
+        const isGmbMatch =
+          (pFilter.includes('google') || pFilter.includes('gmb') || pFilter.includes('maps')) &&
+          (leadPlat.includes('google') || leadPlat.includes('gmb') || leadPlat.includes('maps') || lead.type === 'gmb');
+
+        // Handle Freelancer alias
+        const isFreelancerMatch =
+          pFilter.includes('freelancer') && leadPlat.includes('freelancer');
+
+        // Handle LinkedIn alias
+        const isLinkedInMatch =
+          pFilter.includes('linkedin') && leadPlat.includes('linkedin');
+
+        // Handle Apollo alias
+        const isApolloMatch =
+          pFilter.includes('apollo') && leadPlat.includes('apollo');
+
+        // Handle Rozee alias
+        const isRozeeMatch =
+          pFilter.includes('rozee') && leadPlat.includes('rozee');
+
+        // Direct containment
+        const isExactOrSub =
+          leadPlat.includes(pFilter) || pFilter.includes(leadPlat);
+
+        if (!isGmbMatch && !isFreelancerMatch && !isLinkedInMatch && !isApolloMatch && !isRozeeMatch && !isExactOrSub) {
           return false;
         }
       }
@@ -647,27 +675,45 @@ export default function FreelancerLeadFeed({
     savedLeadIds,
   ]);
 
-  // SubNav counts computation (dynamically scoped to selectedCountry)
+  // SubNav counts computation (dynamically scoped to selectedCountry and selectedPlatform)
   const tabCounts = useMemo(() => {
-    const countryScoped = selectedCountry === 'all'
-      ? feedLeads
-      : feedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, selectedCountry, l.contact?.phone));
+    const scoped = feedLeads.filter((l) => {
+      if (selectedCountry !== 'all' && !matchesCountry(l.country, l.city, l.address, selectedCountry, l.contact?.phone)) {
+        return false;
+      }
+      if (selectedPlatform !== 'all') {
+        const pFilter = selectedPlatform.toLowerCase().trim();
+        const leadPlat = (l.platform || '').toLowerCase().trim();
+        const isGmbMatch =
+          (pFilter.includes('google') || pFilter.includes('gmb') || pFilter.includes('maps')) &&
+          (leadPlat.includes('google') || leadPlat.includes('gmb') || leadPlat.includes('maps') || l.type === 'gmb');
+        const isFreelancerMatch = pFilter.includes('freelancer') && leadPlat.includes('freelancer');
+        const isLinkedInMatch = pFilter.includes('linkedin') && leadPlat.includes('linkedin');
+        const isApolloMatch = pFilter.includes('apollo') && leadPlat.includes('apollo');
+        const isRozeeMatch = pFilter.includes('rozee') && leadPlat.includes('rozee');
+        const isExactOrSub = leadPlat.includes(pFilter) || pFilter.includes(leadPlat);
+        if (!isGmbMatch && !isFreelancerMatch && !isLinkedInMatch && !isApolloMatch && !isRozeeMatch && !isExactOrSub) {
+          return false;
+        }
+      }
+      return true;
+    });
 
     return {
-      total: countryScoped.length,
-      hot: countryScoped.filter(
+      total: scoped.length,
+      hot: scoped.filter(
         (l) =>
           l.pipelineStage === 'hot' ||
           (!l.contact?.hasWebsite && l.type === 'gmb') ||
           (l.scoreBreakdown?.leadQualityScore ?? (l as any).score ?? 0) >= 80 ||
           (l.tags || []).some((t) => t.toLowerCase().includes('hot'))
       ).length,
-      qualified: countryScoped.filter(
+      qualified: scoped.filter(
         (l) =>
           ((l.scoreBreakdown?.leadQualityScore ?? (l as any).score ?? 0) >= 70 || l.pipelineStage === 'qualified') &&
           l.pipelineStage !== 'hot'
       ).length,
-      extra: countryScoped.filter(
+      extra: scoped.filter(
         (l) =>
           (l.pipelineStage as string) === 'extra' ||
           l.type === 'job' ||
@@ -675,14 +721,27 @@ export default function FreelancerLeadFeed({
             (l.platform || '').toLowerCase().includes(p.toLowerCase())
           )
       ).length,
-      needsVerification: countryScoped.filter(
+      needsVerification: scoped.filter(
         (l) => !l.verified || (l.scoreBreakdown?.researchCompleteness ?? 100) < 65
       ).length,
-      saved: countryScoped.filter((l) => savedLeadIds.has(l.id)).length,
-      noWebsite: countryScoped.filter((l) => !l.contact?.hasWebsite).length,
-      newGmb: countryScoped.filter((l) => l.businessAge?.isNew).length,
+      saved: scoped.filter((l) => savedLeadIds.has(l.id)).length,
+      noWebsite: scoped.filter((l) => !l.contact?.hasWebsite).length,
+      newGmb: scoped.filter((l) => l.businessAge?.isNew).length,
     };
-  }, [feedLeads, selectedCountry, savedLeadIds]);
+  }, [feedLeads, selectedCountry, selectedPlatform, savedLeadIds]);
+
+  // Dynamic live platform counts (scoped to current country filter)
+  const platformCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    const base = selectedCountry === 'all'
+      ? feedLeads
+      : feedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, selectedCountry, l.contact?.phone));
+    base.forEach((l) => {
+      const p = l.platform || 'Other';
+      counts[p] = (counts[p] || 0) + 1;
+    });
+    return counts;
+  }, [feedLeads, selectedCountry]);
 
   return (
     <div className="w-full flex flex-col font-sans transition-colors duration-200">
@@ -776,6 +835,7 @@ export default function FreelancerLeadFeed({
               onCityChange={setSelectedCity}
               selectedPlatform={selectedPlatform}
               onPlatformChange={setSelectedPlatform}
+              platformCounts={platformCounts}
               businessAgeFilter={businessAgeFilter}
               onBusinessAgeChange={setBusinessAgeFilter}
               hasWebsiteFilter={hasWebsiteFilter}
