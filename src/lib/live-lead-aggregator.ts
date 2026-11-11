@@ -164,18 +164,19 @@ export async function fetchLiveFreelancerProjects(options: LiveSearchOptions = {
         budgetStr = `From ${currencySign}${p.budget.minimum.toLocaleString()} ${currencyCode}`;
       }
 
-      // Infer location
+      // Infer location from currency, project tags, and client requirements
       let country: LeadCountry = 'US';
       let city = 'San Francisco';
-      if (p.currency?.country === 'PK' || currencyCode === 'PKR') {
+      const textToScan = `${title} ${cleanDesc}`.toLowerCase();
+      if (p.currency?.country === 'PK' || currencyCode === 'PKR' || textToScan.includes('pakistan') || textToScan.includes('lahore') || textToScan.includes('karachi') || textToScan.includes('urdu')) {
         country = 'Pakistan';
-        city = 'Lahore';
-      } else if (p.currency?.country === 'AE' || currencyCode === 'AED') {
+        city = textToScan.includes('karachi') ? 'Karachi' : textToScan.includes('islamabad') ? 'Islamabad' : 'Lahore';
+      } else if (p.currency?.country === 'AE' || currencyCode === 'AED' || textToScan.includes('uae') || textToScan.includes('dubai') || textToScan.includes('abu dhabi') || textToScan.includes('emirates')) {
         country = 'UAE';
-        city = 'Dubai';
-      } else if (p.currency?.country === 'GB' || currencyCode === 'GBP') {
+        city = textToScan.includes('abu dhabi') ? 'Abu Dhabi' : textToScan.includes('sharjah') ? 'Sharjah' : 'Dubai';
+      } else if (p.currency?.country === 'GB' || currencyCode === 'GBP' || textToScan.includes('london') || textToScan.includes('manchester') || textToScan.includes('united kingdom') || textToScan.includes('uk client')) {
         country = 'UK';
-        city = 'London';
+        city = textToScan.includes('manchester') ? 'Manchester' : 'London';
       }
 
       const detectedCat = detectLeadCategory(title, cleanDesc, [currencyCode]);
@@ -533,10 +534,13 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
     let targetCat = resolveNominatimCategory(query, category);
     if (targetCat === 'commercial' && isPakistan) {
       targetCat = 'hospital';
+    } else if (targetCat === 'commercial' && isUae) {
+      targetCat = 'clinic';
     }
 
-    const locTokens = [city, country].filter(Boolean);
-    const searchTerm = locTokens.length > 0 ? `${targetCat}, ${locTokens.join(', ')}` : targetCat;
+    const defaultCity = isPakistan ? 'Lahore' : isUae ? 'Dubai' : isUk ? 'London' : 'New York';
+    const targetCity = city || defaultCity;
+    const searchTerm = query && query.trim() ? `${query.trim()} ${targetCity}` : `${targetCat} ${targetCity}`;
     const apiUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(searchTerm)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`;
 
     const controller = new AbortController();
@@ -555,13 +559,17 @@ export async function fetchLiveLocalBusinesses(options: LiveSearchOptions = {}):
     if (!Array.isArray(places) || places.length === 0) {
       // Fallback query across high-yield commercial sectors
       const fallbackCategories = isPakistan 
-        ? ['hospital', 'clinic', 'technology', 'store', 'restaurant']
-        : [targetCat, 'clinic', 'hospital', 'store', 'commercial'];
+        ? ['hospital', 'clinic', 'software', 'college', 'restaurant']
+        : isUae
+        ? ['clinic', 'hotel', 'hospital', 'dentist', 'software', 'restaurant', 'salon']
+        : isUk
+        ? ['software', 'clinic', 'hotel', 'restaurant', 'agency']
+        : ['software', 'clinic', 'tech', 'agency'];
 
       for (const fbCat of fallbackCategories) {
-        const targetCity = city || (isPakistan ? 'Lahore' : 'London');
+        const fallbackCity = city || (isPakistan ? 'Lahore' : isUae ? 'Dubai' : isUk ? 'London' : 'New York');
         try {
-          const fallbackRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${fbCat} ${targetCity}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`, {
+          const fallbackRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${fbCat} ${fallbackCity}`)}&format=json&addressdetails=1&extratags=1&limit=${limit}${countryCodeParam}`, {
             headers: { 'User-Agent': 'SamveroLeadGen/2.0 (contact@samvero.com)' }
           });
           if (fallbackRes.ok) {
@@ -773,10 +781,20 @@ export async function getMasterRealTimeLiveLeads(options: LiveSearchOptions = {}
       if (!city) localSearchTargets.push({ city: 'Islamabad', country: 'Pakistan' });
     } else if (country === 'UAE') {
       localSearchTargets.push({ city: city || 'Dubai', country: 'UAE' });
+      if (!city) {
+        localSearchTargets.push({ city: 'Abu Dhabi', country: 'UAE' });
+        localSearchTargets.push({ city: 'Sharjah', country: 'UAE' });
+      }
     } else if (country === 'UK') {
       localSearchTargets.push({ city: city || 'London', country: 'UK' });
+      if (!city) {
+        localSearchTargets.push({ city: 'Manchester', country: 'UK' });
+      }
     } else if (country === 'US') {
       localSearchTargets.push({ city: city || 'New York', country: 'US' });
+      if (!city) {
+        localSearchTargets.push({ city: 'San Francisco', country: 'US' });
+      }
     } else {
       localSearchTargets.push({ city: city || 'Capital', country });
     }

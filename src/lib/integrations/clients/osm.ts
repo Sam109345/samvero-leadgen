@@ -85,9 +85,10 @@ export async function searchOsmLeads(options: {
 
   const cLower = (country || '').toLowerCase();
   const isPakistan = cLower === 'pakistan' || cLower === 'pk';
+  const isUae = cLower === 'uae' || cLower === 'ae';
   const targetCategory = getOsmCategory(query, category, isPakistan);
-  const locationTokens = [city || (isPakistan ? 'Lahore' : undefined), country].filter(Boolean);
-  const searchTerm = locationTokens.length > 0 ? `${targetCategory}, ${locationTokens.join(', ')}` : targetCategory;
+  const targetCity = city || (isPakistan ? 'Lahore' : isUae ? 'Dubai' : cLower === 'uk' || cLower === 'gb' ? 'London' : 'New York');
+  const searchTerm = query && query.trim() ? `${query.trim()} ${targetCity}` : `${targetCategory} ${targetCity}`;
 
   let countryCodeParam = '';
   if (isPakistan) countryCodeParam = '&countrycodes=pk';

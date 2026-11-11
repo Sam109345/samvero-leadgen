@@ -155,7 +155,9 @@ export default function FreelancerLeadFeed({
 
     // 2. Fetch fresh live leads from online APIs with cache-busting
     try {
-      const res = await fetch(`/api/leads?refresh=live&limit=30&t=${Date.now()}`);
+      const countryParam = selectedCountry !== 'all' ? `&country=${encodeURIComponent(selectedCountry)}` : '';
+      const categoryParam = categoryFilter !== 'all' ? `&category=${encodeURIComponent(categoryFilter)}` : '';
+      const res = await fetch(`/api/leads?refresh=live&limit=30&t=${Date.now()}${countryParam}${categoryParam}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
@@ -481,28 +483,28 @@ export default function FreelancerLeadFeed({
         const isHot =
           lead.pipelineStage === 'hot' ||
           (!lead.contact?.hasWebsite && lead.type === 'gmb') ||
-          (lead.scoreBreakdown?.leadQualityScore ?? 0) >= 80 ||
+          (lead.scoreBreakdown?.leadQualityScore ?? (lead as any).score ?? 0) >= 80 ||
           (lead.tags || []).some((t) => t.toLowerCase().includes('hot'));
         if (!isHot) return false;
       } else if (activeCategoryTab === 'qualified') {
+        const score = lead.scoreBreakdown?.leadQualityScore ?? (lead as any).score ?? 0;
         const isQualified =
-          (lead.scoreBreakdown?.leadQualityScore ?? 0) >= 70 ||
-          lead.pipelineStage === 'qualified' ||
-          lead.verified === true;
+          (score >= 70 || lead.pipelineStage === 'qualified') &&
+          lead.pipelineStage !== 'hot';
         if (!isQualified) return false;
       } else if (activeCategoryTab === 'extra') {
         const isExtra =
           (lead.pipelineStage as string) === 'extra' ||
           lead.type === 'job' ||
           ['Upwork', 'Fiverr', 'Contra', 'Remote OK', 'Remotive', 'Freelancer.com', 'PeoplePerHour'].some((p) =>
-            lead.platform?.toLowerCase().includes(p.toLowerCase())
+            (lead.platform || '').toLowerCase().includes(p.toLowerCase())
           );
         if (!isExtra) return false;
       } else if (activeCategoryTab === 'needs_verification') {
         const needsVerif =
           !lead.verified ||
-          (lead.scoreBreakdown?.researchCompleteness ?? 100) < 80 ||
-          !lead.contact?.email;
+          (lead.scoreBreakdown?.researchCompleteness ?? 100) < 65 ||
+          (lead.pipelineStage === 'new' && !lead.contact?.phone && !lead.contact?.email);
         if (!needsVerif) return false;
       } else if (activeCategoryTab === 'saved') {
         if (!savedLeadIds.has(lead.id)) return false;
@@ -645,39 +647,42 @@ export default function FreelancerLeadFeed({
     savedLeadIds,
   ]);
 
-  // SubNav counts computation
+  // SubNav counts computation (dynamically scoped to selectedCountry)
   const tabCounts = useMemo(() => {
+    const countryScoped = selectedCountry === 'all'
+      ? feedLeads
+      : feedLeads.filter((l) => matchesCountry(l.country, l.city, l.address, selectedCountry, l.contact?.phone));
+
     return {
-      total: feedLeads.length,
-      hot: feedLeads.filter(
+      total: countryScoped.length,
+      hot: countryScoped.filter(
         (l) =>
           l.pipelineStage === 'hot' ||
           (!l.contact?.hasWebsite && l.type === 'gmb') ||
-          (l.scoreBreakdown?.leadQualityScore ?? 0) >= 80 ||
+          (l.scoreBreakdown?.leadQualityScore ?? (l as any).score ?? 0) >= 80 ||
           (l.tags || []).some((t) => t.toLowerCase().includes('hot'))
       ).length,
-      qualified: feedLeads.filter(
+      qualified: countryScoped.filter(
         (l) =>
-          (l.scoreBreakdown?.leadQualityScore ?? 0) >= 70 ||
-          l.pipelineStage === 'qualified' ||
-          l.verified === true
+          ((l.scoreBreakdown?.leadQualityScore ?? (l as any).score ?? 0) >= 70 || l.pipelineStage === 'qualified') &&
+          l.pipelineStage !== 'hot'
       ).length,
-      extra: feedLeads.filter(
+      extra: countryScoped.filter(
         (l) =>
           (l.pipelineStage as string) === 'extra' ||
           l.type === 'job' ||
           ['Upwork', 'Fiverr', 'Contra', 'Remote OK', 'Remotive', 'Freelancer.com', 'PeoplePerHour'].some((p) =>
-            l.platform?.toLowerCase().includes(p.toLowerCase())
+            (l.platform || '').toLowerCase().includes(p.toLowerCase())
           )
       ).length,
-      needsVerification: feedLeads.filter(
-        (l) => !l.verified || (l.scoreBreakdown?.researchCompleteness ?? 100) < 80 || !l.contact?.email
+      needsVerification: countryScoped.filter(
+        (l) => !l.verified || (l.scoreBreakdown?.researchCompleteness ?? 100) < 65
       ).length,
-      saved: savedLeadIds.size,
-      noWebsite: feedLeads.filter((l) => !l.contact?.hasWebsite).length,
-      newGmb: feedLeads.filter((l) => l.businessAge?.isNew).length,
+      saved: countryScoped.filter((l) => savedLeadIds.has(l.id)).length,
+      noWebsite: countryScoped.filter((l) => !l.contact?.hasWebsite).length,
+      newGmb: countryScoped.filter((l) => l.businessAge?.isNew).length,
     };
-  }, [feedLeads, savedLeadIds]);
+  }, [feedLeads, selectedCountry, savedLeadIds]);
 
   return (
     <div className="w-full flex flex-col font-sans transition-colors duration-200">

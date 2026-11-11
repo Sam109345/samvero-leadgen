@@ -404,9 +404,13 @@ export default function FreelancerJobCard({
         )}
 
         {/* 4. Google Maps Profile (For GMB / Local Businesses) */}
-        {(contact as any).gmbUrl && (
+        {((contact as any).gmbUrl || lead.type === 'gmb' || lead.platform?.toLowerCase().includes('google') || lead.platform?.toLowerCase().includes('maps')) && (
           <a
-            href={(contact as any).gmbUrl}
+            href={
+              (contact as any).gmbUrl ||
+              (lead.contact as any)?.gmbUrl ||
+              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lead.businessName || lead.title} ${lead.city || ''} ${lead.country || ''}`.trim())}`
+            }
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
