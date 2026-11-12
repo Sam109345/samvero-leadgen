@@ -280,9 +280,25 @@ function saveStorage(records: VisitorRecord[]) {
     if (!fs.existsSync(DATA_DIR)) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
-    fs.writeFileSync(TRACKING_FILE, JSON.stringify(records, null, 2), 'utf-8');
+    const content = JSON.stringify(records, null, 2);
+    try {
+      fs.writeFileSync(TRACKING_FILE, content, 'utf-8');
+    } catch {
+      const tempPath = `${TRACKING_FILE}.${Date.now()}.${Math.random().toString(36).substring(2, 6)}.tmp`;
+      fs.writeFileSync(tempPath, content, 'utf-8');
+      try {
+        fs.renameSync(tempPath, TRACKING_FILE);
+      } catch {
+        try {
+          fs.copyFileSync(tempPath, TRACKING_FILE);
+          fs.unlinkSync(tempPath);
+        } catch {
+          // ignore
+        }
+      }
+    }
   } catch (err) {
-    console.error('Error writing visitor tracking store:', err);
+    // Non-fatal fallback
   }
 }
 

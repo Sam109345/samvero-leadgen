@@ -323,13 +323,33 @@ function loadStore(): PersistentIntegrationStore {
   return { credentials: {}, states: {} };
 }
 
-function saveStore(data: PersistentIntegrationStore): void {
-  ensureDataDir();
+function safeWriteFileSync(filePath: string, content: string): void {
   try {
-    fs.writeFileSync(INTEGRATIONS_FILE, JSON.stringify(data, null, 2), 'utf8');
-  } catch (err) {
-    console.error('Failed to save integrations store:', err);
+    ensureDataDir();
+    try {
+      fs.writeFileSync(filePath, content, 'utf8');
+      return;
+    } catch {
+      const tempPath = `${filePath}.${Date.now()}.${Math.random().toString(36).substring(2, 6)}.tmp`;
+      fs.writeFileSync(tempPath, content, 'utf8');
+      try {
+        fs.renameSync(tempPath, filePath);
+      } catch {
+        try {
+          fs.copyFileSync(tempPath, filePath);
+          fs.unlinkSync(tempPath);
+        } catch {
+          // ignore
+        }
+      }
+    }
+  } catch {
+    // Non-fatal: prevents Windows file-lock from crashing daemon
   }
+}
+
+function saveStore(data: PersistentIntegrationStore): void {
+  safeWriteFileSync(INTEGRATIONS_FILE, JSON.stringify(data, null, 2));
 }
 
 export function loadSyncHistory(): SyncHistoryLog[] {
@@ -351,11 +371,7 @@ export function appendSyncHistory(log: SyncHistoryLog): void {
   current.unshift(log);
   // Cap at 200 logs
   const capped = current.slice(0, 200);
-  try {
-    fs.writeFileSync(SYNC_HISTORY_FILE, JSON.stringify(capped, null, 2), 'utf8');
-  } catch (err) {
-    console.error('Failed to save sync history:', err);
-  }
+  safeWriteFileSync(SYNC_HISTORY_FILE, JSON.stringify(capped, null, 2));
 }
 
 /**
