@@ -22,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Theme detection */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -37,9 +38,38 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* Google Fonts: Space Grotesk + Inter */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
       </head>
       <body className="antialiased min-h-screen">
+        {/* Global cursor glow — follows mouse on every page */}
+        <div id="cursor-glow" aria-hidden="true" />
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var glowEl = document.getElementById('cursor-glow');
+                if (!glowEl) return;
+                var mouseX = window.innerWidth / 2;
+                var mouseY = window.innerHeight / 2;
+                var currentX = mouseX;
+                var currentY = mouseY;
+                document.addEventListener('mousemove', function(e) {
+                  mouseX = e.clientX;
+                  mouseY = e.clientY;
+                  glowEl.style.left = e.clientX + 'px';
+                  glowEl.style.top = e.clientY + 'px';
+                });
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );

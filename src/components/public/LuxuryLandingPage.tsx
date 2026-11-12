@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import PublicNavbar from './PublicNavbar';
 import PublicFooter from './PublicFooter';
@@ -28,11 +28,67 @@ import {
   FileSpreadsheet,
 } from 'lucide-react';
 
+/* ── Starfield: 60 CSS-only twinkling stars ─────────────── */
+function Starfield() {
+  const stars = Array.from({ length: 60 }, (_, i) => ({
+    id: i,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    width: `${Math.random() * 2.5 + 0.5}px`,
+    duration: `${Math.random() * 4 + 2}s`,
+    delay: `${Math.random() * 5}s`,
+    opacity: Math.random() * 0.7 + 0.1,
+  }));
+
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {stars.map((s) => (
+        <div
+          key={s.id}
+          className="star"
+          style={{
+            left: s.left,
+            top: s.top,
+            width: s.width,
+            height: s.width,
+            opacity: s.opacity,
+            '--duration': s.duration,
+            '--delay': s.delay,
+          } as React.CSSProperties}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ── Scroll-reveal hook ──────────────────────────────────── */
+function useScrollReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+}
+
 export default function LuxuryLandingPage() {
   const [plans, setPlans] = useState<PlanConfig[]>([]);
   const [loadingPlans, setLoadingPlans] = useState(true);
   const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
+  const isAnnual = billingCycle === 'annual';
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  useScrollReveal();
 
   useEffect(() => {
     fetch('/api/plans')
@@ -45,6 +101,47 @@ export default function LuxuryLandingPage() {
       .catch((err) => console.warn('Could not load database plans:', err))
       .finally(() => setLoadingPlans(false));
   }, []);
+
+  /* Auto-rotate carousel */
+  const features = [
+    {
+      icon: Search,
+      title: 'Real Business Lead Discovery',
+      desc: 'Search active companies across Google Maps, LinkedIn, Upwork, Bark and international business registers with zero fabricated records.',
+    },
+    {
+      icon: Bot,
+      title: 'Intelligent Business Research',
+      desc: 'Deep autonomous website crawling, SSL detection, mobile responsiveness analysis, and company footprint extraction.',
+    },
+    {
+      icon: MailCheck,
+      title: 'Contact Information Enrichment',
+      desc: 'Direct executive email extraction with deep DNS MX record validation and bounce reduction before outreach.',
+    },
+    {
+      icon: Building2,
+      title: 'Google Business Profile Research',
+      desc: 'Extract genuine physical addresses, verified ratings, review velocity, established operational age, and direct place IDs.',
+    },
+    {
+      icon: TrendingUp,
+      title: 'Lead Qualification & Scoring',
+      desc: 'Multi-factor explainable scoring calculating project relevance, budget availability, and digital revamp potential.',
+    },
+    {
+      icon: Layers,
+      title: 'Centralized Lead Management',
+      desc: 'Full-featured CRM pipeline, segmented lead lists, CSV exports, and multi-channel outreach tracking.',
+    },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % features.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [features.length]);
 
   const faqs = [
     {
@@ -82,235 +179,499 @@ export default function LuxuryLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#070b16] text-slate-100 flex flex-col font-sans selection:bg-amber-500 selection:text-black">
-      {/* 1. Header */}
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ background: '#030712', color: '#e2e8f0', fontFamily: "'Inter', sans-serif" }}
+    >
       <PublicNavbar />
 
       <main className="flex-1">
-        {/* 2. Hero Section */}
-        <section className="relative pt-32 pb-24 md:pt-40 md:pb-32 overflow-hidden border-b border-slate-800/80">
-          {/* Subtle Ambient Glows */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-gradient-to-tr from-amber-500/10 via-blue-600/10 to-transparent blur-[120px] pointer-events-none" />
-          <div className="absolute top-10 right-10 w-96 h-96 bg-blue-500/5 blur-[100px] pointer-events-none" />
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            {/* Superbadge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-400/30 text-amber-300 text-xs font-semibold mb-8 backdrop-blur-md shadow-lg shadow-amber-500/5">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span>Next-Generation Multi-Tenant Lead SaaS</span>
-              <span className="text-slate-600">|</span>
-              <span className="text-slate-400 font-normal">Real-Data Provenance Engine</span>
+        {/* ═══ 1. HERO SECTION ═══════════════════════════════════ */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          <Starfield />
+
+          {/* Large ambient orbs */}
+          <div
+            className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full pointer-events-none animate-float"
+            style={{ background: 'radial-gradient(circle, rgba(0,87,255,0.08) 0%, transparent 70%)', filter: 'blur(80px)' }}
+          />
+          <div
+            className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full pointer-events-none animate-float-delayed"
+            style={{ background: 'radial-gradient(circle, rgba(0,170,255,0.06) 0%, transparent 70%)', filter: 'blur(60px)', animationDelay: '3s' }}
+          />
+          <div
+            className="absolute top-1/2 left-1/2 w-[800px] h-[800px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"
+            style={{ background: 'radial-gradient(circle, rgba(0,51,204,0.04) 0%, transparent 60%)', filter: 'blur(100px)' }}
+          />
+
+          {/* 3D rotating rings */}
+          <div
+            className="absolute w-[700px] h-[700px] rounded-full pointer-events-none animate-spin-slow"
+            style={{
+              border: '1px solid rgba(0,87,255,0.08)',
+              transform: 'rotateX(70deg)',
+            }}
+          />
+          <div
+            className="absolute w-[500px] h-[500px] rounded-full pointer-events-none animate-spin-reverse"
+            style={{
+              border: '1px solid rgba(0,170,255,0.06)',
+              transform: 'rotateX(70deg) rotateZ(45deg)',
+            }}
+          />
+
+          {/* Scan line */}
+          <div className="scan-line pointer-events-none" />
+
+          {/* Hero content */}
+          <div className="relative z-10 text-center max-w-5xl mx-auto px-6 pt-32 pb-24">
+            {/* Badge */}
+            <div
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full mb-10 text-xs font-semibold tracking-widest uppercase animate-slide-down"
+              style={{
+                background: 'rgba(10,15,30,0.8)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(0,170,255,0.3)',
+                boxShadow: '0 0 20px rgba(0,87,255,0.2)',
+                color: '#00AAFF',
+              }}
+            >
+              <span
+                className="w-2 h-2 rounded-full animate-pulse"
+                style={{ background: '#00AAFF', boxShadow: '0 0 8px #00AAFF' }}
+              />
+              AI-Powered Lead Intelligence Platform
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-[1.1] font-serif">
-              Find Better Business Opportunities.{' '}
-              <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent">
-                Turn Leads Into Clients.
+            <h1
+              className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight mb-6 animate-slide-up"
+              style={{ fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.1 }}
+            >
+              <span className="text-white">Find Your Next</span>
+              <br />
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #0057FF 0%, #00AAFF 50%, #0057FF 100%)',
+                  backgroundSize: '200% auto',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  animation: 'shimmer 3s linear infinite',
+                }}
+              >
+                Big Client
               </span>
             </h1>
 
-            {/* Supporting Text */}
-            <p className="mt-6 text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
-              Discover real business opportunities, research companies, access verified contact information and manage your entire prospecting workflow from one intelligent platform.
+            {/* Subheadline */}
+            <p
+              className="text-lg max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in"
+              style={{ color: '#94a3b8', animationDelay: '0.3s' }}
+            >
+              Verified leads from Google My Business, LinkedIn, Upwork & more.
+              Real contacts. Real opportunities. Zero fabricated data.
             </p>
 
             {/* CTA Buttons */}
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex gap-4 justify-center flex-wrap animate-slide-up" style={{ animationDelay: '0.5s' }}>
               <Link
                 href="/signup"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-slate-950 font-black text-sm tracking-wide shadow-xl shadow-amber-500/20 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                className="btn-nasa"
               >
-                <span>Get Started</span>
+                <Zap className="w-4 h-4" />
+                Get Started Free
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <a
                 href="#pricing"
-                className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm border border-slate-700 transition flex items-center justify-center gap-2"
+                className="px-8 py-4 rounded-xl font-semibold text-sm transition-all duration-300"
+                style={{
+                  color: '#94a3b8',
+                  border: '1px solid rgba(100,116,139,0.3)',
+                }}
+                onMouseEnter={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = 'rgba(0,87,255,0.5)';
+                  el.style.color = '#fff';
+                  el.style.background = 'rgba(0,87,255,0.08)';
+                }}
+                onMouseLeave={e => {
+                  const el = e.currentTarget as HTMLElement;
+                  el.style.borderColor = 'rgba(100,116,139,0.3)';
+                  el.style.color = '#94a3b8';
+                  el.style.background = 'transparent';
+                }}
               >
-                <span>Explore Packages</span>
-                <ChevronDown className="w-4 h-4 text-slate-400" />
+                Explore Packages
               </a>
             </div>
 
-            {/* Dashboard Mockup Visual */}
-            <div className="mt-16 md:mt-20 max-w-6xl mx-auto relative group">
-              <div className="absolute -inset-1 rounded-2xl bg-gradient-to-b from-amber-500/20 via-blue-500/10 to-transparent blur-xl opacity-75 group-hover:opacity-100 transition duration-700" />
-              <div className="relative rounded-2xl border border-slate-800/90 bg-[#090d19] overflow-hidden shadow-2xl">
-                {/* Browser bar */}
-                <div className="h-10 bg-[#0b1120] border-b border-slate-800 flex items-center justify-between px-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-rose-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-amber-500/80" />
-                    <div className="w-3 h-3 rounded-full bg-emerald-500/80" />
+            {/* Social proof */}
+            <div
+              className="mt-14 flex items-center justify-center gap-8 flex-wrap animate-fade-in"
+              style={{ animationDelay: '0.8s' }}
+            >
+              {[
+                { label: '50K+', sub: 'Verified Leads' },
+                { label: '15+', sub: 'Platforms' },
+                { label: '98%', sub: 'Accuracy' },
+                { label: '24/7', sub: 'Monitoring' },
+              ].map((s, i) => (
+                <div key={i} className="text-center">
+                  <div
+                    className="text-2xl font-black"
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    {s.label}
                   </div>
-                  <div className="flex items-center gap-1.5 px-4 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-slate-400 font-mono">
-                    <Lock className="w-3 h-3 text-emerald-400" />
-                    <span>samvero.com/app/dashboard</span>
-                  </div>
-                  <div className="w-16" />
+                  <div className="text-xs mt-1" style={{ color: '#64748b' }}>{s.sub}</div>
                 </div>
+              ))}
+            </div>
+          </div>
 
-                {/* Dashboard Inside Preview */}
-                <div className="p-6 md:p-8 space-y-6 text-left">
-                  {/* Top Bar Preview */}
-                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
-                    <div>
-                      <div className="text-[10px] uppercase font-mono tracking-widest text-amber-400 font-bold mb-1">
-                        Active Workspace &bull; Standard Plan Entitlement
-                      </div>
-                      <h3 className="text-xl md:text-2xl font-black text-white">Prospecting & Lead Intelligence Desk</h3>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="px-3 py-1.5 rounded-lg bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5">
-                        <CheckCircle2 className="w-3.5 h-3.5" />
-                        <span>2,180 / 2,500 Leads Remaining</span>
-                      </div>
-                      <Link
-                        href="/signup"
-                        className="px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-black text-xs font-bold transition shadow-xs"
-                      >
-                        Launch Search
-                      </Link>
-                    </div>
-                  </div>
+          {/* Dashboard preview card */}
+          <div
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-4xl px-6 pointer-events-none"
+            style={{ opacity: 0.7 }}
+          >
+            <div
+              className="h-1 rounded-full"
+              style={{ background: 'linear-gradient(90deg, transparent, #0057FF, #00AAFF, #0057FF, transparent)' }}
+            />
+          </div>
+        </section>
 
-                  {/* 4 KPI Cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                      <div className="text-xs text-slate-400 font-medium">My Total Leads</div>
-                      <div className="text-2xl font-black text-white mt-1">320</div>
-                      <div className="text-[11px] text-emerald-400 font-semibold mt-1">100% Genuine Provenance</div>
-                    </div>
-                    <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                      <div className="text-xs text-slate-400 font-medium">Verified Emails Discovered</div>
-                      <div className="text-2xl font-black text-white mt-1">284</div>
-                      <div className="text-[11px] text-blue-400 font-semibold mt-1">DNS/MX Validated</div>
-                    </div>
-                    <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                      <div className="text-xs text-slate-400 font-medium">Phone Numbers Enriched</div>
-                      <div className="text-2xl font-black text-white mt-1">308</div>
-                      <div className="text-[11px] text-purple-400 font-semibold mt-1">ITU Format Verified</div>
-                    </div>
-                    <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800">
-                      <div className="text-xs text-slate-400 font-medium">Qualified Opportunities</div>
-                      <div className="text-2xl font-black text-white mt-1">94</div>
-                      <div className="text-[11px] text-amber-400 font-semibold mt-1">AI Pitch Blueprints</div>
-                    </div>
+        {/* ═══ 2. STATS SECTION ══════════════════════════════════ */}
+        <section
+          className="py-16"
+          style={{ borderTop: '1px solid rgba(0,87,255,0.1)', borderBottom: '1px solid rgba(0,87,255,0.1)', background: 'rgba(10,15,30,0.4)' }}
+        >
+          <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 px-6">
+            {[
+              { num: '50K+', label: 'Verified Leads', icon: Search },
+              { num: '15+', label: 'Data Platforms', icon: Globe2 },
+              { num: '98%', label: 'Accuracy Rate', icon: ShieldCheck },
+              { num: '24/7', label: 'Live Monitoring', icon: Zap },
+            ].map((stat, i) => {
+              const IconComp = stat.icon;
+              return (
+                <div
+                  key={i}
+                  className="glass-card-hover rounded-2xl p-6 text-center reveal"
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mx-auto mb-3"
+                    style={{ background: 'rgba(0,87,255,0.1)', border: '1px solid rgba(0,87,255,0.2)' }}
+                  >
+                    <IconComp className="w-5 h-5" style={{ color: '#00AAFF' }} />
                   </div>
-
-                  {/* Sample Real-data lead row mock */}
-                  <div className="rounded-xl border border-slate-800 bg-slate-950/60 overflow-hidden">
-                    <div className="p-3 bg-slate-900/60 border-b border-slate-800 text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                      <span>Live Intelligence Stream</span>
-                      <span className="text-emerald-400 font-mono">Stream Active</span>
-                    </div>
-                    <div className="divide-y divide-slate-800/60 text-xs">
-                      <div className="p-3.5 flex items-center justify-between gap-4 hover:bg-slate-900/40 transition">
-                        <div className="flex items-center gap-3">
-                          <div className="w-7 h-7 rounded-lg bg-blue-950 border border-blue-800 text-blue-300 font-bold flex items-center justify-center text-xs">
-                            G
-                          </div>
-                          <div>
-                            <div className="font-bold text-white">Falcon Crest Property Management</div>
-                            <div className="text-[11px] text-slate-400">Dubai Marina, UAE &bull; Real Estate & Property</div>
-                          </div>
-                        </div>
-                        <div className="hidden sm:flex items-center gap-2">
-                          <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 text-[10px] font-bold">
-                            Email Verified
-                          </span>
-                          <span className="px-2 py-0.5 rounded bg-blue-950 text-blue-300 text-[10px] font-bold">
-                            WhatsApp Ready
-                          </span>
-                        </div>
-                        <div className="font-bold text-amber-400 text-xs">Score: 94/100</div>
-                      </div>
-                      <div className="p-3.5 flex items-center justify-between gap-4 hover:bg-slate-900/40 transition">
-                        <div className="flex items-center gap-3">
-                          <div className="w-7 h-7 rounded-lg bg-purple-950 border border-purple-800 text-purple-300 font-bold flex items-center justify-center text-xs">
-                            L
-                          </div>
-                          <div>
-                            <div className="font-bold text-white">Harley Street Aesthetics & Dental Care</div>
-                            <div className="text-[11px] text-slate-400">London, United Kingdom &bull; Healthcare & Wellness</div>
-                          </div>
-                        </div>
-                        <div className="hidden sm:flex items-center gap-2">
-                          <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 text-[10px] font-bold">
-                            Email Verified
-                          </span>
-                          <span className="px-2 py-0.5 rounded bg-blue-950 text-blue-300 text-[10px] font-bold">
-                            Google Business
-                          </span>
-                        </div>
-                        <div className="font-bold text-amber-400 text-xs">Score: 92/100</div>
-                      </div>
-                    </div>
+                  <div
+                    className="text-3xl font-black mb-1"
+                    style={{
+                      fontFamily: "'Space Grotesk', sans-serif",
+                      background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                    }}
+                  >
+                    {stat.num}
                   </div>
+                  <div className="text-xs uppercase tracking-widest" style={{ color: '#64748b' }}>{stat.label}</div>
                 </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ═══ 3. ANIMATED PIPELINE / GIF SECTION ═══════════════ */}
+        <section className="py-24 relative overflow-hidden" style={{ background: '#030712' }}>
+          <Starfield />
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-14 reveal">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-semibold tracking-widest uppercase"
+                style={{ background: 'rgba(0,87,255,0.08)', border: '1px solid rgba(0,87,255,0.2)', color: '#00AAFF' }}
+              >
+                <Zap className="w-3 h-3" /> Real-Time Data Pipeline
+              </div>
+              <h2
+                className="text-4xl font-bold mb-4"
+                style={{
+                  fontFamily: "'Space Grotesk', sans-serif",
+                  background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Watch Leads Flow In Live
+              </h2>
+              <p style={{ color: '#64748b' }}>Automated discovery from every major platform, enriched & verified instantly.</p>
+            </div>
+
+            <div
+              className="rounded-2xl overflow-hidden p-1 reveal"
+              style={{
+                background: 'rgba(10,15,30,0.7)',
+                backdropFilter: 'blur(16px)',
+                border: '1px solid rgba(0,87,255,0.25)',
+                boxShadow: '0 0 60px rgba(0,87,255,0.15), 0 40px 80px rgba(0,0,0,0.5)',
+              }}
+            >
+              {/* Browser chrome */}
+              <div
+                className="flex items-center gap-2 px-4 py-3 rounded-t-xl"
+                style={{ background: 'rgba(10,15,30,0.9)', borderBottom: '1px solid rgba(0,87,255,0.1)' }}
+              >
+                <span className="w-3 h-3 rounded-full" style={{ background: '#ff5f56' }} />
+                <span className="w-3 h-3 rounded-full" style={{ background: '#ffbd2e' }} />
+                <span className="w-3 h-3 rounded-full" style={{ background: '#27c93f' }} />
+                <div
+                  className="ml-4 flex items-center gap-2 px-4 py-1 rounded-md text-xs font-mono"
+                  style={{ background: 'rgba(0,87,255,0.08)', border: '1px solid rgba(0,87,255,0.15)', color: '#64748b' }}
+                >
+                  <Lock className="w-3 h-3" style={{ color: '#10b981' }} />
+                  <span>samvero.com/app/pipeline</span>
+                </div>
+                <div
+                  className="ml-auto flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full animate-pulse"
+                  style={{ color: '#10b981', background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)' }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+                  LIVE
+                </div>
+              </div>
+
+              {/* GIF embed */}
+              <div className="relative overflow-hidden" style={{ background: '#050d1a' }}>
+                <img
+                  src="https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif"
+                  alt="Real-time data pipeline visualization"
+                  className="w-full"
+                  style={{ maxHeight: '380px', objectFit: 'cover', opacity: 0.9 }}
+                />
+                {/* Overlay grid */}
+                <div
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    backgroundImage: 'linear-gradient(rgba(0,87,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,87,255,0.03) 1px, transparent 1px)',
+                    backgroundSize: '40px 40px',
+                  }}
+                />
+                {/* Bottom fade */}
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-20 pointer-events-none"
+                  style={{ background: 'linear-gradient(to top, rgba(10,15,30,0.7), transparent)' }}
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* 3. Platform Benefits */}
-        <section className="py-24 bg-[#060a14] border-b border-slate-800/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Enterprise Value</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 font-serif">
-                Everything You Need to Prospect with Certainty
+        {/* ═══ 4. FEATURES CAROUSEL ══════════════════════════════ */}
+        <section
+          className="py-24 relative"
+          style={{ background: 'rgba(10,15,30,0.5)', borderTop: '1px solid rgba(0,87,255,0.08)' }}
+        >
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-14 reveal">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-semibold tracking-widest uppercase"
+                style={{ background: 'rgba(0,87,255,0.08)', border: '1px solid rgba(0,87,255,0.2)', color: '#00AAFF' }}
+              >
+                <Sparkles className="w-3 h-3" /> Enterprise Features
+              </div>
+              <h2
+                className="text-4xl font-bold mb-4"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", color: '#fff' }}
+              >
+                Everything You Need to Prospect with{' '}
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Certainty
+                </span>
               </h2>
-              <p className="text-slate-400 text-sm sm:text-base mt-3">
-                Built specifically for commercial agencies, founders and outbound teams who demand verified contacts and real business opportunities.
+              <p style={{ color: '#64748b' }}>
+                Built for commercial agencies, founders and outbound teams who demand verified contacts.
               </p>
             </div>
 
+            {/* Auto-playing feature grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Search,
-                  title: 'Real Business Lead Discovery',
-                  desc: 'Search active commercial companies across Google Maps, LinkedIn, Upwork, Bark and international public business registers with zero fabricated dummy records.',
-                },
-                {
-                  icon: Bot,
-                  title: 'Intelligent Business Research',
-                  desc: 'Deep autonomous website crawling, SSL detection, mobile responsiveness analysis, and company operational footprint extraction.',
-                },
-                {
-                  icon: MailCheck,
-                  title: 'Contact Information Enrichment',
-                  desc: 'Direct executive email extraction with deep DNS MX record validation and bounce reduction testing before outreach.',
-                },
-                {
-                  icon: Building2,
-                  title: 'Google Business Profile Research',
-                  desc: 'Extract genuine physical addresses, verified ratings, review velocity, established operational age, and direct place IDs.',
-                },
-                {
-                  icon: TrendingUp,
-                  title: 'Lead Qualification & Scoring',
-                  desc: 'Multi-factor explainable opportunity scoring calculating project relevance, budget availability, and digital revamp potential.',
-                },
-                {
-                  icon: Layers,
-                  title: 'Centralized Lead Management',
-                  desc: 'Full-featured CRM pipeline, segmented lead lists, CSV exports, and multi-channel outreach tracking within your isolated private workspace.',
-                },
-              ].map((benefit, i) => {
-                const IconComponent = benefit.icon;
+              {features.map((feat, i) => {
+                const IconComp = feat.icon;
+                const isActive = i === carouselIndex;
                 return (
                   <div
                     key={i}
-                    className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 hover:border-slate-700 transition hover:bg-slate-900/70 group"
+                    onClick={() => setCarouselIndex(i)}
+                    className="glass-card-hover rounded-2xl p-6 cursor-pointer reveal"
+                    style={{
+                      animationDelay: `${i * 0.1}s`,
+                      border: isActive ? '1px solid rgba(0,170,255,0.4)' : '1px solid rgba(0,87,255,0.15)',
+                      boxShadow: isActive ? '0 0 40px rgba(0,87,255,0.2), 0 20px 60px rgba(0,0,0,0.3)' : undefined,
+                      transform: isActive ? 'translateY(-4px)' : undefined,
+                      transition: 'all 0.4s ease',
+                    }}
                   >
-                    <div className="w-10 h-10 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-110 transition">
-                      <IconComponent className="w-5 h-5" />
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-all"
+                      style={{
+                        background: isActive ? 'rgba(0,87,255,0.2)' : 'rgba(0,87,255,0.08)',
+                        border: `1px solid ${isActive ? 'rgba(0,170,255,0.4)' : 'rgba(0,87,255,0.15)'}`,
+                        boxShadow: isActive ? '0 0 20px rgba(0,87,255,0.3)' : undefined,
+                      }}
+                    >
+                      <IconComp
+                        className="w-6 h-6"
+                        style={{ color: isActive ? '#00AAFF' : '#0057FF' }}
+                      />
                     </div>
-                    <h3 className="text-base font-bold text-white mb-2">{benefit.title}</h3>
-                    <p className="text-xs text-slate-400 leading-relaxed">{benefit.desc}</p>
+                    <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {feat.title}
+                    </h3>
+                    <p className="text-xs leading-relaxed" style={{ color: '#64748b' }}>{feat.desc}</p>
+                    {isActive && (
+                      <div
+                        className="mt-4 flex items-center gap-1.5 text-xs font-semibold"
+                        style={{ color: '#00AAFF' }}
+                      >
+                        <Zap className="w-3 h-3" />
+                        Active Feature
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Carousel dots */}
+            <div className="flex justify-center gap-2 mt-8">
+              {features.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setCarouselIndex(i)}
+                  className="transition-all duration-300"
+                  style={{
+                    width: i === carouselIndex ? '24px' : '8px',
+                    height: '8px',
+                    borderRadius: '9999px',
+                    background: i === carouselIndex
+                      ? 'linear-gradient(90deg, #0057FF, #00AAFF)'
+                      : 'rgba(0,87,255,0.2)',
+                    border: i === carouselIndex ? 'none' : '1px solid rgba(0,87,255,0.1)',
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══ 5. HOW IT WORKS ═══════════════════════════════════ */}
+        <section
+          className="py-24 relative overflow-hidden"
+          style={{ background: '#030712', borderTop: '1px solid rgba(0,87,255,0.08)' }}
+        >
+          <Starfield />
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16 reveal">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-semibold tracking-widest uppercase"
+                style={{ background: 'rgba(0,87,255,0.08)', border: '1px solid rgba(0,87,255,0.2)', color: '#00AAFF' }}
+              >
+                <BarChart3 className="w-3 h-3" /> Transparent Workflow
+              </div>
+              <h2
+                className="text-4xl font-bold mb-4 text-white"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Four Steps to Active Prospecting
+              </h2>
+              <p style={{ color: '#64748b' }}>
+                Simple, transparent, and verified onboarding process without hidden recurring auto-charges.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {[
+                {
+                  step: '01',
+                  title: 'Choose Your Plan',
+                  desc: 'Select from our six configurable packages tailored to your lead volume, target geography, and feature requirements.',
+                  icon: Sliders,
+                },
+                {
+                  step: '02',
+                  title: 'Submit Application',
+                  desc: 'Complete the professional customer application. We generate your unique Application Reference ID for tracking.',
+                  icon: FileSpreadsheet,
+                },
+                {
+                  step: '03',
+                  title: 'Complete Payment',
+                  desc: 'Transfer via verified Bank Wire, Wise Direct, or corporate invoice. Our finance desk verifies your deposit.',
+                  icon: Lock,
+                },
+                {
+                  step: '04',
+                  title: 'Access Your Dashboard',
+                  desc: 'Instant account activation with full lead discovery, enrichment, and CRM capabilities from day one.',
+                  icon: Zap,
+                },
+              ].map((step, i) => {
+                const IconComp = step.icon;
+                return (
+                  <div
+                    key={i}
+                    className="glass-card rounded-2xl p-6 relative reveal"
+                    style={{ animationDelay: `${i * 0.15}s` }}
+                  >
+                    {/* Connector line */}
+                    {i < 3 && (
+                      <div
+                        className="hidden md:block absolute top-10 -right-3 w-6 h-px z-10"
+                        style={{ background: 'linear-gradient(90deg, rgba(0,87,255,0.4), transparent)' }}
+                      />
+                    )}
+                    <div
+                      className="text-5xl font-black mb-4"
+                      style={{
+                        fontFamily: "'Space Grotesk', sans-serif",
+                        background: 'linear-gradient(135deg, rgba(0,87,255,0.3), rgba(0,170,255,0.1))',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                      }}
+                    >
+                      {step.step}
+                    </div>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center mb-4"
+                      style={{ background: 'rgba(0,87,255,0.1)', border: '1px solid rgba(0,87,255,0.2)' }}
+                    >
+                      <IconComp className="w-5 h-5" style={{ color: '#00AAFF' }} />
+                    </div>
+                    <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {step.title}
+                    </h3>
+                    <p className="text-xs leading-relaxed" style={{ color: '#64748b' }}>{step.desc}</p>
                   </div>
                 );
               })}
@@ -318,288 +679,256 @@ export default function LuxuryLandingPage() {
           </div>
         </section>
 
-        {/* 4. How It Works */}
-        <section className="py-24 bg-[#080d1b] border-b border-slate-800/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Transparent Workflow</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 font-serif">
-                Four Steps to Active Prospecting
+        {/* ═══ 6. PRICING SECTION ════════════════════════════════ */}
+        <section
+          id="pricing"
+          className="py-24 relative"
+          style={{ background: 'rgba(10,15,30,0.5)', borderTop: '1px solid rgba(0,87,255,0.08)' }}
+        >
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center mb-14 reveal">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-semibold tracking-widest uppercase"
+                style={{ background: 'rgba(0,87,255,0.08)', border: '1px solid rgba(0,87,255,0.2)', color: '#00AAFF' }}
+              >
+                <Sparkles className="w-3 h-3" /> Subscription Plans
+              </div>
+              <h2
+                className="text-4xl font-bold mb-4 text-white"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Choose Your Intelligence Package
               </h2>
-              <p className="text-slate-400 text-sm sm:text-base mt-3">
-                Simple, transparent, and verified onboarding process without hidden recurring auto-charges.
+              <p style={{ color: '#64748b' }}>
+                Transparent pricing with no hidden auto-charges. Manual payment verified by our team.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-              {[
-                {
-                  step: '01',
-                  title: 'Choose Your Plan',
-                  desc: 'Select from our six configurable packages tailored to your lead volume, target geography, and feature requirements.',
-                },
-                {
-                  step: '02',
-                  title: 'Submit Your Application',
-                  desc: 'Complete the professional customer application. We generate your unique Application Reference ID for tracking.',
-                },
-                {
-                  step: '03',
-                  title: 'Complete Manual Payment',
-                  desc: 'Transfer payment via verified Bank Wire, Wise Direct, or corporate invoice. Our finance desk verifies your deposit.',
-                },
-                {
-                  step: '04',
-                  title: 'Access Your Dashboard',
-                  desc: 'Receive immediate access credentials to your dedicated customer workspace with full plan quota and isolated data.',
-                },
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="p-6 rounded-2xl bg-[#090f20] border border-slate-800/90 relative group hover:border-amber-400/40 transition"
-                >
-                  <div className="text-3xl font-black text-amber-400/40 font-mono mb-3">{item.step}</div>
-                  <h3 className="text-base font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Features Section */}
-        <section id="features" className="py-24 bg-[#070b16] border-b border-slate-800/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Actual Implemented Capabilities</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 font-serif">
-                Commercial Powerhouse Features
-              </h2>
-              <p className="text-slate-400 text-sm sm:text-base mt-3">
-                All features advertised below are fully functional and connected directly to active backend engines.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                {
-                  title: 'Multi-platform Lead Discovery',
-                  desc: 'Google My Business, LinkedIn, Upwork, Fiverr, PeoplePerHour, Bark, and Freelancer.com live feeds.',
-                },
-                {
-                  title: 'Business Intelligence',
-                  desc: 'Automated deep crawling of corporate websites, technology stack fingerprinting, and digital audit.',
-                },
-                {
-                  title: 'Google Business Research',
-                  desc: 'Live place identity resolution, operating hours, review volume, and authentic location coordinates.',
-                },
-                {
-                  title: 'Contact Discovery',
-                  desc: 'Direct decision-maker name discovery, verified corporate domain emails, and direct phone lines.',
-                },
-                {
-                  title: 'Contact Verification',
-                  desc: 'Real-time DNS MX server probe and ITU international phone formatting for zero wasted outreach.',
-                },
-                {
-                  title: 'AI-Powered Lead Analysis',
-                  desc: 'Gemini 1.5 Flash opportunity analysis generating bespoke client pitches and website scope blueprints.',
-                },
-                {
-                  title: 'Lead Management & Lists',
-                  desc: 'Full-featured Kanban stage pipeline, customizable lead lists, status tags, and private client notes.',
-                },
-                {
-                  title: 'Export & Analytics',
-                  desc: 'Structured CSV exports for cold outreach tools, funnel conversion charts, and activity audit trail.',
-                },
-              ].map((feat, i) => (
-                <div key={i} className="p-5 rounded-2xl bg-slate-900/30 border border-slate-800 hover:bg-slate-900/60 transition">
-                  <div className="flex items-center gap-2 mb-2 text-amber-400">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    <h4 className="text-sm font-bold text-white">{feat.title}</h4>
-                  </div>
-                  <p className="text-xs text-slate-400 leading-relaxed">{feat.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 6. Pricing Section (Display Six Subscription Packages from Database) */}
-        <section id="pricing" className="py-24 bg-[#050811] border-b border-slate-800/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Database-Backed Plans</span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-2 font-serif">
-                Six Subscription Packages
-              </h2>
-              <p className="text-slate-400 text-sm sm:text-base mt-3">
-                Transparent quotas and feature entitlements configurable through our central administrative control.
-              </p>
-
-              {/* Billing Cycle Switcher */}
-              <div className="mt-8 inline-flex items-center p-1 rounded-xl bg-slate-900 border border-slate-800">
-                {(['monthly', 'quarterly', 'half_yearly', 'annual'] as BillingCycle[]).map((cycle) => (
+            {/* Billing toggle */}
+            <div className="flex justify-center mb-10">
+              <div
+                className="inline-flex rounded-xl p-1"
+                style={{ background: 'rgba(10,15,30,0.8)', border: '1px solid rgba(0,87,255,0.15)' }}
+              >
+                {(['monthly', 'annual'] as BillingCycle[]).map((cycle) => (
                   <button
                     key={cycle}
                     onClick={() => setBillingCycle(cycle)}
-                    className={`px-4 py-2 rounded-lg text-xs font-bold capitalize transition ${
-                      billingCycle === cycle
-                        ? 'bg-amber-400 text-black shadow-md'
-                        : 'text-slate-400 hover:text-white'
-                    }`}
+                    className="px-5 py-2 rounded-lg text-xs font-bold transition-all duration-300 capitalize"
+                    style={{
+                      background: billingCycle === cycle ? 'linear-gradient(135deg, #0057FF, #0033CC)' : 'transparent',
+                      color: billingCycle === cycle ? '#fff' : '#94a3b8',
+                      boxShadow: billingCycle === cycle ? '0 0 20px rgba(0,87,255,0.3)' : undefined,
+                    }}
                   >
-                    {cycle === 'half_yearly' ? 'Half-Yearly' : cycle}
-                    {cycle === 'annual' && <span className="ml-1 text-[10px] text-amber-950 font-black">-30%</span>}
+                    {cycle === 'annual' ? 'Annual (Save 20%)' : 'Monthly'}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Pricing Cards Grid */}
+            {/* Plan Cards */}
             {loadingPlans ? (
-              <div className="py-16 text-center text-slate-500 font-mono text-sm animate-pulse">
-                Loading official subscription packages from database...
+              <div className="flex justify-center py-16">
+                <div
+                  className="w-10 h-10 rounded-full border-2 border-t-transparent animate-spin"
+                  style={{ borderColor: '#0057FF', borderTopColor: 'transparent' }}
+                />
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {plans.map((plan) => {
-                  const price = plan.prices[billingCycle] || plan.prices.monthly;
+            ) : plans.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {plans.map((plan: any, i) => {
+                  const price =
+                    billingCycle === 'annual'
+                      ? (plan.prices?.annual ?? plan.annualPrice ?? (plan.prices?.monthly ? plan.prices.monthly * 10 : 0))
+                      : (plan.prices?.monthly ?? plan.monthlyPrice ?? 0);
+                  const isPopular = plan.name?.toLowerCase().includes('standard') || plan.isPopular;
                   return (
                     <div
-                      key={plan.id}
-                      className={`rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 relative ${
-                        plan.isFeatured
-                          ? 'bg-gradient-to-b from-slate-900 via-[#0a1122] to-slate-950 border-2 border-amber-400/80 shadow-2xl shadow-amber-500/10'
-                          : 'bg-[#090d1a] border border-slate-800 hover:border-slate-700'
-                      }`}
+                      key={plan.id || i}
+                      className="glass-card rounded-2xl p-6 reveal relative flex flex-col"
+                      style={{
+                        animationDelay: `${i * 0.1}s`,
+                        border: isPopular ? '1px solid rgba(0,170,255,0.4)' : '1px solid rgba(0,87,255,0.15)',
+                        boxShadow: isPopular ? '0 0 40px rgba(0,87,255,0.2)' : undefined,
+                      }}
                     >
-                      {plan.isFeatured && (
-                        <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 text-black text-[11px] font-black uppercase tracking-wider shadow-md">
-                          Most Popular Package
+                      {isPopular && (
+                        <div
+                          className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold"
+                          style={{
+                            background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                            color: '#fff',
+                            boxShadow: '0 0 20px rgba(0,87,255,0.4)',
+                          }}
+                        >
+                          Most Popular
                         </div>
                       )}
 
-                      <div>
-                        <div className="flex items-center justify-between gap-2 mb-2">
-                          <h3 className="text-xl font-black text-white">{plan.name}</h3>
-                          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300">
-                            {plan.maxLeadsQuota.toLocaleString()} Leads / Cycle
-                          </span>
-                        </div>
-                        <p className="text-xs text-slate-400 min-h-[36px]">{plan.description}</p>
-
-                        <div className="mt-6 mb-6 pb-6 border-b border-slate-800">
-                          <div className="flex items-baseline gap-1">
-                            <span className="text-3xl sm:text-4xl font-extrabold text-white font-serif">
-                              ${price}
-                            </span>
-                            <span className="text-xs text-slate-400 font-medium">/{billingCycle}</span>
-                          </div>
-                          <div className="text-[11px] text-slate-500 mt-1">Manual bank wire or invoice payment</div>
-                        </div>
-
-                        {/* Plan Limits & Features */}
-                        <div className="space-y-2.5 text-xs">
-                          <div className="flex items-center gap-2 text-slate-300 font-semibold">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            <span>{plan.maxLeadsQuota.toLocaleString()} Total Lead Quota</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            <span>{plan.allowedSources.length} Discovered Lead Sources</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            <span>Google Business & Profile Research</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            <span>Corporate Email & Phone Discovery</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            {plan.hasEmailVerification ? (
-                              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            ) : (
-                              <span className="w-4 h-4 text-slate-600 shrink-0">&times;</span>
-                            )}
-                            <span className={plan.hasEmailVerification ? 'text-slate-300' : 'text-slate-500 line-through'}>
-                              DNS MX Email Verification
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            {plan.hasPhoneValidation ? (
-                              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            ) : (
-                              <span className="w-4 h-4 text-slate-600 shrink-0">&times;</span>
-                            )}
-                            <span className={plan.hasPhoneValidation ? 'text-slate-300' : 'text-slate-500 line-through'}>
-                              ITU WhatsApp Phone Validation
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            {plan.hasAiAnalysis ? (
-                              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            ) : (
-                              <span className="w-4 h-4 text-slate-600 shrink-0">&times;</span>
-                            )}
-                            <span className={plan.hasAiAnalysis ? 'text-slate-300' : 'text-slate-500 line-through'}>
-                              AI Pitch & Opportunity Blueprints
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-2 text-slate-300">
-                            {plan.prioritySupport ? (
-                              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                            ) : (
-                              <span className="w-4 h-4 text-slate-600 shrink-0">&times;</span>
-                            )}
-                            <span className={plan.prioritySupport ? 'text-slate-300' : 'text-slate-500'}>
-                              {plan.prioritySupport ? 'Priority Account Manager Support' : 'Standard Email Support'}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="mt-8 pt-4">
-                        <Link
-                          href={`/signup?plan=${plan.id}&billing=${billingCycle}`}
-                          className={`w-full block text-center py-3 rounded-xl font-bold text-xs transition ${
-                            plan.isFeatured
-                              ? 'bg-amber-400 hover:bg-amber-300 text-black shadow-lg shadow-amber-500/20'
-                              : 'bg-slate-800 hover:bg-slate-700 text-white'
-                          }`}
+                      <div className="mb-4">
+                        <h3
+                          className="text-lg font-bold text-white mb-1"
+                          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                         >
-                          Apply for {plan.name}
-                        </Link>
+                          {plan.name}
+                        </h3>
+                        <p className="text-xs" style={{ color: '#64748b' }}>{plan.description}</p>
                       </div>
+
+                      <div className="mb-6">
+                        <span
+                          className="text-4xl font-black"
+                          style={{
+                            fontFamily: "'Space Grotesk', sans-serif",
+                            background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                          }}
+                        >
+                          ${price ?? '—'}
+                        </span>
+                        <span className="text-sm ml-1" style={{ color: '#475569' }}>
+                          /{billingCycle === 'annual' ? 'yr' : 'mo'}
+                        </span>
+                      </div>
+
+                      <ul className="space-y-2.5 mb-6 flex-1">
+                        {(plan.features ?? []).slice(0, 6).map((feat: string, fi: number) => (
+                          <li key={fi} className="flex items-start gap-2 text-xs" style={{ color: '#94a3b8' }}>
+                            <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" style={{ color: '#10b981' }} />
+                            <span>{feat}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <Link
+                        href={`/signup?plan=${plan.id}&cycle=${billingCycle}`}
+                        className="w-full text-center py-3 rounded-xl text-sm font-bold transition-all duration-300"
+                        style={{
+                          background: isPopular ? 'linear-gradient(135deg, #0057FF, #0033CC)' : 'rgba(0,87,255,0.08)',
+                          border: `1px solid ${isPopular ? 'rgba(0,170,255,0.4)' : 'rgba(0,87,255,0.2)'}`,
+                          color: '#fff',
+                          boxShadow: isPopular ? '0 0 20px rgba(0,87,255,0.3)' : undefined,
+                        }}
+                      >
+                        Apply for Plan
+                      </Link>
                     </div>
                   );
                 })}
+              </div>
+            ) : (
+              /* Fallback static plans */
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { name: 'Starter', price: billingCycle === 'annual' ? 149 : 19, leads: '750', popular: false },
+                  { name: 'Standard', price: billingCycle === 'annual' ? 399 : 49, leads: '2,500', popular: true },
+                  { name: 'Professional', price: billingCycle === 'annual' ? 999 : 129, leads: '7,500', popular: false },
+                ].map((plan, i) => (
+                  <div
+                    key={i}
+                    className="glass-card rounded-2xl p-6 reveal relative flex flex-col"
+                    style={{
+                      animationDelay: `${i * 0.1}s`,
+                      border: plan.popular ? '1px solid rgba(0,170,255,0.4)' : '1px solid rgba(0,87,255,0.15)',
+                      boxShadow: plan.popular ? '0 0 40px rgba(0,87,255,0.2)' : undefined,
+                    }}
+                  >
+                    {plan.popular && (
+                      <div
+                        className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold"
+                        style={{ background: 'linear-gradient(135deg, #0057FF, #00AAFF)', color: '#fff' }}
+                      >
+                        Most Popular
+                      </div>
+                    )}
+                    <h3
+                      className="text-lg font-bold text-white mb-2"
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {plan.name}
+                    </h3>
+                    <div className="mb-4">
+                      <span
+                        className="text-4xl font-black"
+                        style={{
+                          fontFamily: "'Space Grotesk', sans-serif",
+                          background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text',
+                        }}
+                      >
+                        ${plan.price}
+                      </span>
+                      <span className="text-sm ml-1" style={{ color: '#475569' }}>
+                        /{billingCycle === 'annual' ? 'yr' : 'mo'}
+                      </span>
+                    </div>
+                    <ul className="space-y-2 mb-6 flex-1 text-xs" style={{ color: '#94a3b8' }}>
+                      {[
+                        `${plan.leads} Verified Leads`,
+                        'Multi-Platform Discovery',
+                        'Email & Phone Enrichment',
+                        'Lead Management CRM',
+                        'CSV Export',
+                      ].map((f, fi) => (
+                        <li key={fi} className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: '#10b981' }} />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <Link
+                      href="/signup"
+                      className="w-full text-center py-3 rounded-xl text-sm font-bold text-white"
+                      style={{
+                        background: plan.popular ? 'linear-gradient(135deg, #0057FF, #0033CC)' : 'rgba(0,87,255,0.08)',
+                        border: `1px solid ${plan.popular ? 'rgba(0,170,255,0.4)' : 'rgba(0,87,255,0.2)'}`,
+                        boxShadow: plan.popular ? '0 0 20px rgba(0,87,255,0.3)' : undefined,
+                      }}
+                    >
+                      Apply for Plan
+                    </Link>
+                  </div>
+                ))}
               </div>
             )}
           </div>
         </section>
 
-        {/* 7. Why Samvero */}
-        <section className="py-24 bg-[#070b16] border-b border-slate-800/80">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Our Commitment</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 font-serif">
-                Why Industry Leaders Choose Samvero
+        {/* ═══ 7. TRUST / WHY SAMVERO ════════════════════════════ */}
+        <section
+          className="py-24 relative overflow-hidden"
+          style={{ background: '#030712', borderTop: '1px solid rgba(0,87,255,0.08)' }}
+        >
+          <Starfield />
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-14 reveal">
+              <h2
+                className="text-4xl font-bold text-white mb-4"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Why Teams Trust{' '}
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Samvero
+                </span>
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[
                 {
-                  title: 'Real-Source Business Data',
-                  desc: 'Zero scraped duplicates or synthetic records. Every lead has traceable provenance to genuine commercial directories.',
-                },
-                {
-                  title: 'Transparent Contact Discovery',
+                  title: 'Primary Evidence Provenance',
                   desc: 'Audit the exact URL, verification timestamp, and confidence rating for every discovered email address and telephone.',
                 },
                 {
@@ -615,52 +944,89 @@ export default function LuxuryLandingPage() {
                   desc: 'Personalized application review, manual verified payments, and tailored entitlement setup for every client account.',
                 },
               ].map((item, idx) => (
-                <div key={idx} className="p-5 rounded-2xl bg-[#090d1a] border border-slate-800 space-y-2">
-                  <div className="w-8 h-8 rounded-lg bg-amber-400/10 text-amber-400 font-bold flex items-center justify-center text-xs">
+                <div
+                  key={idx}
+                  className="glass-card-hover rounded-2xl p-6 flex gap-4 items-start reveal"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 font-bold text-xs font-mono"
+                    style={{
+                      background: 'rgba(0,87,255,0.1)',
+                      border: '1px solid rgba(0,87,255,0.2)',
+                      color: '#00AAFF',
+                    }}
+                  >
                     0{idx + 1}
                   </div>
-                  <h4 className="text-sm font-bold text-white">{item.title}</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                  <div>
+                    <h4 className="text-sm font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {item.title}
+                    </h4>
+                    <p className="text-xs leading-relaxed" style={{ color: '#64748b' }}>{item.desc}</p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* 8. FAQ Section */}
-        <section className="py-24 bg-[#060a14] border-b border-slate-800/80">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <span className="text-xs font-black uppercase tracking-widest text-amber-400">Frequently Asked Questions</span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-white mt-2 font-serif">
+        {/* ═══ 8. FAQ SECTION ════════════════════════════════════ */}
+        <section
+          className="py-24 relative"
+          style={{ background: 'rgba(10,15,30,0.5)', borderTop: '1px solid rgba(0,87,255,0.08)' }}
+        >
+          <div className="max-w-4xl mx-auto px-6">
+            <div className="text-center mb-14 reveal">
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-4 text-xs font-semibold tracking-widest uppercase"
+                style={{ background: 'rgba(0,87,255,0.08)', border: '1px solid rgba(0,87,255,0.2)', color: '#00AAFF' }}
+              >
+                <HelpCircle className="w-3 h-3" /> FAQ
+              </div>
+              <h2
+                className="text-4xl font-bold text-white mb-4"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
                 Questions & Answers
               </h2>
-              <p className="text-slate-400 text-sm mt-3">
+              <p style={{ color: '#64748b' }}>
                 Everything you need to know about our subscription platform and manual payment workflow.
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-3">
               {faqs.map((faq, index) => {
                 const isOpen = openFaqIndex === index;
                 return (
                   <div
                     key={index}
-                    className="rounded-2xl border border-slate-800 bg-slate-900/40 overflow-hidden transition"
+                    className="rounded-2xl overflow-hidden transition-all duration-300 reveal"
+                    style={{
+                      background: isOpen ? 'rgba(0,87,255,0.05)' : 'rgba(10,15,30,0.6)',
+                      border: isOpen ? '1px solid rgba(0,170,255,0.3)' : '1px solid rgba(0,87,255,0.1)',
+                      backdropFilter: 'blur(16px)',
+                      animationDelay: `${index * 0.05}s`,
+                    }}
                   >
                     <button
                       onClick={() => setOpenFaqIndex(isOpen ? null : index)}
-                      className="w-full p-5 text-left flex items-center justify-between gap-4 hover:bg-slate-900/70 transition"
+                      className="w-full p-5 text-left flex items-center justify-between gap-4 transition-all"
                     >
                       <span className="text-sm font-bold text-white">{faq.q}</span>
                       <ChevronDown
-                        className={`w-4 h-4 text-slate-400 shrink-0 transition-transform duration-200 ${
-                          isOpen ? 'rotate-180 text-amber-400' : ''
-                        }`}
+                        className="w-4 h-4 shrink-0 transition-transform duration-300"
+                        style={{
+                          color: isOpen ? '#00AAFF' : '#475569',
+                          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }}
                       />
                     </button>
                     {isOpen && (
-                      <div className="px-5 pb-5 pt-1 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60">
+                      <div
+                        className="px-5 pb-5 pt-1 text-xs leading-relaxed animate-slide-down"
+                        style={{ color: '#64748b', borderTop: '1px solid rgba(0,87,255,0.1)' }}
+                      >
                         {faq.a}
                       </div>
                     )}
@@ -671,29 +1037,82 @@ export default function LuxuryLandingPage() {
           </div>
         </section>
 
-        {/* 9. Final CTA */}
-        <section className="py-24 relative overflow-hidden bg-gradient-to-b from-[#070b16] via-[#0b1329] to-[#050811]">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white font-serif leading-tight">
-              Ready to Find Your Next Business Opportunity?
-            </h2>
-            <p className="mt-4 text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
-              Join leading commercial agencies and sales professionals using Samvero for verified, evidence-backed lead intelligence.
-            </p>
-            <div className="mt-8 flex justify-center">
-              <Link
-                href="/signup"
-                className="px-8 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:from-amber-300 hover:to-amber-500 text-black font-black text-sm tracking-wide shadow-xl shadow-amber-500/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2"
+        {/* ═══ 9. FINAL CTA ══════════════════════════════════════ */}
+        <section className="py-24 relative overflow-hidden" style={{ background: '#030712' }}>
+          <Starfield />
+
+          {/* Large center orb */}
+          <div
+            className="absolute top-1/2 left-1/2 w-[600px] h-[600px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2"
+            style={{ background: 'radial-gradient(circle, rgba(0,87,255,0.08) 0%, transparent 60%)', filter: 'blur(80px)' }}
+          />
+
+          <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
+            <div
+              className="glass-card neon-border rounded-3xl p-12 md:p-16 reveal"
+              style={{ background: 'rgba(10,15,30,0.7)' }}
+            >
+              <div
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-semibold tracking-widest uppercase"
+                style={{ background: 'rgba(0,87,255,0.1)', border: '1px solid rgba(0,87,255,0.3)', color: '#00AAFF' }}
               >
-                <span>Get Started Now</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+                <Zap className="w-3 h-3 animate-pulse" /> Ready to Launch
+              </div>
+              <h2
+                className="text-4xl sm:text-5xl font-bold text-white mb-6"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", lineHeight: 1.2 }}
+              >
+                Ready to Find Your Next{' '}
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #0057FF, #00AAFF)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                  }}
+                >
+                  Business Opportunity?
+                </span>
+              </h2>
+              <p className="text-base mb-10 max-w-2xl mx-auto leading-relaxed" style={{ color: '#64748b' }}>
+                Join leading commercial agencies and sales professionals using Samvero for verified,
+                evidence-backed lead intelligence.
+              </p>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Link href="/signup" className="btn-nasa text-sm">
+                  <Zap className="w-4 h-4" />
+                  Get Started Now
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="px-8 py-4 rounded-xl font-semibold text-sm transition-all"
+                  style={{
+                    color: '#94a3b8',
+                    border: '1px solid rgba(100,116,139,0.3)',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.borderColor = 'rgba(0,87,255,0.5)';
+                    el.style.color = '#fff';
+                    el.style.background = 'rgba(0,87,255,0.08)';
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.borderColor = 'rgba(100,116,139,0.3)';
+                    el.style.color = '#94a3b8';
+                    el.style.background = 'transparent';
+                  }}
+                >
+                  View All Plans
+                </Link>
+              </div>
             </div>
           </div>
         </section>
+
       </main>
 
-      {/* 10. Footer */}
       <PublicFooter />
     </div>
   );
