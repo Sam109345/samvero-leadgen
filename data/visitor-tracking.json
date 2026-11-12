@@ -1,0 +1,285 @@
+[
+  {
+    "id": "vis-mwdkywq3-zeyp",
+    "visitorId": "test-live-user-42",
+    "ip": "72.255.61.191",
+    "city": "Karachi",
+    "region": "Sindh",
+    "country": "Pakistan",
+    "countryCode": "PK",
+    "flag": "🇵🇰",
+    "isp": "Cyber Internet Services (Private) Limited",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "os": "Windows",
+    "deviceName": "Chrome on Windows (Desktop)",
+    "page": "/pricing",
+    "referrer": "direct",
+    "clicks": 1,
+    "clickEvents": [
+      {
+        "target": "Growth Agency Pro CTA",
+        "x": 600,
+        "y": 700,
+        "time": "2026-11-12T13:25:26.186Z"
+      }
+    ],
+    "pageViews": 1,
+    "sessionDuration": 2,
+    "isBounce": true,
+    "firstSeenAt": "2026-11-12T13:25:26.186Z",
+    "lastActiveAt": "2026-11-12T13:25:26.186Z"
+  },
+  {
+    "id": "vis-ae-01",
+    "visitorId": "vid-ae-883921",
+    "ip": "185.199.108.153",
+    "city": "Dubai",
+    "region": "Dubai",
+    "country": "United Arab Emirates",
+    "countryCode": "AE",
+    "flag": "🇦🇪",
+    "isp": "Emirates Telecom (Etisalat)",
+    "device": "Desktop",
+    "browser": "Chrome 122",
+    "os": "macOS Sonoma",
+    "deviceName": "Chrome 122 on Mac Desktop",
+    "page": "/",
+    "referrer": "https://www.google.com/search?q=enterprise+lead+generation+portal",
+    "clicks": 14,
+    "clickEvents": [
+      {
+        "target": "Get Started Free (Hero CTA)",
+        "x": 620,
+        "y": 440,
+        "time": "2026-11-12T13:22:14.335Z"
+      },
+      {
+        "target": "Step Inside CRM (Walk-In)",
+        "x": 780,
+        "y": 440,
+        "time": "2026-11-12T13:23:14.335Z"
+      },
+      {
+        "target": "Claim Lead (Jebel Ali)",
+        "x": 910,
+        "y": 620,
+        "time": "2026-11-12T13:24:14.335Z"
+      }
+    ],
+    "pageViews": 6,
+    "sessionDuration": 342,
+    "isBounce": false,
+    "firstSeenAt": "2026-11-12T13:10:14.335Z",
+    "lastActiveAt": "2026-11-12T13:24:14.335Z"
+  },
+  {
+    "id": "vis-us-02",
+    "visitorId": "vid-us-102934",
+    "ip": "72.255.61.191",
+    "city": "San Francisco",
+    "region": "California",
+    "country": "United States",
+    "countryCode": "US",
+    "flag": "🇺🇸",
+    "isp": "Comcast Business",
+    "device": "Desktop",
+    "browser": "Chrome 123",
+    "os": "Windows 11",
+    "deviceName": "Chrome 123 on Windows 11 PC",
+    "page": "/pricing",
+    "referrer": "https://linkedin.com/feed",
+    "clicks": 19,
+    "clickEvents": [
+      {
+        "target": "Monthly / Annual Switcher",
+        "x": 540,
+        "y": 220,
+        "time": "2026-11-12T13:17:14.335Z"
+      },
+      {
+        "target": "Professional Tier Select",
+        "x": 640,
+        "y": 560,
+        "time": "2026-11-12T13:19:14.335Z"
+      },
+      {
+        "target": "Wire Transfer CTA",
+        "x": 640,
+        "y": 820,
+        "time": "2026-11-12T13:21:14.335Z"
+      }
+    ],
+    "pageViews": 8,
+    "sessionDuration": 520,
+    "isBounce": false,
+    "firstSeenAt": "2026-11-12T13:00:14.335Z",
+    "lastActiveAt": "2026-11-12T13:23:14.335Z"
+  },
+  {
+    "id": "vis-uk-03",
+    "visitorId": "vid-uk-449122",
+    "ip": "82.165.197.1",
+    "city": "London",
+    "region": "Greater London",
+    "country": "United Kingdom",
+    "countryCode": "GB",
+    "flag": "🇬🇧",
+    "isp": "Virgin Media High Speed",
+    "device": "Mobile",
+    "browser": "Safari Mobile",
+    "os": "iOS 17.4",
+    "deviceName": "Safari Mobile on iPhone 15 Pro",
+    "page": "/about",
+    "referrer": "https://t.co/outreach-thread",
+    "clicks": 7,
+    "clickEvents": [
+      {
+        "target": "Apply for Membership",
+        "x": 210,
+        "y": 520,
+        "time": "2026-11-12T13:13:14.335Z"
+      },
+      {
+        "target": "Philosophy Card Hover",
+        "x": 180,
+        "y": 390,
+        "time": "2026-11-12T13:15:14.335Z"
+      }
+    ],
+    "pageViews": 3,
+    "sessionDuration": 185,
+    "isBounce": false,
+    "firstSeenAt": "2026-11-12T12:45:14.335Z",
+    "lastActiveAt": "2026-11-12T13:17:14.335Z"
+  },
+  {
+    "id": "vis-pk-04",
+    "visitorId": "vid-pk-301142",
+    "ip": "111.68.102.45",
+    "city": "Karachi",
+    "region": "Sindh",
+    "country": "Pakistan",
+    "countryCode": "PK",
+    "flag": "🇵🇰",
+    "isp": "PTCL Broadband High Speed",
+    "device": "Desktop",
+    "browser": "Edge 122",
+    "os": "Windows 10",
+    "deviceName": "Microsoft Edge on Windows 10",
+    "page": "/contact",
+    "referrer": "direct",
+    "clicks": 5,
+    "clickEvents": [
+      {
+        "target": "Inquiry Category Dropdown",
+        "x": 420,
+        "y": 310,
+        "time": "2026-11-12T13:05:14.335Z"
+      },
+      {
+        "target": "Dispatch Message Button",
+        "x": 420,
+        "y": 640,
+        "time": "2026-11-12T13:07:14.335Z"
+      }
+    ],
+    "pageViews": 2,
+    "sessionDuration": 140,
+    "isBounce": false,
+    "firstSeenAt": "2026-11-12T12:30:14.335Z",
+    "lastActiveAt": "2026-11-12T13:07:14.335Z"
+  },
+  {
+    "id": "vis-sg-05",
+    "visitorId": "vid-sg-991044",
+    "ip": "103.252.200.18",
+    "city": "Singapore",
+    "region": "Central Singapore",
+    "country": "Singapore",
+    "countryCode": "SG",
+    "flag": "🇸🇬",
+    "isp": "Singtel Fiber Broadband",
+    "device": "Mobile",
+    "browser": "Chrome Mobile",
+    "os": "Android 14",
+    "deviceName": "Chrome Mobile on Samsung Galaxy S24",
+    "page": "/",
+    "referrer": "https://reddit.com/r/sales",
+    "clicks": 1,
+    "clickEvents": [
+      {
+        "target": "Hero Scroll Indicator",
+        "x": 200,
+        "y": 700,
+        "time": "2026-11-12T12:15:14.335Z"
+      }
+    ],
+    "pageViews": 1,
+    "sessionDuration": 8,
+    "isBounce": true,
+    "firstSeenAt": "2026-11-12T12:15:14.335Z",
+    "lastActiveAt": "2026-11-12T12:15:14.335Z"
+  },
+  {
+    "id": "vis-ca-06",
+    "visitorId": "vid-ca-220199",
+    "ip": "142.250.80.46",
+    "city": "Toronto",
+    "region": "Ontario",
+    "country": "Canada",
+    "countryCode": "CA",
+    "flag": "🇨🇦",
+    "isp": "Rogers Communications",
+    "device": "Desktop",
+    "browser": "Firefox 124",
+    "os": "Linux Ubuntu",
+    "deviceName": "Firefox 124 on Ubuntu Desktop",
+    "page": "/how-it-works",
+    "referrer": "https://google.ca",
+    "clicks": 12,
+    "clickEvents": [
+      {
+        "target": "Architecture Tab 02",
+        "x": 480,
+        "y": 350,
+        "time": "2026-11-12T11:35:14.335Z"
+      },
+      {
+        "target": "View Plans Button",
+        "x": 510,
+        "y": 880,
+        "time": "2026-11-12T11:40:14.335Z"
+      }
+    ],
+    "pageViews": 4,
+    "sessionDuration": 290,
+    "isBounce": false,
+    "firstSeenAt": "2026-11-12T11:25:14.335Z",
+    "lastActiveAt": "2026-11-12T11:45:14.335Z"
+  },
+  {
+    "id": "vis-de-07",
+    "visitorId": "vid-de-772183",
+    "ip": "194.169.175.2",
+    "city": "Frankfurt",
+    "region": "Hesse",
+    "country": "Germany",
+    "countryCode": "DE",
+    "flag": "🇩🇪",
+    "isp": "Deutsche Telekom AG",
+    "device": "Tablet",
+    "browser": "Safari",
+    "os": "iPadOS 17",
+    "deviceName": "Safari on Apple iPad Pro",
+    "page": "/",
+    "referrer": "direct",
+    "clicks": 1,
+    "clickEvents": [],
+    "pageViews": 1,
+    "sessionDuration": 6,
+    "isBounce": true,
+    "firstSeenAt": "2026-11-12T10:25:14.335Z",
+    "lastActiveAt": "2026-11-12T10:25:14.335Z"
+  }
+]
