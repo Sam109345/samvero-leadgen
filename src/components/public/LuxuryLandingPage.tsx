@@ -187,27 +187,36 @@ const CURRENCY_MAP: Record<CurrencyType, { symbol: string; rateToPkr: number }> 
 /* ── Interactive 3D Floating Circles Configuration ──────── */
 interface FloatingCircle {
   id: number;
-  left: string;
-  top: string;
   size: number;
+  baseLeft: number;
+  baseTop: number;
+  offsetX: number;
+  offsetY: number;
+  followFactorX: number;
+  followFactorY: number;
   factorX: number;
   factorY: number;
   floatClass: string;
   colorTheme: 'cyan' | 'electric-blue' | 'sky';
+  isFollower?: boolean;
 }
 
 const HERO_CIRCLES: FloatingCircle[] = [
-  { id: 1, left: '6%', top: '14%', size: 130, factorX: 60, factorY: 45, floatClass: 'animate-float', colorTheme: 'cyan' },
-  { id: 2, left: '84%', top: '12%', size: 145, factorX: 75, factorY: 55, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue' },
-  { id: 3, left: '12%', top: '38%', size: 100, factorX: 45, factorY: 35, floatClass: 'animate-float', colorTheme: 'sky' },
-  { id: 4, left: '82%', top: '34%', size: 110, factorX: 65, factorY: 50, floatClass: 'animate-float-delayed', colorTheme: 'cyan' },
-  { id: 5, left: '48%', top: '6%', size: 85, factorX: 50, factorY: 40, floatClass: 'animate-float', colorTheme: 'electric-blue' },
-  { id: 6, left: '2%', top: '26%', size: 90, factorX: 55, factorY: 40, floatClass: 'animate-float-delayed', colorTheme: 'sky' },
-  { id: 7, left: '92%', top: '25%', size: 95, factorX: 70, factorY: 50, floatClass: 'animate-float', colorTheme: 'cyan' },
+  // Swarm & Follower Circles – dynamically glide with mouse cursor ("jahan jahan mouse cursor jaaye")
+  { id: 1, size: 85, baseLeft: 50, baseTop: 34, offsetX: -90, offsetY: -75, followFactorX: 42, followFactorY: 28, factorX: 18, factorY: 14, floatClass: 'animate-float', colorTheme: 'cyan', isFollower: true },
+  { id: 2, size: 105, baseLeft: 50, baseTop: 34, offsetX: 75, offsetY: -85, followFactorX: 38, followFactorY: 26, factorX: 24, factorY: 18, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue', isFollower: true },
+  { id: 3, size: 55, baseLeft: 50, baseTop: 34, offsetX: 90, offsetY: 40, followFactorX: 44, followFactorY: 30, factorX: 14, factorY: 10, floatClass: 'animate-float', colorTheme: 'sky', isFollower: true },
+  { id: 4, size: 75, baseLeft: 50, baseTop: 34, offsetX: -110, offsetY: 45, followFactorX: 35, followFactorY: 24, factorX: 20, factorY: 16, floatClass: 'animate-float-delayed', colorTheme: 'cyan', isFollower: true },
+  { id: 5, size: 65, baseLeft: 50, baseTop: 34, offsetX: 10, offsetY: -110, followFactorX: 40, followFactorY: 25, factorX: 16, factorY: 12, floatClass: 'animate-float', colorTheme: 'electric-blue', isFollower: true },
+
+  // Ambient Anchored Orbs – periphery depth with gravitational mouse attraction
+  { id: 6, size: 125, baseLeft: 8, baseTop: 22, offsetX: 0, offsetY: 0, followFactorX: 14, followFactorY: 18, factorX: 35, factorY: 25, floatClass: 'animate-float', colorTheme: 'cyan' },
+  { id: 7, size: 135, baseLeft: 88, baseTop: 18, offsetX: 0, offsetY: 0, followFactorX: 12, followFactorY: 16, factorX: 40, factorY: 30, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue' },
+  { id: 8, size: 90, baseLeft: 18, baseTop: 52, offsetX: 0, offsetY: 0, followFactorX: 16, followFactorY: 12, factorX: 28, factorY: 20, floatClass: 'animate-float', colorTheme: 'sky' },
 ];
 
 /* Futuristic Acoustic Bubble Pop Synthesizer via Web Audio API */
-function playBubblePopSound() {
+function playBubblePopSound(size: number = 80) {
   if (typeof window === 'undefined') return;
   try {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
@@ -215,13 +224,17 @@ function playBubblePopSound() {
     const ctx = new AudioContextClass();
     const now = ctx.currentTime;
 
+    // Pitch variation based on bubble size (smaller = higher pitch, larger = deeper pop)
+    const baseFreq = Math.max(450, 1200 - size * 6);
+    const dropFreq = Math.max(90, baseFreq * 0.16);
+
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(860, now);
-    osc.frequency.exponentialRampToValueAtTime(140, now + 0.12);
+    osc.frequency.setValueAtTime(baseFreq, now);
+    osc.frequency.exponentialRampToValueAtTime(dropFreq, now + 0.12);
 
-    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.setValueAtTime(0.28, now);
     gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
 
     osc.connect(gain);
@@ -232,8 +245,8 @@ function playBubblePopSound() {
     const osc2 = ctx.createOscillator();
     const gain2 = ctx.createGain();
     osc2.type = 'triangle';
-    osc2.frequency.setValueAtTime(1300, now);
-    osc2.frequency.exponentialRampToValueAtTime(280, now + 0.06);
+    osc2.frequency.setValueAtTime(baseFreq * 1.5, now);
+    osc2.frequency.exponentialRampToValueAtTime(dropFreq * 1.8, now + 0.06);
 
     gain2.gain.setValueAtTime(0.12, now);
     gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
@@ -287,9 +300,9 @@ export default function LuxuryLandingPage() {
   }, []);
 
   /* Click to pop burst handler */
-  const handleCircleClick = (e: React.MouseEvent, circleId: number) => {
+  const handleCircleClick = (e: React.MouseEvent, circleId: number, size: number = 80) => {
     e.stopPropagation();
-    playBubblePopSound();
+    playBubblePopSound(size);
 
     setPoppedMap((prev) => ({
       ...prev,
@@ -423,8 +436,11 @@ export default function LuxuryLandingPage() {
         <section
           id="hero-portal"
           onMouseMove={handleBannerMouseMove}
-          className="relative min-h-screen pt-20 sm:pt-24 pb-16 overflow-hidden select-none bg-[#030712]"
+          className="relative min-h-screen pt-16 sm:pt-20 pb-10 overflow-hidden select-none bg-[#030712]"
         >
+          {/* Exact 100vh Initial Viewport Canvas Anchor */}
+          <div className="absolute inset-0 pointer-events-none" style={{ minHeight: '100vh', height: '100vh' }} />
+
           {/* Cosmic Space Background Dust & Starfield */}
           <Starfield count={55} />
 
@@ -453,13 +469,21 @@ export default function LuxuryLandingPage() {
             }}
           />
 
-          {/* Scale AI 3D Prismatic Glass Torus Rings */}
+          {/* 3D Prismatic Glass Torus Ring centered behind Hero Headline (Screenshot 1 Match) */}
           <div
-            className="absolute top-20 -left-16 w-64 h-64 torus-ring-iridescent pointer-events-none opacity-60 hidden md:block transition-transform duration-300 ease-out"
+            className="absolute top-10 sm:top-14 left-1/2 -translate-x-1/2 w-[480px] sm:w-[560px] h-[300px] sm:h-[340px] torus-ring-iridescent pointer-events-none opacity-40 transition-transform duration-500 ease-out hidden sm:block"
+            style={{
+              transform: `translateX(-50%) rotate(-18deg) rotateX(62deg) translate3d(${mousePos.x * 35}px, ${mousePos.y * 25}px, 0)`,
+            }}
+          />
+
+          {/* Side Ambient Iridescent Torus Accents */}
+          <div
+            className="absolute top-16 -left-20 w-60 h-60 torus-ring-iridescent pointer-events-none opacity-30 hidden lg:block transition-transform duration-500 ease-out"
             style={{ transform: `rotate(25deg) rotateX(45deg) translate3d(${mousePos.x * -20}px, ${mousePos.y * -20}px, 0)` }}
           />
           <div
-            className="absolute top-36 -right-20 w-72 h-72 torus-ring-iridescent pointer-events-none opacity-50 hidden md:block transition-transform duration-300 ease-out"
+            className="absolute top-28 -right-24 w-64 h-64 torus-ring-iridescent pointer-events-none opacity-25 hidden lg:block transition-transform duration-500 ease-out"
             style={{ transform: `rotate(-30deg) rotateX(55deg) translate3d(${mousePos.x * 20}px, ${mousePos.y * 20}px, 0)` }}
           />
 
@@ -469,18 +493,25 @@ export default function LuxuryLandingPage() {
             const isPopping = poppedState?.isPopping;
             const isPopped = poppedState?.isPopped;
 
+            // Follower circles dynamically follow mouse cursor wherever it goes ("jahan jahan mouse cursor jaaye")
+            const posX = c.isFollower
+              ? `calc(${50 + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`
+              : `calc(${c.baseLeft + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`;
+            const posY = c.isFollower
+              ? `calc(${34 + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`
+              : `calc(${c.baseTop + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`;
+
             return (
               <div
                 key={c.id}
-                className="absolute transition-transform duration-300 ease-out"
+                className="absolute transition-all duration-300 ease-out pointer-events-none"
                 style={{
-                  left: c.left,
-                  top: c.top,
+                  left: posX,
+                  top: posY,
                   width: `${c.size}px`,
                   height: `${c.size}px`,
                   transform: `translate3d(${mousePos.x * c.factorX}px, ${mousePos.y * c.factorY}px, 0)`,
-                  zIndex: 15,
-                  pointerEvents: isPopped ? 'none' : 'auto',
+                  zIndex: 22,
                 }}
               >
                 {/* Popping explosion state */}
@@ -533,12 +564,12 @@ export default function LuxuryLandingPage() {
                 {/* Normal Interactive Floating Glass Circle */}
                 {!isPopped && !isPopping && (
                   <div
-                    onClick={(e) => handleCircleClick(e, c.id)}
+                    onClick={(e) => handleCircleClick(e, c.id, c.size)}
                     role="button"
                     tabIndex={0}
                     title="Click to pop!"
                     aria-label="Interactive floating circle - click to pop"
-                    className={`w-full h-full rounded-full cursor-pointer transition-all duration-300 relative group ${c.floatClass} animate-bubble-respawn hover:scale-105`}
+                    className={`w-full h-full rounded-full animate-float cursor-pointer pointer-events-auto transition-all duration-300 relative group ${c.floatClass} animate-bubble-respawn hover:scale-105`}
                     style={{
                       background:
                         c.colorTheme === 'cyan'
@@ -568,28 +599,28 @@ export default function LuxuryLandingPage() {
           })}
 
           {/* Hero Header Content (Compact, Perfectly Vertically Spaced) */}
-          <div className="relative z-20 text-center max-w-4xl mx-auto px-6 mb-4 sm:mb-6">
+          <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6 mb-3 sm:mb-4">
             
             {/* Pill Badge: Electric Blue Brand */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full mb-3 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-[#0057FF]/10 border border-[#00AAFF]/30 backdrop-blur-xl shadow-[0_0_20px_rgba(0,170,255,0.25)] text-[#00AAFF]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-2.5 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-[#0057FF]/10 border border-[#00AAFF]/30 backdrop-blur-xl shadow-[0_0_20px_rgba(0,170,255,0.25)] text-[#00AAFF]">
               <Sparkles className="w-3 h-3 text-[#00AAFF] animate-pulse" />
               <span>Next-Gen Outbound Intelligence • Portal 2026</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             </div>
 
-            {/* Main Headline: Bold, Electric Blue to Cyan */}
+            {/* Main Headline: Bold, Electric Blue to Cyan (Matches Screenshot 1 Lines) */}
             <h1
-              className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white mb-3 leading-[1.1]"
+              className="text-3xl sm:text-5xl md:text-[3.5rem] font-bold tracking-tight text-white mb-2.5 sm:mb-3 leading-[1.08]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Step Into The Future Of <br />
               <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent">
-                High-Ticket Lead Discovery
+                High-Ticket Lead <br className="hidden sm:inline" /> Discovery
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto mb-4 sm:mb-5 leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto mb-3.5 sm:mb-4 leading-relaxed font-normal">
               Autonomous multi-platform radar crawling Google Maps, Upwork, LinkedIn and international registers with 100% verified emails, validated mobile numbers, and direct WhatsApp pitching.
             </p>
 
@@ -634,7 +665,7 @@ export default function LuxuryLandingPage() {
           <div
             id="crm-portal"
             ref={walkinStageRef}
-            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage mt-6 sm:mt-8"
+            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage mt-4 sm:mt-6"
           >
             {/* The Cosmic Horizon Glowing Eclipse Arc (Electric Blue / Cyan) */}
             <div className="portal-horizon-arc -top-16" />
