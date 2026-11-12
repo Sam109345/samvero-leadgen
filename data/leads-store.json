@@ -1,5 +1,569 @@
 [
   {
+    "id": "live-fl-40815148",
+    "title": "Community Judgement Article",
+    "businessName": "Community Judgement Article Client",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Web Development",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$750 - $1,500 AUD",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "I'm seeking a clear and informative article that delves into the theme of close-mindedness, ignorance and judgement in small communities. The focus should be on how people judge others without knowing the full story. Key points to cover: - The nature of judgment in close-knit communities - Real-life examples of misunderstandings - The impact of these judgmen...",
+    "postedAt": "8s ago",
+    "timeAgo": "8s ago",
+    "contact": {
+      "phone": "",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/article-writing/Community-Judgement-Article"
+    },
+    "reviewCount": 0,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Web Development",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40815148",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/article-writing/Community-Judgement-Article",
+    "incomingAt": 1794492871000,
+    "generatedWebsite": {
+      "slug": "site-community-judgement-article-client",
+      "businessName": "Community Judgement Article Client",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Community Judgement Article Client provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Community Judgement Article Client delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40815149",
+    "title": "Post video on your Youtube channel",
+    "businessName": "Post video on your Youtube c...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Social Media Management",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "$10 - $11 USD",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "Requirements: - You must have a YouTube channel (at least 100 subscribers) - You must publish one video/short on your channel that I provide to you - Must add the short description I give you (will include link to a website) - Posts must stay online for 2 month (after that you can delete) Payment: - Budget is fixed 10 usd. - $5 now after posting - Remaining ...",
+    "postedAt": "14s ago",
+    "timeAgo": "14s ago",
+    "contact": {
+      "phone": "",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/youtube/Post-video-your-Youtube-channel"
+    },
+    "reviewCount": 0,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Social Media Management",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40815149",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/youtube/Post-video-your-Youtube-channel",
+    "incomingAt": 1794492835000,
+    "generatedWebsite": {
+      "slug": "site-post-video-on-your-youtube-c",
+      "businessName": "Post video on your Youtube c...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Post video on your Youtube c... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Post video on your Youtube c... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
+    "id": "live-fl-40811741",
+    "title": "Dynamic Mobile Repair Booking",
+    "businessName": "Dynamic Mobile Repair Bookin...",
+    "type": "job",
+    "platform": "Freelancer.com",
+    "category": "Mobile App",
+    "country": "US",
+    "city": "San Francisco",
+    "address": "San Francisco, US (Live Freelancer.com Listing)",
+    "budget": "₹12,500 - ₹37,500 INR",
+    "jobType": "Fixed",
+    "businessAge": {
+      "years": 1,
+      "months": 0,
+      "isNew": true,
+      "label": "✨ Newly Opened",
+      "badgeColor": "emerald"
+    },
+    "description": "I need a fully-functional, dynamic website that lets customers schedule mobile phone repairs directly online. The core feature is a smooth booking form where visitors choose their phone model, describe the issue, and pick their preferred repair date. As soon as they submit, the site should display an on-screen confirmation so they know their request was logg...",
+    "postedAt": "2d ago",
+    "timeAgo": "2d ago",
+    "contact": {
+      "phone": "",
+      "hasWebsite": true,
+      "website": "https://www.freelancer.com/projects/web-development/Dynamic-Mobile-Repair-Booking"
+    },
+    "reviewCount": 142,
+    "tags": [
+      "🟢 Live Freelancer.com",
+      "Real-Time Project",
+      "Mobile App",
+      "Fixed-Price"
+    ],
+    "verified": true,
+    "pipelineStage": "new",
+    "status": "new",
+    "sourceListingId": "40811741",
+    "sourcePlatformUrl": "https://www.freelancer.com/projects/web-development/Dynamic-Mobile-Repair-Booking",
+    "incomingAt": 1794319930000,
+    "generatedWebsite": {
+      "slug": "site-dynamic-mobile-repair-bookin",
+      "businessName": "Dynamic Mobile Repair Bookin...",
+      "tagline": "Elite Engineering &bull; High-Converting Platforms &bull; Proven Growth",
+      "heroHeadline": "High-Velocity Digital Platforms Built for Market Leaders",
+      "heroSubheadline": "We design and engineer bespoke web architectures, native mobile apps, and high-impact digital experiences that convert leads into lifelong clients.",
+      "heroImageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+      "aboutText": "Dynamic Mobile Repair Bookin... provides enterprise full-stack development, mobile applications, and high-retention growth architectures tailored to high-growth organizations.",
+      "contactEmail": "",
+      "contactPhone": "",
+      "address": "San Francisco, US (Live Freelancer.com Listing)",
+      "colorScheme": "royal-blue",
+      "createdAt": "Just now",
+      "isEcommerce": false,
+      "announcementText": "✨ Q4 Digital Engineering Grants Open &bull; Priority Sprints for High-Growth Brands in San Francisco",
+      "valueProps": [
+        {
+          "title": "Zero-Latency Architecture",
+          "subtitle": "Next.js 14 App Router optimized for sub-100ms loads",
+          "icon": "Zap"
+        },
+        {
+          "title": "Conversion-Engineered UI",
+          "subtitle": "Tactile glassmorphism with psychological triggers",
+          "icon": "Layers"
+        },
+        {
+          "title": "Enterprise Security SLA",
+          "subtitle": "256-bit SSL encryption with 99.99% uptime guarantee",
+          "icon": "ShieldCheck"
+        },
+        {
+          "title": "Dedicated Tech Concierge",
+          "subtitle": "Direct Slack / WhatsApp channel with lead architect",
+          "icon": "MessageSquare"
+        }
+      ],
+      "services": [
+        {
+          "title": "Full-Stack Next.js 14 Web Applications",
+          "description": "Lightning-fast server components, PostgreSQL database modeling, and Tailwind glassmorphism UI.",
+          "icon": "Code",
+          "price": "$ 250,000+",
+          "duration": "2 - 3 Weeks",
+          "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Native iOS & Android Mobile Apps",
+          "description": "React Native & Flutter native builds with offline sync, biometric security, and push notifications.",
+          "icon": "Smartphone",
+          "price": "$ 350,000+",
+          "duration": "3 - 4 Weeks",
+          "image": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Bespoke Brand Identity & Design Systems",
+          "description": "6 distinct vector SVG concepts, typography guidelines, packaging, and digital style guides.",
+          "icon": "Palette",
+          "price": "$ 120,000+",
+          "duration": "1 - 2 Weeks",
+          "image": "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Lead Gen Funnels & WhatsApp Automation",
+          "description": "High-converting lead capture funnels with direct WhatsApp CRM and automated email follow-up.",
+          "icon": "Send",
+          "price": "$ 95,000+",
+          "duration": "5 - 7 Days",
+          "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "spotlightFeature": {
+        "title": "Zero-Latency Edge Cloud Architecture",
+        "subtitle": "Engineered for 100,000+ Concurrent High-Value Users",
+        "description": "Built on Next.js 14 App Router and deployed across Vercel and Cloudflare global edge networks. Experience sub-100ms server response times worldwide.",
+        "image": "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        "bulletPoints": [
+          "Hermes JavaScript engine with instant hydration",
+          "256-bit end-to-end data encryption and HIPAA compliance",
+          "Dynamic Redis caching with real-time webhooks",
+          "Automated CI/CD pipelines with zero downtime deploys"
+        ],
+        "ctaText": "Request System Architecture Spec &rarr;"
+      },
+      "caseStudies": [
+        {
+          "title": "Legacy Slow Website vs. SAMVERO Platform",
+          "metric": "4.8x Higher Inbound Inquiries",
+          "beforeText": "Outdated WordPress template taking 4.8 seconds to load",
+          "afterText": "Bespoke Next.js glassmorphism web platform loading in 82ms",
+          "imageBefore": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80"
+        },
+        {
+          "title": "Brand Identity Overhaul & App Launch",
+          "metric": "$450K Pre-Seed Investment Closed",
+          "beforeText": "Inconsistent DIY graphics and fragmented mobile presentation",
+          "afterText": "6 cohesive vector SVG marks and polished 14-screen native app",
+          "imageBefore": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
+          "imageAfter": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=600&q=80"
+        }
+      ],
+      "testimonials": [
+        {
+          "author": "Marcus Vance",
+          "role": "Chief Technology Officer",
+          "quote": "Dynamic Mobile Repair Bookin... delivered our enterprise platform 2 weeks ahead of schedule. The Next.js architecture and sub-100ms response times exceeded our board's expectations.",
+          "rating": 5,
+          "date": "4 days ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "Elena Rostova",
+          "role": "Head of Product",
+          "quote": "The conversion funnel and UX overhaul directly boosted our qualified inbound inquiries by 4.8x. Highly recommended engineering partner.",
+          "rating": 5,
+          "date": "1 week ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80"
+        },
+        {
+          "author": "David Chen",
+          "role": "Founder & CEO",
+          "quote": "Exceptional technical execution, transparent roadmap, and seamless daily communication. They operate as a true strategic extension of our team.",
+          "rating": 5,
+          "date": "2 weeks ago",
+          "verified": true,
+          "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80"
+        }
+      ],
+      "faqs": [
+        {
+          "question": "How fast can our custom platform or app be deployed?",
+          "answer": "Our rapid sprint model delivers a working functional prototype within 5 to 7 days, and full production deployment within 2 to 3 weeks."
+        },
+        {
+          "question": "Do you provide full source code and intellectual property transfer?",
+          "answer": "Yes, 100% full intellectual property and Git repository ownership is transferred to your organization upon project completion."
+        },
+        {
+          "question": "How do you handle post-launch maintenance and security updates?",
+          "answer": "Every project includes a 30-day post-launch warranty, 24/7 security monitoring, and continuous edge performance optimization."
+        }
+      ],
+      "mapEmbedAddress": "San Francisco, US"
+    }
+  },
+  {
     "id": "live-fl-40815116",
     "title": "PDF to Spreadsheet Data Entry",
     "businessName": "PDF to Spreadsheet Data Entr...",
