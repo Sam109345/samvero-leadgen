@@ -33,7 +33,7 @@ const CURRENCIES: Record<CurrencyCode, CurrencyInfo> = {
 };
 
 export default function SubscriptionPricingView() {
-  const [currency, setCurrency] = useState<CurrencyCode>('PKR');
+  const [currency, setCurrency] = useState<CurrencyCode>('USD');
   const [billingPeriod, setBillingPeriod] = useState<BillingPeriod>('monthly');
   const [selectedPlan, setSelectedPlan] = useState<string>('starter');
   const [requestSent, setRequestSent] = useState<string | null>(null);
@@ -42,10 +42,13 @@ export default function SubscriptionPricingView() {
   const plansData = [
     {
       id: 'starter',
+      badge: 'Basic Plan',
+      badgeColor: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+      btnGrad: 'from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 shadow-amber-500/25',
       name: 'Starter Prospector',
       tagline: 'Ideal for independent freelancers and small agencies beginning outreach.',
-      basePriceMonthlyPkr: 5000, // PKR 5,000 base starting price
-      isFeatured: true,
+      basePriceMonthlyPkr: 5000,
+      isFeatured: false,
       features: [
         '500 Verified Multi-Platform Leads / month',
         'Direct Owner Emails & Validated Phone Numbers',
@@ -59,23 +62,29 @@ export default function SubscriptionPricingView() {
     },
     {
       id: 'professional',
+      badge: 'Standard Plan',
+      badgeColor: 'bg-blue-500/20 text-cyan-300 border-blue-500/40',
+      btnGrad: 'from-purple-600 via-indigo-600 to-fuchsia-600 shadow-purple-600/40',
       name: 'Growth Agency Pro',
       tagline: 'For fast-growing digital agencies closing high-ticket foreign clients.',
       basePriceMonthlyPkr: 12000,
-      isFeatured: false,
+      isFeatured: true,
       features: [
-        '1,500 Verified Leads / month across 50+ platforms',
+        '1,500 Verified Leads / month across 15+ platforms',
         'Upwork, Contra, Freelancer.com & Bark direct feed',
         'Automated SOW & Scope of Work Deliverables Studio',
         'Multi-channel Inbound Client Chat Inbox',
         'Voice Note Pitching & Luxury PDF Attachments',
         'CSV & Excel Export Center',
-        'Priority Technical Support',
+        'Priority Technical Support 24/7',
       ],
       quotaDisplay: '1,500 Leads / mo',
     },
     {
       id: 'enterprise',
+      badge: 'Premium Plan',
+      badgeColor: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+      btnGrad: 'from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 shadow-emerald-500/25',
       name: 'Enterprise Acquisition Desk',
       tagline: 'Comprehensive prospecting infrastructure for full business development teams.',
       basePriceMonthlyPkr: 25000,
@@ -102,48 +111,55 @@ export default function SubscriptionPricingView() {
     if (cur.code === 'PKR') {
       return Math.round(monthlyRateInCurrency).toLocaleString();
     }
-    return monthlyRateInCurrency.toFixed(2);
+    return Math.round(monthlyRateInCurrency).toLocaleString();
   };
 
   const handleSubscribeRequest = (planId: string, planName: string) => {
     setSelectedPlan(planId);
-    setRequestSent(`Subscription request for ${planName} (${CURRENCIES[currency].symbol}${calculatePrice(
+    setRequestSent(`Subscription application for ${planName} (${CURRENCIES[currency].symbol}${calculatePrice(
       plansData.find((p) => p.id === planId)!.basePriceMonthlyPkr
-    )}/${billingPeriod}) received. An account manager will confirm your activation.`);
+    )}/${billingPeriod}) received. An account manager will confirm your manual payment & activation.`);
   };
 
   return (
-    <div className="p-6 sm:p-10 max-w-7xl mx-auto space-y-8 font-sans">
+    <div className="p-4 sm:p-8 max-w-7xl mx-auto space-y-12 font-sans relative select-none">
+      
+      {/* Screenshot 5 Colorful 3D Glowing Ambient Orbs Floating Behind Frosted Cards */}
+      <div className="absolute top-20 left-10 w-96 h-96 rounded-full bg-gradient-to-tr from-amber-500/35 via-orange-600/25 to-amber-300/15 blur-[100px] pointer-events-none" />
+      <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full bg-gradient-to-tr from-blue-600/35 via-purple-600/25 to-cyan-400/15 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-gradient-to-tr from-emerald-500/35 via-teal-600/25 to-cyan-400/15 blur-[100px] pointer-events-none" />
+
       {/* Header Banner */}
-      <div className="text-center max-w-3xl mx-auto space-y-3">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-800 text-xs font-bold text-[#3B6FF5]">
-          <CreditCard className="w-3.5 h-3.5" />
-          <span>Transparent Membership &amp; Quotas</span>
+      <div className="text-center max-w-3xl mx-auto space-y-3 relative z-10">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/15 text-xs font-bold text-purple-300 backdrop-blur-xl">
+          <CreditCard className="w-3.5 h-3.5 text-purple-400" />
+          <span>Plans & Pricing</span>
         </div>
-        <h1 className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-          Flexible Subscription Plans
+        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          Choose Your Plan
         </h1>
-        <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+        <p className="text-sm text-slate-400 leading-relaxed">
           Base plan starts at <b>PKR 5,000 / month</b>. Select your preferred currency and billing cadence below.
         </p>
 
         {/* Currency Switcher & Billing Period Controls */}
-        <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
           
-          {/* Currency Switcher (Requirement 9) */}
-          <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-1 shadow-xs">
+          {/* Currency Switcher */}
+          <div className="flex items-center bg-white/[0.04] border border-white/15 backdrop-blur-xl rounded-full p-1 shadow-sm">
             <span className="text-[11px] font-bold text-slate-400 px-3 flex items-center gap-1.5">
-              <Globe2 className="w-3.5 h-3.5 text-[#3B6FF5]" />
+              <Globe2 className="w-3.5 h-3.5 text-purple-400" />
               Currency:
             </span>
-            {(['PKR', 'USD', 'AED', 'GBP', 'EUR'] as CurrencyCode[]).map((c) => (
+            {(['USD', 'PKR', 'AED', 'GBP', 'EUR'] as CurrencyCode[]).map((c) => (
               <button
                 key={c}
+                type="button"
                 onClick={() => setCurrency(c)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+                className={`px-3 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                   currency === c
-                    ? 'bg-[#3B6FF5] text-white shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm'
+                    : 'text-slate-400 hover:text-white'
                 }`}
               >
                 {c}
@@ -152,33 +168,36 @@ export default function SubscriptionPricingView() {
           </div>
 
           {/* Billing Cadence Toggle */}
-          <div className="flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-1 shadow-xs">
+          <div className="flex items-center bg-white/[0.04] border border-white/15 backdrop-blur-xl rounded-full p-1 shadow-sm">
             <button
+              type="button"
               onClick={() => setBillingPeriod('monthly')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`px-4 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                 billingPeriod === 'monthly'
-                  ? 'bg-slate-900 dark:bg-slate-800 text-white'
-                  : 'text-slate-600 dark:text-slate-400'
+                  ? 'bg-purple-600 text-white'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Monthly
             </button>
             <button
+              type="button"
               onClick={() => setBillingPeriod('quarterly')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`px-4 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                 billingPeriod === 'quarterly'
-                  ? 'bg-slate-900 dark:bg-slate-800 text-white'
-                  : 'text-slate-600 dark:text-slate-400'
+                  ? 'bg-purple-600 text-white'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               Quarterly (-10%)
             </button>
             <button
+              type="button"
               onClick={() => setBillingPeriod('annual')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1 ${
+              className={`px-4 py-1 rounded-full text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
                 billingPeriod === 'annual'
-                  ? 'bg-slate-900 dark:bg-slate-800 text-white'
-                  : 'text-slate-600 dark:text-slate-400'
+                  ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-white'
               }`}
             >
               <span>Annual</span>
@@ -191,16 +210,16 @@ export default function SubscriptionPricingView() {
         </div>
       </div>
 
-      {/* Confirmation Banner */}
+      {/* Confirmation Feedback */}
       {requestSent && (
-        <div className="max-w-2xl mx-auto p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs flex items-center gap-3 animate-in fade-in">
-          <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+        <div className="max-w-2xl mx-auto p-4 rounded-2xl glass-luxury-container border border-emerald-500/30 text-emerald-300 text-xs flex items-center gap-3 relative z-10 animate-slide-down">
+          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
           <span>{requestSent}</span>
         </div>
       )}
 
-      {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+      {/* Pricing Cards Grid (Screenshot 5 Match) */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-2 relative z-10 items-stretch">
         {plansData.map((plan) => {
           const price = calculatePrice(plan.basePriceMonthlyPkr);
           const cur = CURRENCIES[currency];
@@ -208,45 +227,50 @@ export default function SubscriptionPricingView() {
           return (
             <div
               key={plan.id}
-              className={`rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-200 relative bg-white dark:bg-[#111927] border ${
+              className={`rounded-[2.5rem] p-7 flex flex-col justify-between transition-all duration-300 relative glass-luxury-container ${
                 plan.isFeatured
-                  ? 'border-[#3B6FF5] shadow-xl shadow-blue-500/10 ring-2 ring-[#3B6FF5]/20'
-                  : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
+                  ? 'border-2 border-purple-500/50 shadow-[0_20px_70px_rgba(168,85,247,0.35)] transform md:-translate-y-3'
+                  : 'border border-white/20 hover:border-white/40'
               }`}
             >
               {plan.isFeatured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-[#3B6FF5] text-white text-[10px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1">
-                  <Sparkles className="w-3 h-3 text-amber-300" />
-                  <span>Base Plan — Recommended</span>
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[11px] font-bold shadow-md shadow-purple-600/40 border border-purple-300/40 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                  <span>Most Popular</span>
                 </div>
               )}
 
               <div>
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                    {plan.name}
-                  </h3>
-                  <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-[#3B6FF5] border border-blue-200 dark:border-blue-900">
-                    {plan.quotaDisplay}
+                <div className="mb-5 mt-1">
+                  <span className={`inline-block px-3.5 py-1 rounded-full text-xs font-bold border mb-3 ${plan.badgeColor}`}>
+                    {plan.badge}
                   </span>
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 min-h-[36px] leading-relaxed">
-                  {plan.tagline}
-                </p>
-
-                {/* Price Display */}
-                <div className="mt-6 mb-6 pb-6 border-b border-slate-100 dark:border-slate-800">
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white font-mono">
-                      {cur.symbol}{price}
-                    </span>
-                    <span className="text-xs text-slate-500 font-medium">
-                      / month ({currency})
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="text-xl font-bold text-white">
+                      {plan.name}
+                    </h3>
+                    <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-white/[0.05] text-purple-300 border border-white/10">
+                      {plan.quotaDisplay}
                     </span>
                   </div>
-                  <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    <span>Billed {billingPeriod}</span>
+                  <p className="text-xs text-slate-400 mt-1 min-h-[36px] leading-relaxed">
+                    {plan.tagline}
+                  </p>
+                </div>
+
+                {/* Price Display */}
+                <div className="mt-6 mb-6 pb-6 border-b border-white/10">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-4xl sm:text-5xl font-black text-white font-mono" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {cur.symbol}{price}
+                    </span>
+                    <span className="text-xs text-slate-400 font-mono">
+                      /{billingPeriod === 'annual' ? 'mo (billed yr)' : 'mo'}
+                    </span>
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5">
+                    <Clock className="w-3 h-3 text-purple-400" />
+                    <span>Cadence: {billingPeriod}</span>
                     {currency !== 'PKR' && (
                       <span className="text-[10px] text-slate-500">
                         &bull; (Base: PKR {plan.basePriceMonthlyPkr.toLocaleString()}/mo)
@@ -256,13 +280,13 @@ export default function SubscriptionPricingView() {
                 </div>
 
                 {/* Features List */}
-                <div className="space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
-                  <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block mb-2">
+                <div className="space-y-3 text-xs text-slate-300 mb-8">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-2 font-mono">
                     Included Capabilities:
                   </span>
                   {plan.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-start gap-2">
-                      <div className="w-4 h-4 rounded-full bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                    <div key={idx} className="flex items-start gap-2.5">
+                      <div className="w-4 h-4 rounded-full bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5 border border-emerald-500/30">
                         <Check className="w-2.5 h-2.5" />
                       </div>
                       <span className="leading-snug">{feat}</span>
@@ -275,13 +299,9 @@ export default function SubscriptionPricingView() {
               <button
                 type="button"
                 onClick={() => handleSubscribeRequest(plan.id, plan.name)}
-                className={`mt-8 w-full py-3 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs ${
-                  plan.isFeatured
-                    ? 'bg-[#3B6FF5] hover:bg-blue-600 text-white'
-                    : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white'
-                }`}
+                className={`w-full py-3.5 px-4 rounded-full text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer bg-gradient-to-r text-white shadow-lg ${plan.btnGrad}`}
               >
-                <span>Select {plan.name}</span>
+                <span>Get Started with {plan.name}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
@@ -290,19 +310,19 @@ export default function SubscriptionPricingView() {
       </div>
 
       {/* Security & Support Guarantee Footnote */}
-      <div className="p-6 rounded-2xl bg-slate-50 dark:bg-[#0e1624] border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600 dark:text-slate-400">
+      <div className="p-6 rounded-[2rem] glass-luxury-container border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-[#3B6FF5] flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-purple-500/15 border border-purple-500/30 text-purple-300 flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <span className="font-bold text-slate-800 dark:text-slate-200 block">
+            <span className="font-bold text-white block">
               100% Guaranteed Lead Deliverability &amp; Identity Verification
             </span>
             <span>All leads contain real domain-resolved business contacts. Unused quotas roll over automatically.</span>
           </div>
         </div>
-        <div className="text-[11px] text-slate-500 font-mono shrink-0">
+        <div className="text-[11px] text-slate-400 font-mono shrink-0">
           Selected: <b>{CURRENCIES[currency].label}</b> &bull; Base: <b>PKR 5,000/mo</b>
         </div>
       </div>

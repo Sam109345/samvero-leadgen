@@ -33,43 +33,248 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── GPU-Accelerated CRM Walk-In Animation (ZRK & Huly-Style) ─── */
-@keyframes crm-walkin {
+/* ─── GPU-Accelerated CRM Walk-In Animation (ZRK, Extrafazant & Huly-Style) ─── */
+@keyframes crm-walkin-cinematic {
   0% {
-    transform: perspective(1400px) rotateX(24deg) scale(0.82) translateY(80px);
-    opacity: 0;
-    box-shadow: 0 10px 40px rgba(0, 87, 255, 0.05);
+    transform: perspective(1600px) rotateX(26deg) scale(0.82) translateY(80px);
+    opacity: 0.2;
+    box-shadow: 0 10px 40px rgba(112, 0, 255, 0.1);
   }
   60% {
-    transform: perspective(1400px) rotateX(6deg) scale(0.98) translateY(-8px);
-    opacity: 0.95;
-    box-shadow: 0 30px 80px rgba(0, 87, 255, 0.25);
+    transform: perspective(1600px) rotateX(8deg) scale(0.97) translateY(10px);
+    opacity: 0.96;
+    box-shadow: 0 30px 90px rgba(112, 0, 255, 0.35);
   }
   100% {
-    transform: perspective(1400px) rotateX(0deg) scale(1) translateY(0);
+    transform: perspective(1600px) rotateX(0deg) scale(1) translateY(0);
     opacity: 1;
-    box-shadow: 0 40px 100px rgba(0, 87, 255, 0.35), 0 0 50px rgba(0, 170, 255, 0.2);
+    box-shadow: 0 40px 140px rgba(112, 0, 255, 0.45), 0 0 70px rgba(0, 170, 255, 0.3);
   }
 }
 
 .crm-walkin-banner {
   transform-style: preserve-3d;
+  backface-visibility: hidden;
   will-change: transform, opacity;
-  animation: crm-walkin 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: crm-walkin-cinematic 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Walk-in toggled state for interactive walkthrough */
+.crm-walkin-stage {
+  perspective: 1600px;
+  perspective-origin: 50% 20%;
+  transform-style: preserve-3d;
+  transition: perspective 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.crm-walkin-card {
+  transform-origin: 50% 10%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.9s ease;
+  will-change: transform, box-shadow;
+}
+
+.crm-walkin-card.walked-in {
+  transform: perspective(1600px) rotateX(0deg) scale(1.03) translateY(-15px) translateZ(40px) !important;
+  box-shadow: 0 50px 160px rgba(112, 0, 255, 0.55), 0 0 90px rgba(0, 170, 255, 0.4) !important;
 }
 
 /* Subtle continuous 3D floating after walk-in settles */
 @keyframes crm-idle-float {
   0%, 100% {
-    transform: perspective(1400px) rotateX(0deg) translateY(0px);
+    transform: perspective(1600px) rotateX(0deg) translateY(0px);
   }
   50% {
-    transform: perspective(1400px) rotateX(1.5deg) translateY(-8px);
+    transform: perspective(1600px) rotateX(1deg) translateY(-6px);
   }
 }
 
 .crm-walkin-banner.idle-floating {
   animation: crm-idle-float 7s ease-in-out infinite;
+}
+
+/* ─── Portal To The Future – Glowing Horizon Arc ─── */
+.portal-horizon-arc {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 780px;
+  height: 380px;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  background: radial-gradient(ellipse at 50% 100%, 
+    rgba(255, 255, 255, 0.95) 0%, 
+    rgba(168, 85, 247, 0.9) 25%, 
+    rgba(99, 102, 241, 0.7) 45%, 
+    rgba(0, 170, 255, 0.4) 65%, 
+    transparent 85%
+  );
+  filter: blur(22px);
+  box-shadow: 
+    0 -20px 80px rgba(168, 85, 247, 0.8),
+    0 -60px 140px rgba(99, 102, 241, 0.6),
+    0 -100px 200px rgba(0, 87, 255, 0.4);
+  pointer-events: none;
+  animation: portal-breathe 5s ease-in-out infinite alternate;
+}
+
+@keyframes portal-breathe {
+  0% {
+    opacity: 0.85;
+    transform: translateX(-50%) scaleY(0.95);
+    filter: blur(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scaleY(1.05);
+    filter: blur(25px);
+  }
+}
+
+.portal-horizon-line {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140%;
+  max-width: 1400px;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(147, 51, 234, 0.4) 15%, 
+    rgba(192, 132, 252, 0.9) 35%, 
+    #ffffff 50%, 
+    rgba(192, 132, 252, 0.9) 65%, 
+    rgba(59, 130, 246, 0.4) 85%, 
+    transparent 100%
+  );
+  box-shadow: 
+    0 0 20px #ffffff,
+    0 0 45px rgba(168, 85, 247, 0.9),
+    0 0 80px rgba(59, 130, 246, 0.7);
+  pointer-events: none;
+}
+
+/* Floating 3D Prismatic Glass Torus Ring (Scale AI style) */
+.torus-ring-iridescent {
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.02) 60%, transparent 80%);
+  border: 1.5px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 
+    inset 0 0 25px rgba(236, 72, 153, 0.3),
+    inset 0 0 50px rgba(99, 102, 241, 0.25),
+    0 0 40px rgba(168, 85, 247, 0.25);
+  position: relative;
+}
+.torus-ring-iridescent::before {
+  content: '';
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 50%;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.8), rgba(168, 85, 247, 0.8), rgba(56, 189, 248, 0.8), rgba(250, 204, 21, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* OrbitAI Angled Spotlight Beam */
+.orbit-spotlight-beam {
+  position: absolute;
+  width: 480px;
+  height: 800px;
+  transform: rotate(-35deg) translate(-20%, -30%);
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 170, 255, 0.18) 0%, rgba(112, 0, 255, 0.08) 40%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+/* ─── Luxury Frosted Glassmorphism Utilities (Screenshot 1 & 5) ─── */
+.glass-luxury-container {
+  background: rgba(14, 11, 26, 0.65);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 30px 100px -15px rgba(0, 0, 0, 0.8),
+    0 0 60px -10px rgba(121, 40, 202, 0.25),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.glass-luxury-card {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.glass-luxury-input {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  transition: all 0.25s ease;
+}
+.glass-luxury-input:focus {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  outline: none;
+}
+
+.glass-pill-btn {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c026d3 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 10px 30px -5px rgba(168, 85, 247, 0.5),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-pill-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 16px 40px -5px rgba(168, 85, 247, 0.7),
+    0 0 25px rgba(192, 132, 252, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* Fast scrolling optimization */
+.smooth-scroll-perf {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px;
+}
+
+/* 3D Portal Stage for ZRK Walk-In Experience */
+.crm-portal-stage {
+  perspective: 1600px;
+  perspective-origin: 50% 15%;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Tech Matrix Grid with Radial Mask */
+.bg-tech-grid {
+  background-image: 
+    linear-gradient(to right, rgba(0, 87, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 87, 255, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.mask-radial-vignette {
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 85%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 20%, transparent 85%);
+}
+
+/* Hardware accelerated layer */
+.gpu-layer {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 /* Live Telemetry Radar Ping */
