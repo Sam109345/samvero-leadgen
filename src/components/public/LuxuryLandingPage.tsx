@@ -32,6 +32,8 @@ import {
   Maximize2,
   Minimize2,
   Compass,
+  Briefcase,
+  Users,
 } from 'lucide-react';
 
 /* ── Twinkling Starfield Dust ────────────────────────────── */
@@ -120,83 +122,65 @@ const CRM_LIVE_LEADS: MockLead[] = [
   },
   {
     id: 'lead-3',
-    title: 'FinTech Mobile App Enterprise Rebuild',
-    company: 'Nova Capital London Ltd',
-    location: 'Canary Wharf, London, UK',
+    title: 'CloudScale FinTech Infrastructure',
+    company: 'CloudScale Europe Ltd',
+    location: 'London, United Kingdom',
     country: 'UK',
-    platform: 'Freelancer.com',
+    platform: 'LinkedIn Live',
     phone: '+44 20 7946 0912',
-    whatsapp: 'Direct Verified',
-    tag: 'Verified Client (4.9★ • £120k Spent)',
-    tagColor: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
-    budget: '£3,500 - £7,000',
-    score: 99,
-    contactName: 'Eleanor Smith (Product Lead)',
-    verifiedEmail: 'esmith@novacapital.co.uk',
+    whatsapp: 'Business Verified',
+    tag: 'Hiring React & Next.js Agency',
+    tagColor: 'text-[#00AAFF] bg-[#0057FF]/15 border-[#0057FF]/30',
+    budget: '$8,000 - $15,000',
+    score: 94,
+    contactName: 'Eleanor Sterling (VP Tech)',
+    verifiedEmail: 'sterling@cloudscale.co.uk',
   },
   {
     id: 'lead-4',
-    title: 'EuroTrans Logistics Multi-Modal Portal',
-    company: 'EuroTrans Spedition GmbH',
-    location: 'Munich, Bavaria, Germany',
-    country: 'Germany',
+    title: 'Modern ERP Architecture Modernization',
+    company: 'Nexus Industrial Automation',
+    location: 'Toronto, Ontario, Canada',
+    country: 'Canada',
     platform: 'Upwork Radar',
-    phone: '+49 89 2018 4401',
-    whatsapp: 'Available (EU Data)',
-    tag: 'Legacy PHP 5.4 Detected • Needs Modern Next.js',
-    tagColor: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
-    budget: '€4,000 - €9,000',
-    score: 94,
-    contactName: 'Klaus Webber (Operations VP)',
-    verifiedEmail: 'klaus.webber@eurotrans-muc.de',
-  },
-  {
-    id: 'lead-5',
-    title: 'Prestige Architecture & Interior Design',
-    company: 'Prestige Living Studios',
-    location: 'Lahore & Islamabad, Pakistan',
-    country: 'Pakistan',
-    platform: 'LinkedIn Live',
-    phone: '+92 42 3578 9910',
-    whatsapp: 'Direct Active',
-    tag: 'Commercial Portfolio Expansion',
-    tagColor: 'text-blue-400 bg-blue-500/10 border-blue-500/30',
-    budget: '₨ 350,000 - ₨ 750,000',
+    phone: '+1 416 555 0188',
+    whatsapp: 'Commercial Direct',
+    tag: 'Fixed-Price Milestone RFP',
+    tagColor: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+    budget: '$5,000 - $12,000',
     score: 92,
-    contactName: 'Zainab Qureshi (Principal)',
-    verifiedEmail: 'studio@prestigeliving.pk',
-  },
-  {
-    id: 'lead-6',
-    title: 'Skyline Luxury Properties Outbound Feed',
-    company: 'Skyline Real Estate Palm Jumeirah',
-    location: 'Dubai, UAE',
-    country: 'UAE',
-    platform: 'Bark Direct',
-    phone: '+971 50 123 4567',
-    whatsapp: 'Direct WhatsApp',
-    tag: 'Urgent Lead Acquisition',
-    tagColor: 'text-pink-400 bg-pink-500/10 border-pink-500/30',
-    budget: '$3,000 - $6,500',
-    score: 97,
-    contactName: 'Farhan Siddiqui (Head of BD)',
-    verifiedEmail: 'fsiddiqui@skylinedubai.ae',
+    contactName: 'David K. Hoffman (CTO)',
+    verifiedEmail: 'dhoffman@nexus-auto.ca',
   },
 ];
 
-/* ── Multi-Currency Support (Screenshot 5 Match) ─────────── */
+/* ── All 15 Supported Lead Channels Required by Task ────────── */
+const SUPPORTED_CHANNELS = [
+  { name: 'Google My Business', icon: '📍', category: 'Local Business & Maps' },
+  { name: 'Upwork', icon: '💼', category: 'High-Ticket SOW RFP' },
+  { name: 'LinkedIn', icon: '👔', category: 'Corporate Decision Makers' },
+  { name: 'Freelancer.com', icon: '⚡', category: 'Global Enterprise Bids' },
+  { name: 'Remote OK', icon: '🌐', category: 'Tech & Product Outbound' },
+  { name: 'Remotive', icon: '🚀', category: 'Remote Scale Agencies' },
+  { name: 'Bark', icon: '🎯', category: 'Direct Commercial Inquiries' },
+  { name: 'Apollo.io', icon: '🔍', category: 'Verified Corporate Inboxes' },
+  { name: 'Clutch', icon: '⭐', category: 'Agency B2B Reviews' },
+  { name: 'Fiverr', icon: '🎨', category: 'Pro Creative Services' },
+  { name: 'PeoplePerHour', icon: '⏱️', category: 'Commercial Projects' },
+  { name: 'Contra', icon: '🤝', category: 'Independent Agency Feeds' },
+  { name: 'Rozee.pk', icon: '🏢', category: 'National Corporate Hiring' },
+  { name: 'Guru', icon: '🏆', category: 'Enterprise Technology Leads' },
+  { name: 'Reddit', icon: '💬', category: 'Niche Commercial Subreddits' },
+];
+
+/* Currency options */
 type CurrencyType = 'PKR' | 'USD' | 'AED' | 'GBP' | 'EUR';
 
-interface CurrencyRate {
-  symbol: string;
-  rateToPkr: number;
-}
-
-const CURRENCY_MAP: Record<CurrencyType, CurrencyRate> = {
-  PKR: { symbol: '₨', rateToPkr: 1 },
-  USD: { symbol: '$', rateToPkr: 278 },
-  AED: { symbol: 'AED ', rateToPkr: 75.7 },
-  GBP: { symbol: '£', rateToPkr: 352 },
+const CURRENCY_MAP: Record<CurrencyType, { symbol: string; rateToPkr: number }> = {
+  PKR: { symbol: 'Rs ', rateToPkr: 1 },
+  USD: { symbol: '$', rateToPkr: 280 },
+  AED: { symbol: 'AED ', rateToPkr: 76 },
+  GBP: { symbol: '£', rateToPkr: 355 },
   EUR: { symbol: '€', rateToPkr: 302 },
 };
 
@@ -213,9 +197,19 @@ export default function LuxuryLandingPage() {
   const [leadSearchQuery, setLeadSearchQuery] = useState('');
   const [copiedLeadId, setCopiedLeadId] = useState<string | null>(null);
 
+  /* Mouse tracking for animated floating circles in 100vh banner */
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
   /* Ref for 3D Walk-In stage and performance scroll */
   const walkinStageRef = useRef<HTMLDivElement>(null);
   const walkinCardRef = useRef<HTMLDivElement>(null);
+
+  const handleBannerMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2; // -1 to 1
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2; // -1 to 1
+    setMousePos({ x, y });
+  };
 
   /* Fetch backend plans */
   useEffect(() => {
@@ -230,7 +224,7 @@ export default function LuxuryLandingPage() {
       .finally(() => setLoadingPlans(false));
   }, []);
 
-  /* ── 60FPS Buttery-Smooth Scroll Walk-In Controller (ZERO React re-renders) ── */
+  /* 60FPS Scroll Walk-In Controller */
   useEffect(() => {
     let ticking = false;
 
@@ -241,16 +235,14 @@ export default function LuxuryLandingPage() {
             const rect = walkinCardRef.current.getBoundingClientRect();
             const windowHeight = window.innerHeight;
             
-            // Calculate progress: 0 when banner enters view, 1 when centered
             const progress = Math.min(
               Math.max((windowHeight - rect.top) / (windowHeight * 0.85), 0),
               1
             );
 
-            // Smoothly decrease tilt from 22deg to 0deg and scale from 0.86 to 1.0
-            const currentTilt = (22 * (1 - progress * 0.9)).toFixed(2);
-            const currentScale = (0.86 + progress * 0.14).toFixed(3);
-            const currentY = (60 * (1 - progress)).toFixed(1);
+            const currentTilt = (20 * (1 - progress * 0.9)).toFixed(2);
+            const currentScale = (0.88 + progress * 0.12).toFixed(3);
+            const currentY = (50 * (1 - progress)).toFixed(1);
 
             walkinCardRef.current.style.transform = `perspective(1600px) rotateX(${currentTilt}deg) scale(${currentScale}) translateY(${currentY}px)`;
           }
@@ -302,7 +294,7 @@ export default function LuxuryLandingPage() {
     },
     {
       q: 'How do I purchase a package and activate my account?',
-      a: 'Select your preferred subscription package and click "Apply for Plan". Submit your requirements and contact details. Once submitted, our team reviews your application and provides direct manual payment instructions via Bank Wire, Wise Direct, or corporate invoice for instant entitlement assignment.',
+      a: 'Select your preferred subscription package and click "Get Started". Submit your requirements and contact details. Once submitted, our team reviews your application and provides direct manual payment instructions via Bank Wire, Wise Direct, or corporate invoice for instant entitlement assignment.',
     },
     {
       q: 'How many leads do I receive each month?',
@@ -316,7 +308,7 @@ export default function LuxuryLandingPage() {
 
   return (
     <div
-      className="min-h-screen flex flex-col bg-[#05020c] text-slate-100 font-sans selection:bg-purple-600 selection:text-white overflow-x-hidden relative"
+      className="min-h-screen flex flex-col bg-[#030712] text-slate-100 font-sans selection:bg-[#0057FF] selection:text-white overflow-x-hidden relative"
       style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <PublicNavbar />
@@ -324,46 +316,88 @@ export default function LuxuryLandingPage() {
       <main className="flex-1">
 
         {/* ═══════════════════════════════════════════════════════
-            1. HERO SECTION: PORTAL TO THE FUTURE + CRM WALK-IN
+            1. HERO SECTION: 100VH SIZE + MOUSE-TRACKING ANIMATED CIRCLES
+            (Strictly Electric Blue to Cyan Logo Theme)
             ═══════════════════════════════════════════════════════ */}
-        <section className="relative min-h-screen flex flex-col items-center justify-start pt-32 pb-24 overflow-hidden">
-          
+        <section
+          onMouseMove={handleBannerMouseMove}
+          className="relative min-h-screen md:min-h-screen flex flex-col items-center justify-between pt-28 pb-12 overflow-hidden select-none bg-[#030712]"
+          style={{ minHeight: '100vh' }}
+        >
           {/* Cosmic Space Background Dust & Starfield */}
-          <Starfield count={50} />
+          <Starfield count={55} />
 
-          {/* Scale AI 3D Prismatic Glass Torus Rings (Screenshot 3 Match) */}
+          {/* ── 5 Animated Floating Glowing Circles on Mouse Tracking (Task Requirement) ── */}
           <div
-            className="absolute top-28 -left-20 w-72 h-72 torus-ring-iridescent pointer-events-none opacity-60 hidden md:block"
-            style={{ transform: 'rotate(25deg) rotateX(45deg)' }}
+            className="absolute top-20 left-12 w-80 h-80 rounded-full pointer-events-none transition-transform duration-300 ease-out animate-float"
+            style={{
+              background: 'radial-gradient(circle at 35% 35%, rgba(0, 170, 255, 0.4) 0%, rgba(0, 87, 255, 0.22) 50%, transparent 75%)',
+              filter: 'blur(35px)',
+              transform: `translate3d(${mousePos.x * -45}px, ${mousePos.y * -35}px, 0)`,
+              boxShadow: '0 0 80px rgba(0, 170, 255, 0.25)',
+            }}
           />
           <div
-            className="absolute top-48 -right-24 w-80 h-80 torus-ring-iridescent pointer-events-none opacity-50 hidden md:block"
-            style={{ transform: 'rotate(-30deg) rotateX(55deg)' }}
+            className="absolute top-28 right-12 w-96 h-96 rounded-full pointer-events-none transition-transform duration-300 ease-out animate-float-delayed"
+            style={{
+              background: 'radial-gradient(circle at 40% 40%, rgba(0, 87, 255, 0.45) 0%, rgba(0, 170, 255, 0.25) 45%, transparent 75%)',
+              filter: 'blur(45px)',
+              transform: `translate3d(${mousePos.x * 55}px, ${mousePos.y * 45}px, 0)`,
+              boxShadow: '0 0 100px rgba(0, 87, 255, 0.3)',
+            }}
+          />
+          <div
+            className="absolute bottom-36 left-1/4 w-64 h-64 rounded-full pointer-events-none transition-transform duration-300 ease-out animate-float"
+            style={{
+              background: 'radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.32) 0%, rgba(0, 87, 255, 0.15) 60%, transparent 80%)',
+              filter: 'blur(40px)',
+              transform: `translate3d(${mousePos.x * 35}px, ${mousePos.y * -40}px, 0)`,
+            }}
+          />
+          <div
+            className="absolute bottom-20 right-1/4 w-72 h-72 rounded-full pointer-events-none transition-transform duration-300 ease-out animate-float-delayed"
+            style={{
+              background: 'radial-gradient(circle at 45% 45%, rgba(0, 170, 255, 0.35) 0%, rgba(0, 51, 204, 0.2) 60%, transparent 80%)',
+              filter: 'blur(38px)',
+              transform: `translate3d(${mousePos.x * -40}px, ${mousePos.y * 30}px, 0)`,
+            }}
+          />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full pointer-events-none transition-transform duration-500 ease-out"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.16) 0%, rgba(0, 170, 255, 0.08) 50%, transparent 75%)',
+              filter: 'blur(80px)',
+              transform: `translate3d(calc(-50% + ${mousePos.x * 20}px), calc(-50% + ${mousePos.y * 20}px), 0)`,
+            }}
           />
 
-          {/* OrbitAI Angled Spotlight Beam (Screenshot 4 Match) */}
-          <div className="orbit-spotlight-beam top-0 left-10 pointer-events-none" />
-
-          {/* Ambient Cosmic Horizon Nebulas */}
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-gradient-to-b from-purple-600/15 via-indigo-600/10 to-transparent blur-[140px] pointer-events-none" />
+          {/* Scale AI 3D Prismatic Glass Torus Rings */}
+          <div
+            className="absolute top-24 -left-20 w-72 h-72 torus-ring-iridescent pointer-events-none opacity-60 hidden md:block"
+            style={{ transform: `rotate(25deg) rotateX(45deg) translate3d(${mousePos.x * -20}px, ${mousePos.y * -20}px, 0)` }}
+          />
+          <div
+            className="absolute top-44 -right-24 w-80 h-80 torus-ring-iridescent pointer-events-none opacity-50 hidden md:block"
+            style={{ transform: `rotate(-30deg) rotateX(55deg) translate3d(${mousePos.x * 20}px, ${mousePos.y * 20}px, 0)` }}
+          />
 
           {/* Hero Header Content */}
-          <div className="relative z-10 text-center max-w-4xl mx-auto px-6 mb-8">
+          <div className="relative z-10 text-center max-w-4xl mx-auto px-6 mb-6">
             
-            {/* Pill Badge: Portal To The Future */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-6 text-xs font-semibold tracking-wider uppercase bg-white/[0.04] border border-white/15 backdrop-blur-xl shadow-[0_0_25px_rgba(168,85,247,0.25)] text-purple-300">
-              <Sparkles className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
+            {/* Pill Badge: Electric Blue Brand */}
+            <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full mb-5 text-xs font-semibold tracking-wider uppercase bg-[#0057FF]/10 border border-[#00AAFF]/30 backdrop-blur-xl shadow-[0_0_25px_rgba(0,170,255,0.2)] text-[#00AAFF]">
+              <Sparkles className="w-3.5 h-3.5 text-[#00AAFF] animate-pulse" />
               <span>Next-Gen Outbound Intelligence • Portal 2026</span>
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             </div>
 
-            {/* Main Headline: Bold, Cinematic Space Grotesk */}
+            {/* Main Headline: Bold, Electric Blue to Cyan */}
             <h1
-              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.08]"
+              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-5 leading-[1.08]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Step Into The Future Of <br />
-              <span className="bg-gradient-to-r from-purple-400 via-fuchsia-300 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent">
                 High-Ticket Lead Discovery
               </span>
             </h1>
@@ -377,7 +411,7 @@ export default function LuxuryLandingPage() {
             <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link
                 href="/signup"
-                className="glass-pill-btn px-7 py-3.5 rounded-full font-semibold text-sm flex items-center gap-2 shadow-[0_10px_35px_rgba(168,85,247,0.4)] hover:shadow-[0_15px_45px_rgba(168,85,247,0.6)] transition"
+                className="glass-pill-btn px-7 py-3.5 rounded-full font-semibold text-sm flex items-center gap-2 shadow-[0_10px_35px_rgba(0,87,255,0.5)] hover:shadow-[0_15px_45px_rgba(0,170,255,0.6)] transition"
               >
                 <Zap className="w-4 h-4 text-white" />
                 <span>Get Started Free</span>
@@ -388,11 +422,11 @@ export default function LuxuryLandingPage() {
               <button
                 type="button"
                 onClick={() => setIsWalkedIn(!isWalkedIn)}
-                className="px-6 py-3.5 rounded-full font-semibold text-sm bg-white/[0.05] hover:bg-white/[0.1] text-purple-200 border border-white/20 hover:border-purple-400/50 backdrop-blur-md transition flex items-center gap-2"
+                className="px-6 py-3.5 rounded-full font-semibold text-sm bg-white/[0.05] hover:bg-white/[0.1] text-[#00AAFF] border border-[#0057FF]/40 hover:border-[#00AAFF]/60 backdrop-blur-md transition flex items-center gap-2"
               >
                 {isWalkedIn ? (
                   <>
-                    <Minimize2 className="w-4 h-4 text-purple-400" />
+                    <Minimize2 className="w-4 h-4 text-[#00AAFF]" />
                     <span>Exit Walk-In View</span>
                   </>
                 ) : (
@@ -414,26 +448,25 @@ export default function LuxuryLandingPage() {
 
           {/* ═══════════════════════════════════════════════════════
               THE PORTAL TO THE FUTURE HORIZON GLOW & CRM STAGE
-              (Screenshot 2 & Webflow Reference Match)
               ═══════════════════════════════════════════════════════ */}
           <div
             ref={walkinStageRef}
-            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage mt-6 sm:mt-10"
+            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage mt-4"
           >
-            {/* The Cosmic Horizon Glowing Eclipse Arc (Screenshot 2 Match) */}
+            {/* The Cosmic Horizon Glowing Eclipse Arc (Electric Blue / Cyan) */}
             <div className="portal-horizon-arc -top-16" />
             <div className="portal-horizon-line top-10" />
 
             {/* 3D CRM Window Shell */}
             <div
               ref={walkinCardRef}
-              className={`crm-walkin-card ${isWalkedIn ? 'walked-in' : ''} rounded-[2rem] sm:rounded-[2.5rem] p-2.5 sm:p-4 relative bg-[#090514]/90 border border-purple-500/30 backdrop-blur-3xl shadow-[0_30px_120px_rgba(112,0,255,0.45),0_0_60px_rgba(0,170,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.2)]`}
+              className={`crm-walkin-card ${isWalkedIn ? 'walked-in' : ''} rounded-[2rem] sm:rounded-[2.5rem] p-2.5 sm:p-4 relative bg-[#060b18]/95 border border-[#0057FF]/35 backdrop-blur-3xl shadow-[0_30px_120px_rgba(0,87,255,0.4),0_0_60px_rgba(0,170,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.2)]`}
             >
               {/* Downward Volumetric Horizon Reflection Highlight */}
-              <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-purple-500/15 via-cyan-500/5 to-transparent rounded-t-[2.5rem] pointer-events-none" />
+              <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-[#0057FF]/20 via-[#00AAFF]/5 to-transparent rounded-t-[2.5rem] pointer-events-none" />
 
               {/* CRM Top Chrome Bar */}
-              <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-[#06030e]/95 border border-white/10 mb-3 relative z-10">
+              <div className="flex items-center justify-between px-4 py-3 rounded-2xl bg-[#030712]/95 border border-white/10 mb-3 relative z-10">
                 {/* Traffic Lights */}
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
@@ -442,7 +475,7 @@ export default function LuxuryLandingPage() {
                   
                   {/* Address Pill */}
                   <span className="ml-3 text-xs font-mono text-slate-400 hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/[0.03] border border-white/10">
-                    <Lock className="w-3 h-3 text-purple-400" />
+                    <Lock className="w-3 h-3 text-[#00AAFF]" />
                     <span>samvero.live/mission-control/active-leads</span>
                   </span>
                 </div>
@@ -453,13 +486,13 @@ export default function LuxuryLandingPage() {
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                     <span>RADAR ACTIVE • 10s PING</span>
                   </span>
-                  <span className="text-[11px] font-mono text-purple-300 hidden md:inline">
+                  <span className="text-[11px] font-mono text-[#00AAFF] hidden md:inline">
                     50,000+ VERIFIED LEADS
                   </span>
                 </div>
               </div>
 
-              {/* CRM Live Feed Navigation Tabs (Foxley / Tuesday / Huly style) */}
+              {/* CRM Live Feed Navigation Tabs */}
               <div className="flex items-center justify-between gap-3 mb-3 px-1 flex-wrap relative z-10">
                 {/* Platform Filter Buttons */}
                 <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
@@ -479,7 +512,7 @@ export default function LuxuryLandingPage() {
                         onClick={() => setActivePlatformFilter(tab)}
                         className={`px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap ${
                           active
-                            ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/30 border border-purple-400/40'
+                            ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-md shadow-[#0057FF]/30 border border-[#00AAFF]/40'
                             : 'bg-white/[0.03] text-slate-400 hover:text-white border border-white/10'
                         }`}
                       >
@@ -503,17 +536,17 @@ export default function LuxuryLandingPage() {
               </div>
 
               {/* CRM Live Lead Cards Stream */}
-              <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1 relative z-10">
+              <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1 relative z-10">
                 {filteredLeads.map((lead) => (
                   <div
                     key={lead.id}
-                    className="p-3.5 rounded-2xl bg-[#0e091e]/90 border border-white/10 hover:border-purple-400/40 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_4px_25px_rgba(168,85,247,0.15)]"
+                    className="p-3.5 rounded-2xl bg-[#080e22]/90 border border-slate-800 hover:border-[#00AAFF]/40 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_4px_25px_rgba(0,170,255,0.15)]"
                   >
                     {/* Lead Info */}
                     <div className="space-y-1.5 flex-1">
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-bold text-white text-sm tracking-tight">{lead.title}</span>
-                        <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30">
                           {lead.platform}
                         </span>
                         <span className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${lead.tagColor}`}>
@@ -531,7 +564,7 @@ export default function LuxuryLandingPage() {
                         <span className="flex items-center gap-1 font-mono text-slate-300">
                           📞 {lead.phone}
                         </span>
-                        <span className="flex items-center gap-1 text-purple-300">
+                        <span className="flex items-center gap-1 text-[#00AAFF]">
                           ✉️ {lead.verifiedEmail}
                         </span>
                       </div>
@@ -574,14 +607,14 @@ export default function LuxuryLandingPage() {
                 ))}
               </div>
 
-              {/* Bottom CRM Telemetry Status Bar (DevMilosh / Huly style) */}
+              {/* Bottom CRM Telemetry Status Bar */}
               <div className="mt-3 pt-3 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400 px-2 flex-wrap gap-2">
                 <div className="flex items-center gap-3 font-mono">
                   <span className="text-emerald-400">● 15 CRAWL ENGINES ONLINE</span>
                   <span className="hidden sm:inline">LATENCY: 14ms</span>
                   <span className="hidden md:inline">MX ACCURACY: 99.8%</span>
                 </div>
-                <div className="font-mono text-purple-300">
+                <div className="font-mono text-[#00AAFF]">
                   PRESS <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-bold">/</kbd> TO SEARCH LEADS
                 </div>
               </div>
@@ -590,63 +623,134 @@ export default function LuxuryLandingPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            2. DEV-MILOSH / HULY TELEMETRY TICKER
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
+            Lists ALL supported channels required by user
             ═══════════════════════════════════════════════════════ */}
-        <section className="py-4 border-y border-white/10 bg-[#070312]/80 backdrop-blur-md overflow-hidden select-none">
-          <div className="animate-marquee flex items-center gap-12 font-mono text-xs text-purple-300/80">
-            <span>[RADAR-GMB: 142 VERIFIED INGESTED]</span>
-            <span>✦</span>
-            <span>[UPWORK-RADAR: 89 COMMERCIAL FEEDS]</span>
-            <span>✦</span>
-            <span>[LINKEDIN-LIVE: 112 PROFILES VERIFIED]</span>
-            <span>✦</span>
-            <span>[MX-DNS VALIDATION: 99.8% BOUNCE REDUCTION]</span>
-            <span>✦</span>
-            <span>[DUBAI COMMERCIAL RADAR: ACTIVE]</span>
-            <span>✦</span>
-            <span>[LONDON FINTECH DISCOVERY: 34 NEW LEADS]</span>
-            <span>✦</span>
-            <span>[ZERO FABRICATED RECORDS AUDITED]</span>
-            <span>✦</span>
-            <span>[RADAR-GMB: 142 VERIFIED INGESTED]</span>
-            <span>✦</span>
-            <span>[UPWORK-RADAR: 89 COMMERCIAL FEEDS]</span>
-            <span>✦</span>
-            <span>[LINKEDIN-LIVE: 112 PROFILES VERIFIED]</span>
+        <section className="py-4 border-y border-[#0057FF]/20 bg-[#060b18] overflow-hidden select-none pointer-events-none">
+          <div className="animate-marquee-continuous flex items-center gap-8">
+            {[...SUPPORTED_CHANNELS, ...SUPPORTED_CHANNELS].map((channel, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/[0.03] border border-[#0057FF]/25 shadow-[0_0_20px_rgba(0,87,255,0.08)] whitespace-nowrap shrink-0"
+              >
+                <span className="text-xl">{channel.icon}</span>
+                <div className="flex flex-col text-left">
+                  <span className="text-xs font-bold text-white tracking-wide">{channel.name}</span>
+                  <span className="text-[10px] font-mono text-[#00AAFF]">{channel.category}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            3. 4-PILLAR INTELLIGENCE ARCHITECTURE (Tuesday / Neurix style)
+            3. CORPORATE MEETING & MODERN OFFICE SHOWCASE
+            Demonstrates real CRM workflow in enterprise boardrooms
             ═══════════════════════════════════════════════════════ */}
-        <section className="py-24 relative overflow-hidden bg-[#05020c]">
+        <section className="py-24 relative overflow-hidden bg-[#030712]">
           <Starfield count={30} />
           
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/[0.04] border border-white/15 text-purple-300 mb-4">
-                <Radar className="w-3.5 h-3.5 text-purple-400" />
-                <span>Autonomous Intelligence Stack</span>
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/15 border border-[#00AAFF]/30 text-[#00AAFF] mb-4">
+                <Building2 className="w-3.5 h-3.5 text-[#00AAFF]" />
+                <span>Enterprise Agency Operations</span>
               </span>
               <h2
                 className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Engineered for Agencies That Close
+                Built for Boardroom Closings & High-Volume Desks
               </h2>
-              <p className="text-sm sm:text-base text-slate-400">
-                Four autonomous layers turning public commercial data into verified, high-converting client conversations.
+              <p className="text-sm sm:text-base text-slate-300">
+                How modern agencies, outbound specialists, and executive BD leaders deploy Samvero across corporate headquarters.
               </p>
             </div>
 
+            {/* Corporate Imagery & CRM Feature Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+              
+              {/* Feature 1 */}
+              <div className="rounded-3xl overflow-hidden bg-[#060b18] border border-slate-800 hover:border-[#00AAFF]/40 transition shadow-xl group flex flex-col justify-between">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
+                    alt="Corporate Boardroom Meeting"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#0057FF]/90 text-white">
+                    BOARDROOM STRATEGY
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Executive Client Pitches
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Arm your account managers with real primary evidence: company registrations, domain health, and direct decision-maker mobile lines.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="rounded-3xl overflow-hidden bg-[#060b18] border border-slate-800 hover:border-[#00AAFF]/40 transition shadow-xl group flex flex-col justify-between">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
+                    alt="Agency Workstation Collaboration"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#00AAFF]/90 text-white">
+                    OUTBOUND WORKSTATION
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    High-Velocity Pipeline Workflow
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Filter by country, commercial budget, and missing responsive assets. Convert cold leads into qualified pipeline stages in minutes.
+                  </p>
+                </div>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="rounded-3xl overflow-hidden bg-[#060b18] border border-slate-800 hover:border-[#00AAFF]/40 transition shadow-xl group flex flex-col justify-between">
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80"
+                    alt="Corporate Handshake & Contract Closing"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
+                  <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-emerald-600/90 text-white">
+                    HIGH-TICKET CLOSE
+                  </span>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    1-Click Scope of Work Proposals
+                  </h3>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Generate white-labeled PDF proposal packages, 14-screen app specs, and vector logo audits directly inside the Workbench.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            {/* 4-Pillar Architecture with Modern Analytics Imagery */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
                   step: '01',
                   title: 'Multi-Source Radar',
-                  desc: 'Autonomous crawling across Google Maps GMB, Upwork, LinkedIn, and registers without API bans or rate limits.',
+                  desc: 'Autonomous crawling across Google Maps, Upwork, LinkedIn, and registers without API bans or rate limits.',
                   icon: Globe2,
                   stat: '15+ Connectors',
+                  image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=400&q=80',
                 },
                 {
                   step: '02',
@@ -654,6 +758,7 @@ export default function LuxuryLandingPage() {
                   desc: 'Every business domain undergoes DNS MX checks, disposable mail rejection, and ITU telecom validation.',
                   icon: ShieldCheck,
                   stat: '98% Accuracy',
+                  image: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=400&q=80',
                 },
                 {
                   step: '03',
@@ -661,6 +766,7 @@ export default function LuxuryLandingPage() {
                   desc: '1-click WhatsApp Web chat launches and pre-warmed Gmail outreach templates ready in 5 seconds.',
                   icon: MessageCircle,
                   stat: '1-Click Launch',
+                  image: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80',
                 },
                 {
                   step: '04',
@@ -668,22 +774,31 @@ export default function LuxuryLandingPage() {
                   desc: 'Auto-generate tailored pitch scripts, Website Rebuild mockups, and client proposals that convert.',
                   icon: Bot,
                   stat: 'High-Ticket SOW',
+                  image: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=400&q=80',
                 },
               ].map((item, idx) => {
                 const IconComp = item.icon;
                 return (
                   <div
                     key={idx}
-                    className="p-6 rounded-[2rem] glass-luxury-card relative overflow-hidden flex flex-col justify-between hover:border-purple-400/40 transition group"
+                    className="p-6 rounded-[2rem] bg-[#060b18]/90 border border-slate-800 hover:border-[#00AAFF]/40 transition flex flex-col justify-between group shadow-lg"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <span className="text-2xl font-mono font-bold text-purple-400/60 group-hover:text-purple-300 transition">
+                        <span className="text-2xl font-mono font-bold text-[#0057FF] group-hover:text-[#00AAFF] transition">
                           {item.step}
                         </span>
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-purple-500/10 border border-purple-500/20 text-purple-300 group-hover:scale-110 transition">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#0057FF]/15 border border-[#00AAFF]/30 text-[#00AAFF] group-hover:scale-110 transition">
                           <IconComp className="w-5 h-5" />
                         </div>
+                      </div>
+
+                      <div className="w-full h-24 rounded-xl overflow-hidden mb-4 border border-slate-800">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
                       </div>
 
                       <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
@@ -694,7 +809,7 @@ export default function LuxuryLandingPage() {
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-white/10 text-[11px] font-mono text-purple-300 font-semibold">
+                    <div className="pt-3 border-t border-slate-800 text-[11px] font-mono text-[#00AAFF] font-semibold">
                       {item.stat}
                     </div>
                   </div>
@@ -705,40 +820,38 @@ export default function LuxuryLandingPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            4. PRICING SECTION: FROSTED GLASS CARDS WITH 3D ORBS
-            (Screenshot 5 Match `media_1794487183634_5931994c.png`)
+            4. PRICING SECTION: STRICT ELECTRIC BLUE TO CYAN THEME
             ═══════════════════════════════════════════════════════ */}
-        <section id="pricing" className="py-24 relative overflow-hidden bg-[#06030e] smooth-scroll-perf">
+        <section id="pricing" className="py-24 relative overflow-hidden bg-[#060b18] smooth-scroll-perf">
           
-          {/* Screenshot 5 Colorful 3D Glowing Spheres Floating Behind Translucent Glass Cards */}
-          <div className="absolute top-1/3 left-10 w-96 h-96 rounded-full bg-gradient-to-tr from-amber-500/40 via-orange-600/30 to-amber-300/20 blur-[90px] pointer-events-none" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-blue-600/40 via-purple-600/30 to-cyan-400/20 blur-[110px] pointer-events-none" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-gradient-to-tr from-emerald-500/40 via-teal-600/30 to-cyan-400/20 blur-[90px] pointer-events-none" />
+          {/* Ambient Glowing Spheres (Electric Blue & Cyan) */}
+          <div className="absolute top-1/3 left-10 w-96 h-96 rounded-full bg-gradient-to-tr from-[#0057FF]/25 to-transparent blur-[100px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[#0057FF]/20 via-[#00AAFF]/15 to-transparent blur-[110px] pointer-events-none" />
+          <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-gradient-to-tr from-[#00AAFF]/20 to-transparent blur-[90px] pointer-events-none" />
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             
             {/* Header */}
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/[0.04] border border-white/15 text-purple-300 mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-                <span>Plans & Pricing</span>
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/15 border border-[#0057FF]/30 text-[#00AAFF] mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-[#00AAFF]" />
+                <span>Subscription Packages</span>
               </span>
               <h2
-                className="text-4xl sm:text-5xl font-bold text-white mb-3 tracking-tight"
+                className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Choose Your Plan
+                Simple, Transparent Lead Intelligence Tiers
               </h2>
-              <p className="text-sm sm:text-base text-slate-400">
-                Transparent multi-currency access. No hidden auto-charges. Verified manually by our finance desk.
+              <p className="text-sm sm:text-base text-slate-300">
+                Choose the right monthly quota of validated commercial leads for your business.
               </p>
             </div>
 
-            {/* Currency Selector Bar & Billing Cycle Toggle */}
+            {/* Currency & Billing Cycle Switchers */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14">
-              
-              {/* Currency Selector */}
-              <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/[0.04] border border-white/15 backdrop-blur-xl">
+              {/* Currency Picker */}
+              <div className="flex items-center gap-1 p-1 rounded-full bg-white/[0.04] border border-white/15 backdrop-blur-xl">
                 {(['USD', 'PKR', 'AED', 'GBP', 'EUR'] as CurrencyType[]).map((cur) => (
                   <button
                     key={cur}
@@ -746,7 +859,7 @@ export default function LuxuryLandingPage() {
                     onClick={() => setPricingCurrency(cur)}
                     className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
                       pricingCurrency === cur
-                        ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm'
+                        ? 'bg-[#0057FF] text-white shadow-sm'
                         : 'text-slate-400 hover:text-white'
                     }`}
                   >
@@ -755,14 +868,14 @@ export default function LuxuryLandingPage() {
                 ))}
               </div>
 
-              {/* Billing Cycle (Monthly / Annual 20% off) */}
+              {/* Billing Cycle */}
               <div className="flex items-center gap-1.5 p-1 rounded-full bg-white/[0.04] border border-white/15 backdrop-blur-xl">
                 <button
                   type="button"
                   onClick={() => setBillingCycle('monthly')}
                   className={`px-4 py-1 rounded-full text-xs font-semibold transition ${
                     billingCycle === 'monthly'
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-[#0057FF] text-white'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -773,7 +886,7 @@ export default function LuxuryLandingPage() {
                   onClick={() => setBillingCycle('annual')}
                   className={`px-4 py-1 rounded-full text-xs font-semibold transition ${
                     billingCycle === 'annual'
-                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm'
+                      ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-sm'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -782,14 +895,14 @@ export default function LuxuryLandingPage() {
               </div>
             </div>
 
-            {/* The 3 Ultra-Translucent Glass Cards (Screenshot 5 Match) */}
+            {/* The 3 Clean Glass Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
               
-              {/* 1. Basic / Starter Plan (Amber Pill) */}
-              <div className="rounded-[2.5rem] p-7 glass-luxury-container relative flex flex-col justify-between border border-white/20 hover:border-amber-400/40 transition">
+              {/* 1. Starter Prospector */}
+              <div className="rounded-[2.5rem] p-7 bg-[#060b18]/90 border border-slate-800 hover:border-[#0057FF]/40 transition relative flex flex-col justify-between shadow-xl">
                 <div>
                   <div className="mb-5">
-                    <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 mb-3">
+                    <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-[#0057FF]/20 text-[#00AAFF] border border-[#0057FF]/30 mb-3">
                       Basic Plan
                     </span>
                     <h3 className="text-xl font-bold text-white mb-1">
@@ -830,28 +943,28 @@ export default function LuxuryLandingPage() {
 
                 <Link
                   href={`/signup?plan=starter&cycle=${billingCycle}`}
-                  className="w-full py-3.5 rounded-full text-center font-bold text-xs bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white shadow-lg shadow-amber-500/25 transition"
+                  className="w-full py-3.5 rounded-full text-center font-bold text-xs bg-slate-800 hover:bg-[#0057FF] text-white transition"
                 >
                   Get Started
                 </Link>
               </div>
 
-              {/* 2. Standard / Growth Agency Plan (Blue / Violet Pill - Featured) */}
-              <div className="rounded-[2.5rem] p-7 glass-luxury-container relative flex flex-col justify-between border-2 border-purple-500/50 shadow-[0_20px_70px_rgba(168,85,247,0.35)] transform md:-translate-y-3">
+              {/* 2. Growth Agency Pro (Featured - Electric Blue Gradient) */}
+              <div className="rounded-[2.5rem] p-7 bg-[#060b18] border-2 border-[#00AAFF]/60 shadow-[0_20px_70px_rgba(0,170,255,0.25)] relative flex flex-col justify-between transform md:-translate-y-3">
                 {/* Popular Pill */}
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-md shadow-purple-600/40 border border-purple-300/40">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-md shadow-[#0057FF]/40 border border-[#00AAFF]/40">
                   Most Popular
                 </div>
 
                 <div>
                   <div className="mb-5 mt-1">
-                    <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40 mb-3">
+                    <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-[#00AAFF]/20 text-[#00AAFF] border border-[#00AAFF]/40 mb-3">
                       Standard Plan
                     </span>
                     <h3 className="text-xl font-bold text-white mb-1">
                       Growth Agency Pro
                     </h3>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-slate-300">
                       For fast-growing agencies closing foreign high-ticket clients.
                     </p>
                   </div>
@@ -878,7 +991,7 @@ export default function LuxuryLandingPage() {
                       'Priority Technical Support 24/7',
                     ].map((f, fi) => (
                       <li key={fi} className="flex items-center gap-2.5">
-                        <Check className="w-4 h-4 text-cyan-400 shrink-0" />
+                        <Check className="w-4 h-4 text-[#00AAFF] shrink-0" />
                         <span>{f}</span>
                       </li>
                     ))}
@@ -887,14 +1000,14 @@ export default function LuxuryLandingPage() {
 
                 <Link
                   href={`/signup?plan=standard&cycle=${billingCycle}`}
-                  className="w-full py-3.5 rounded-full text-center font-bold text-xs glass-pill-btn shadow-lg shadow-purple-600/40 transition"
+                  className="w-full py-3.5 rounded-full text-center font-bold text-xs bg-gradient-to-r from-[#0057FF] to-[#00AAFF] hover:brightness-110 text-white shadow-lg shadow-[#0057FF]/35 transition"
                 >
                   Get Started
                 </Link>
               </div>
 
-              {/* 3. Premium / Enterprise Plan (Green Pill) */}
-              <div className="rounded-[2.5rem] p-7 glass-luxury-container relative flex flex-col justify-between border border-white/20 hover:border-emerald-400/40 transition">
+              {/* 3. Enterprise Acquisition Desk */}
+              <div className="rounded-[2.5rem] p-7 bg-[#060b18]/90 border border-slate-800 hover:border-[#00AAFF]/40 transition relative flex flex-col justify-between shadow-xl">
                 <div>
                   <div className="mb-5">
                     <span className="inline-block px-3.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 mb-3">
@@ -952,11 +1065,11 @@ export default function LuxuryLandingPage() {
         {/* ═══════════════════════════════════════════════════════
             5. FAQ ACCORDION SECTION
             ═══════════════════════════════════════════════════════ */}
-        <section className="py-24 relative overflow-hidden bg-[#05020c] border-t border-white/10">
+        <section className="py-24 relative overflow-hidden bg-[#030712] border-t border-slate-800">
           <div className="max-w-4xl mx-auto px-6 relative z-10">
             <div className="text-center mb-14">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/[0.04] border border-white/15 text-purple-300 mb-4">
-                <HelpCircle className="w-3.5 h-3.5 text-purple-400" />
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/15 border border-[#00AAFF]/30 text-[#00AAFF] mb-4">
+                <HelpCircle className="w-3.5 h-3.5 text-[#00AAFF]" />
                 <span>Frequently Asked Questions</span>
               </span>
               <h2
@@ -976,7 +1089,7 @@ export default function LuxuryLandingPage() {
                 return (
                   <div
                     key={index}
-                    className="rounded-2xl overflow-hidden glass-luxury-card border border-white/10 transition"
+                    className="rounded-2xl overflow-hidden bg-[#060b18] border border-slate-800 transition"
                   >
                     <button
                       onClick={() => setOpenFaqIndex(isOpen ? null : index)}
@@ -985,12 +1098,12 @@ export default function LuxuryLandingPage() {
                       <span className="text-sm font-bold text-white">{faq.q}</span>
                       <ChevronDown
                         className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
-                          isOpen ? 'rotate-180 text-purple-400' : 'text-slate-500'
+                          isOpen ? 'rotate-180 text-[#00AAFF]' : 'text-slate-500'
                         }`}
                       />
                     </button>
                     {isOpen && (
-                      <div className="px-5 pb-5 pt-1 text-xs text-slate-400 leading-relaxed border-t border-white/10">
+                      <div className="px-5 pb-5 pt-1 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80">
                         {faq.a}
                       </div>
                     )}
@@ -1004,13 +1117,13 @@ export default function LuxuryLandingPage() {
         {/* ═══════════════════════════════════════════════════════
             6. FINAL CALL TO ACTION
             ═══════════════════════════════════════════════════════ */}
-        <section className="py-24 relative overflow-hidden bg-[#06030e] border-t border-white/10">
+        <section className="py-24 relative overflow-hidden bg-[#060b18] border-t border-slate-800">
           <Starfield count={40} />
 
           <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-            <div className="glass-luxury-container rounded-[2.5rem] p-10 sm:p-14 border border-white/20 shadow-[0_20px_80px_rgba(112,0,255,0.3)]">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/[0.04] border border-white/15 text-purple-300 mb-6">
-                <Zap className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
+            <div className="rounded-[2.5rem] p-10 sm:p-14 bg-gradient-to-b from-[#080e24] to-[#030712] border border-[#0057FF]/35 shadow-[0_20px_80px_rgba(0,87,255,0.25)]">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/15 border border-[#0057FF]/30 text-[#00AAFF] mb-6">
+                <Zap className="w-3.5 h-3.5 text-[#00AAFF] animate-pulse" />
                 <span>Ready For Conversion</span>
               </span>
 
@@ -1019,19 +1132,19 @@ export default function LuxuryLandingPage() {
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 Find Your Next High-Ticket <br />
-                <span className="bg-gradient-to-r from-purple-400 to-cyan-300 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent">
                   Commercial Client Today
                 </span>
               </h2>
 
-              <p className="text-sm sm:text-base text-slate-400 mb-8 max-w-xl mx-auto">
+              <p className="text-sm sm:text-base text-slate-300 mb-8 max-w-xl mx-auto">
                 Join high-performing agencies and founders prospecting with verified data certainty.
               </p>
 
               <div className="flex items-center justify-center gap-4 flex-wrap">
                 <Link
                   href="/signup"
-                  className="glass-pill-btn px-8 py-3.5 rounded-full font-semibold text-sm flex items-center gap-2"
+                  className="glass-pill-btn px-8 py-3.5 rounded-full font-semibold text-sm flex items-center gap-2 shadow-[0_10px_35px_rgba(0,87,255,0.4)]"
                 >
                   <Zap className="w-4 h-4 text-white" />
                   <span>Get Started Free</span>

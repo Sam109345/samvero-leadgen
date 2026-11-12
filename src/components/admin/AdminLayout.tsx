@@ -24,6 +24,8 @@ import {
   CheckCircle2,
   Calendar,
   DollarSign,
+  Eye,
+  MousePointer,
 } from 'lucide-react';
 import SamveroBrandLogo from '@/components/SamveroBrandLogo';
 
@@ -84,6 +86,7 @@ export default function AdminLayout({ children, title, subtitle }: AdminLayoutPr
 
   const navItems = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
+    { name: 'Visitor Tracking', href: '/admin/visitors', icon: Eye },
     { name: 'Applications', href: '/admin/applications', icon: FileText },
     { name: 'Users & Customers', href: '/admin/users', icon: Users },
     { name: 'Subscriptions', href: '/admin/subscriptions', icon: Calendar },

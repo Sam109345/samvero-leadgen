@@ -14,7 +14,8 @@
     "test:qa": "node tests/qa-verification.js",
     "test:functional": "node tests/test-functional-upgrade.js",
     "test:live": "node tests/test-live-sources.js",
-    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js && node tests/test-functional-upgrade.js && node tests/test-live-sources.js"
+    "test:visitors": "node tests/test-visitor-tracking.js",
+    "test": "node tests/test-phone-sanitizer.js && node tests/test-production-upgrade.js && node tests/test-functional-upgrade.js && node tests/test-live-sources.js && node tests/test-visitor-tracking.js"
   },
   "keywords": [],
   "author": "",

@@ -25,6 +25,7 @@ import {
   Database,
   CreditCard,
   Cpu,
+  Eye,
   X,
   Menu,
 } from 'lucide-react';
@@ -56,6 +57,7 @@ export type NavViewId =
   | 'support'
   // ADMIN
   | 'admin-dashboard'
+  | 'admin-visitors'
   | 'user-management'
   | 'subscription-management'
   | 'lead-management'
@@ -204,6 +206,7 @@ export default function UnifiedSidebar({
             adminOnly: true,
             items: [
               { id: 'admin-dashboard' as NavViewId, label: 'Admin Console', path: '/admin/dashboard', icon: ShieldCheck },
+              { id: 'admin-visitors' as NavViewId, label: 'Website Visitor Tracking', path: '/admin/visitors', icon: Eye },
               { id: 'user-management' as NavViewId, label: 'User Directory', path: '/admin/users', icon: Users },
               { id: 'subscription-management' as NavViewId, label: 'Subscriptions', path: '/admin/subscriptions', icon: CreditCard },
               { id: 'lead-management' as NavViewId, label: 'All Database Leads', path: '/admin/leads', icon: Database },

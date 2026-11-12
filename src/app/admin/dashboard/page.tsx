@@ -18,6 +18,8 @@ import {
   BarChart3,
   ShieldCheck,
   RefreshCw,
+  Eye,
+  MousePointer,
 } from 'lucide-react';
 
 export default function AdminDashboardPage() {
@@ -61,6 +63,31 @@ export default function AdminDashboardPage() {
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
             <span>Refresh Live Metrics</span>
           </button>
+        </div>
+
+        {/* Website Visitor Tracking Quick Telemetry Bar */}
+        <div className="p-5 rounded-2xl bg-gradient-to-r from-[#0057FF]/15 via-[#00AAFF]/10 to-slate-900 border border-[#0057FF]/30 shadow-[0_10px_30px_rgba(0,87,255,0.1)] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-2xl bg-[#0057FF]/20 text-[#00AAFF] border border-[#00AAFF]/30">
+              <Eye className="w-6 h-6 animate-pulse" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-sm font-bold text-white">Website Visitor Tracking & Clicks</h3>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 text-[10px] font-mono font-bold">LIVE BEACON ACTIVE</span>
+              </div>
+              <p className="text-xs text-slate-300 mt-0.5">
+                Monitoring live visitors, bounce rate, page views, device names, and IP geolocation
+              </p>
+            </div>
+          </div>
+          <Link
+            href="/admin/visitors"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#0057FF] to-[#00AAFF] hover:brightness-110 text-white text-xs font-bold transition shadow-md whitespace-nowrap self-stretch md:self-auto justify-center"
+          >
+            <span>Open Visitor Tracking Center</span>
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
 
         {/* 15 Database-Backed Metric KPI Cards */}

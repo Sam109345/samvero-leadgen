@@ -75,13 +75,13 @@ export default function PublicNavbar() {
                   href={link.href}
                   className={`relative text-xs font-semibold px-3.5 py-1.5 rounded-full transition-all duration-200 ${
                     isActive
-                      ? 'text-white bg-purple-600/30 border border-purple-400/40 shadow-sm'
+                      ? 'text-white bg-[#0057FF]/25 border border-[#00AAFF]/40 shadow-sm shadow-[#0057FF]/20'
                       : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
                   }`}
                 >
                   {link.name}
                   {isActive && (
-                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-purple-400 shadow-[0_0_6px_#c084fc]" />
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[#00AAFF] shadow-[0_0_6px_#00AAFF]" />
                   )}
                 </Link>
               );
@@ -119,7 +119,7 @@ export default function PublicNavbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden px-4 pt-3 pb-6 space-y-3 mt-3 bg-[#080414]/95 backdrop-blur-2xl border-b border-white/15 animate-slide-down">
+        <div className="md:hidden px-4 pt-3 pb-6 space-y-3 mt-3 bg-[#030712]/95 backdrop-blur-2xl border-b border-white/15 animate-slide-down">
           <div className="space-y-1">
             {navLinks.map((link) => (
               <Link
@@ -128,7 +128,7 @@ export default function PublicNavbar() {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`block px-3.5 py-2.5 rounded-xl text-sm font-semibold transition ${
                   pathname === link.href
-                    ? 'text-purple-300 bg-purple-500/15 border border-purple-500/30'
+                    ? 'text-[#00AAFF] bg-[#0057FF]/15 border border-[#0057FF]/30'
                     : 'text-slate-300 hover:text-white'
                 }`}
               >

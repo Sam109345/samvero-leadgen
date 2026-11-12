@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import VisitorTrackingBeacon from '@/components/analytics/VisitorTrackingBeacon';
 
 export const metadata: Metadata = {
   title: 'SAMVERO – AI-Powered Lead Generation Platform',
@@ -49,6 +50,7 @@ export default function RootLayout({
       <body className="antialiased min-h-screen">
         {/* Global cursor glow — follows mouse on every page */}
         <div id="cursor-glow" aria-hidden="true" />
+        <VisitorTrackingBeacon />
         {children}
         <script
           dangerouslySetInnerHTML={{
