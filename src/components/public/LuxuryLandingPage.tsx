@@ -308,6 +308,155 @@ export default function LuxuryLandingPage() {
               </a>
             </div>
 
+            {/* 3D Walk-In Interactive CRM Command Center Banner */}
+            <div className="mt-14 max-w-5xl mx-auto px-2 relative z-20">
+              <div
+                className="crm-walkin-banner rounded-3xl p-3 sm:p-4 relative"
+                style={{
+                  background: 'rgba(10, 15, 30, 0.75)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(0, 170, 255, 0.4)',
+                  boxShadow: '0 30px 100px rgba(0, 87, 255, 0.35), 0 0 50px rgba(0, 170, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                }}
+              >
+                {/* CRM Window Header Bar */}
+                <div
+                  className="flex items-center justify-between px-4 py-2.5 rounded-2xl mb-3"
+                  style={{
+                    background: 'rgba(5, 10, 24, 0.9)',
+                    border: '1px solid rgba(0, 87, 255, 0.2)',
+                  }}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
+                    <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
+                    <span className="ml-3 text-xs font-mono text-slate-400 hidden sm:inline-flex items-center gap-2">
+                      <Lock className="w-3 h-3 text-[#00AAFF]" />
+                      samvero.live/mission-control/active-leads
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      LIVE SYNC: 10s
+                    </span>
+                    <span className="text-[11px] font-mono text-cyan-300 hidden md:inline">550+ VERIFIED LEADS</span>
+                  </div>
+                </div>
+
+                {/* CRM Dashboard Live Mockup Content */}
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-3 text-left">
+                  {/* Left Sidebar Mini-Nav */}
+                  <div className="hidden md:block md:col-span-3 rounded-xl p-3 bg-[#030712]/70 border border-blue-500/15 space-y-2 text-xs">
+                    <div className="text-[10px] uppercase font-mono tracking-wider text-slate-500 font-bold px-2">Data Feeds</div>
+                    {[
+                      { name: 'Google My Business', count: '142', active: true },
+                      { name: 'Upwork Radar', count: '89', active: false },
+                      { name: 'Freelancer.com', count: '64', active: false },
+                      { name: 'Remote OK / Remotive', count: '98', active: false },
+                      { name: 'LinkedIn Live', count: '112', active: false },
+                    ].map((feed, fIdx) => (
+                      <div
+                        key={fIdx}
+                        className={`flex items-center justify-between px-2.5 py-2 rounded-lg font-medium transition ${
+                          feed.active
+                            ? 'bg-[#0057FF]/20 text-[#00AAFF] border border-[#00AAFF]/40'
+                            : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/50'
+                        }`}
+                      >
+                        <span className="truncate">{feed.name}</span>
+                        <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">{feed.count}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Main CRM Live Leads Feed Preview */}
+                  <div className="md:col-span-9 rounded-xl p-3 bg-[#030712]/90 border border-blue-500/20 space-y-2.5 overflow-hidden">
+                    {/* Filter Pills */}
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 text-[11px]">
+                      {['All Countries', 'United States', 'United Kingdom', 'UAE (Dubai)', 'Pakistan'].map((c, cIdx) => (
+                        <span
+                          key={cIdx}
+                          className={`px-3 py-1 rounded-full whitespace-nowrap cursor-pointer transition ${
+                            cIdx === 0
+                              ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white font-bold'
+                              : 'bg-slate-900/80 text-slate-400 hover:text-white border border-slate-800'
+                          }`}
+                        >
+                          {c}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Live Lead Cards Preview */}
+                    {[
+                      {
+                        title: 'Jebel Ali Commercial Complex',
+                        location: 'Dubai, UAE',
+                        platform: 'Google My Business',
+                        phone: '+971 4 883 2222',
+                        whatsapp: 'Available (Click to Chat)',
+                        tag: 'Missing Website (Hot Pitch)',
+                        budget: '$800 - $2,500',
+                      },
+                      {
+                        title: 'NextGen Fintech Mobile App Rebuild',
+                        location: 'London, United Kingdom',
+                        platform: 'Freelancer.com',
+                        phone: '+44 20 7946 0912',
+                        whatsapp: 'Direct Verified',
+                        tag: 'Verified Client (4.9★)',
+                        budget: '£3,000 - £6,000',
+                      },
+                      {
+                        title: 'Apex Dental Care Clinic Website',
+                        location: 'Austin, TX, United States',
+                        platform: 'Google Maps GMB',
+                        phone: '+1 512 555 0194',
+                        whatsapp: 'Direct Verified',
+                        tag: 'Newly Opened',
+                        budget: '$1,500 - $3,000',
+                      },
+                    ].map((lead, lIdx) => (
+                      <div
+                        key={lIdx}
+                        className="p-3 rounded-xl bg-[#0a0f1e]/80 border border-blue-500/20 hover:border-[#00AAFF]/50 transition flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs"
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-bold text-white text-sm">{lead.title}</span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#0057FF]/20 text-[#00AAFF] border border-[#0057FF]/40">
+                              {lead.platform}
+                            </span>
+                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/15 text-emerald-400">
+                              {lead.tag}
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-slate-400 flex items-center gap-3">
+                            <span>📍 {lead.location}</span>
+                            <span>📞 {lead.phone}</span>
+                            <span className="text-emerald-400 font-medium">💬 WhatsApp: {lead.whatsapp}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="font-mono font-bold text-cyan-300 text-sm">{lead.budget}</span>
+                          <Link
+                            href="/signup"
+                            className="px-3 py-1.5 rounded-lg font-bold text-[11px] bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white hover:opacity-90 transition shadow-md shadow-blue-500/30"
+                          >
+                            Claim Lead →
+                          </Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {/* Social proof */}
             <div
               className="mt-14 flex items-center justify-center gap-8 flex-wrap animate-fade-in"
