@@ -65,11 +65,13 @@ export default function VisitorTrackingBeacon() {
         const interactive = target.closest('button, a, [role="button"], input[type="submit"]') as HTMLElement | null;
         if (!interactive) return;
 
-        const label =
+        const rawLabel =
           interactive.getAttribute('aria-label') ||
-          interactive.innerText?.trim()?.slice(0, 50) ||
+          interactive.innerText?.replace(/\s+/g, ' ')?.trim()?.slice(0, 50) ||
           interactive.getAttribute('title') ||
           interactive.tagName.toLowerCase();
+
+        const label = (rawLabel || '').replace(/\s+/g, ' ').trim();
 
         if (!label) return;
 

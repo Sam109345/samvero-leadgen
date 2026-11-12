@@ -189,7 +189,7 @@ function LoginForm() {
               <div className="relative w-52 h-64 flex items-center justify-center">
                 <svg viewBox="0 0 220 260" className="w-full h-full drop-shadow-[0_20px_35px_rgba(0,170,255,0.5)]">
                   <defs>
-                    {/* Plant leaf gradients */}
+                    {/* Plant leaf gradients (Strictly Electric Blue to Cyan Theme) */}
                     <linearGradient id="leafCenter" x1="0%" y1="100%" x2="50%" y2="0%">
                       <stop offset="0%" stopColor="#0033aa" />
                       <stop offset="40%" stopColor="#0057FF" />
@@ -198,26 +198,26 @@ function LoginForm() {
                     </linearGradient>
                     <linearGradient id="leafCyan" x1="0%" y1="100%" x2="100%" y2="0%">
                       <stop offset="0%" stopColor="#030712" />
-                      <stop offset="50%" stopColor="#6366f1" />
+                      <stop offset="50%" stopColor="#0057FF" />
                       <stop offset="85%" stopColor="#38bdf8" />
                       <stop offset="100%" stopColor="#bae6fd" />
                     </linearGradient>
-                    <linearGradient id="leafPink" x1="100%" y1="100%" x2="0%" y2="0%">
-                      <stop offset="0%" stopColor="#581c87" />
-                      <stop offset="50%" stopColor="#a855f7" />
-                      <stop offset="85%" stopColor="#f472b6" />
-                      <stop offset="100%" stopColor="#fbcfe8" />
+                    <linearGradient id="leafBlueAccent" x1="100%" y1="100%" x2="0%" y2="0%">
+                      <stop offset="0%" stopColor="#022c6e" />
+                      <stop offset="50%" stopColor="#0057FF" />
+                      <stop offset="85%" stopColor="#00AAFF" />
+                      <stop offset="100%" stopColor="#7dd3fc" />
                     </linearGradient>
                     {/* Pot metallic gradient */}
                     <linearGradient id="potShine" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#2e1065" />
-                      <stop offset="40%" stopColor="#1e1035" />
-                      <stop offset="100%" stopColor="#0b0618" />
+                      <stop offset="0%" stopColor="#0e1a38" />
+                      <stop offset="40%" stopColor="#081024" />
+                      <stop offset="100%" stopColor="#030712" />
                     </linearGradient>
                     <radialGradient id="potInnerGlow" cx="50%" cy="100%" r="75%">
-                      <stop offset="0%" stopColor="#e879f9" stopOpacity="0.85" />
-                      <stop offset="50%" stopColor="#7e22ce" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#0b0618" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#00AAFF" stopOpacity="0.85" />
+                      <stop offset="50%" stopColor="#0057FF" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#030712" stopOpacity="0" />
                     </radialGradient>
                     <filter id="glowBlur" x="-20%" y="-20%" width="140%" height="140%">
                       <feGaussianBlur stdDeviation="3" result="blur" />
@@ -226,17 +226,17 @@ function LoginForm() {
                   </defs>
 
                   {/* Floor Reflection Ring */}
-                  <ellipse cx="110" cy="242" rx="55" ry="10" fill="#a855f7" opacity="0.35" filter="blur(6px)" />
-                  <ellipse cx="110" cy="240" rx="35" ry="5" fill="#f472b6" opacity="0.5" filter="blur(3px)" />
+                  <ellipse cx="110" cy="242" rx="55" ry="10" fill="#0057FF" opacity="0.35" filter="blur(6px)" />
+                  <ellipse cx="110" cy="240" rx="35" ry="5" fill="#00AAFF" opacity="0.5" filter="blur(3px)" />
 
                   {/* Potted Cup / Pot */}
                   <path d="M 65 160 L 155 160 L 142 235 C 142 240, 78 240, 78 235 Z" fill="url(#potShine)" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
                   <path d="M 65 160 L 155 160 L 142 235 C 142 240, 78 240, 78 235 Z" fill="url(#potInnerGlow)" />
                   {/* Rim */}
-                  <ellipse cx="110" cy="160" rx="45" ry="9" fill="#3b1d6e" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" />
-                  <ellipse cx="110" cy="160" rx="42" ry="7" fill="#1c0b38" />
+                  <ellipse cx="110" cy="160" rx="45" ry="9" fill="#0c1938" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" />
+                  <ellipse cx="110" cy="160" rx="42" ry="7" fill="#060e22" />
 
-                  {/* Bioluminescent Succulent Foliage (Screenshot 1 organic petals) */}
+                  {/* Bioluminescent Succulent Foliage (Strict Electric Blue to Cyan Logo Theme) */}
                   {/* Central tall leaf */}
                   <path d="M 110 158 C 98 105, 95 40, 110 20 C 125 40, 122 105, 110 158 Z" fill="url(#leafCenter)" opacity="0.96" filter="url(#glowBlur)" />
                   
@@ -244,7 +244,7 @@ function LoginForm() {
                   <path d="M 105 158 C 76 118, 62 65, 80 38 C 96 60, 106 115, 105 158 Z" fill="url(#leafCyan)" opacity="0.92" />
                   
                   {/* Inner Right leaf */}
-                  <path d="M 115 158 C 144 118, 158 65, 140 38 C 124 60, 114 115, 115 158 Z" fill="url(#leafPink)" opacity="0.92" />
+                  <path d="M 115 158 C 144 118, 158 65, 140 38 C 124 60, 114 115, 115 158 Z" fill="url(#leafBlueAccent)" opacity="0.92" />
 
                   {/* Outer Left leaf */}
                   <path d="M 98 160 C 58 135, 42 90, 56 70 C 74 85, 92 125, 98 160 Z" fill="url(#leafCenter)" opacity="0.85" />
@@ -252,18 +252,18 @@ function LoginForm() {
                   {/* Outer Right leaf */}
                   <path d="M 122 160 C 162 135, 178 90, 164 70 C 146 85, 128 125, 122 160 Z" fill="url(#leafCyan)" opacity="0.85" />
 
-                  {/* Delicate pink sprigs sprouting outwards */}
-                  <path d="M 85 150 C 65 130, 52 110, 50 102 C 60 108, 75 125, 85 150 Z" fill="#f472b6" opacity="0.9" />
-                  <path d="M 135 150 C 155 130, 168 110, 170 102 C 160 108, 145 125, 135 150 Z" fill="#c084fc" opacity="0.9" />
+                  {/* Delicate sprigs sprouting outwards */}
+                  <path d="M 85 150 C 65 130, 52 110, 50 102 C 60 108, 75 125, 85 150 Z" fill="#00AAFF" opacity="0.9" />
+                  <path d="M 135 150 C 155 130, 168 110, 170 102 C 160 108, 145 125, 135 150 Z" fill="#38bdf8" opacity="0.9" />
 
                   {/* Glowing bioluminescent spores */}
                   <circle cx="110" cy="18" r="3.5" fill="#ffffff" filter="drop-shadow(0 0 6px #fff)" />
                   <circle cx="80" cy="36" r="2.5" fill="#38bdf8" filter="drop-shadow(0 0 5px #38bdf8)" />
-                  <circle cx="140" cy="36" r="2.5" fill="#f472b6" filter="drop-shadow(0 0 5px #f472b6)" />
-                  <circle cx="55" cy="68" r="2" fill="#e9d5ff" />
+                  <circle cx="140" cy="36" r="2.5" fill="#00AAFF" filter="drop-shadow(0 0 5px #00AAFF)" />
+                  <circle cx="55" cy="68" r="2" fill="#7dd3fc" />
                   <circle cx="165" cy="68" r="2" fill="#bae6fd" />
-                  <circle cx="48" cy="100" r="1.5" fill="#fbcfe8" />
-                  <circle cx="172" cy="100" r="1.5" fill="#e9d5ff" />
+                  <circle cx="48" cy="100" r="1.5" fill="#38bdf8" />
+                  <circle cx="172" cy="100" r="1.5" fill="#e0f2fe" />
                 </svg>
               </div>
             </div>

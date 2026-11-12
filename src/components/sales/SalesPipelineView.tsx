@@ -31,15 +31,15 @@ export default function SalesPipelineView({
   // 13 Required Sales Pipeline Stages
   const stages: Array<{ id: PipelineStage; label: string; color: string; border: string }> = [
     { id: 'new', label: '1. New Discovery', color: 'bg-blue-500', border: 'border-blue-400' },
-    { id: 'research_pending', label: '2. Research Pending', color: 'bg-indigo-500', border: 'border-indigo-400' },
+    { id: 'research_pending', label: '2. Research Pending', color: 'bg-blue-600', border: 'border-blue-500' },
     { id: 'researching', label: '3. In Research', color: 'bg-sky-500', border: 'border-sky-400' },
     { id: 'researched', label: '4. Researched & Enriched', color: 'bg-teal-500', border: 'border-teal-400' },
     { id: 'qualified', label: '5. Qualified Lead', color: 'bg-amber-500', border: 'border-amber-400' },
-    { id: 'contacted', label: '6. Contacted / Pitched', color: 'bg-purple-500', border: 'border-purple-400' },
+    { id: 'contacted', label: '6. Contacted / Pitched', color: 'bg-[#0057FF]', border: 'border-[#0057FF]' },
     { id: 'follow_up', label: '7. Follow-up Required', color: 'bg-cyan-500', border: 'border-cyan-400' },
-    { id: 'replied', label: '8. Client Replied', color: 'bg-pink-500', border: 'border-pink-400' },
+    { id: 'replied', label: '8. Client Replied', color: 'bg-sky-600', border: 'border-sky-500' },
     { id: 'interested', label: '9. Hot & Interested', color: 'bg-orange-500', border: 'border-orange-400' },
-    { id: 'proposal_sent', label: '10. Proposal Dispatched', color: 'bg-violet-500', border: 'border-violet-400' },
+    { id: 'proposal_sent', label: '10. Proposal Dispatched', color: 'bg-[#00AAFF]', border: 'border-[#00AAFF]' },
     { id: 'won', label: '11. Closed & Won 🎉', color: 'bg-emerald-500', border: 'border-emerald-400' },
     { id: 'lost', label: '12. Lost / Inactive', color: 'bg-slate-500', border: 'border-slate-400' },
     { id: 'archived', label: '13. Archived', color: 'bg-slate-400', border: 'border-slate-300' },
@@ -62,7 +62,7 @@ export default function SalesPipelineView({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-black uppercase text-purple-600 bg-purple-50 dark:bg-purple-950 px-2 py-0.5 rounded">
+            <span className="text-xs font-black uppercase text-[#00AAFF] bg-[#0057FF]/10 px-2 py-0.5 rounded">
               CRM Engine
             </span>
             <span className="text-xs text-slate-500 font-bold">13-Stage Enterprise Sales Funnel</span>
@@ -81,7 +81,7 @@ export default function SalesPipelineView({
             value={pipelineSearch}
             onChange={(e) => setPipelineSearch(e.target.value)}
             placeholder="Search deals in pipeline..."
-            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full pl-9 pr-3 py-2 text-xs rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 focus:outline-none focus:ring-2 focus:ring-[#00AAFF]"
           />
         </div>
       </div>

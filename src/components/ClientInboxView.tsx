@@ -780,7 +780,7 @@ export default function ClientInboxView({
                 const sentimentBadge = {
                   booking: { label: '📅 Zoom Call Request', color: 'bg-emerald-100 text-emerald-800' },
                   pricing: { label: '💰 Pricing Inquiry', color: 'bg-blue-100 text-blue-800' },
-                  positive: { label: '✨ Positive Interest', color: 'bg-purple-100 text-purple-800' },
+                  positive: { label: '✨ Positive Interest', color: 'bg-[#0057FF]/15 text-[#00AAFF]' },
                   neutral: { label: 'Inbound Message', color: 'bg-slate-100 text-slate-700' },
                 }[thread.sentiment || 'neutral'];
 
@@ -871,7 +871,7 @@ export default function ClientInboxView({
                 {selectedThread.leadId && (
                   <button
                     onClick={() => onOpenWebsitePreview(`/preview/${selectedThread.leadId}`)}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 text-xs font-bold border border-purple-200 transition"
+                    className="flex items-center gap-1 px-3 py-1.5 rounded-xl bg-[#0057FF]/10 hover:bg-[#0057FF]/20 text-[#00AAFF] text-xs font-bold border border-[#0057FF]/30 transition"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     <span>View Pitch Website</span>
@@ -1073,7 +1073,7 @@ export default function ClientInboxView({
                               className={`mt-3 p-2.5 rounded-xl cursor-pointer flex items-center justify-between gap-2 border transition ${
                                 isUser
                                   ? 'bg-blue-600/80 border-blue-400 text-white hover:bg-blue-600'
-                                  : 'bg-purple-50 border-purple-200 text-purple-900 hover:bg-purple-100'
+                                  : 'bg-[#0057FF]/10 border border-[#0057FF]/30 text-[#00AAFF] hover:bg-[#0057FF]/20'
                               }`}
                             >
                               <div className="flex items-center gap-2">
@@ -1340,7 +1340,7 @@ export default function ClientInboxView({
                   ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
                   : selectedThread.sentiment === 'pricing'
                   ? 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300'
-                  : 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300'
+                  : 'bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30'
               }`}>
                 {selectedThread.status.replace('_', ' ')}
               </span>

@@ -389,12 +389,12 @@ export default function AdminAuditDashboard() {
           <div className="bg-[#080e1b]/80 border border-slate-800 rounded-2xl p-4">
             <div className="flex items-center justify-between text-slate-400 text-xs mb-1">
               <span>Calls &amp; DMs Booked</span>
-              <PhoneCall className="w-4 h-4 text-purple-400" />
+              <PhoneCall className="w-4 h-4 text-[#00AAFF]" />
             </div>
             <div className="text-2xl sm:text-3xl font-black text-white">
               {summary?.totalCallsBooked || 31}
             </div>
-            <span className="text-[11px] text-purple-400 font-semibold mt-1 block">
+            <span className="text-[11px] text-[#00AAFF] font-semibold mt-1 block">
               74.5% Pitch Engagement
             </span>
           </div>
@@ -577,7 +577,7 @@ export default function AdminAuditDashboard() {
                       </div>
                       <div>
                         <span className="text-[10px] text-slate-400 block font-medium">Calls</span>
-                        <span className="font-bold text-purple-600 dark:text-purple-400">
+                        <span className="font-bold text-[#00AAFF]">
                           {member.callsBookedCount}
                         </span>
                       </div>
@@ -674,7 +674,7 @@ export default function AdminAuditDashboard() {
                   {filteredRecords.map((rec) => {
                     const statusBadge = {
                       'Delivered': 'bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-900',
-                      'Opened': 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300 border-purple-200 dark:border-purple-900',
+                      'Opened': 'bg-[#0057FF]/15 text-[#00AAFF] border-[#0057FF]/30',
                       'Call Booked': 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900',
                       'Closed Won': 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-900',
                     }[rec.status] || 'bg-slate-100 text-slate-700';
@@ -794,7 +794,7 @@ export default function AdminAuditDashboard() {
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-xl bg-white dark:bg-[#161f2e] border border-slate-200 dark:border-[#24334a] flex items-center justify-center text-slate-700 dark:text-slate-300 shadow-2xs">
                           {session.deviceType === 'Mobile' ? (
-                            <Smartphone className="w-5 h-5 text-purple-500" />
+                            <Smartphone className="w-5 h-5 text-[#00AAFF]" />
                           ) : session.deviceType === 'Laptop' ? (
                             <Laptop className="w-5 h-5 text-blue-500" />
                           ) : (

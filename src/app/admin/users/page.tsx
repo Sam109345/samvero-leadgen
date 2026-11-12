@@ -417,7 +417,7 @@ export default function AdminUsersPage() {
                           </span>
                         </td>
                         <td className="py-3.5 px-4 font-mono font-bold text-slate-300">{allocated.toLocaleString()}</td>
-                        <td className="py-3.5 px-4 font-mono font-bold text-purple-400">{consumed.toLocaleString()}</td>
+                        <td className="py-3.5 px-4 font-mono font-bold text-[#00AAFF]">{consumed.toLocaleString()}</td>
                         <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">{remaining.toLocaleString()}</td>
                         <td className="py-3.5 px-4 text-slate-400 text-[11px] font-mono">
                           {sub?.startDate ? new Date(sub.startDate).toLocaleDateString() : 'N/A'}
@@ -676,7 +676,7 @@ export default function AdminUsersPage() {
                     </div>
                     <div className="p-2 rounded bg-slate-900/80">
                       <div className="text-[10px] text-slate-500">Consumed</div>
-                      <div className="font-mono font-bold text-purple-400">
+                      <div className="font-mono font-bold text-[#00AAFF]">
                         {selectedUser.activeSubscription.leadsConsumed.toLocaleString()}
                       </div>
                     </div>

@@ -171,7 +171,7 @@ export default function UnifiedSidebar({
         { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
         { id: 'all-leads', label: 'All Leads', path: '/leads', icon: Users, badge: counts.totalLeads, badgeColor: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300' },
         { id: 'my-leads', label: 'My Leads', path: '/leads?scope=mine', icon: UserCheck, badge: counts.myLeadsCount, badgeColor: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300' },
-        { id: 'saved-leads', label: 'Saved Leads', path: '/saved', icon: Bookmark, badge: counts.savedCount, badgeColor: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300' },
+        { id: 'saved-leads', label: 'Saved Leads', path: '/saved', icon: Bookmark, badge: counts.savedCount, badgeColor: 'bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30' },
       ],
     },
     {

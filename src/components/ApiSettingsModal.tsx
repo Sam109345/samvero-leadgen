@@ -351,7 +351,7 @@ export default function ApiSettingsModal({ isOpen, onClose, theme, onToggleTheme
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
             }`}
           >
-            <Radio className="w-4 h-4 text-purple-500" />
+            <Radio className="w-4 h-4 text-[#00AAFF]" />
             <span>Live Public Client URLs</span>
             {isPublicUrlLive && <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />}
           </button>
@@ -620,9 +620,9 @@ export default function ApiSettingsModal({ isOpen, onClose, theme, onToggleTheme
           {/* TAB 2: Live Public Client URLs & Tunnel (User Directive!) */}
           {activeTab === 'tunnel' && (
             <div className="space-y-4">
-              <div className="p-3.5 bg-purple-50/70 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900/50 rounded-lg space-y-2">
-                <div className="flex items-center gap-2 font-bold text-purple-900 dark:text-purple-200 text-xs">
-                  <Radio className="w-4 h-4 text-purple-600" />
+              <div className="p-3.5 bg-[#0057FF]/10 border border-[#0057FF]/20 rounded-lg space-y-2">
+                <div className="flex items-center gap-2 font-bold text-[#00AAFF] text-xs">
+                  <Radio className="w-4 h-4 text-[#00AAFF]" />
                   <span>Public Live URL Engine for External Clients:</span>
                 </div>
                 <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -690,7 +690,7 @@ export default function ApiSettingsModal({ isOpen, onClose, theme, onToggleTheme
                 <button
                   onClick={handleStartTunnel}
                   disabled={tunnelStarting}
-                  className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-2"
+                  className="bg-[#0057FF] hover:bg-[#00AAFF] text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-2"
                 >
                   {tunnelStarting ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Radio className="w-4 h-4" />}
                   <span>{tunnelStarting ? 'Starting Free Tunnel...' : 'Start Free Public Live Tunnel'}</span>
@@ -742,8 +742,8 @@ export default function ApiSettingsModal({ isOpen, onClose, theme, onToggleTheme
           {/* TAB 3: Resend API Setup */}
           {activeTab === 'resend' && (
             <form onSubmit={handleSaveCredentials} className="space-y-4">
-              <div className="p-3.5 bg-purple-50/70 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-900/50 rounded-lg space-y-1.5">
-                <span className="font-bold text-purple-900 dark:text-purple-200 text-xs block">
+              <div className="p-3.5 bg-[#0057FF]/10 border border-[#0057FF]/20 rounded-lg space-y-1.5">
+                <span className="font-bold text-[#00AAFF] text-xs block">
                   Resend.com Free Tier (3,000 free emails/month):
                 </span>
                 <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-relaxed">

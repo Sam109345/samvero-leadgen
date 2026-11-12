@@ -164,8 +164,8 @@ export default function DeliverablesStudioModal({
                   15 Web Sections &bull; 14 App Screens with Imagery &bull; 3 SVG Logos
                 </span>
                 {isLiveTunnelActive && (
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300 flex items-center gap-1">
-                    <Radio className="w-3 h-3 text-purple-600 animate-pulse" />
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#0057FF]/15 text-[#00AAFF] flex items-center gap-1">
+                    <Radio className="w-3 h-3 text-[#00AAFF] animate-pulse" />
                     Live Web URL Active
                   </span>
                 )}
@@ -238,7 +238,7 @@ export default function DeliverablesStudioModal({
             >
               <Palette className="w-4 h-4" />
               <span>6 Vector SVG Logos</span>
-              <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-purple-400 text-slate-950">
+              <span className="text-[9px] font-black px-1.5 py-0.2 rounded bg-[#00AAFF] text-slate-950">
                 SVG
               </span>
             </button>
@@ -649,10 +649,10 @@ export default function DeliverablesStudioModal({
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-purple-600 dark:text-purple-400 uppercase tracking-wider block">
+                    <span className="text-xs font-bold text-[#00AAFF] uppercase tracking-wider block">
                       AI Brand Identity Suite
                     </span>
-                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300">
+                    <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#0057FF]/15 text-[#00AAFF]">
                       3 Vector SVG Concepts
                     </span>
                   </div>
@@ -698,7 +698,7 @@ export default function DeliverablesStudioModal({
                   >
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-50 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                        <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30">
                           Concept {idx + 1}
                         </span>
                         <span className="text-xs font-semibold text-slate-400">
@@ -741,7 +741,7 @@ export default function DeliverablesStudioModal({
                         </div>
                         <div className="flex items-center justify-between text-slate-600 dark:text-slate-400">
                           <span className="font-semibold">Brand Mood:</span>
-                          <span className="text-[11px] text-purple-600 dark:text-purple-400 font-semibold">
+                          <span className="text-[11px] text-[#00AAFF] font-semibold">
                             {logo.mood}
                           </span>
                         </div>

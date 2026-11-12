@@ -564,7 +564,7 @@ export default function WebsitePreviewPage({ params }: Props) {
         <div className="max-w-6xl mx-auto py-10 px-4 space-y-8 w-full">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="space-y-1">
-              <span className="text-xs font-bold text-purple-400 uppercase tracking-widest block">
+              <span className="text-xs font-bold text-[#00AAFF] uppercase tracking-widest block">
                 Brand Identity Kit &bull; 3 Vector SVG Concepts
               </span>
               <h2 className="text-3xl font-extrabold text-white">
@@ -603,7 +603,7 @@ export default function WebsitePreviewPage({ params }: Props) {
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-purple-950 text-purple-300 border border-purple-800">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30">
                       Concept {i + 1}
                     </span>
                     <span className="text-xs text-slate-400">{logo.style.split('/')[0]}</span>
@@ -637,7 +637,7 @@ export default function WebsitePreviewPage({ params }: Props) {
                     </div>
                     <div className="flex items-center justify-between text-slate-400">
                       <span>Mood:</span>
-                      <span className="text-purple-400 font-semibold">{logo.mood}</span>
+                      <span className="text-[#00AAFF] font-semibold">{logo.mood}</span>
                     </div>
                   </div>
                 </div>

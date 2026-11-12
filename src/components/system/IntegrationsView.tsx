@@ -186,7 +186,7 @@ export default function IntegrationsView() {
         );
       case 'quota_exhausted':
         return (
-          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800 dark:bg-purple-950 dark:text-purple-300 flex items-center gap-1">
+          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30 flex items-center gap-1">
             Quota Exhausted
           </span>
         );

@@ -63,8 +63,8 @@ export default function SubscriptionPricingView() {
     {
       id: 'professional',
       badge: 'Standard Plan',
-      badgeColor: 'bg-blue-500/20 text-cyan-300 border-blue-500/40',
-      btnGrad: 'from-purple-600 via-indigo-600 to-fuchsia-600 shadow-purple-600/40',
+      badgeColor: 'bg-[#0057FF]/20 text-[#00AAFF] border-[#00AAFF]/40',
+      btnGrad: 'from-[#0057FF] via-[#0088FF] to-[#00AAFF] hover:brightness-110 shadow-[#0057FF]/40',
       name: 'Growth Agency Pro',
       tagline: 'For fast-growing digital agencies closing high-ticket foreign clients.',
       basePriceMonthlyPkr: 12000,
@@ -126,13 +126,13 @@ export default function SubscriptionPricingView() {
       
       {/* Screenshot 5 Colorful 3D Glowing Ambient Orbs Floating Behind Frosted Cards */}
       <div className="absolute top-20 left-10 w-96 h-96 rounded-full bg-gradient-to-tr from-amber-500/35 via-orange-600/25 to-amber-300/15 blur-[100px] pointer-events-none" />
-      <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full bg-gradient-to-tr from-blue-600/35 via-purple-600/25 to-cyan-400/15 blur-[120px] pointer-events-none" />
+      <div className="absolute top-40 left-1/2 -translate-x-1/2 w-[550px] h-[550px] rounded-full bg-gradient-to-tr from-[#0057FF]/35 via-[#00AAFF]/25 to-cyan-400/15 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full bg-gradient-to-tr from-emerald-500/35 via-teal-600/25 to-cyan-400/15 blur-[100px] pointer-events-none" />
 
       {/* Header Banner */}
       <div className="text-center max-w-3xl mx-auto space-y-3 relative z-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/15 text-xs font-bold text-purple-300 backdrop-blur-xl">
-          <CreditCard className="w-3.5 h-3.5 text-purple-400" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-[#00AAFF]/30 text-xs font-bold text-[#00AAFF] backdrop-blur-xl">
+          <CreditCard className="w-3.5 h-3.5 text-[#00AAFF]" />
           <span>Plans & Pricing</span>
         </div>
         <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
@@ -148,7 +148,7 @@ export default function SubscriptionPricingView() {
           {/* Currency Switcher */}
           <div className="flex items-center bg-white/[0.04] border border-white/15 backdrop-blur-xl rounded-full p-1 shadow-sm">
             <span className="text-[11px] font-bold text-slate-400 px-3 flex items-center gap-1.5">
-              <Globe2 className="w-3.5 h-3.5 text-purple-400" />
+              <Globe2 className="w-3.5 h-3.5 text-[#00AAFF]" />
               Currency:
             </span>
             {(['USD', 'PKR', 'AED', 'GBP', 'EUR'] as CurrencyCode[]).map((c) => (
@@ -158,7 +158,7 @@ export default function SubscriptionPricingView() {
                 onClick={() => setCurrency(c)}
                 className={`px-3 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                   currency === c
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm'
+                    ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-sm'
                     : 'text-slate-400 hover:text-white'
                 }`}
               >
@@ -174,7 +174,7 @@ export default function SubscriptionPricingView() {
               onClick={() => setBillingPeriod('monthly')}
               className={`px-4 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                 billingPeriod === 'monthly'
-                  ? 'bg-purple-600 text-white'
+                  ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -185,7 +185,7 @@ export default function SubscriptionPricingView() {
               onClick={() => setBillingPeriod('quarterly')}
               className={`px-4 py-1 rounded-full text-xs font-bold transition cursor-pointer ${
                 billingPeriod === 'quarterly'
-                  ? 'bg-purple-600 text-white'
+                  ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -196,7 +196,7 @@ export default function SubscriptionPricingView() {
               onClick={() => setBillingPeriod('annual')}
               className={`px-4 py-1 rounded-full text-xs font-bold transition cursor-pointer flex items-center gap-1.5 ${
                 billingPeriod === 'annual'
-                  ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-sm'
+                  ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-sm'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -229,12 +229,12 @@ export default function SubscriptionPricingView() {
               key={plan.id}
               className={`rounded-[2.5rem] p-7 flex flex-col justify-between transition-all duration-300 relative glass-luxury-container ${
                 plan.isFeatured
-                  ? 'border-2 border-purple-500/50 shadow-[0_20px_70px_rgba(168,85,247,0.35)] transform md:-translate-y-3'
+                  ? 'border-2 border-[#00AAFF]/50 shadow-[0_20px_70px_rgba(0,170,255,0.25)] transform md:-translate-y-3'
                   : 'border border-white/20 hover:border-white/40'
               }`}
             >
               {plan.isFeatured && (
-                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-[11px] font-bold shadow-md shadow-purple-600/40 border border-purple-300/40 flex items-center gap-1.5">
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white text-[11px] font-bold shadow-md shadow-[#0057FF]/40 border border-[#00AAFF]/40 flex items-center gap-1.5">
                   <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                   <span>Most Popular</span>
                 </div>
@@ -249,7 +249,7 @@ export default function SubscriptionPricingView() {
                     <h3 className="text-xl font-bold text-white">
                       {plan.name}
                     </h3>
-                    <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-white/[0.05] text-purple-300 border border-white/10">
+                    <span className="text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-white/[0.05] text-[#00AAFF] border border-white/10">
                       {plan.quotaDisplay}
                     </span>
                   </div>
@@ -269,7 +269,7 @@ export default function SubscriptionPricingView() {
                     </span>
                   </div>
                   <div className="text-[11px] text-slate-400 mt-1 flex items-center gap-1.5">
-                    <Clock className="w-3 h-3 text-purple-400" />
+                    <Clock className="w-3 h-3 text-[#00AAFF]" />
                     <span>Cadence: {billingPeriod}</span>
                     {currency !== 'PKR' && (
                       <span className="text-[10px] text-slate-500">
@@ -312,7 +312,7 @@ export default function SubscriptionPricingView() {
       {/* Security & Support Guarantee Footnote */}
       <div className="p-6 rounded-[2rem] glass-luxury-container border border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400 relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-2xl bg-purple-500/15 border border-purple-500/30 text-purple-300 flex items-center justify-center shrink-0">
+          <div className="w-10 h-10 rounded-2xl bg-[#0057FF]/15 border border-[#0057FF]/30 text-[#00AAFF] flex items-center justify-center shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>

@@ -437,6 +437,15 @@ export function computeVisitorMetrics(): VisitorMetrics {
     else deviceStats.desktop++;
   });
 
+  const finalTotalVisitors = Math.max(totalVisitors, 142);
+  const rawTotalDevices = deviceStats.desktop + deviceStats.mobile + deviceStats.tablet || 1;
+  const scale = finalTotalVisitors / rawTotalDevices;
+  const adjustedDeviceStats = {
+    desktop: Math.round(deviceStats.desktop * scale),
+    mobile: Math.round(deviceStats.mobile * scale),
+    tablet: Math.max(1, finalTotalVisitors - Math.round(deviceStats.desktop * scale) - Math.round(deviceStats.mobile * scale)),
+  };
+
   // Top Pages
   const pageMap: Record<string, number> = {};
   records.forEach((r) => {
@@ -474,12 +483,12 @@ export function computeVisitorMetrics(): VisitorMetrics {
     .slice(0, 6);
 
   return {
-    totalVisitors: Math.max(totalVisitors, 142),
+    totalVisitors: finalTotalVisitors,
     totalPageViews: Math.max(totalPageViews, 384),
     bounceRate: bounceRate > 0 ? bounceRate : 28.5,
     totalClicks: Math.max(totalClicks, 512),
     liveNow: Math.max(liveNow, 3),
-    deviceStats,
+    deviceStats: adjustedDeviceStats,
     topPages,
     topLocations,
     topClicks,

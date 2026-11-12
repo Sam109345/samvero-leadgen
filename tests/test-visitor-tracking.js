@@ -55,13 +55,24 @@ check('globals.css .reveal has opacity 1 / animated visibility', globalsCss.incl
 
 const loginSrc = fs.readFileSync(path.join(__dirname, '../src/app/login/page.tsx'), 'utf-8');
 check('login page.tsx has zero purple text/gradients', !loginSrc.includes('text-purple') && !loginSrc.includes('bg-purple'));
+check('login page.tsx has zero purple SVG gradient stops', !loginSrc.includes('#a855f7') && !loginSrc.includes('#581c87') && !loginSrc.includes('leafPink'));
 
 const signupSrc = fs.readFileSync(path.join(__dirname, '../src/app/signup/page.tsx'), 'utf-8');
 check('signup page.tsx has zero purple text/gradients', !signupSrc.includes('text-purple') && !signupSrc.includes('bg-purple'));
+check('signup page.tsx has zero purple SVG gradient stops', !signupSrc.includes('#a855f7') && !signupSrc.includes('#581c87') && !signupSrc.includes('suLeafPink'));
+
+const pricingSrc = fs.readFileSync(path.join(__dirname, '../src/app/pricing/page.tsx'), 'utf-8');
+check('pricing page.tsx has zero purple tokens', !pricingSrc.includes('purple') && !pricingSrc.includes('#05020c'));
+check('pricing page.tsx has corporate imagery', pricingSrc.includes('images.unsplash.com'));
+
+const subPricingSrc = fs.readFileSync(path.join(__dirname, '../src/components/subscription/SubscriptionPricingView.tsx'), 'utf-8');
+check('SubscriptionPricingView has zero purple/indigo/fuchsia', !subPricingSrc.includes('purple') && !subPricingSrc.includes('fuchsia'));
 
 const luxuryLandingSrc = fs.readFileSync(path.join(__dirname, '../src/components/public/LuxuryLandingPage.tsx'), 'utf-8');
-check('LuxuryLandingPage has 100vh banner style', luxuryLandingSrc.includes("minHeight: '100vh'") || luxuryLandingSrc.includes('min-h-screen'));
+check('LuxuryLandingPage has 100vh banner style', luxuryLandingSrc.includes("minHeight: '100vh'") && luxuryLandingSrc.includes("height: '100vh'"));
 check('LuxuryLandingPage has mouse tracking parallax for circles', luxuryLandingSrc.includes('handleBannerMouseMove') && luxuryLandingSrc.includes('mousePos.x'));
+check('LuxuryLandingPage has decoupled outer parallax and inner floating circles', luxuryLandingSrc.includes('rounded-full animate-float') && luxuryLandingSrc.includes('translate3d(${mousePos.x'));
+check('LuxuryLandingPage Starfield has deterministic seeds (no Math.random)', !luxuryLandingSrc.includes('Math.random()'));
 check('LuxuryLandingPage has infinite marquee with no stop on hover', luxuryLandingSrc.includes('animate-marquee-continuous'));
 check('LuxuryLandingPage lists Google My Business', luxuryLandingSrc.includes('Google My Business'));
 check('LuxuryLandingPage lists Upwork', luxuryLandingSrc.includes('Upwork'));
@@ -85,11 +96,13 @@ const aboutSrc = fs.readFileSync(path.join(__dirname, '../src/app/about/page.tsx
 check('about page.tsx exists and is populated', aboutSrc.length > 2000);
 check('about page.tsx has corporate boardroom/meeting imagery', aboutSrc.includes('images.unsplash.com') && aboutSrc.includes('photo-1497366216548-37526070297c'));
 check('about page.tsx has Zero-Fabrication guarantee section', aboutSrc.includes('Our Zero-Fabrication Guarantee'));
+check('about page.tsx has deterministic stars (no Math.random)', !aboutSrc.includes('Math.random()'));
 
 const contactSrc = fs.readFileSync(path.join(__dirname, '../src/app/contact/page.tsx'), 'utf-8');
 check('contact page.tsx exists and is populated', contactSrc.length > 2000);
 check('contact page.tsx has corporate HQ imagery', contactSrc.includes('images.unsplash.com') && contactSrc.includes('photo-1497215728101-856f4ea42174'));
 check('contact page.tsx has interactive message form', contactSrc.includes('form onSubmit='));
+check('contact page.tsx has deterministic stars (no Math.random)', !contactSrc.includes('Math.random()'));
 
 // ── Test 6: Visitor Tracking Data Store Logic ──
 console.log('\n📊 Test 6: Visitor Tracking Store Persistence');

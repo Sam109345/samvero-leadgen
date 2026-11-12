@@ -1,5 +1,36 @@
 [
   {
+    "id": "vis-mwdlvt8y-dumc",
+    "visitorId": "test-qa-visitor",
+    "ip": "72.255.61.191",
+    "city": "Karachi",
+    "region": "Sindh",
+    "country": "Pakistan",
+    "countryCode": "PK",
+    "flag": "🇵🇰",
+    "isp": "Cyber Internet Services (Private) Limited",
+    "device": "Desktop",
+    "browser": "Chrome",
+    "os": "Windows",
+    "deviceName": "Chrome on Windows (Desktop)",
+    "page": "/pricing",
+    "referrer": "direct",
+    "clicks": 1,
+    "clickEvents": [
+      {
+        "target": "Select Plan Starter",
+        "x": 250,
+        "y": 340,
+        "time": "2026-11-12T13:51:01.330Z"
+      }
+    ],
+    "pageViews": 1,
+    "sessionDuration": 15,
+    "isBounce": true,
+    "firstSeenAt": "2026-11-12T13:51:01.330Z",
+    "lastActiveAt": "2026-11-12T13:51:01.330Z"
+  },
+  {
     "id": "vis-mwdkywq3-zeyp",
     "visitorId": "test-live-user-42",
     "ip": "72.255.61.191",

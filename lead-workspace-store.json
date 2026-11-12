@@ -2211,6 +2211,176 @@
       "leadId": "lead_100",
       "status": "Interested",
       "updatedAt": "2026-11-12T12:53:08.512Z"
+    },
+    "test_user_1794488194808_test_lead_web_001": {
+      "id": "test_user_1794488194808_test_lead_web_001",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "status": "Approached",
+      "updatedAt": "2026-11-12T12:56:34.812Z",
+      "approachedAt": "2026-11-12T12:56:34.812Z",
+      "lastContactDate": "2026-11-12T12:56:34.812Z"
+    },
+    "test_user_1794488194808_test_lead_flow_003": {
+      "id": "test_user_1794488194808_test_lead_flow_003",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_flow_003",
+      "status": "Waiting for Client Response",
+      "updatedAt": "2026-11-12T12:56:34.879Z",
+      "approachedAt": "2026-11-12T12:56:34.868Z",
+      "lastContactDate": "2026-11-12T12:56:34.868Z"
+    },
+    "test_user_1794488194808_test_lead_wasted_004": {
+      "id": "test_user_1794488194808_test_lead_wasted_004",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_wasted_004",
+      "status": "Wasted Lead",
+      "updatedAt": "2026-11-12T12:56:34.907Z",
+      "approachedAt": "2026-11-12T12:56:34.901Z",
+      "lastContactDate": "2026-11-12T12:56:34.901Z"
+    },
+    "user_alpha_1794488194808_lead_100": {
+      "id": "user_alpha_1794488194808_lead_100",
+      "userId": "user_alpha_1794488194808",
+      "leadId": "lead_100",
+      "status": "Interested",
+      "updatedAt": "2026-11-12T12:56:35.075Z"
+    },
+    "test_user_1794489757127_test_lead_web_001": {
+      "id": "test_user_1794489757127_test_lead_web_001",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "status": "Approached",
+      "updatedAt": "2026-11-12T13:22:37.132Z",
+      "approachedAt": "2026-11-12T13:22:37.132Z",
+      "lastContactDate": "2026-11-12T13:22:37.132Z"
+    },
+    "test_user_1794489757127_test_lead_flow_003": {
+      "id": "test_user_1794489757127_test_lead_flow_003",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_flow_003",
+      "status": "Waiting for Client Response",
+      "updatedAt": "2026-11-12T13:22:37.206Z",
+      "approachedAt": "2026-11-12T13:22:37.197Z",
+      "lastContactDate": "2026-11-12T13:22:37.197Z"
+    },
+    "test_user_1794489757127_test_lead_wasted_004": {
+      "id": "test_user_1794489757127_test_lead_wasted_004",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_wasted_004",
+      "status": "Wasted Lead",
+      "updatedAt": "2026-11-12T13:22:37.226Z",
+      "approachedAt": "2026-11-12T13:22:37.220Z",
+      "lastContactDate": "2026-11-12T13:22:37.220Z"
+    },
+    "user_alpha_1794489757127_lead_100": {
+      "id": "user_alpha_1794489757127_lead_100",
+      "userId": "user_alpha_1794489757127",
+      "leadId": "lead_100",
+      "status": "Interested",
+      "updatedAt": "2026-11-12T13:22:37.434Z"
+    },
+    "test_user_1794489810335_test_lead_web_001": {
+      "id": "test_user_1794489810335_test_lead_web_001",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "status": "Approached",
+      "updatedAt": "2026-11-12T13:23:30.338Z",
+      "approachedAt": "2026-11-12T13:23:30.338Z",
+      "lastContactDate": "2026-11-12T13:23:30.338Z"
+    },
+    "test_user_1794489810335_test_lead_flow_003": {
+      "id": "test_user_1794489810335_test_lead_flow_003",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_flow_003",
+      "status": "Waiting for Client Response",
+      "updatedAt": "2026-11-12T13:23:30.407Z",
+      "approachedAt": "2026-11-12T13:23:30.398Z",
+      "lastContactDate": "2026-11-12T13:23:30.398Z"
+    },
+    "test_user_1794489810335_test_lead_wasted_004": {
+      "id": "test_user_1794489810335_test_lead_wasted_004",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_wasted_004",
+      "status": "Wasted Lead",
+      "updatedAt": "2026-11-12T13:23:30.429Z",
+      "approachedAt": "2026-11-12T13:23:30.423Z",
+      "lastContactDate": "2026-11-12T13:23:30.423Z"
+    },
+    "user_alpha_1794489810335_lead_100": {
+      "id": "user_alpha_1794489810335_lead_100",
+      "userId": "user_alpha_1794489810335",
+      "leadId": "lead_100",
+      "status": "Interested",
+      "updatedAt": "2026-11-12T13:23:30.607Z"
+    },
+    "test_user_1794490063675_test_lead_web_001": {
+      "id": "test_user_1794490063675_test_lead_web_001",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "status": "Approached",
+      "updatedAt": "2026-11-12T13:27:43.679Z",
+      "approachedAt": "2026-11-12T13:27:43.679Z",
+      "lastContactDate": "2026-11-12T13:27:43.679Z"
+    },
+    "test_user_1794490063675_test_lead_flow_003": {
+      "id": "test_user_1794490063675_test_lead_flow_003",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_flow_003",
+      "status": "Waiting for Client Response",
+      "updatedAt": "2026-11-12T13:27:43.742Z",
+      "approachedAt": "2026-11-12T13:27:43.731Z",
+      "lastContactDate": "2026-11-12T13:27:43.731Z"
+    },
+    "test_user_1794490063675_test_lead_wasted_004": {
+      "id": "test_user_1794490063675_test_lead_wasted_004",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_wasted_004",
+      "status": "Wasted Lead",
+      "updatedAt": "2026-11-12T13:27:43.762Z",
+      "approachedAt": "2026-11-12T13:27:43.754Z",
+      "lastContactDate": "2026-11-12T13:27:43.754Z"
+    },
+    "user_alpha_1794490063675_lead_100": {
+      "id": "user_alpha_1794490063675_lead_100",
+      "userId": "user_alpha_1794490063675",
+      "leadId": "lead_100",
+      "status": "Interested",
+      "updatedAt": "2026-11-12T13:27:43.939Z"
+    },
+    "test_user_1794491355982_test_lead_web_001": {
+      "id": "test_user_1794491355982_test_lead_web_001",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "status": "Approached",
+      "updatedAt": "2026-11-12T13:49:15.986Z",
+      "approachedAt": "2026-11-12T13:49:15.986Z",
+      "lastContactDate": "2026-11-12T13:49:15.986Z"
+    },
+    "test_user_1794491355982_test_lead_flow_003": {
+      "id": "test_user_1794491355982_test_lead_flow_003",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_flow_003",
+      "status": "Waiting for Client Response",
+      "updatedAt": "2026-11-12T13:49:16.052Z",
+      "approachedAt": "2026-11-12T13:49:16.042Z",
+      "lastContactDate": "2026-11-12T13:49:16.042Z"
+    },
+    "test_user_1794491355982_test_lead_wasted_004": {
+      "id": "test_user_1794491355982_test_lead_wasted_004",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_wasted_004",
+      "status": "Wasted Lead",
+      "updatedAt": "2026-11-12T13:49:16.077Z",
+      "approachedAt": "2026-11-12T13:49:16.068Z",
+      "lastContactDate": "2026-11-12T13:49:16.068Z"
+    },
+    "user_alpha_1794491355982_lead_100": {
+      "id": "user_alpha_1794491355982_lead_100",
+      "userId": "user_alpha_1794491355982",
+      "leadId": "lead_100",
+      "status": "Interested",
+      "updatedAt": "2026-11-12T13:49:16.253Z"
     }
   },
   "emailDrafts": {
@@ -2895,10 +3065,550 @@
       "category": "Website Development",
       "createdAt": "2026-11-12T12:53:08.204Z",
       "updatedAt": "2026-11-12T12:53:08.204Z"
+    },
+    "draft_1794488194849_5278": {
+      "id": "draft_1794488194849_5278",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "subject": "Draft Proposal for Sarah",
+      "htmlContent": "<p>Hello Sarah, this is a draft.</p>",
+      "plainText": "Hello Sarah, this is a draft.",
+      "category": "Website Development",
+      "createdAt": "2026-11-12T12:56:34.849Z",
+      "updatedAt": "2026-11-12T12:56:34.849Z"
+    },
+    "draft_1794489757173_ujie": {
+      "id": "draft_1794489757173_ujie",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "subject": "Draft Proposal for Sarah",
+      "htmlContent": "<p>Hello Sarah, this is a draft.</p>",
+      "plainText": "Hello Sarah, this is a draft.",
+      "category": "Website Development",
+      "createdAt": "2026-11-12T13:22:37.173Z",
+      "updatedAt": "2026-11-12T13:22:37.173Z"
+    },
+    "draft_1794489810382_0w3e": {
+      "id": "draft_1794489810382_0w3e",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "subject": "Draft Proposal for Sarah",
+      "htmlContent": "<p>Hello Sarah, this is a draft.</p>",
+      "plainText": "Hello Sarah, this is a draft.",
+      "category": "Website Development",
+      "createdAt": "2026-11-12T13:23:30.382Z",
+      "updatedAt": "2026-11-12T13:23:30.382Z"
+    },
+    "draft_1794490063714_o0ac": {
+      "id": "draft_1794490063714_o0ac",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "subject": "Draft Proposal for Sarah",
+      "htmlContent": "<p>Hello Sarah, this is a draft.</p>",
+      "plainText": "Hello Sarah, this is a draft.",
+      "category": "Website Development",
+      "createdAt": "2026-11-12T13:27:43.714Z",
+      "updatedAt": "2026-11-12T13:27:43.714Z"
+    },
+    "draft_1794491356023_j9i8": {
+      "id": "draft_1794491356023_j9i8",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "subject": "Draft Proposal for Sarah",
+      "htmlContent": "<p>Hello Sarah, this is a draft.</p>",
+      "plainText": "Hello Sarah, this is a draft.",
+      "category": "Website Development",
+      "createdAt": "2026-11-12T13:49:16.023Z",
+      "updatedAt": "2026-11-12T13:49:16.023Z"
     }
   },
   "bidDrafts": {},
   "activityLogs": [
+    {
+      "id": "log_1794491356253_s6zcw",
+      "userId": "user_alpha_1794491355982",
+      "leadId": "lead_100",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Interested\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Interested"
+      },
+      "createdAt": "2026-11-12T13:49:16.253Z"
+    },
+    {
+      "id": "log_1794491356077_s9lpo",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Wasted Lead\" (Reason: Client unreachable / non-responsive after 4 attempts)",
+      "metadata": {
+        "reason": "Client unreachable / non-responsive after 4 attempts",
+        "prevStatus": "Approached",
+        "newStatus": "Wasted Lead"
+      },
+      "createdAt": "2026-11-12T13:49:16.077Z"
+    },
+    {
+      "id": "log_1794491356068_bnhcb",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:49:16.068Z"
+    },
+    {
+      "id": "log_1794491356052_ik5zw",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Waiting for Client Response\"",
+      "metadata": {
+        "prevStatus": "Approached",
+        "newStatus": "Waiting for Client Response"
+      },
+      "createdAt": "2026-11-12T13:49:16.052Z"
+    },
+    {
+      "id": "log_1794491356042_3i6d0",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:49:16.042Z"
+    },
+    {
+      "id": "log_1794491356017_9dvoh",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "action": "followup_rescheduled",
+      "description": "Follow-up rescheduled to 2026-11-12T10:00:00Z",
+      "createdAt": "2026-11-12T13:49:16.017Z"
+    },
+    {
+      "id": "log_1794491356005_sc6vg",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "action": "note_added",
+      "description": "Added private observation note: \"Sarah preferred a discovery call on Thursday afternoon.\"",
+      "createdAt": "2026-11-12T13:49:16.005Z"
+    },
+    {
+      "id": "log_1794491355999_qx5wy",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "action": "followup_added",
+      "description": "Scheduled follow-up for 2026-11-05T10:00:00Z: \"Follow up on web proposal review\"",
+      "createdAt": "2026-11-12T13:49:15.999Z"
+    },
+    {
+      "id": "log_1794491355987_fvsep",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:49:15.986Z"
+    },
+    {
+      "id": "log_1794490063939_84826",
+      "userId": "user_alpha_1794490063675",
+      "leadId": "lead_100",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Interested\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Interested"
+      },
+      "createdAt": "2026-11-12T13:27:43.939Z"
+    },
+    {
+      "id": "log_1794490063762_hx5vu",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Wasted Lead\" (Reason: Client unreachable / non-responsive after 4 attempts)",
+      "metadata": {
+        "reason": "Client unreachable / non-responsive after 4 attempts",
+        "prevStatus": "Approached",
+        "newStatus": "Wasted Lead"
+      },
+      "createdAt": "2026-11-12T13:27:43.762Z"
+    },
+    {
+      "id": "log_1794490063755_fjk0a",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:27:43.754Z"
+    },
+    {
+      "id": "log_1794490063742_2dq1x",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Waiting for Client Response\"",
+      "metadata": {
+        "prevStatus": "Approached",
+        "newStatus": "Waiting for Client Response"
+      },
+      "createdAt": "2026-11-12T13:27:43.742Z"
+    },
+    {
+      "id": "log_1794490063731_o6zju",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:27:43.731Z"
+    },
+    {
+      "id": "log_1794490063708_gniyb",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "action": "followup_rescheduled",
+      "description": "Follow-up rescheduled to 2026-11-12T10:00:00Z",
+      "createdAt": "2026-11-12T13:27:43.708Z"
+    },
+    {
+      "id": "log_1794490063697_sb43v",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "action": "note_added",
+      "description": "Added private observation note: \"Sarah preferred a discovery call on Thursday afternoon.\"",
+      "createdAt": "2026-11-12T13:27:43.697Z"
+    },
+    {
+      "id": "log_1794490063691_jlmhv",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "action": "followup_added",
+      "description": "Scheduled follow-up for 2026-11-05T10:00:00Z: \"Follow up on web proposal review\"",
+      "createdAt": "2026-11-12T13:27:43.691Z"
+    },
+    {
+      "id": "log_1794490063680_qarpq",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:27:43.679Z"
+    },
+    {
+      "id": "log_1794489810607_zxpa0",
+      "userId": "user_alpha_1794489810335",
+      "leadId": "lead_100",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Interested\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Interested"
+      },
+      "createdAt": "2026-11-12T13:23:30.607Z"
+    },
+    {
+      "id": "log_1794489810429_b4zyo",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Wasted Lead\" (Reason: Client unreachable / non-responsive after 4 attempts)",
+      "metadata": {
+        "reason": "Client unreachable / non-responsive after 4 attempts",
+        "prevStatus": "Approached",
+        "newStatus": "Wasted Lead"
+      },
+      "createdAt": "2026-11-12T13:23:30.429Z"
+    },
+    {
+      "id": "log_1794489810423_dj1oq",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:23:30.423Z"
+    },
+    {
+      "id": "log_1794489810407_pm8tr",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Waiting for Client Response\"",
+      "metadata": {
+        "prevStatus": "Approached",
+        "newStatus": "Waiting for Client Response"
+      },
+      "createdAt": "2026-11-12T13:23:30.407Z"
+    },
+    {
+      "id": "log_1794489810398_rqgny",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:23:30.398Z"
+    },
+    {
+      "id": "log_1794489810376_ofoxl",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "action": "followup_rescheduled",
+      "description": "Follow-up rescheduled to 2026-11-12T10:00:00Z",
+      "createdAt": "2026-11-12T13:23:30.376Z"
+    },
+    {
+      "id": "log_1794489810366_t8zp0",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "action": "note_added",
+      "description": "Added private observation note: \"Sarah preferred a discovery call on Thursday afternoon.\"",
+      "createdAt": "2026-11-12T13:23:30.366Z"
+    },
+    {
+      "id": "log_1794489810355_76wv7",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "action": "followup_added",
+      "description": "Scheduled follow-up for 2026-11-05T10:00:00Z: \"Follow up on web proposal review\"",
+      "createdAt": "2026-11-12T13:23:30.355Z"
+    },
+    {
+      "id": "log_1794489810339_pr9m7",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:23:30.338Z"
+    },
+    {
+      "id": "log_1794489757435_2l7h3",
+      "userId": "user_alpha_1794489757127",
+      "leadId": "lead_100",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Interested\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Interested"
+      },
+      "createdAt": "2026-11-12T13:22:37.434Z"
+    },
+    {
+      "id": "log_1794489757226_t7q7b",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Wasted Lead\" (Reason: Client unreachable / non-responsive after 4 attempts)",
+      "metadata": {
+        "reason": "Client unreachable / non-responsive after 4 attempts",
+        "prevStatus": "Approached",
+        "newStatus": "Wasted Lead"
+      },
+      "createdAt": "2026-11-12T13:22:37.226Z"
+    },
+    {
+      "id": "log_1794489757220_m1tqa",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:22:37.220Z"
+    },
+    {
+      "id": "log_1794489757206_j394r",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Waiting for Client Response\"",
+      "metadata": {
+        "prevStatus": "Approached",
+        "newStatus": "Waiting for Client Response"
+      },
+      "createdAt": "2026-11-12T13:22:37.206Z"
+    },
+    {
+      "id": "log_1794489757197_q493m",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:22:37.197Z"
+    },
+    {
+      "id": "log_1794489757166_a170o",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "action": "followup_rescheduled",
+      "description": "Follow-up rescheduled to 2026-11-12T10:00:00Z",
+      "createdAt": "2026-11-12T13:22:37.166Z"
+    },
+    {
+      "id": "log_1794489757153_0pomk",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "action": "note_added",
+      "description": "Added private observation note: \"Sarah preferred a discovery call on Thursday afternoon.\"",
+      "createdAt": "2026-11-12T13:22:37.153Z"
+    },
+    {
+      "id": "log_1794489757147_zvx3e",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "action": "followup_added",
+      "description": "Scheduled follow-up for 2026-11-05T10:00:00Z: \"Follow up on web proposal review\"",
+      "createdAt": "2026-11-12T13:22:37.147Z"
+    },
+    {
+      "id": "log_1794489757133_lynm6",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T13:22:37.132Z"
+    },
+    {
+      "id": "log_1794488195075_bmba1",
+      "userId": "user_alpha_1794488194808",
+      "leadId": "lead_100",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Interested\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Interested"
+      },
+      "createdAt": "2026-11-12T12:56:35.075Z"
+    },
+    {
+      "id": "log_1794488194907_q5l3x",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Wasted Lead\" (Reason: Client unreachable / non-responsive after 4 attempts)",
+      "metadata": {
+        "reason": "Client unreachable / non-responsive after 4 attempts",
+        "prevStatus": "Approached",
+        "newStatus": "Wasted Lead"
+      },
+      "createdAt": "2026-11-12T12:56:34.907Z"
+    },
+    {
+      "id": "log_1794488194901_1a1y4",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_wasted_004",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T12:56:34.901Z"
+    },
+    {
+      "id": "log_1794488194879_9z4zx",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"Approached\" to \"Waiting for Client Response\"",
+      "metadata": {
+        "prevStatus": "Approached",
+        "newStatus": "Waiting for Client Response"
+      },
+      "createdAt": "2026-11-12T12:56:34.879Z"
+    },
+    {
+      "id": "log_1794488194868_p9tcq",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_flow_003",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T12:56:34.868Z"
+    },
+    {
+      "id": "log_1794488194842_jaj1l",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "action": "followup_rescheduled",
+      "description": "Follow-up rescheduled to 2026-11-12T10:00:00Z",
+      "createdAt": "2026-11-12T12:56:34.842Z"
+    },
+    {
+      "id": "log_1794488194833_vy7rv",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "action": "note_added",
+      "description": "Added private observation note: \"Sarah preferred a discovery call on Thursday afternoon.\"",
+      "createdAt": "2026-11-12T12:56:34.833Z"
+    },
+    {
+      "id": "log_1794488194827_jrw38",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "action": "followup_added",
+      "description": "Scheduled follow-up for 2026-11-05T10:00:00Z: \"Follow up on web proposal review\"",
+      "createdAt": "2026-11-12T12:56:34.827Z"
+    },
+    {
+      "id": "log_1794488194813_hello",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "action": "status_changed",
+      "description": "Status changed from \"New Lead\" to \"Approached\"",
+      "metadata": {
+        "prevStatus": "New Lead",
+        "newStatus": "Approached"
+      },
+      "createdAt": "2026-11-12T12:56:34.812Z"
+    },
     {
       "id": "log_1794487988512_9lt69",
       "userId": "user_alpha_1794487988130",
@@ -9864,6 +10574,51 @@
       "notes": "Follow up on web proposal review",
       "status": "rescheduled",
       "createdAt": "2026-11-12T12:53:08.157Z"
+    },
+    "fup_1794488194827_os65": {
+      "id": "fup_1794488194827_os65",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "dueDate": "2026-11-12T10:00:00Z",
+      "notes": "Follow up on web proposal review",
+      "status": "rescheduled",
+      "createdAt": "2026-11-12T12:56:34.827Z"
+    },
+    "fup_1794489757147_n8ry": {
+      "id": "fup_1794489757147_n8ry",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "dueDate": "2026-11-12T10:00:00Z",
+      "notes": "Follow up on web proposal review",
+      "status": "rescheduled",
+      "createdAt": "2026-11-12T13:22:37.147Z"
+    },
+    "fup_1794489810355_9mhe": {
+      "id": "fup_1794489810355_9mhe",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "dueDate": "2026-11-12T10:00:00Z",
+      "notes": "Follow up on web proposal review",
+      "status": "rescheduled",
+      "createdAt": "2026-11-12T13:23:30.355Z"
+    },
+    "fup_1794490063691_165m": {
+      "id": "fup_1794490063691_165m",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "dueDate": "2026-11-12T10:00:00Z",
+      "notes": "Follow up on web proposal review",
+      "status": "rescheduled",
+      "createdAt": "2026-11-12T13:27:43.691Z"
+    },
+    "fup_1794491355999_andi": {
+      "id": "fup_1794491355999_andi",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "dueDate": "2026-11-12T10:00:00Z",
+      "notes": "Follow up on web proposal review",
+      "status": "rescheduled",
+      "createdAt": "2026-11-12T13:49:15.999Z"
     }
   },
   "notes": {
@@ -10394,6 +11149,46 @@
       "content": "Sarah preferred a discovery call on Thursday afternoon.",
       "createdAt": "2026-11-12T12:53:08.168Z",
       "updatedAt": "2026-11-12T12:53:08.168Z"
+    },
+    "note_1794488194833_iul5": {
+      "id": "note_1794488194833_iul5",
+      "userId": "test_user_1794488194808",
+      "leadId": "test_lead_web_001",
+      "content": "Sarah preferred a discovery call on Thursday afternoon.",
+      "createdAt": "2026-11-12T12:56:34.833Z",
+      "updatedAt": "2026-11-12T12:56:34.833Z"
+    },
+    "note_1794489757153_vaxb": {
+      "id": "note_1794489757153_vaxb",
+      "userId": "test_user_1794489757127",
+      "leadId": "test_lead_web_001",
+      "content": "Sarah preferred a discovery call on Thursday afternoon.",
+      "createdAt": "2026-11-12T13:22:37.153Z",
+      "updatedAt": "2026-11-12T13:22:37.153Z"
+    },
+    "note_1794489810366_t6ln": {
+      "id": "note_1794489810366_t6ln",
+      "userId": "test_user_1794489810335",
+      "leadId": "test_lead_web_001",
+      "content": "Sarah preferred a discovery call on Thursday afternoon.",
+      "createdAt": "2026-11-12T13:23:30.366Z",
+      "updatedAt": "2026-11-12T13:23:30.366Z"
+    },
+    "note_1794490063697_bnby": {
+      "id": "note_1794490063697_bnby",
+      "userId": "test_user_1794490063675",
+      "leadId": "test_lead_web_001",
+      "content": "Sarah preferred a discovery call on Thursday afternoon.",
+      "createdAt": "2026-11-12T13:27:43.697Z",
+      "updatedAt": "2026-11-12T13:27:43.697Z"
+    },
+    "note_1794491356005_frcm": {
+      "id": "note_1794491356005_frcm",
+      "userId": "test_user_1794491355982",
+      "leadId": "test_lead_web_001",
+      "content": "Sarah preferred a discovery call on Thursday afternoon.",
+      "createdAt": "2026-11-12T13:49:16.005Z",
+      "updatedAt": "2026-11-12T13:49:16.005Z"
     }
   },
   "templates": {}

@@ -154,7 +154,7 @@ export default function EmailVerificationView() {
                 result.status === 'VERIFIED'
                   ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
                   : result.status === 'DISPOSABLE'
-                  ? 'bg-purple-100 dark:bg-purple-950 text-purple-800 dark:text-purple-300'
+                  ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
                   : 'bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300'
               }`}
             >

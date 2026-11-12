@@ -158,7 +158,7 @@ export default function AdminDashboardPage() {
 
           <div className="p-4 rounded-2xl bg-[#090d1a] border border-slate-800">
             <div className="text-[11px] font-medium text-slate-400">Total Leads Consumed</div>
-            <div className="text-2xl font-black text-purple-400 mt-1">
+            <div className="text-2xl font-black text-[#00AAFF] mt-1">
               {metrics ? Number(metrics.totalLeadsConsumed).toLocaleString() : '...'}
             </div>
             <div className="text-[10px] text-slate-400 mt-1">Utilized by Customers</div>

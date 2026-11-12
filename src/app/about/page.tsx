@@ -22,11 +22,11 @@ import {
 function Stars({ count = 50 }: { count?: number }) {
   const stars = Array.from({ length: count }, (_, i) => ({
     id: i,
-    left: `${Math.random() * 100}%`,
-    top: `${Math.random() * 100}%`,
-    size: `${Math.random() * 2 + 0.5}px`,
-    duration: `${Math.random() * 4 + 2}s`,
-    delay: `${Math.random() * 5}s`,
+    left: `${(i * 19 + 7) % 100}%`,
+    top: `${(i * 31 + 13) % 100}%`,
+    size: `${((i % 3) * 0.7 + 1.2).toFixed(1)}px`,
+    duration: `${(i % 4) + 3}s`,
+    delay: `${((i % 5) * 0.8).toFixed(1)}s`,
   }));
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -178,25 +178,25 @@ function SignupForm() {
                     </linearGradient>
                     <linearGradient id="suLeafCyan" x1="0%" y1="100%" x2="100%" y2="0%">
                       <stop offset="0%" stopColor="#030712" />
-                      <stop offset="50%" stopColor="#6366f1" />
+                      <stop offset="50%" stopColor="#0057FF" />
                       <stop offset="85%" stopColor="#38bdf8" />
                       <stop offset="100%" stopColor="#bae6fd" />
                     </linearGradient>
-                    <linearGradient id="suLeafPink" x1="100%" y1="100%" x2="0%" y2="0%">
-                      <stop offset="0%" stopColor="#581c87" />
-                      <stop offset="50%" stopColor="#a855f7" />
-                      <stop offset="85%" stopColor="#f472b6" />
-                      <stop offset="100%" stopColor="#fbcfe8" />
+                    <linearGradient id="suLeafBlueAccent" x1="100%" y1="100%" x2="0%" y2="0%">
+                      <stop offset="0%" stopColor="#022c6e" />
+                      <stop offset="50%" stopColor="#0057FF" />
+                      <stop offset="85%" stopColor="#00AAFF" />
+                      <stop offset="100%" stopColor="#7dd3fc" />
                     </linearGradient>
                     <linearGradient id="suPotShine" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#2e1065" />
-                      <stop offset="40%" stopColor="#1e1035" />
-                      <stop offset="100%" stopColor="#0b0618" />
+                      <stop offset="0%" stopColor="#0e1a38" />
+                      <stop offset="40%" stopColor="#081024" />
+                      <stop offset="100%" stopColor="#030712" />
                     </linearGradient>
                     <radialGradient id="suPotInnerGlow" cx="50%" cy="100%" r="75%">
-                      <stop offset="0%" stopColor="#e879f9" stopOpacity="0.85" />
-                      <stop offset="50%" stopColor="#7e22ce" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#0b0618" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#00AAFF" stopOpacity="0.85" />
+                      <stop offset="50%" stopColor="#0057FF" stopOpacity="0.4" />
+                      <stop offset="100%" stopColor="#030712" stopOpacity="0" />
                     </radialGradient>
                     <filter id="suGlowBlur" x="-20%" y="-20%" width="140%" height="140%">
                       <feGaussianBlur stdDeviation="3" result="blur" />
@@ -205,27 +205,27 @@ function SignupForm() {
                   </defs>
 
                   {/* Floor Reflection Ring */}
-                  <ellipse cx="110" cy="242" rx="55" ry="10" fill="#a855f7" opacity="0.35" filter="blur(6px)" />
-                  <ellipse cx="110" cy="240" rx="35" ry="5" fill="#f472b6" opacity="0.5" filter="blur(3px)" />
+                  <ellipse cx="110" cy="242" rx="55" ry="10" fill="#0057FF" opacity="0.35" filter="blur(6px)" />
+                  <ellipse cx="110" cy="240" rx="35" ry="5" fill="#00AAFF" opacity="0.5" filter="blur(3px)" />
 
                   {/* Potted Cup */}
                   <path d="M 65 160 L 155 160 L 142 235 C 142 240, 78 240, 78 235 Z" fill="url(#suPotShine)" stroke="rgba(255,255,255,0.25)" strokeWidth="1.5" />
                   <path d="M 65 160 L 155 160 L 142 235 C 142 240, 78 240, 78 235 Z" fill="url(#suPotInnerGlow)" />
-                  <ellipse cx="110" cy="160" rx="45" ry="9" fill="#3b1d6e" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" />
-                  <ellipse cx="110" cy="160" rx="42" ry="7" fill="#1c0b38" />
+                  <ellipse cx="110" cy="160" rx="45" ry="9" fill="#0c1938" stroke="rgba(255,255,255,0.35)" strokeWidth="1.2" />
+                  <ellipse cx="110" cy="160" rx="42" ry="7" fill="#060e22" />
 
                   {/* Succulent Leaves */}
                   <path d="M 110 158 C 98 105, 95 40, 110 20 C 125 40, 122 105, 110 158 Z" fill="url(#suLeafCenter)" opacity="0.96" filter="url(#suGlowBlur)" />
                   <path d="M 105 158 C 76 118, 62 65, 80 38 C 96 60, 106 115, 105 158 Z" fill="url(#suLeafCyan)" opacity="0.92" />
-                  <path d="M 115 158 C 144 118, 158 65, 140 38 C 124 60, 114 115, 115 158 Z" fill="url(#suLeafPink)" opacity="0.92" />
+                  <path d="M 115 158 C 144 118, 158 65, 140 38 C 124 60, 114 115, 115 158 Z" fill="url(#suLeafBlueAccent)" opacity="0.92" />
                   <path d="M 98 160 C 58 135, 42 90, 56 70 C 74 85, 92 125, 98 160 Z" fill="url(#suLeafCenter)" opacity="0.85" />
                   <path d="M 122 160 C 162 135, 178 90, 164 70 C 146 85, 128 125, 122 160 Z" fill="url(#suLeafCyan)" opacity="0.85" />
 
                   {/* Delicate sprigs & spores */}
                   <circle cx="110" cy="18" r="3.5" fill="#ffffff" filter="drop-shadow(0 0 6px #fff)" />
                   <circle cx="80" cy="36" r="2.5" fill="#38bdf8" filter="drop-shadow(0 0 5px #38bdf8)" />
-                  <circle cx="140" cy="36" r="2.5" fill="#f472b6" filter="drop-shadow(0 0 5px #f472b6)" />
-                  <circle cx="55" cy="68" r="2" fill="#e9d5ff" />
+                  <circle cx="140" cy="36" r="2.5" fill="#00AAFF" filter="drop-shadow(0 0 5px #00AAFF)" />
+                  <circle cx="55" cy="68" r="2" fill="#7dd3fc" />
                   <circle cx="165" cy="68" r="2" fill="#bae6fd" />
                 </svg>
               </div>

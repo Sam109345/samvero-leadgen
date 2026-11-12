@@ -117,8 +117,8 @@ export default function HowItWorksPage() {
               </div>
               <div className="w-full lg:w-1/2 rounded-2xl overflow-hidden border border-[#0057FF]/30 shadow-2xl relative group">
                 <img
-                  src="https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif"
-                  alt="3D Live Pipeline Stream"
+                  src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=1000&q=80"
+                  alt="Enterprise Telemetry & Discovery Workstation"
                   className="w-full h-64 sm:h-72 object-cover rounded-2xl group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#030712] via-transparent to-transparent opacity-60" />
