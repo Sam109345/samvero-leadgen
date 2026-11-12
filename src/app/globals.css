@@ -33,22 +33,22 @@ body {
   overflow-x: hidden;
 }
 
-/* ─── GPU-Accelerated CRM Walk-In Animation (ZRK, Extrafazant & Huly-Style) ─── */
+/* ─── GPU-Accelerated CRM Walk-In Animation (Electric Blue & Cyan) ─── */
 @keyframes crm-walkin-cinematic {
   0% {
     transform: perspective(1600px) rotateX(26deg) scale(0.82) translateY(80px);
     opacity: 0.2;
-    box-shadow: 0 10px 40px rgba(112, 0, 255, 0.1);
+    box-shadow: 0 10px 40px rgba(0, 87, 255, 0.15);
   }
   60% {
     transform: perspective(1600px) rotateX(8deg) scale(0.97) translateY(10px);
     opacity: 0.96;
-    box-shadow: 0 30px 90px rgba(112, 0, 255, 0.35);
+    box-shadow: 0 30px 90px rgba(0, 87, 255, 0.4);
   }
   100% {
     transform: perspective(1600px) rotateX(0deg) scale(1) translateY(0);
     opacity: 1;
-    box-shadow: 0 40px 140px rgba(112, 0, 255, 0.45), 0 0 70px rgba(0, 170, 255, 0.3);
+    box-shadow: 0 40px 140px rgba(0, 87, 255, 0.45), 0 0 70px rgba(0, 170, 255, 0.35);
   }
 }
 
@@ -78,7 +78,7 @@ body {
 
 .crm-walkin-card.walked-in {
   transform: perspective(1600px) rotateX(0deg) scale(1.03) translateY(-15px) translateZ(40px) !important;
-  box-shadow: 0 50px 160px rgba(112, 0, 255, 0.55), 0 0 90px rgba(0, 170, 255, 0.4) !important;
+  box-shadow: 0 50px 160px rgba(0, 87, 255, 0.6), 0 0 90px rgba(0, 170, 255, 0.45) !important;
 }
 
 /* Subtle continuous 3D floating after walk-in settles */
@@ -93,6 +93,78 @@ body {
 
 .crm-walkin-banner.idle-floating {
   animation: crm-idle-float 7s ease-in-out infinite;
+}
+
+/* ─── Interactive Floating Circle & Pop Burst Animations ─── */
+@keyframes bubble-pop-burst {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  30% {
+    transform: scale(1.4);
+    opacity: 1;
+    filter: brightness(2.5) drop-shadow(0 0 35px #00aaff);
+  }
+  100% {
+    transform: scale(1.75);
+    opacity: 0;
+    filter: brightness(3);
+  }
+}
+
+@keyframes bubble-shockwave-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@keyframes bubble-particle-fly {
+  0% {
+    transform: translate(0, 0) scale(1.3);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes bubble-respawn-fade {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  65% {
+    transform: scale(1.08);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-bubble-pop {
+  animation: bubble-pop-burst 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-bubble-shockwave {
+  animation: bubble-shockwave-ring 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-bubble-particle {
+  animation: bubble-particle-fly 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-bubble-respawn {
+  animation: bubble-respawn-fade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* ─── Portal To The Future – Glowing Horizon Arc & Corona (Electric Blue / Cyan Brand) ─── */
