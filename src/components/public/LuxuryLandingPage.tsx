@@ -299,6 +299,8 @@ export default function LuxuryLandingPage() {
     return () => window.removeEventListener('mousemove', onMouseMove);
   }, []);
 
+
+
   /* Click to pop burst handler */
   const handleCircleClick = (e: React.MouseEvent, circleId: number, size: number = 80) => {
     e.stopPropagation();
