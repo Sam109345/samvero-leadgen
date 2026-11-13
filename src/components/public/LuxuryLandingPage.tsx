@@ -202,17 +202,17 @@ interface FloatingCircle {
 }
 
 const HERO_CIRCLES: FloatingCircle[] = [
-  // Swarm & Follower Circles – dynamically glide with mouse cursor ("jahan jahan mouse cursor jaaye")
-  { id: 1, size: 85, baseLeft: 50, baseTop: 34, offsetX: -90, offsetY: -75, followFactorX: 42, followFactorY: 28, factorX: 18, factorY: 14, floatClass: 'animate-float', colorTheme: 'cyan', isFollower: true },
-  { id: 2, size: 105, baseLeft: 50, baseTop: 34, offsetX: 75, offsetY: -85, followFactorX: 38, followFactorY: 26, factorX: 24, factorY: 18, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue', isFollower: true },
-  { id: 3, size: 55, baseLeft: 50, baseTop: 34, offsetX: 90, offsetY: 40, followFactorX: 44, followFactorY: 30, factorX: 14, factorY: 10, floatClass: 'animate-float', colorTheme: 'sky', isFollower: true },
-  { id: 4, size: 75, baseLeft: 50, baseTop: 34, offsetX: -110, offsetY: 45, followFactorX: 35, followFactorY: 24, factorX: 20, factorY: 16, floatClass: 'animate-float-delayed', colorTheme: 'cyan', isFollower: true },
-  { id: 5, size: 65, baseLeft: 50, baseTop: 34, offsetX: 10, offsetY: -110, followFactorX: 40, followFactorY: 25, factorX: 16, factorY: 12, floatClass: 'animate-float', colorTheme: 'electric-blue', isFollower: true },
+  // Flank & Swarm Follower Lenses – dynamically glide with mouse cursor ("jahan jahan mouse cursor jaaye")
+  { id: 1, size: 90, baseLeft: 10, baseTop: 24, offsetX: 0, offsetY: 0, followFactorX: 25, followFactorY: 18, factorX: 18, factorY: 14, floatClass: 'animate-float', colorTheme: 'cyan', isFollower: true },
+  { id: 2, size: 100, baseLeft: 88, baseTop: 22, offsetX: 0, offsetY: 0, followFactorX: 24, followFactorY: 18, factorX: 20, factorY: 16, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue', isFollower: true },
+  { id: 3, size: 60, baseLeft: 18, baseTop: 12, offsetX: 0, offsetY: 0, followFactorX: 28, followFactorY: 20, factorX: 14, factorY: 10, floatClass: 'animate-float', colorTheme: 'sky', isFollower: true },
+  { id: 4, size: 65, baseLeft: 82, baseTop: 14, offsetX: 0, offsetY: 0, followFactorX: 26, followFactorY: 18, factorX: 16, factorY: 12, floatClass: 'animate-float-delayed', colorTheme: 'cyan', isFollower: true },
+  { id: 5, size: 50, baseLeft: 50, baseTop: 8, offsetX: 0, offsetY: 0, followFactorX: 18, followFactorY: 14, factorX: 10, factorY: 8, floatClass: 'animate-float', colorTheme: 'electric-blue', isFollower: true },
 
-  // Ambient Anchored Orbs – periphery depth with gravitational mouse attraction
-  { id: 6, size: 125, baseLeft: 8, baseTop: 22, offsetX: 0, offsetY: 0, followFactorX: 14, followFactorY: 18, factorX: 35, factorY: 25, floatClass: 'animate-float', colorTheme: 'cyan' },
-  { id: 7, size: 135, baseLeft: 88, baseTop: 18, offsetX: 0, offsetY: 0, followFactorX: 12, followFactorY: 16, factorX: 40, factorY: 30, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue' },
-  { id: 8, size: 90, baseLeft: 18, baseTop: 52, offsetX: 0, offsetY: 0, followFactorX: 16, followFactorY: 12, factorX: 28, factorY: 20, floatClass: 'animate-float', colorTheme: 'sky' },
+  // Ambient Anchored Obsidian-Glass Orbs – deep periphery depth
+  { id: 6, size: 120, baseLeft: 3, baseTop: 45, offsetX: 0, offsetY: 0, followFactorX: 14, followFactorY: 16, factorX: 28, factorY: 20, floatClass: 'animate-float', colorTheme: 'cyan' },
+  { id: 7, size: 130, baseLeft: 94, baseTop: 42, offsetX: 0, offsetY: 0, followFactorX: 12, followFactorY: 14, factorX: 30, factorY: 22, floatClass: 'animate-float-delayed', colorTheme: 'electric-blue' },
+  { id: 8, size: 75, baseLeft: 8, baseTop: 68, offsetX: 0, offsetY: 0, followFactorX: 16, followFactorY: 12, factorX: 22, factorY: 16, floatClass: 'animate-float', colorTheme: 'sky' },
 ];
 
 /* Futuristic Acoustic Bubble Pop Synthesizer via Web Audio API */
@@ -438,19 +438,33 @@ export default function LuxuryLandingPage() {
         <section
           id="hero-portal"
           onMouseMove={handleBannerMouseMove}
-          className="relative min-h-screen pt-16 sm:pt-20 pb-10 overflow-hidden select-none bg-[#030712]"
+          className="relative min-h-screen pt-14 sm:pt-16 pb-8 overflow-hidden select-none bg-[#02040a]"
         >
           {/* Exact 100vh Initial Viewport Canvas Anchor */}
           <div className="absolute inset-0 pointer-events-none" style={{ minHeight: '100vh', height: '100vh' }} />
 
+          {/* Technical Enterprise Cyber Grid Overlay (Linear & Huly style) */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.14]"
+            style={{
+              backgroundImage: 'linear-gradient(to right, rgba(0, 87, 255, 0.22) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 87, 255, 0.22) 1px, transparent 1px)',
+              backgroundSize: '48px 48px',
+              maskImage: 'radial-gradient(ellipse 75% 65% at 50% 35%, black 40%, transparent 85%)',
+              WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 35%, black 40%, transparent 85%)',
+            }}
+          />
+
           {/* Cosmic Space Background Dust & Starfield */}
           <Starfield count={55} />
 
-          {/* Deep Ambient Brand Glow Orbs */}
+          {/* Top Subtle Electric Blue Ambient Light Header Bleed */}
+          <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[#0057FF]/12 via-transparent to-transparent pointer-events-none" />
+
+          {/* Deep Ambient Brand Glow Orbs (Deep Obsidian Black & Electric Blue) */}
           <div
             className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none transition-transform duration-500 ease-out"
             style={{
-              background: 'radial-gradient(circle, rgba(0, 87, 255, 0.15) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(0, 87, 255, 0.18) 0%, transparent 70%)',
               filter: 'blur(90px)',
               transform: `translate3d(${mousePos.x * -25}px, ${mousePos.y * -20}px, 0)`,
             }}
@@ -458,38 +472,72 @@ export default function LuxuryLandingPage() {
           <div
             className="absolute top-1/3 right-1/4 w-[450px] h-[450px] rounded-full pointer-events-none transition-transform duration-500 ease-out"
             style={{
-              background: 'radial-gradient(circle, rgba(0, 170, 255, 0.12) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(0, 170, 255, 0.14) 0%, transparent 70%)',
               filter: 'blur(80px)',
               transform: `translate3d(${mousePos.x * 30}px, ${mousePos.y * 25}px, 0)`,
             }}
           />
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] rounded-full pointer-events-none"
+            className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[750px] h-[380px] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.16) 0%, rgba(0, 170, 255, 0.08) 50%, transparent 75%)',
-              filter: 'blur(80px)',
+              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.22) 0%, rgba(0, 170, 255, 0.08) 50%, transparent 75%)',
+              filter: 'blur(85px)',
             }}
           />
 
           {/* 3D Prismatic Glass Torus Ring centered behind Hero Headline (Screenshot 1 Match) */}
           <div
-            className="absolute top-10 sm:top-14 left-1/2 -translate-x-1/2 w-[480px] sm:w-[560px] h-[300px] sm:h-[340px] torus-ring-iridescent pointer-events-none opacity-40 transition-transform duration-500 ease-out hidden sm:block"
+            className="absolute top-8 sm:top-12 left-1/2 -translate-x-1/2 w-[480px] sm:w-[580px] h-[300px] sm:h-[350px] torus-ring-iridescent pointer-events-none opacity-45 transition-transform duration-500 ease-out hidden sm:block"
             style={{
-              transform: `translateX(-50%) rotate(-18deg) rotateX(62deg) translate3d(${mousePos.x * 35}px, ${mousePos.y * 25}px, 0)`,
+              transform: `translateX(-50%) rotate(-18deg) rotateX(62deg) translate3d(${mousePos.x * 25}px, ${mousePos.y * 20}px, 0)`,
             }}
           />
 
           {/* Side Ambient Iridescent Torus Accents */}
           <div
-            className="absolute top-16 -left-20 w-60 h-60 torus-ring-iridescent pointer-events-none opacity-30 hidden lg:block transition-transform duration-500 ease-out"
+            className="absolute top-16 -left-20 w-60 h-60 torus-ring-iridescent pointer-events-none opacity-25 hidden lg:block transition-transform duration-500 ease-out"
             style={{ transform: `rotate(25deg) rotateX(45deg) translate3d(${mousePos.x * -20}px, ${mousePos.y * -20}px, 0)` }}
           />
           <div
-            className="absolute top-28 -right-24 w-64 h-64 torus-ring-iridescent pointer-events-none opacity-25 hidden lg:block transition-transform duration-500 ease-out"
+            className="absolute top-28 -right-24 w-64 h-64 torus-ring-iridescent pointer-events-none opacity-20 hidden lg:block transition-transform duration-500 ease-out"
             style={{ transform: `rotate(-30deg) rotateX(55deg) translate3d(${mousePos.x * 20}px, ${mousePos.y * 20}px, 0)` }}
           />
 
-          {/* ── Dynamic Floating 3D Glass Circles with Mouse-Tracking & Click-To-Pop Burst ── */}
+          {/* Left Flank Enterprise Status Pill (Huly / Scale AI style) */}
+          <div
+            className="absolute left-3 lg:left-8 top-32 z-20 hidden lg:flex items-center gap-3 px-4 py-2 rounded-2xl bg-[#020512]/90 border border-[#0057FF]/40 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.85),0_0_25px_rgba(0,87,255,0.25)] transition-transform duration-300 ease-out pointer-events-none"
+            style={{ transform: `translate3d(${mousePos.x * -16}px, ${mousePos.y * -12}px, 0)` }}
+          >
+            <div className="w-8 h-8 rounded-xl bg-[#0057FF]/20 border border-[#00AAFF]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,87,255,0.4)]">
+              <ShieldCheck className="w-4 h-4 text-[#00AAFF]" />
+            </div>
+            <div className="text-left">
+              <div className="text-[11px] font-semibold text-white flex items-center gap-1.5">
+                <span>50,000+ Verified</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              </div>
+              <div className="text-[10px] text-slate-400 font-mono">100% Deliverability Validated</div>
+            </div>
+          </div>
+
+          {/* Right Flank Enterprise Status Pill */}
+          <div
+            className="absolute right-3 lg:right-8 top-32 z-20 hidden lg:flex items-center gap-3 px-4 py-2 rounded-2xl bg-[#020512]/90 border border-[#0057FF]/40 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.85),0_0_25px_rgba(0,87,255,0.25)] transition-transform duration-300 ease-out pointer-events-none"
+            style={{ transform: `translate3d(${mousePos.x * 16}px, ${mousePos.y * 12}px, 0)` }}
+          >
+            <div className="w-8 h-8 rounded-xl bg-[#00AAFF]/20 border border-[#00AAFF]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,170,255,0.4)]">
+              <Radar className="w-4 h-4 text-[#00AAFF]" />
+            </div>
+            <div className="text-left">
+              <div className="text-[11px] font-semibold text-white flex items-center gap-1.5">
+                <span>15 Outbound Sources</span>
+                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">LIVE</span>
+              </div>
+              <div className="text-[10px] text-slate-400 font-mono">Direct WhatsApp & SOW Radar</div>
+            </div>
+          </div>
+
+          {/* ── Dynamic Floating 3D Obsidian-Glass Lenses with Mouse-Tracking & Click-To-Pop Burst ── */}
           {HERO_CIRCLES.map((c) => {
             const poppedState = poppedMap[c.id];
             const isPopping = poppedState?.isPopping;
@@ -497,10 +545,10 @@ export default function LuxuryLandingPage() {
 
             // Follower circles dynamically follow mouse cursor wherever it goes ("jahan jahan mouse cursor jaaye")
             const posX = c.isFollower
-              ? `calc(${50 + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`
+              ? `calc(${c.baseLeft + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`
               : `calc(${c.baseLeft + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`;
             const posY = c.isFollower
-              ? `calc(${34 + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`
+              ? `calc(${c.baseTop + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`
               : `calc(${c.baseTop + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`;
 
             return (
@@ -513,7 +561,7 @@ export default function LuxuryLandingPage() {
                   width: `${c.size}px`,
                   height: `${c.size}px`,
                   transform: `translate3d(${mousePos.x * c.factorX}px, ${mousePos.y * c.factorY}px, 0)`,
-                  zIndex: 22,
+                  zIndex: 12,
                 }}
               >
                 {/* Popping explosion state */}
@@ -563,7 +611,7 @@ export default function LuxuryLandingPage() {
                   </div>
                 )}
 
-                {/* Normal Interactive Floating Glass Circle */}
+                {/* Normal Interactive Floating Obsidian-Glass Circle */}
                 {!isPopped && !isPopping && (
                   <div
                     onClick={(e) => handleCircleClick(e, c.id, c.size)}
@@ -575,22 +623,22 @@ export default function LuxuryLandingPage() {
                     style={{
                       background:
                         c.colorTheme === 'cyan'
-                          ? 'radial-gradient(circle at 35% 30%, rgba(0, 210, 255, 0.25) 0%, rgba(0, 170, 255, 0.12) 40%, rgba(3, 7, 18, 0.65) 90%)'
+                          ? 'radial-gradient(circle at 35% 28%, rgba(0, 220, 255, 0.3) 0%, rgba(0, 140, 255, 0.14) 35%, rgba(2, 6, 23, 0.88) 68%, rgba(1, 3, 10, 0.98) 100%)'
                           : c.colorTheme === 'electric-blue'
-                          ? 'radial-gradient(circle at 35% 30%, rgba(0, 140, 255, 0.28) 0%, rgba(0, 87, 255, 0.14) 45%, rgba(3, 7, 18, 0.65) 90%)'
-                          : 'radial-gradient(circle at 35% 30%, rgba(56, 189, 248, 0.25) 0%, rgba(0, 170, 255, 0.1) 40%, rgba(3, 7, 18, 0.65) 90%)',
-                      border: '1.5px solid rgba(0, 170, 255, 0.45)',
+                          ? 'radial-gradient(circle at 35% 28%, rgba(0, 140, 255, 0.35) 0%, rgba(0, 87, 255, 0.18) 35%, rgba(2, 6, 23, 0.9) 68%, rgba(1, 3, 10, 0.98) 100%)'
+                          : 'radial-gradient(circle at 35% 28%, rgba(56, 189, 248, 0.3) 0%, rgba(0, 170, 255, 0.15) 35%, rgba(2, 6, 23, 0.88) 68%, rgba(1, 3, 10, 0.98) 100%)',
+                      border: '1.5px solid rgba(0, 170, 255, 0.55)',
                       boxShadow:
-                        'inset 0 0 25px rgba(0, 170, 255, 0.35), inset 0 0 50px rgba(0, 87, 255, 0.2), 0 0 30px rgba(0, 170, 255, 0.25)',
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
+                        'inset 0 1px 1px rgba(255, 255, 255, 0.5), inset 0 0 25px rgba(0, 170, 255, 0.28), inset 0 0 50px rgba(0, 87, 255, 0.2), 0 0 35px rgba(0, 87, 255, 0.35)',
+                      backdropFilter: 'blur(16px)',
+                      WebkitBackdropFilter: 'blur(16px)',
                     }}
                   >
                     {/* Specular glass reflection on top-left */}
-                    <div className="absolute top-2 left-3 w-1/3 h-1/4 rounded-full bg-gradient-to-br from-white/50 via-cyan-300/20 to-transparent blur-[1px] pointer-events-none group-hover:from-white/70" />
+                    <div className="absolute top-2 left-3 w-1/3 h-1/4 rounded-full bg-gradient-to-br from-white/60 via-cyan-300/30 to-transparent blur-[1px] pointer-events-none group-hover:from-white/80" />
                     
                     {/* Inner glowing pulse */}
-                    <div className="absolute inset-2 rounded-full bg-radial from-cyan-400/20 to-transparent pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-2 rounded-full bg-radial from-cyan-400/25 to-transparent pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity" />
 
                     {/* Hover highlight border ring */}
                     <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-[#00AAFF] group-hover:shadow-[0_0_35px_rgba(0,170,255,0.8),inset_0_0_20px_rgba(0,220,255,0.6)] transition-all pointer-events-none" />
@@ -603,11 +651,11 @@ export default function LuxuryLandingPage() {
           {/* Hero Header Content (Compact, Perfectly Vertically Spaced) */}
           <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6 mb-3 sm:mb-4">
             
-            {/* Pill Badge: Electric Blue Brand */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-2.5 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-[#0057FF]/10 border border-[#00AAFF]/30 backdrop-blur-xl shadow-[0_0_20px_rgba(0,170,255,0.25)] text-[#00AAFF]">
-              <Sparkles className="w-3 h-3 text-[#00AAFF] animate-pulse" />
+            {/* Pill Badge: Electric Blue Brand & Deep Obsidian Black */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-2.5 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-[#020512]/90 border border-[#0057FF]/50 backdrop-blur-xl shadow-[0_0_25px_rgba(0,87,255,0.35)] text-cyan-300">
+              <Sparkles className="w-3.5 h-3.5 text-[#00AAFF] animate-pulse" />
               <span>Next-Gen Outbound Intelligence • Portal 2026</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
             </div>
 
             {/* Main Headline: Bold, Electric Blue to Cyan (Matches Screenshot 1 Lines) */}
@@ -616,7 +664,7 @@ export default function LuxuryLandingPage() {
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Step Into The Future Of <br />
-              <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(0,87,255,0.45)]">
                 High-Ticket Lead <br className="hidden sm:inline" /> Discovery
               </span>
             </h1>
@@ -630,7 +678,7 @@ export default function LuxuryLandingPage() {
             <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
               <Link
                 href="/signup"
-                className="glass-pill-btn px-6 sm:px-7 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm flex items-center gap-2 shadow-[0_10px_35px_rgba(0,87,255,0.5)] hover:shadow-[0_15px_45px_rgba(0,170,255,0.6)] transition"
+                className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm flex items-center gap-2 text-white bg-gradient-to-r from-[#0057FF] via-[#0070FF] to-[#00AAFF] shadow-[0_0_35px_rgba(0,87,255,0.6),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_0_50px_rgba(0,170,255,0.8)] hover:scale-[1.02] transition-all"
               >
                 <Zap className="w-4 h-4 text-white" />
                 <span>Get Started Free</span>
@@ -645,7 +693,7 @@ export default function LuxuryLandingPage() {
                   const el = document.getElementById('crm-portal');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm bg-white/[0.05] hover:bg-white/[0.1] text-[#00AAFF] border border-[#0057FF]/40 hover:border-[#00AAFF]/60 backdrop-blur-md transition flex items-center gap-2"
+                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm bg-[#020512]/90 hover:bg-[#0057FF]/15 text-[#00AAFF] hover:text-white border border-[#0057FF]/50 hover:border-[#00AAFF] backdrop-blur-xl shadow-[0_0_25px_rgba(0,87,255,0.25)] hover:scale-[1.02] transition-all flex items-center gap-2"
               >
                 {isWalkedIn ? <Minimize2 className="w-4 h-4 text-cyan-400" /> : <Maximize2 className="w-4 h-4 text-cyan-400" />}
                 <span>{isWalkedIn ? 'Exit Walk-In' : 'Step Inside CRM (Walk-In View)'}</span>
@@ -653,7 +701,7 @@ export default function LuxuryLandingPage() {
 
               <a
                 href="#pricing"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm text-slate-300 hover:text-white border border-white/10 hover:border-white/20 transition"
+                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm bg-black/50 hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 hover:border-[#0057FF]/40 backdrop-blur-md transition-all"
               >
                 View Plans
               </a>
@@ -676,13 +724,13 @@ export default function LuxuryLandingPage() {
             {/* 3D CRM Window Shell */}
             <div
               ref={walkinCardRef}
-              className={`crm-walkin-card ${isWalkedIn ? 'walked-in' : ''} rounded-[1.75rem] sm:rounded-[2.5rem] p-2.5 sm:p-4 relative bg-[#060b18]/95 border border-[#0057FF]/35 backdrop-blur-3xl shadow-[0_30px_120px_rgba(0,87,255,0.4),0_0_60px_rgba(0,170,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.2)]`}
+              className={`crm-walkin-card ${isWalkedIn ? 'walked-in' : ''} rounded-[1.75rem] sm:rounded-[2.5rem] p-2.5 sm:p-4 relative bg-[#020512]/95 border border-[#0057FF]/45 backdrop-blur-3xl shadow-[0_30px_120px_rgba(0,87,255,0.45),0_0_60px_rgba(0,170,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.25)]`}
             >
               {/* Downward Volumetric Horizon Reflection Highlight */}
-              <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#0057FF]/20 via-[#00AAFF]/5 to-transparent rounded-t-[2.5rem] pointer-events-none" />
+              <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#0057FF]/25 via-[#00AAFF]/8 to-transparent rounded-t-[2.5rem] pointer-events-none" />
 
               {/* CRM Top Chrome Bar */}
-              <div className="flex items-center justify-between px-4 py-2.5 rounded-2xl bg-[#030712]/95 border border-white/10 mb-2.5 relative z-10">
+              <div className="flex items-center justify-between px-4 py-2.5 rounded-2xl bg-[#01030a] border border-white/10 mb-2.5 relative z-10 shadow-inner">
                 {/* Traffic Lights */}
                 <div className="flex items-center gap-2">
                   <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
@@ -690,19 +738,19 @@ export default function LuxuryLandingPage() {
                   <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
                   
                   {/* Address Pill */}
-                  <span className="ml-3 text-xs font-mono text-slate-400 hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/[0.03] border border-white/10">
+                  <span className="ml-3 text-xs font-mono text-slate-400 hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#0057FF]/10 border border-[#0057FF]/30">
                     <Lock className="w-3 h-3 text-[#00AAFF]" />
-                    <span>samvero.live/mission-control/active-leads</span>
+                    <span className="text-cyan-300">samvero.live/mission-control/active-leads</span>
                   </span>
                 </div>
 
                 {/* Live Sync Status */}
                 <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
                     <span>RADAR ACTIVE • 10s PING</span>
                   </span>
-                  <span className="text-[11px] font-mono text-[#00AAFF] hidden md:inline">
+                  <span className="text-[11px] font-mono text-[#00AAFF] font-semibold hidden md:inline">
                     50,000+ VERIFIED LEADS
                   </span>
                 </div>
@@ -728,8 +776,8 @@ export default function LuxuryLandingPage() {
                         onClick={() => setActivePlatformFilter(tab)}
                         className={`px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap text-xs ${
                           active
-                            ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-md shadow-[#0057FF]/30 border border-[#00AAFF]/40'
-                            : 'bg-white/[0.03] text-slate-400 hover:text-white border border-white/10'
+                            ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-md shadow-[#0057FF]/40 border border-[#00AAFF]/50'
+                            : 'bg-black/60 text-slate-400 hover:text-white border border-white/10 hover:border-[#0057FF]/40'
                         }`}
                       >
                         {tab}
@@ -745,7 +793,7 @@ export default function LuxuryLandingPage() {
                     value={leadSearchQuery}
                     onChange={(e) => setLeadSearchQuery(e.target.value)}
                     placeholder="Search leads, cities, niches..."
-                    className="w-full pl-8 pr-3 py-1.5 rounded-xl glass-luxury-input text-xs text-white placeholder-slate-500"
+                    className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-black/60 border border-white/10 text-xs text-white placeholder-slate-500 focus:border-[#00AAFF] focus:shadow-[0_0_15px_rgba(0,170,255,0.3)] transition-all"
                   />
                   <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
                 </div>
@@ -756,7 +804,7 @@ export default function LuxuryLandingPage() {
                 {filteredLeads.map((lead) => (
                   <div
                     key={lead.id}
-                    className="p-3.5 rounded-2xl bg-[#080e22]/90 border border-slate-800 hover:border-[#00AAFF]/40 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_4px_25px_rgba(0,170,255,0.15)]"
+                    className="p-3.5 rounded-2xl bg-[#030716]/95 border border-[#0057FF]/30 hover:border-[#00AAFF]/60 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_0_30px_rgba(0,87,255,0.25)]"
                   >
                     {/* Lead Info */}
                     <div className="space-y-1.5 flex-1">
@@ -842,12 +890,12 @@ export default function LuxuryLandingPage() {
             2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
             Lists ALL 15 supported channels required by user
             ═══════════════════════════════════════════════════════ */}
-        <section id="marquee-slider" className="py-4 border-y border-[#0057FF]/20 bg-[#060b18] overflow-hidden select-none">
+        <section id="marquee-slider" className="py-4 border-y border-[#0057FF]/35 bg-[#01030a] overflow-hidden select-none shadow-[inset_0_1px_20px_rgba(0,87,255,0.1)]">
           <div className="animate-marquee-continuous flex items-center gap-8">
             {[...SUPPORTED_CHANNELS, ...SUPPORTED_CHANNELS].map((channel, i) => (
               <div
                 key={i}
-                className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-white/[0.03] border border-[#0057FF]/25 shadow-[0_0_20px_rgba(0,87,255,0.08)] whitespace-nowrap shrink-0"
+                className="flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-[#030614]/80 border border-[#0057FF]/30 hover:border-[#00AAFF]/60 shadow-[0_0_20px_rgba(0,87,255,0.1)] whitespace-nowrap shrink-0 transition-colors"
               >
                 <span className="text-xl">{channel.icon}</span>
                 <div className="flex flex-col text-left">
