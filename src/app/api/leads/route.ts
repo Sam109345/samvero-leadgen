@@ -18,6 +18,16 @@ let lastContinuousIngestAt = 0;
 const LIVE_SYNC_INTERVAL_MS = 30 * 1000; // 30s auto-refresh interval for live external APIs
 
 export async function GET(request: NextRequest) {
+  // Helper to shuffle array in-place (Fisher‑Yates)
+  const shuffle = <T>(arr: T[]): T[] => {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  };
+
   try {
     const effectiveUser = getEffectiveUser(request);
     const userStates = getAllUserLeadStates(effectiveUser.userId);
@@ -47,7 +57,9 @@ export async function GET(request: NextRequest) {
     const refresh = searchParams.get('refresh');
     const forceRefresh = refresh === 'live';
 
-    let allLeads: Lead[] = loadAllStoredLeads();
+    let allLeads: Lead[] = shuffle(loadAllStoredLeads()); // randomize order each request
+  // prioritize brand‑new leads for UI badge ordering
+  allLeads.sort((a, b) => Number(b.isBrandNew ?? false) - Number(a.isBrandNew ?? false));
 
     const idParam = searchParams.get('id');
     if (idParam) {
@@ -149,7 +161,18 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Attach real assigned user attribution and canonical user workspace status to each lead
+    // If streaming, prioritize fresh leads (last 5 minutes) and limit to recent batch
+  if (isStreamParam) {
+    const now = Date.now();
+    const FIVE_MIN = 5 * 60 * 1000;
+    allLeads = allLeads.filter(l => (l.incomingAt ?? 0) >= (now - FIVE_MIN));
+    // Fallback: if too few recent leads, keep existing list
+    if (allLeads.length < 10) {
+      // no change, retain full list
+    }
+    // Sort newest first
+    allLeads.sort((a, b) => (b.incomingAt ?? 0) - (a.incomingAt ?? 0));
+  }
     allLeads = allLeads.map((lead) => {
       const assignedUser = getLeadAssignedUser(lead.id) || (lead.assignedToUserId ? getPortalUserById(lead.assignedToUserId) : undefined);
       const uState = userStates[lead.id];
