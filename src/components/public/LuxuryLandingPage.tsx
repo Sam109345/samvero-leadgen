@@ -35,6 +35,7 @@ import {
   Compass,
   Briefcase,
   Users,
+  Target,
 } from 'lucide-react';
 
 /* ── Twinkling Starfield Dust (Deterministic SSR/CSR) ─────── */
@@ -828,110 +829,168 @@ export default function LuxuryLandingPage() {
 
 
         {/* ═══════════════════════════════════════════════════════
-            SECTION 2: CORPORATE SHOWCASE (WHITE SECTION WITH ANIMATED CYBER GRID)
+            SECTION 2: WHY AGENCIES LOSE DEALS (CUSTOMER PSYCHOLOGY / PROBLEM & SOLUTION)
             ═══════════════════════════════════════════════════════ */}
-        <section className="py-24 relative overflow-hidden bg-slate-50 text-slate-900 border-y border-slate-200">
-          {/* Animated Square Grid in Light Background */}
-          <div className="absolute inset-0 cyber-grid-light pointer-events-none" />
+        <section className="py-24 relative overflow-hidden bg-[#030712] border-y border-slate-800">
+          <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
 
           {/* Floating cyber squares */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-[12%] right-[10%] w-[60px] h-[60px] border border-[#0057FF]/30 bg-[#0057FF]/5 rounded-xl cyber-square-float" />
-            <div className="absolute bottom-[18%] left-[8%] w-[80px] h-[80px] border border-[#00AAFF]/30 bg-[#00AAFF]/5 rounded-xl cyber-square-light" />
+            <div className="absolute top-[12%] right-[10%] w-[60px] h-[60px] border border-[#0057FF]/40 bg-[#0057FF]/10 rounded-xl cyber-square-float" />
+            <div className="absolute bottom-[18%] left-[8%] w-[80px] h-[80px] border border-[#00AAFF]/40 bg-[#00AAFF]/10 rounded-xl cyber-square-glow" />
           </div>
 
           <div className="max-w-6xl mx-auto px-6 relative z-10">
             <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/10 border border-[#0057FF]/25 text-[#0057FF] mb-4">
-                <Building2 className="w-3.5 h-3.5 text-[#0057FF]" />
-                <span>Enterprise Agency Operations</span>
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/20 border border-[#0057FF]/40 text-[#00AAFF] mb-4">
+                <Target className="w-3.5 h-3.5 text-[#00AAFF]" />
+                <span>The Outbound Dilemma</span>
               </span>
               <h2
-                className="text-3xl sm:text-5xl font-bold text-slate-900 mb-4 tracking-tight"
+                className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                Built for Boardroom Closings & High-Volume Desks
+                Why 94% of Cold Pitches Get Ignored
               </h2>
-              <p className="text-sm sm:text-base text-slate-600">
-                How modern agencies, outbound specialists, and executive BD leaders deploy Samvero across corporate headquarters.
+              <p className="text-sm sm:text-base text-slate-300">
+                Decision makers don't read generic emails. They respond to immediate pain points backed by proof.
               </p>
             </div>
 
-            {/* Corporate Imagery & CRM Feature Grid */}
+            {/* Psychological Comparison Matrix */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+              {/* The Old Way */}
+              <div className="p-8 rounded-3xl bg-[#090d1a] border border-rose-500/30 relative">
+                <div className="inline-block px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-rose-500/15 text-rose-400 border border-rose-500/30 mb-4">
+                  ✕ THE OLD WAY (LOW CONVERSION)
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  Scraping Generic Lists & Spamming Inboxes
+                </h3>
+                <ul className="space-y-3.5 text-xs sm:text-sm text-slate-400">
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-rose-400 font-bold mt-0.5">✕</span>
+                    <span>Buying static scraped databases where 40%+ emails bounce and damage your domain reputation.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-rose-400 font-bold mt-0.5">✕</span>
+                    <span>Pitching business owners with no active intent or stated commercial budget.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-rose-400 font-bold mt-0.5">✕</span>
+                    <span>Sending generic cold emails with zero context about the company's real operational bottlenecks.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-rose-400 font-bold mt-0.5">✕</span>
+                    <span>Zero phone or WhatsApp access, getting trapped behind gatekeepers and unmonitored info@ inboxes.</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* The Samvero Way */}
+              <div className="p-8 rounded-3xl bg-[#060e24] border border-[#00AAFF]/40 relative shadow-[0_10px_40px_rgba(0,87,255,0.2)]">
+                <div className="inline-block px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-[#0057FF]/25 text-cyan-300 border border-[#00AAFF]/40 mb-4">
+                  ✓ THE SAMVERO WAY (HIGH-TICKET CLOSE)
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  Active High-Intent Telemetry + Direct WhatsApp
+                </h3>
+                <ul className="space-y-3.5 text-xs sm:text-sm text-slate-300">
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>Real-time crawls tracking active RFPs, tender postings, and businesses missing critical digital assets.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>100% DNS MX-verified company emails + verified ITU mobile numbers for direct WhatsApp pitching.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>AI auto-analyzes the prospect's exact flaws (e.g. broken mobile layout, slow speed) before you pitch.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>Pre-calculated budget ranges ($1,500 - $35,000+) so you never waste time pitching underfunded leads.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Corporate Imagery & Workflow Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
               
               {/* Feature 1 */}
-              <div className="rounded-3xl overflow-hidden bg-white border border-slate-200 hover:border-[#0057FF]/50 transition shadow-md hover:shadow-xl group flex flex-col justify-between">
+              <div className="rounded-3xl overflow-hidden bg-[#060b18] border border-slate-800 hover:border-[#00AAFF]/50 transition shadow-xl group flex flex-col justify-between">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80"
                     alt="Corporate Boardroom Meeting"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
                   <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#0057FF] text-white">
-                    BOARDROOM STRATEGY
+                    BOARDROOM PROOF
                   </span>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-base font-bold text-slate-900 mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    Executive Client Pitches
+                  <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Executive Client Evidence
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Arm your account managers with real primary evidence: company registrations, domain health, and direct decision-maker mobile lines.
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Show up with verified corporate data, domain health audits, and vector proposals ready for signing on the first call.
                   </p>
                 </div>
               </div>
 
               {/* Feature 2 */}
-              <div className="rounded-3xl overflow-hidden bg-white border border-slate-200 hover:border-[#0057FF]/50 transition shadow-md hover:shadow-xl group flex flex-col justify-between">
+              <div className="rounded-3xl overflow-hidden bg-[#060b18] border border-slate-800 hover:border-[#00AAFF]/50 transition shadow-xl group flex flex-col justify-between">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80"
                     alt="Agency Workstation Collaboration"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
                   <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-[#00AAFF] text-white">
-                    OUTBOUND WORKSTATION
+                    OUTBOUND VELOCITY
                   </span>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-base font-bold text-slate-900 mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    High-Velocity Pipeline Workflow
+                  <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Instant Multi-Territory Outreach
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Filter by country, commercial budget, and missing responsive assets. Convert cold leads into qualified pipeline stages in minutes.
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Target the US, UK, UAE, or Pakistan. Pitch corporate decision makers via direct WhatsApp with 1-click tailored hooks.
                   </p>
                 </div>
               </div>
 
               {/* Feature 3 */}
-              <div className="rounded-3xl overflow-hidden bg-white border border-slate-200 hover:border-[#0057FF]/50 transition shadow-md hover:shadow-xl group flex flex-col justify-between">
+              <div className="rounded-3xl overflow-hidden bg-[#060b18] border border-slate-800 hover:border-[#00AAFF]/50 transition shadow-xl group flex flex-col justify-between">
                 <div className="relative h-48 overflow-hidden">
                   <img
                     src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80"
                     alt="Corporate Handshake & Contract Closing"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
                   <span className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-emerald-600 text-white">
-                    HIGH-TICKET CLOSE
+                    DEAL CLOSURE
                   </span>
                 </div>
                 <div className="p-6">
-                  <h3 className="text-base font-bold text-slate-900 mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    1-Click Scope of Work Proposals
+                  <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    1-Click Scope of Work Packages
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">
-                    Generate white-labeled PDF proposal packages, 14-screen app specs, and vector logo audits directly inside the Workbench.
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Eliminate weeks of back-and-forth. Send comprehensive SOW proposals with pricing breakdowns in under 60 seconds.
                   </p>
                 </div>
               </div>
 
             </div>
 
-            {/* 4-Pillar Architecture with Modern Analytics Imagery */}
+            {/* 4-Pillar Architecture */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 {
@@ -971,19 +1030,19 @@ export default function LuxuryLandingPage() {
                 return (
                   <div
                     key={idx}
-                    className="p-6 rounded-[2rem] bg-white border border-slate-200 hover:border-[#0057FF]/40 transition flex flex-col justify-between group shadow-sm hover:shadow-md"
+                    className="p-6 rounded-[2rem] bg-[#060b18]/90 border border-slate-800 hover:border-[#00AAFF]/40 transition flex flex-col justify-between group shadow-lg"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-4">
                         <span className="text-2xl font-mono font-bold text-[#0057FF] group-hover:text-[#00AAFF] transition">
                           {item.step}
                         </span>
-                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#0057FF]/10 border border-[#0057FF]/20 text-[#0057FF] group-hover:scale-110 transition">
+                        <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-[#0057FF]/15 border border-[#00AAFF]/30 text-[#00AAFF] group-hover:scale-110 transition">
                           <IconComp className="w-5 h-5" />
                         </div>
                       </div>
 
-                      <div className="w-full h-24 rounded-xl overflow-hidden mb-4 border border-slate-200">
+                      <div className="w-full h-24 rounded-xl overflow-hidden mb-4 border border-slate-800">
                         <img
                           src={item.image}
                           alt={item.title}
@@ -991,15 +1050,15 @@ export default function LuxuryLandingPage() {
                         />
                       </div>
 
-                      <h3 className="text-base font-bold text-slate-900 mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      <h3 className="text-base font-bold text-white mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                         {item.title}
                       </h3>
-                      <p className="text-xs text-slate-600 leading-relaxed mb-4">
+                      <p className="text-xs text-slate-400 leading-relaxed mb-4">
                         {item.desc}
                       </p>
                     </div>
 
-                    <div className="pt-3 border-t border-slate-100 text-[11px] font-mono text-[#0057FF] font-semibold">
+                    <div className="pt-3 border-t border-slate-800 text-[11px] font-mono text-[#00AAFF] font-semibold">
                       {item.stat}
                     </div>
                   </div>
@@ -1261,31 +1320,31 @@ export default function LuxuryLandingPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
-            SECTION 4: FAQ (WHITE SECTION WITH ANIMATED CYBER GRID)
+            SECTION 4: FAQ (DEEP BLACK TECH SECTION WITH CYBER GRID)
             ═══════════════════════════════════════════════════════ */}
-        <section className="py-24 relative overflow-hidden bg-slate-50 text-slate-900 border-t border-slate-200">
-          {/* Animated Light Grid lines */}
-          <div className="absolute inset-0 cyber-grid-light pointer-events-none" />
+        <section className="py-24 relative overflow-hidden bg-[#030712] text-slate-100 border-t border-slate-800">
+          {/* Animated Grid lines */}
+          <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
 
           {/* Floating cyber squares */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-[20%] right-[12%] w-[55px] h-[55px] border border-[#0057FF]/25 bg-[#0057FF]/5 rounded-lg cyber-square-float" />
-            <div className="absolute bottom-[25%] left-[10%] w-[65px] h-[65px] border border-[#00AAFF]/25 bg-[#00AAFF]/5 rounded-lg cyber-square-light" />
+            <div className="absolute top-[20%] right-[12%] w-[55px] h-[55px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-lg cyber-square-float" />
+            <div className="absolute bottom-[25%] left-[10%] w-[65px] h-[65px] border border-cyan-400/40 bg-cyan-500/10 rounded-lg cyber-square-glow" />
           </div>
 
           <div className="max-w-4xl mx-auto px-6 relative z-10">
             <div className="text-center mb-14">
-              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/10 border border-[#0057FF]/25 text-[#0057FF] mb-4">
-                <HelpCircle className="w-3.5 h-3.5 text-[#0057FF]" />
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/15 border border-[#0057FF]/35 text-[#00AAFF] mb-4">
+                <HelpCircle className="w-3.5 h-3.5 text-[#00AAFF]" />
                 <span>Frequently Asked Questions</span>
               </span>
               <h2
-                className="text-3xl sm:text-4xl font-bold text-slate-900 mb-2"
+                className="text-3xl sm:text-4xl font-bold text-white mb-2"
                 style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
                 Questions & Answers
               </h2>
-              <p className="text-xs sm:text-sm text-slate-600">
+              <p className="text-xs sm:text-sm text-slate-400">
                 Everything you need to know about our subscription and lead delivery guarantees.
               </p>
             </div>
@@ -1296,21 +1355,21 @@ export default function LuxuryLandingPage() {
                 return (
                   <div
                     key={index}
-                    className="rounded-2xl overflow-hidden bg-white border border-slate-200 shadow-sm transition hover:border-[#0057FF]/40"
+                    className="rounded-2xl overflow-hidden bg-[#060b18] border border-slate-800 transition hover:border-[#0057FF]/50"
                   >
                     <button
                       onClick={() => setOpenFaqIndex(isOpen ? null : index)}
                       className="w-full p-5 text-left flex items-center justify-between gap-4 transition"
                     >
-                      <span className="text-sm font-bold text-slate-900">{faq.q}</span>
+                      <span className="text-sm font-bold text-white">{faq.q}</span>
                       <ChevronDown
                         className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
-                          isOpen ? 'rotate-180 text-[#0057FF]' : 'text-slate-400'
+                          isOpen ? 'rotate-180 text-[#00AAFF]' : 'text-slate-400'
                         }`}
                       />
                     </button>
                     {isOpen && (
-                      <div className="px-5 pb-5 pt-1 text-xs text-slate-600 leading-relaxed border-t border-slate-100">
+                      <div className="px-5 pb-5 pt-1 text-xs text-slate-400 leading-relaxed border-t border-slate-800/80">
                         {faq.a}
                       </div>
                     )}
