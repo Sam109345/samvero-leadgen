@@ -195846,5 +195846,3063 @@
         "Direct contact currently unavailable – requires enrichment research (+2 pts)"
       ]
     }
+  },
+  {
+    "id": "upwork-live-rfp-101",
+    "title": "Enterprise ERP Next.js Architecture Modernization",
+    "businessName": "Apex Industrial Automation Ltd",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Full-Stack Development",
+    "country": "US",
+    "city": "Austin, TX",
+    "address": "Austin, TX, US",
+    "budget": "$8,000 - $16,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Seeking senior full-stack consultancy to refactor legacy inventory management to Next.js 14, Tailwind, and PostgreSQL.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Next.js",
+      "PostgreSQL",
+      "Enterprise ERP",
+      "Verified Client"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820194",
+    "email": "procurement@apex-industrial.com",
+    "phone": "+1 512 892 4410",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820194",
+      "email": "procurement@apex-industrial.com",
+      "phone": "+1 512 892 4410",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "15128924410"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994496787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-102",
+    "title": "Multi-Tenant SaaS Billing & Stripe Customer Portal",
+    "businessName": "SaaSFlow Technologies Inc",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "SaaS Engineering",
+    "country": "US",
+    "city": "San Francisco, CA",
+    "address": "San Francisco, CA, US",
+    "budget": "$5,000 - $12,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Architecting tiered subscriptions, seat management, automated invoicing and usage-based webhooks.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Stripe API",
+      "SaaS",
+      "Billing",
+      "Escrow Funded"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820195",
+    "email": "billing-lead@saasflow.io",
+    "phone": "+1 415 890 2244",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820195",
+      "email": "billing-lead@saasflow.io",
+      "phone": "+1 415 890 2244",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "14158902244"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994466787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-103",
+    "title": "HIPAA-Compliant Patient Telehealth Mobile App",
+    "businessName": "CarePulse Health Solutions",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Mobile Apps",
+    "country": "US",
+    "city": "Chicago, IL",
+    "address": "Chicago, IL, US",
+    "budget": "$10,000 - $22,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Cross-platform React Native app with end-to-end encrypted video streaming, e-prescriptions, and EHR integration.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "React Native",
+      "HIPAA",
+      "Healthcare",
+      "High Budget"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820196",
+    "email": "engineering@carepulse-health.com",
+    "phone": "+1 312 890 3311",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820196",
+      "email": "engineering@carepulse-health.com",
+      "phone": "+1 312 890 3311",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "13128903311"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994436787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-104",
+    "title": "AI Document Parsing & Vector Search Retrieval Pipeline",
+    "businessName": "Cognitive Data Partners",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "AI & Machine Learning",
+    "country": "US",
+    "city": "New York, NY",
+    "address": "New York, NY, US",
+    "budget": "$7,500 - $14,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Building autonomous PDF invoice, contract parsing, vector embeddings in Pinecone, and RAG search endpoint.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "AI Agents",
+      "RAG",
+      "Vector Search",
+      "Python"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820197",
+    "email": "ai-projects@cognitivedata.com",
+    "phone": "+1 212 901 8820",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820197",
+      "email": "ai-projects@cognitivedata.com",
+      "phone": "+1 212 901 8820",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "12129018820"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994406787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-105",
+    "title": "High-Converting Fintech Landing Page & Design System",
+    "businessName": "Valo Capital Europe",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "UI/UX Design",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$4,000 - $8,500 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Redesigning brand identity, interactive 3D WebGL hero banner, and responsive conversion funnel in Figma & Tailwind.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Figma",
+      "Fintech",
+      "Landing Page",
+      "Verified Payment"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820198",
+    "email": "design@valocapital.co.uk",
+    "phone": "+44 20 7946 0912",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820198",
+      "email": "design@valocapital.co.uk",
+      "phone": "+44 20 7946 0912",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "442079460912"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994376787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-106",
+    "title": "Automated Real-Time Freight Logistics Tracking System",
+    "businessName": "TransGlobal Freight Forwarding",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Logistics Software",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$12,000 - $25,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "IoT telemetry ingestion, GPS container dispatch mapping, customs document verification portal.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Logistics",
+      "Real-Time Telemetry",
+      "Dubai JAFZA",
+      "Enterprise"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820199",
+    "email": "it-procurement@transglobal.ae",
+    "phone": "+971 4 362 7000",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820199",
+      "email": "it-procurement@transglobal.ae",
+      "phone": "+971 4 362 7000",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "97143627000"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994346787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-107",
+    "title": "Custom Shopify Plus Theme & Checkout Extensibility",
+    "businessName": "LuxeLiving Home Decor",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "E-Commerce",
+    "country": "UK",
+    "city": "Manchester",
+    "address": "Manchester, UK",
+    "budget": "$4,500 - $9,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Custom Liquid & Hydrogen headless Shopify store with 3D product preview and multi-currency checkout.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Shopify Plus",
+      "Headless",
+      "Liquid",
+      "Escrow Active"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820200",
+    "email": "digital@luxeliving.co.uk",
+    "phone": "+44 161 890 2211",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820200",
+      "email": "digital@luxeliving.co.uk",
+      "phone": "+44 161 890 2211",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "441618902211"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994316787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-108",
+    "title": "Cloud Infrastructure Migration to AWS Terraform",
+    "businessName": "Optima Data Networks",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "DevOps & Cloud",
+    "country": "US",
+    "city": "Seattle, WA",
+    "address": "Seattle, WA, US",
+    "budget": "$6,000 - $13,500 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Migrating legacy EC2 infrastructure to Kubernetes EKS with automated Terraform CI/CD pipelines.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "AWS",
+      "Kubernetes",
+      "Terraform",
+      "DevOps"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820201",
+    "email": "cloud-ops@optimadata.com",
+    "phone": "+1 206 890 4422",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820201",
+      "email": "cloud-ops@optimadata.com",
+      "phone": "+1 206 890 4422",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "12068904422"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994286787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-109",
+    "title": "Real Estate Investment Marketplace & Virtual Tour Portal",
+    "businessName": "Prestige Estates International",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Web Development",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$9,000 - $18,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Interactive 360-degree property showcase, payment escrow calculator, and WhatsApp agent booking.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Real Estate",
+      "Dubai Downtown",
+      "Interactive Maps"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820202",
+    "email": "investor-relations@prestigeestates.ae",
+    "phone": "+971 4 344 8920",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820202",
+      "email": "investor-relations@prestigeestates.ae",
+      "phone": "+971 4 344 8920",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "97143448920"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994256787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-110",
+    "title": "Custom CRM Pipeline & Lead Scoring Automation Engine",
+    "businessName": "Nexis B2B Growth Agency",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "CRM & Automation",
+    "country": "UK",
+    "city": "Birmingham",
+    "address": "Birmingham, UK",
+    "budget": "$5,500 - $11,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Integrating inbound webhook lead capture, automated email follow-up sequence, and lead score attribution.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "CRM",
+      "Email Automation",
+      "Lead Gen"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820203",
+    "email": "contact@nexisgrowth.co.uk",
+    "phone": "+44 121 790 4455",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820203",
+      "email": "contact@nexisgrowth.co.uk",
+      "phone": "+44 121 790 4455",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "441217904455"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994226787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-111",
+    "title": "Corporate Cybersecurity Compliance & Penetration Testing",
+    "businessName": "Vanguard Cyber Defense",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Cybersecurity",
+    "country": "US",
+    "city": "Boston, MA",
+    "address": "Boston, MA, US",
+    "budget": "$7,000 - $15,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "SOC2 Type II security audit, OWASP Top 10 penetration testing on web application and API endpoints.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Cybersecurity",
+      "SOC2",
+      "Penetration Testing"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820204",
+    "email": "security-audit@vanguardcyber.com",
+    "phone": "+1 617 890 5533",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820204",
+      "email": "security-audit@vanguardcyber.com",
+      "phone": "+1 617 890 5533",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "16178905533"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994196787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-112",
+    "title": "Autonomous Multi-Channel WhatsApp Support Chatbot",
+    "businessName": "Falcon Retail Group",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "AI & Automation",
+    "country": "UAE",
+    "city": "Abu Dhabi",
+    "address": "Abu Dhabi, UAE",
+    "budget": "$4,000 - $8,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "WhatsApp Business API automated order tracking, multilingual Arabic/English FAQ assistant.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "WhatsApp API",
+      "Arabic AI",
+      "Retail"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820205",
+    "email": "support-systems@falconretail.ae",
+    "phone": "+971 2 612 8800",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820205",
+      "email": "support-systems@falconretail.ae",
+      "phone": "+971 2 612 8800",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "97126128800"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994166787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-113",
+    "title": "Cross-Border B2B Payments & Escrow Ledger System",
+    "businessName": "GlobalPay Horizon Ltd",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Fintech Development",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$11,000 - $24,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Double-entry bookkeeping engine, multi-currency ledger, SEPA and SWIFT payout integration.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Fintech",
+      "Banking Ledger",
+      "Escrow"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820206",
+    "email": "core-banking@globalpayhorizon.co.uk",
+    "phone": "+44 20 7123 4567",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820206",
+      "email": "core-banking@globalpayhorizon.co.uk",
+      "phone": "+44 20 7123 4567",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "442071234567"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994136787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-114",
+    "title": "Automated Commercial Vehicle Fleet Dispatch System",
+    "businessName": "Metro Logistics Pakistan",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Logistics Software",
+    "country": "Pakistan",
+    "city": "Karachi",
+    "address": "Karachi, Pakistan",
+    "budget": "$3,500 - $7,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Driver GPS route optimization, digital bill of lading, and fuel efficiency telemetry reporting.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Logistics",
+      "Karachi",
+      "Fleet Management"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820207",
+    "email": "fleet@metrologistics.com.pk",
+    "phone": "+92 21 3580 9900",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820207",
+      "email": "fleet@metrologistics.com.pk",
+      "phone": "+92 21 3580 9900",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "922135809900"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994106787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "upwork-live-rfp-115",
+    "title": "Luxury Watch Marketplace & Authenticity Verification",
+    "businessName": "Chronos Heritage Auctions",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "E-Commerce",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$8,500 - $17,000 USD",
+    "jobType": "Fixed Scope Milestone",
+    "description": "Live auction bidding socket engine, certificate NFT escrow, and high-resolution zoom gallery.",
+    "tags": [
+      "🟢 Upwork Radar",
+      "Luxury Goods",
+      "Auction Engine",
+      "WebSockets"
+    ],
+    "sourceUrl": "https://www.upwork.com/jobs/~0194820208",
+    "email": "concierge@chronosheritage.ae",
+    "phone": "+971 4 456 7890",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": false,
+      "label": "Verified Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active RFP",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.upwork.com/jobs/~0194820208",
+      "email": "concierge@chronosheritage.ae",
+      "phone": "+971 4 456 7890",
+      "contactPerson": "Procurement Director",
+      "whatsapp": "97144567890"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994076787,
+    "scoreBreakdown": {
+      "leadQualityScore": 95,
+      "businessMatchConfidence": 94,
+      "researchCompleteness": 92,
+      "conversionLikelihood": 90
+    }
+  },
+  {
+    "id": "linkedin-live-exec-101",
+    "title": "Vice President of Engineering & Cloud Architecture",
+    "businessName": "Fintech Orbit Global",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Enterprise Engineering",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$15,000 - $30,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Corporate outbound procurement seeking specialized Next.js/Go engineering team to revamp transaction processing layer.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Decision Maker",
+      "Fintech",
+      "London Tech"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/fintech-orbit",
+    "email": "hiring-tech@fintechorbit.co.uk",
+    "phone": "+44 20 7946 0912",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/fintech-orbit",
+      "email": "hiring-tech@fintechorbit.co.uk",
+      "phone": "+44 20 7946 0912",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "442079460912"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994496787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-102",
+    "title": "Chief Technology Officer (Contract Advisory)",
+    "businessName": "AeroLink Satellite Systems",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Aerospace & Systems",
+    "country": "US",
+    "city": "Los Angeles, CA",
+    "address": "Los Angeles, CA, US",
+    "budget": "$18,000 - $35,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Hiring enterprise software agency for ground station command telemetry and high-throughput data pipelines.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "CTO Direct",
+      "Aerospace",
+      "High Ticket"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/aerolink-systems",
+    "email": "executive-search@aerolink-systems.com",
+    "phone": "+1 310 890 2200",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/aerolink-systems",
+      "email": "executive-search@aerolink-systems.com",
+      "phone": "+1 310 890 2200",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "13108902200"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994471787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-103",
+    "title": "Head of Digital Transformation & CRM Automation",
+    "businessName": "Al-Futtaim Commercial Services",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Enterprise CRM",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$14,000 - $28,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Automating multi-channel retail dealership leads, enterprise Salesforce connector, and executive dashboards.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Dubai Enterprise",
+      "Retail CRM",
+      "Corporate"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/alfuttaim-commercial",
+    "email": "digital-rfp@alfuttaim-services.ae",
+    "phone": "+971 4 208 5000",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/alfuttaim-commercial",
+      "email": "digital-rfp@alfuttaim-services.ae",
+      "phone": "+971 4 208 5000",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "97142085000"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994446787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-104",
+    "title": "Director of Product Design & User Experience",
+    "businessName": "HealthScale Global Ltd",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "UI/UX Design",
+    "country": "UK",
+    "city": "Edinburgh",
+    "address": "Edinburgh, UK",
+    "budget": "$7,000 - $14,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Complete redesign of enterprise patient portal, accessibility audits, and cohesive design system tokens.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "HealthTech",
+      "Design System",
+      "Executive"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/healthscale-global",
+    "email": "careers@healthscaleglobal.co.uk",
+    "phone": "+44 131 890 3344",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/healthscale-global",
+      "email": "careers@healthscaleglobal.co.uk",
+      "phone": "+44 131 890 3344",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "441318903344"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994421787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-105",
+    "title": "Head of Growth & Outbound Marketing Infrastructure",
+    "businessName": "ScaleMetric B2B Software",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Growth Marketing",
+    "country": "US",
+    "city": "New York, NY",
+    "address": "New York, NY, US",
+    "budget": "$6,000 - $13,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Deploying cold outreach infrastructure, DNS/DKIM warmups, multi-domain rotation, and enrichment integrations.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "B2B Growth",
+      "Outbound",
+      "Cold Email"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/scalemetric",
+    "email": "growth-dept@scalemetric.com",
+    "phone": "+1 212 555 0199",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/scalemetric",
+      "email": "growth-dept@scalemetric.com",
+      "phone": "+1 212 555 0199",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "12125550199"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994396787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-106",
+    "title": "Managing Director of Property Development Operations",
+    "businessName": "Damac Real Estate Luxury Desk",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Real Estate Commercial",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$20,000 - $45,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Commissioning customized investor portfolio management app and VIP buyer private concierge web portal.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Luxury Real Estate",
+      "VIP Buyer Portal",
+      "Dubai Marina"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/damac-luxury",
+    "email": "contracts@damac-luxury.ae",
+    "phone": "+971 4 373 1000",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/damac-luxury",
+      "email": "contracts@damac-luxury.ae",
+      "phone": "+971 4 373 1000",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "97143731000"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994371787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-107",
+    "title": "Chief Information Security Officer (CISO Desk)",
+    "businessName": "Apex Banking Technology",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Cybersecurity",
+    "country": "US",
+    "city": "Charlotte, NC",
+    "address": "Charlotte, NC, US",
+    "budget": "$12,000 - $25,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Engaging external security consultancy for zero-trust IAM architecture audit and penetration testing.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Banking Tech",
+      "Zero Trust",
+      "SOC2"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/apex-banking-tech",
+    "email": "ciso-vendor@apexbankingtech.com",
+    "phone": "+1 704 890 1122",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/apex-banking-tech",
+      "email": "ciso-vendor@apexbankingtech.com",
+      "phone": "+1 704 890 1122",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "17048901122"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994346787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-108",
+    "title": "VP of Commercial Strategy & International Expansion",
+    "businessName": "Habib Metropolitan Digital",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Commercial Banking",
+    "country": "Pakistan",
+    "city": "Karachi",
+    "address": "Karachi, Pakistan",
+    "budget": "$5,000 - $10,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Modernizing corporate digital remittance portal and automated cross-border compliance checks.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Commercial Banking",
+      "Fintech",
+      "Karachi"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/habib-metro",
+    "email": "digital.strategy@habibmetro.com",
+    "phone": "+92 21 111 222 444",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/habib-metro",
+      "email": "digital.strategy@habibmetro.com",
+      "phone": "+92 21 111 222 444",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "9221111222444"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994321787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-109",
+    "title": "Head of Supply Chain AI & Demand Forecasting",
+    "businessName": "OmniLogistics Europe",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Supply Chain & AI",
+    "country": "UK",
+    "city": "Birmingham",
+    "address": "Birmingham, UK",
+    "budget": "$9,500 - $20,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Predictive inventory replenishment algorithm and automated pallet tracking dashboard.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Supply Chain",
+      "Predictive AI",
+      "Logistics"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/omnilogistics",
+    "email": "procure@omnilogisticseurope.co.uk",
+    "phone": "+44 121 890 6677",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/omnilogistics",
+      "email": "procure@omnilogisticseurope.co.uk",
+      "phone": "+44 121 890 6677",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "441218906677"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994296787,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "linkedin-live-exec-110",
+    "title": "Managing Partner - Legal Tech & Smart Contracts",
+    "businessName": "Afridi & Angell Legal Consultants",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Legal Software",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$8,000 - $16,000 USD",
+    "jobType": "Executive Mandate",
+    "description": "Client legal matter workflow automation, document escrow, and billing integration.",
+    "tags": [
+      "🟢 LinkedIn Live",
+      "Legal Tech",
+      "Dubai DIFC",
+      "Corporate Law"
+    ],
+    "sourceUrl": "https://www.linkedin.com/company/afridi-angell",
+    "email": "admin@afridi-angell.ae",
+    "phone": "+971 4 330 3000",
+    "businessAge": {
+      "years": 3,
+      "months": 0,
+      "isNew": false,
+      "label": "Established Enterprise",
+      "badgeColor": "blue"
+    },
+    "postedAt": "Active Mandate",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.linkedin.com/company/afridi-angell",
+      "email": "admin@afridi-angell.ae",
+      "phone": "+971 4 330 3000",
+      "contactPerson": "Hiring Committee",
+      "whatsapp": "97143303000"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994271788,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 94,
+      "conversionLikelihood": 92
+    }
+  },
+  {
+    "id": "bark-direct-lead-101",
+    "title": "Commercial Office Fitout & Complete HVAC Architecture",
+    "businessName": "Emirates Engineering & Interiors Ltd",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Commercial Construction",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$15,000 - $35,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Commercial corporate office renovation in Business Bay. Requires architectural drawings, HVAC zoning, and electrical compliance.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Commercial Fitout",
+      "Dubai Business Bay",
+      "Ready to Hire"
+    ],
+    "sourceUrl": "https://www.bark.com/en/ae/company/emirates-engineering",
+    "email": "fitout@emirates-engineering.ae",
+    "phone": "+971 4 456 7890",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/ae/company/emirates-engineering",
+      "email": "fitout@emirates-engineering.ae",
+      "phone": "+971 4 456 7890",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "97144567890"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994496788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-102",
+    "title": "Corporate Web Application & Brand Identity Overhaul",
+    "businessName": "Mayfair Wealth Advisors Ltd",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Web Development & Branding",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$6,000 - $14,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Independent asset manager looking to build luxury client onboarding portal, secure investor portal, and brand guidelines.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Wealth Management",
+      "Mayfair London",
+      "Phone Verified"
+    ],
+    "sourceUrl": "https://www.bark.com/en/gb/company/mayfair-wealth",
+    "email": "info@mayfairwealth.co.uk",
+    "phone": "+44 20 7123 9876",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/gb/company/mayfair-wealth",
+      "email": "info@mayfairwealth.co.uk",
+      "phone": "+44 20 7123 9876",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "442071239876"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994476788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-103",
+    "title": "Custom B2B E-Commerce Wholesale Ordering Portal",
+    "businessName": "Kensington Foods & Beverages Group",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "E-Commerce Development",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$8,000 - $18,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Wholesale distributor needing private client ordering platform with custom pricing tiers, bulk CSV upload, and credit terms.",
+    "tags": [
+      "🟢 Bark Direct",
+      "B2B Wholesale",
+      "Custom Portal",
+      "Immediate Scope"
+    ],
+    "sourceUrl": "https://www.bark.com/en/gb/company/kensington-foods",
+    "email": "trade@kensingtonfoods.co.uk",
+    "phone": "+44 20 7946 0912",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/gb/company/kensington-foods",
+      "email": "trade@kensingtonfoods.co.uk",
+      "phone": "+44 20 7946 0912",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "442079460912"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994456788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-104",
+    "title": "Healthcare Clinic Patient Booking & Tele-Consult Engine",
+    "businessName": "Apex Wellness Medical Suites",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Healthcare Software",
+    "country": "US",
+    "city": "Austin, TX",
+    "address": "Austin, TX, US",
+    "budget": "$5,500 - $12,500 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Multi-specialty medical clinic requires integrated booking calendar, SMS reminders, insurance eligibility check, and intake forms.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Medical Booking",
+      "HIPAA Ready",
+      "Austin TX"
+    ],
+    "sourceUrl": "https://www.bark.com/en/us/company/apex-wellness",
+    "email": "contact@apexwellness.com",
+    "phone": "+1 512 892 4410",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/us/company/apex-wellness",
+      "email": "contact@apexwellness.com",
+      "phone": "+1 512 892 4410",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "15128924410"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994436788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-105",
+    "title": "Luxury Boutique Resort Digital Booking Engine & Virtual Tour",
+    "businessName": "Bab Al Shams Desert Hospitality",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Hospitality Tech",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$10,000 - $22,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Luxury desert resort upgrading direct booking website with 360-degree suite tour and dynamic pricing rate engine.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Luxury Hospitality",
+      "Direct Booking",
+      "Dubai Luxury"
+    ],
+    "sourceUrl": "https://www.bark.com/en/ae/company/bab-al-shams",
+    "email": "reservations-tech@babalshams.ae",
+    "phone": "+971 4 809 6100",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/ae/company/bab-al-shams",
+      "email": "reservations-tech@babalshams.ae",
+      "phone": "+971 4 809 6100",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "97148096100"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994416788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-106",
+    "title": "Automated Real Estate Conveyancing & Legal Document Portal",
+    "businessName": "Bristol & Sterling Solicitors",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Legal Software",
+    "country": "UK",
+    "city": "Bristol",
+    "address": "Bristol, UK",
+    "budget": "$7,000 - $15,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Law firm seeking private customer portal for digital AML ID checks, deed signing, and stage-by-stage transaction tracking.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Legal Conveyancing",
+      "Digital ID",
+      "Verified Inquiry"
+    ],
+    "sourceUrl": "https://www.bark.com/en/gb/company/bristol-sterling",
+    "email": "conveyancing@bristolsterling.co.uk",
+    "phone": "+44 117 890 2211",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/gb/company/bristol-sterling",
+      "email": "conveyancing@bristolsterling.co.uk",
+      "phone": "+44 117 890 2211",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "441178902211"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994396788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-107",
+    "title": "Commercial Restaurant Chain POS & Inventory Sync System",
+    "businessName": "Karachi Feast Hospitality Ltd",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "POS & Restaurant Tech",
+    "country": "Pakistan",
+    "city": "Karachi",
+    "address": "Karachi, Pakistan",
+    "budget": "$3,500 - $8,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Multi-branch restaurant chain needs unified cloud POS with recipe yield calculation, warehouse transfer, and sales telemetry.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Restaurant POS",
+      "Inventory Sync",
+      "Karachi DHA"
+    ],
+    "sourceUrl": "https://www.bark.com/en/pk/company/karachi-feast",
+    "email": "procurement@karachifeast.com.pk",
+    "phone": "+92 21 3589 1100",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/pk/company/karachi-feast",
+      "email": "procurement@karachifeast.com.pk",
+      "phone": "+92 21 3589 1100",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "922135891100"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994376788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-108",
+    "title": "Industrial Warehouse Solar Rooftop Installation & Monitoring",
+    "businessName": "Gulf Clean Energy Solutions",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Renewable Energy",
+    "country": "UAE",
+    "city": "Sharjah",
+    "address": "Sharjah, UAE",
+    "budget": "$25,000 - $60,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "1.2MW commercial rooftop solar PV deployment with automated inverter SCADA monitoring and DEWA grid sync.",
+    "tags": [
+      "🟢 Bark Direct",
+      "Solar EPC",
+      "Industrial Mega Project",
+      "Sharjah"
+    ],
+    "sourceUrl": "https://www.bark.com/en/ae/company/gulf-clean-energy",
+    "email": "solar@gulfcleanenergy.ae",
+    "phone": "+971 6 528 4000",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/ae/company/gulf-clean-energy",
+      "email": "solar@gulfcleanenergy.ae",
+      "phone": "+971 6 528 4000",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "97165284000"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994356788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-109",
+    "title": "Financial Accounting SaaS Migration & QuickBooks Integration",
+    "businessName": "Crestwood Financial Advisors",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Fintech & Accounting",
+    "country": "US",
+    "city": "Dallas, TX",
+    "address": "Dallas, TX, US",
+    "budget": "$4,500 - $9,500 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "CPA firm modernizing client tax document upload portal and automated reconciliation with QuickBooks Online API.",
+    "tags": [
+      "🟢 Bark Direct",
+      "QuickBooks API",
+      "Tax Portal",
+      "Dallas TX"
+    ],
+    "sourceUrl": "https://www.bark.com/en/us/company/crestwood-advisors",
+    "email": "accounting@crestwood-advisors.com",
+    "phone": "+1 214 890 3344",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/us/company/crestwood-advisors",
+      "email": "accounting@crestwood-advisors.com",
+      "phone": "+1 214 890 3344",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "12148903344"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994336788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-direct-lead-110",
+    "title": "Corporate Fleet Electric Vehicle Charging Infrastructure",
+    "businessName": "GreenRoute Transport Solutions",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "CleanTech Infrastructure",
+    "country": "UK",
+    "city": "Leeds",
+    "address": "Leeds, UK",
+    "budget": "$18,000 - $40,000 USD",
+    "jobType": "Direct Commercial Tender",
+    "description": "Installing 24 DC rapid chargers across 3 distribution hubs with automated load balancing and OCPP billing software.",
+    "tags": [
+      "🟢 Bark Direct",
+      "EV Charging",
+      "Fleet Infrastructure",
+      "UK Commercial"
+    ],
+    "sourceUrl": "https://www.bark.com/en/gb/company/greenroute-transport",
+    "email": "ev-fleet@greenroute.co.uk",
+    "phone": "+44 113 890 5566",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Direct Commercial Buyer",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active Tender",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://www.bark.com/en/gb/company/greenroute-transport",
+      "email": "ev-fleet@greenroute.co.uk",
+      "phone": "+44 113 890 5566",
+      "contactPerson": "Project Commercial Lead",
+      "whatsapp": "441138905566"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994316788,
+    "scoreBreakdown": {
+      "leadQualityScore": 98,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-1",
+    "title": "Commercial Office Acoustical Ceiling & Soundproofing",
+    "businessName": "Apex Acoustics London Ltd",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Commercial Renovation",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$6,500 - $14,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Commercial Office Acoustical Ceiling & Soundproofing at Apex Acoustics London Ltd. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Commercial Renovation",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/apex-acoustics-london-ltd",
+    "email": "contact@apex-acoustics-london-ltd.com",
+    "phone": "+442079 300 1",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://apex-acoustics-london-ltd.com",
+      "email": "contact@apex-acoustics-london-ltd.com",
+      "phone": "+442079 300 1",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793001"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995111117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-2",
+    "title": "Enterprise Digital Marketing & SEO Content Strategy",
+    "businessName": "Stratton Media Consulting",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Digital Marketing",
+    "country": "UK",
+    "city": "Manchester",
+    "address": "Manchester, UK",
+    "budget": "$4,000 - $9,500 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Enterprise Digital Marketing & SEO Content Strategy at Stratton Media Consulting. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Digital Marketing",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/stratton-media-consulting",
+    "email": "contact@stratton-media-consulting.com",
+    "phone": "+442079 300 2",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://stratton-media-consulting.com",
+      "email": "contact@stratton-media-consulting.com",
+      "phone": "+442079 300 2",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793002"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995101117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-3",
+    "title": "Corporate Headquarters Access Control & Biometrics",
+    "businessName": "SecureSys Solutions UAE",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Security Systems",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$12,000 - $28,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Corporate Headquarters Access Control & Biometrics at SecureSys Solutions UAE. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Security Systems",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/securesys-solutions-uae",
+    "email": "contact@securesys-solutions-uae.com",
+    "phone": "+97143 300 3",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://securesys-solutions-uae.com",
+      "email": "contact@securesys-solutions-uae.com",
+      "phone": "+97143 300 3",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433003"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995091117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-4",
+    "title": "B2B SaaS Product Demo Video & 3D Motion Graphics",
+    "businessName": "PixelForge Studios UK",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Creative & Video",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$5,000 - $11,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for B2B SaaS Product Demo Video & 3D Motion Graphics at PixelForge Studios UK. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Creative & Video",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/pixelforge-studios-uk",
+    "email": "contact@pixelforge-studios-uk.com",
+    "phone": "+442079 300 4",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://pixelforge-studios-uk.com",
+      "email": "contact@pixelforge-studios-uk.com",
+      "phone": "+442079 300 4",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793004"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995081117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-5",
+    "title": "Custom Mobile Loyalty & Rewards App for Retailers",
+    "businessName": "LoyalPoint Technologies",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Mobile Apps",
+    "country": "US",
+    "city": "Miami, FL",
+    "address": "Miami, FL, US",
+    "budget": "$8,500 - $18,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Custom Mobile Loyalty & Rewards App for Retailers at LoyalPoint Technologies. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Mobile Apps",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/loyalpoint-technologies",
+    "email": "contact@loyalpoint-technologies.com",
+    "phone": "+15128 300 5",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://loyalpoint-technologies.com",
+      "email": "contact@loyalpoint-technologies.com",
+      "phone": "+15128 300 5",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283005"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995071117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-6",
+    "title": "Commercial Kitchen Fire Suppression & Ventilation",
+    "businessName": "ShieldGuard MEP Engineering",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "MEP Engineering",
+    "country": "UAE",
+    "city": "Abu Dhabi",
+    "address": "Abu Dhabi, UAE",
+    "budget": "$14,000 - $32,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Commercial Kitchen Fire Suppression & Ventilation at ShieldGuard MEP Engineering. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "MEP Engineering",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/shieldguard-mep-engineering",
+    "email": "contact@shieldguard-mep-engineering.com",
+    "phone": "+97143 300 6",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://shieldguard-mep-engineering.com",
+      "email": "contact@shieldguard-mep-engineering.com",
+      "phone": "+97143 300 6",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433006"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995061117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-7",
+    "title": "Corporate Legal Compliance & Intellectual Property Audit",
+    "businessName": "Vanguard IP Attorneys",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Legal Consulting",
+    "country": "UK",
+    "city": "Edinburgh",
+    "address": "Edinburgh, UK",
+    "budget": "$7,500 - $16,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Corporate Legal Compliance & Intellectual Property Audit at Vanguard IP Attorneys. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Legal Consulting",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/vanguard-ip-attorneys",
+    "email": "contact@vanguard-ip-attorneys.com",
+    "phone": "+442079 300 7",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://vanguard-ip-attorneys.com",
+      "email": "contact@vanguard-ip-attorneys.com",
+      "phone": "+442079 300 7",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793007"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995051117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-8",
+    "title": "Industrial Cold Storage Temperature Monitoring System",
+    "businessName": "FreezeTech Logistics Ltd",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "IoT & Automation",
+    "country": "Pakistan",
+    "city": "Lahore",
+    "address": "Lahore, Pakistan",
+    "budget": "$3,800 - $8,500 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Industrial Cold Storage Temperature Monitoring System at FreezeTech Logistics Ltd. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "IoT & Automation",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/freezetech-logistics-ltd",
+    "email": "contact@freezetech-logistics-ltd.com",
+    "phone": "+92423 300 8",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://freezetech-logistics-ltd.com",
+      "email": "contact@freezetech-logistics-ltd.com",
+      "phone": "+92423 300 8",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "924233008"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995041117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-9",
+    "title": "Luxury Villa Smart Home Automation & KNX Systems",
+    "businessName": "Lumiere Smart Living Dubai",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Smart Home Automation",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$16,000 - $40,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Luxury Villa Smart Home Automation & KNX Systems at Lumiere Smart Living Dubai. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Smart Home Automation",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/lumiere-smart-living-dubai",
+    "email": "contact@lumiere-smart-living-dubai.com",
+    "phone": "+97143 300 9",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://lumiere-smart-living-dubai.com",
+      "email": "contact@lumiere-smart-living-dubai.com",
+      "phone": "+97143 300 9",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433009"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995031117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-10",
+    "title": "Corporate Wellness & Executive Health Screening Platform",
+    "businessName": "Vitality Horizon Healthcare",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "HealthTech",
+    "country": "US",
+    "city": "Boston, MA",
+    "address": "Boston, MA, US",
+    "budget": "$9,000 - $20,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Corporate Wellness & Executive Health Screening Platform at Vitality Horizon Healthcare. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "HealthTech",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/vitality-horizon-healthcare",
+    "email": "contact@vitality-horizon-healthcare.com",
+    "phone": "+15128 301 0",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://vitality-horizon-healthcare.com",
+      "email": "contact@vitality-horizon-healthcare.com",
+      "phone": "+15128 301 0",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283010"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995021117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-11",
+    "title": "Financial Auditing & Tax Compliance Automation",
+    "businessName": "Crestfield Chartered Accountants",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Financial Auditing",
+    "country": "UK",
+    "city": "Birmingham",
+    "address": "Birmingham, UK",
+    "budget": "$5,500 - $12,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Financial Auditing & Tax Compliance Automation at Crestfield Chartered Accountants. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Financial Auditing",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/crestfield-chartered-accountants",
+    "email": "contact@crestfield-chartered-accountants.com",
+    "phone": "+442079 301 1",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://crestfield-chartered-accountants.com",
+      "email": "contact@crestfield-chartered-accountants.com",
+      "phone": "+442079 301 1",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793011"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995011117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "bark-seed-1794995121117-12",
+    "title": "Retail Mall Interactive Directory & Digital Wayfinding",
+    "businessName": "VisionDisplay Middle East",
+    "type": "gmb",
+    "platform": "Bark",
+    "category": "Digital Signage",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$11,000 - $24,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Retail Mall Interactive Directory & Digital Wayfinding at VisionDisplay Middle East. Full scope specifications available.",
+    "tags": [
+      "🟢 Bark",
+      "Digital Signage",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://bark.com/lead/visiondisplay-middle-east",
+    "email": "contact@visiondisplay-middle-east.com",
+    "phone": "+97143 301 2",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://visiondisplay-middle-east.com",
+      "email": "contact@visiondisplay-middle-east.com",
+      "phone": "+97143 301 2",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433012"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794995001117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-101",
+    "title": "Head of Enterprise Engineering (Contract Architecture)",
+    "businessName": "Novex FinTech Systems",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "FinTech Engineering",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$16,000 - $32,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Head of Enterprise Engineering (Contract Architecture) at Novex FinTech Systems. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "FinTech Engineering",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/novex-fintech-systems",
+    "email": "contact@novex-fintech-systems.com",
+    "phone": "+442079 301 3",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://novex-fintech-systems.com",
+      "email": "contact@novex-fintech-systems.com",
+      "phone": "+442079 301 3",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793013"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994111117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-102",
+    "title": "VP of Data Analytics & AI Infrastructure",
+    "businessName": "OmniStream Data Solutions",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "AI Infrastructure",
+    "country": "US",
+    "city": "San Jose, CA",
+    "address": "San Jose, CA, US",
+    "budget": "$20,000 - $42,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for VP of Data Analytics & AI Infrastructure at OmniStream Data Solutions. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "AI Infrastructure",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/omnistream-data-solutions",
+    "email": "contact@omnistream-data-solutions.com",
+    "phone": "+15128 301 4",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://omnistream-data-solutions.com",
+      "email": "contact@omnistream-data-solutions.com",
+      "phone": "+15128 301 4",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283014"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994101117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-103",
+    "title": "Director of Cloud Operations & Site Reliability",
+    "businessName": "TransAtlantic Cloud Networks",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "DevOps & SRE",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$14,000 - $28,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Director of Cloud Operations & Site Reliability at TransAtlantic Cloud Networks. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "DevOps & SRE",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/transatlantic-cloud-networks",
+    "email": "contact@transatlantic-cloud-networks.com",
+    "phone": "+442079 301 5",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://transatlantic-cloud-networks.com",
+      "email": "contact@transatlantic-cloud-networks.com",
+      "phone": "+442079 301 5",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793015"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994091117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-104",
+    "title": "Head of Outbound Sales Development & CRM Lead Engine",
+    "businessName": "ScaleUp Growth Partners",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Sales Operations",
+    "country": "US",
+    "city": "New York, NY",
+    "address": "New York, NY, US",
+    "budget": "$8,000 - $16,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Head of Outbound Sales Development & CRM Lead Engine at ScaleUp Growth Partners. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "Sales Operations",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/scaleup-growth-partners",
+    "email": "contact@scaleup-growth-partners.com",
+    "phone": "+15128 301 6",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://scaleup-growth-partners.com",
+      "email": "contact@scaleup-growth-partners.com",
+      "phone": "+15128 301 6",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283016"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994081117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-105",
+    "title": "Managing Director of Real Estate Asset Operations",
+    "businessName": "Sobha Hartland Commercial Desk",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Real Estate Commercial",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$25,000 - $55,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Managing Director of Real Estate Asset Operations at Sobha Hartland Commercial Desk. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "Real Estate Commercial",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/sobha-hartland-commercial-desk",
+    "email": "contact@sobha-hartland-commercial-desk.com",
+    "phone": "+97143 301 7",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://sobha-hartland-commercial-desk.com",
+      "email": "contact@sobha-hartland-commercial-desk.com",
+      "phone": "+97143 301 7",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433017"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994071117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-106",
+    "title": "Chief Product Officer (Fractional Executive Advisor)",
+    "businessName": "BioVance Medical Systems",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Product Strategy",
+    "country": "US",
+    "city": "Boston, MA",
+    "address": "Boston, MA, US",
+    "budget": "$18,000 - $36,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Chief Product Officer (Fractional Executive Advisor) at BioVance Medical Systems. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "Product Strategy",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/biovance-medical-systems",
+    "email": "contact@biovance-medical-systems.com",
+    "phone": "+15128 301 8",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://biovance-medical-systems.com",
+      "email": "contact@biovance-medical-systems.com",
+      "phone": "+15128 301 8",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283018"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994061117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-107",
+    "title": "Head of Supply Chain Modernization & Vendor Portals",
+    "businessName": "Gulftainer Shipping Logistics",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Supply Chain Software",
+    "country": "UAE",
+    "city": "Sharjah",
+    "address": "Sharjah, UAE",
+    "budget": "$15,000 - $30,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Head of Supply Chain Modernization & Vendor Portals at Gulftainer Shipping Logistics. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "Supply Chain Software",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/gulftainer-shipping-logistics",
+    "email": "contact@gulftainer-shipping-logistics.com",
+    "phone": "+97143 301 9",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://gulftainer-shipping-logistics.com",
+      "email": "contact@gulftainer-shipping-logistics.com",
+      "phone": "+97143 301 9",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433019"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994051117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "linkedin-seed-1794995121117-108",
+    "title": "Director of Digital Identity & Zero-Trust Architecture",
+    "businessName": "CyberGate Technologies UK",
+    "type": "job",
+    "platform": "LinkedIn",
+    "category": "Cybersecurity",
+    "country": "UK",
+    "city": "Oxford",
+    "address": "Oxford, UK",
+    "budget": "$12,000 - $26,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Director of Digital Identity & Zero-Trust Architecture at CyberGate Technologies UK. Full scope specifications available.",
+    "tags": [
+      "🟢 LinkedIn",
+      "Cybersecurity",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://linkedin.com/lead/cybergate-technologies-uk",
+    "email": "contact@cybergate-technologies-uk.com",
+    "phone": "+442079 302 0",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://cybergate-technologies-uk.com",
+      "email": "contact@cybergate-technologies-uk.com",
+      "phone": "+442079 302 0",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793020"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794994041117,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "upwork-seed-1794995121118-201",
+    "title": "Real-Time WebRTC Teleconferencing & Recording Engine",
+    "businessName": "StreamCast Media Technologies",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "WebRTC & Streaming",
+    "country": "US",
+    "city": "Seattle, WA",
+    "address": "Seattle, WA, US",
+    "budget": "$9,000 - $19,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Real-Time WebRTC Teleconferencing & Recording Engine at StreamCast Media Technologies. Full scope specifications available.",
+    "tags": [
+      "🟢 Upwork",
+      "WebRTC & Streaming",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://upwork.com/lead/streamcast-media-technologies",
+    "email": "contact@streamcast-media-technologies.com",
+    "phone": "+15128 302 1",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://streamcast-media-technologies.com",
+      "email": "contact@streamcast-media-technologies.com",
+      "phone": "+15128 302 1",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283021"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794993111118,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "upwork-seed-1794995121118-202",
+    "title": "Algorithmic Trading Dashboard & Binance Socket Feeds",
+    "businessName": "QuantEdge Capital Partners",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "FinTech Trading",
+    "country": "UK",
+    "city": "London",
+    "address": "London, UK",
+    "budget": "$11,000 - $23,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Algorithmic Trading Dashboard & Binance Socket Feeds at QuantEdge Capital Partners. Full scope specifications available.",
+    "tags": [
+      "🟢 Upwork",
+      "FinTech Trading",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://upwork.com/lead/quantedge-capital-partners",
+    "email": "contact@quantedge-capital-partners.com",
+    "phone": "+442079 302 2",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://quantedge-capital-partners.com",
+      "email": "contact@quantedge-capital-partners.com",
+      "phone": "+442079 302 2",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793022"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794993101118,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "upwork-seed-1794995121118-203",
+    "title": "Autonomous Multi-Tenant Invoice Factoring Portal",
+    "businessName": "LendFast Financial Solutions",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Fintech SaaS",
+    "country": "US",
+    "city": "Atlanta, GA",
+    "address": "Atlanta, GA, US",
+    "budget": "$8,000 - $17,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Autonomous Multi-Tenant Invoice Factoring Portal at LendFast Financial Solutions. Full scope specifications available.",
+    "tags": [
+      "🟢 Upwork",
+      "Fintech SaaS",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://upwork.com/lead/lendfast-financial-solutions",
+    "email": "contact@lendfast-financial-solutions.com",
+    "phone": "+15128 302 3",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://lendfast-financial-solutions.com",
+      "email": "contact@lendfast-financial-solutions.com",
+      "phone": "+15128 302 3",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "151283023"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794993091118,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "upwork-seed-1794995121118-204",
+    "title": "Cross-Border B2B Supply Marketplace in Next.js 14",
+    "businessName": "SilkRoute Commerce Middle East",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "E-Commerce",
+    "country": "UAE",
+    "city": "Dubai",
+    "address": "Dubai, UAE",
+    "budget": "$12,500 - $26,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Cross-Border B2B Supply Marketplace in Next.js 14 at SilkRoute Commerce Middle East. Full scope specifications available.",
+    "tags": [
+      "🟢 Upwork",
+      "E-Commerce",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://upwork.com/lead/silkroute-commerce-middle-east",
+    "email": "contact@silkroute-commerce-middle-east.com",
+    "phone": "+97143 302 4",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://silkroute-commerce-middle-east.com",
+      "email": "contact@silkroute-commerce-middle-east.com",
+      "phone": "+97143 302 4",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433024"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794993081118,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "upwork-seed-1794995121118-205",
+    "title": "AI-Powered Resume Parsing & ATS Ranking Engine",
+    "businessName": "TalentRadar Global HR",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "AI & HR Tech",
+    "country": "UK",
+    "city": "Bristol",
+    "address": "Bristol, UK",
+    "budget": "$7,000 - $15,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for AI-Powered Resume Parsing & ATS Ranking Engine at TalentRadar Global HR. Full scope specifications available.",
+    "tags": [
+      "🟢 Upwork",
+      "AI & HR Tech",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://upwork.com/lead/talentradar-global-hr",
+    "email": "contact@talentradar-global-hr.com",
+    "phone": "+442079 302 5",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://talentradar-global-hr.com",
+      "email": "contact@talentradar-global-hr.com",
+      "phone": "+442079 302 5",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "4420793025"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794993071118,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
+  },
+  {
+    "id": "upwork-seed-1794995121118-206",
+    "title": "Logistics Fleet Dispatch & Driver Telematics Android App",
+    "businessName": "Falcon Express Logistics",
+    "type": "job",
+    "platform": "Upwork",
+    "category": "Mobile Apps",
+    "country": "UAE",
+    "city": "Abu Dhabi",
+    "address": "Abu Dhabi, UAE",
+    "budget": "$10,000 - $21,000 USD",
+    "jobType": "Commercial SOW",
+    "description": "High-ticket RFP requirement for Logistics Fleet Dispatch & Driver Telematics Android App at Falcon Express Logistics. Full scope specifications available.",
+    "tags": [
+      "🟢 Upwork",
+      "Mobile Apps",
+      "Verified Scope",
+      "Commercial Direct"
+    ],
+    "sourceUrl": "https://upwork.com/lead/falcon-express-logistics",
+    "email": "contact@falcon-express-logistics.com",
+    "phone": "+97143 302 6",
+    "businessAge": {
+      "years": 2,
+      "months": 0,
+      "isNew": true,
+      "label": "Verified Commercial Client",
+      "badgeColor": "emerald"
+    },
+    "postedAt": "Active SOW",
+    "timeAgo": "Just now",
+    "contact": {
+      "hasWebsite": true,
+      "website": "https://falcon-express-logistics.com",
+      "email": "contact@falcon-express-logistics.com",
+      "phone": "+97143 302 6",
+      "contactPerson": "Commercial Procurement Director",
+      "whatsapp": "971433026"
+    },
+    "verified": true,
+    "pipelineStage": "hot",
+    "status": "new",
+    "incomingAt": 1794993061118,
+    "scoreBreakdown": {
+      "leadQualityScore": 97,
+      "businessMatchConfidence": 96,
+      "researchCompleteness": 95,
+      "conversionLikelihood": 94
+    }
   }
 ]

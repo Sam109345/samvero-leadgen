@@ -409,9 +409,14 @@ export default function FreelancerLeadFeed({
     }
   }, [leads]);
 
-  // Dynamically query live aggregator when user searches by keyword, country, or category
+  // Dynamically query live aggregator when user searches by keyword, country, category, or platform
   useEffect(() => {
-    const hasFilter = searchQuery.trim().length >= 2 || selectedCountry !== 'all' || categoryFilter !== 'all' || selectedCity.trim().length > 0;
+    const hasFilter =
+      searchQuery.trim().length >= 2 ||
+      selectedCountry !== 'all' ||
+      categoryFilter !== 'all' ||
+      selectedCity.trim().length > 0 ||
+      selectedPlatform !== 'all';
     if (!hasFilter) return;
 
     const timer = setTimeout(async () => {
@@ -422,7 +427,8 @@ export default function FreelancerLeadFeed({
         if (selectedCountry !== 'all') params.set('country', selectedCountry);
         if (categoryFilter !== 'all') params.set('category', categoryFilter);
         if (selectedCity.trim()) params.set('city', selectedCity.trim());
-        params.set('refresh', 'live');
+        if (selectedPlatform !== 'all') params.set('platform', selectedPlatform);
+        params.set('limit', '60');
 
         const res = await fetch(`/api/leads?${params.toString()}`);
         if (res.ok) {
@@ -444,7 +450,7 @@ export default function FreelancerLeadFeed({
     }, 450);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, selectedCountry, categoryFilter, selectedCity]);
+  }, [searchQuery, selectedCountry, categoryFilter, selectedCity, selectedPlatform]);
 
   // Reset filters
   const handleResetFilters = () => {

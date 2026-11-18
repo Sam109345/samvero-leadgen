@@ -290,7 +290,7 @@ export async function GET(request: NextRequest) {
     const seenDomains = new Set<string>();
     const seenPhones = new Set<string>();
     const seenBusinessKeys = new Set<string>();
-    const deduplicatedLeads: Lead[] = [];
+    let deduplicatedLeads: Lead[] = [];
 
     for (const lead of allLeads) {
       const primaryKey = (lead.id || '').trim().toLowerCase();
@@ -325,6 +325,43 @@ export async function GET(request: NextRequest) {
       const timeB = typeof b.incomingAt === 'number' ? b.incomingAt : 0;
       return timeB - timeA;
     });
+
+    // When viewing all platforms, ensure a diverse, multi-platform interleaved distribution
+    // so no single channel (e.g. Freelancer) monopolizes the feed and starves out GMB, Upwork, LinkedIn, Bark, etc.
+    if (platform === 'all') {
+      const platformBuckets: Record<string, Lead[]> = {};
+      for (const lead of deduplicatedLeads) {
+        const plat = (lead.platform || 'Other').toLowerCase();
+        let bucketKey = 'other';
+        if (plat.includes('google') || plat.includes('gmb') || plat.includes('map')) bucketKey = 'gmb';
+        else if (plat.includes('upwork')) bucketKey = 'upwork';
+        else if (plat.includes('linkedin')) bucketKey = 'linkedin';
+        else if (plat.includes('bark')) bucketKey = 'bark';
+        else if (plat.includes('remote') || plat.includes('remotive')) bucketKey = 'remote';
+        else if (plat.includes('freelancer')) bucketKey = 'freelancer';
+
+        if (!platformBuckets[bucketKey]) platformBuckets[bucketKey] = [];
+        platformBuckets[bucketKey].push(lead);
+      }
+
+      // Order of channels for round-robin fair distribution
+      const bucketOrder = ['gmb', 'upwork', 'linkedin', 'freelancer', 'bark', 'remote', 'other'];
+      const interleaved: Lead[] = [];
+      let round = 0;
+      let hasMoreItems = true;
+      while (hasMoreItems) {
+        hasMoreItems = false;
+        for (const key of bucketOrder) {
+          const bucket = platformBuckets[key];
+          if (bucket && round < bucket.length) {
+            interleaved.push(bucket[round]);
+            hasMoreItems = true;
+          }
+        }
+        round++;
+      }
+      deduplicatedLeads = interleaved;
+    }
 
     // Strip heavy generatedWebsite object from list responses unless requested with ?full=true
     const sanitizedLeads = deduplicatedLeads.map((l) => {
