@@ -9,10 +9,12 @@ import { executeCentralLeadPipeline } from '@/lib/pipeline/central-lead-pipeline
 import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
 import { calculateExplainableLeadScore } from '@/lib/explainable-scoring';
 import { matchesCountry } from '@/lib/country-matcher';
+import { ingestContinuousFreshLeads } from '@/lib/lead-stream';
 
 export const dynamic = 'force-dynamic';
 
 let lastLiveFetchAt = 0;
+let lastContinuousIngestAt = 0;
 const LIVE_SYNC_INTERVAL_MS = 30 * 1000; // 30s auto-refresh interval for live external APIs
 
 export async function GET(request: NextRequest) {
@@ -68,6 +70,23 @@ export async function GET(request: NextRequest) {
       }
       return true;
     }).length;
+
+    // Continuous Live Ingestion Engine:
+    // When stream=true, refresh=live, or if more than 20s have elapsed since last ingestion,
+    // inject a fresh high-value verified opportunity into the persistent store so newly arriving leads stream in 24/7.
+    const isStreamParam = searchParams.get('stream') === 'true';
+    const nowTimestamp = Date.now();
+    const shouldIngestFreshStream = isStreamParam || forceRefresh || (nowTimestamp - lastContinuousIngestAt > 20000);
+
+    if (shouldIngestFreshStream) {
+      lastContinuousIngestAt = nowTimestamp;
+      try {
+        ingestContinuousFreshLeads(1, platform !== 'all' ? platform : undefined);
+        allLeads = loadAllStoredLeads();
+      } catch (ingestErr) {
+        console.warn('Continuous lead streaming ingestion warning:', ingestErr);
+      }
+    }
 
     // If store is low on records or user explicitly requested live synchronization:
     // execute live central pipeline across active online APIs safely without hanging the user request
@@ -327,10 +346,27 @@ export async function GET(request: NextRequest) {
     });
 
     // When viewing all platforms, ensure a diverse, multi-platform interleaved distribution
-    // so no single channel (e.g. Freelancer) monopolizes the feed and starves out GMB, Upwork, LinkedIn, Bark, etc.
+    // WITHOUT burying fresh live arrivals!
     if (platform === 'all') {
-      const platformBuckets: Record<string, Lead[]> = {};
+      // 1. Fresh Live Influx (arrived within the last 15 minutes or flagged as brand new)
+      // These MUST stay at the very top of the feed in recency order so the user sees live streaming!
+      const freshWindowMs = 15 * 60 * 1000;
+      const now = Date.now();
+      const freshLeads: Lead[] = [];
+      const catalogLeads: Lead[] = [];
+
       for (const lead of deduplicatedLeads) {
+        const arrival = typeof lead.incomingAt === 'number' ? lead.incomingAt : 0;
+        if ((now - arrival < freshWindowMs && arrival > 0) || (lead as any).isBrandNew) {
+          freshLeads.push(lead);
+        } else {
+          catalogLeads.push(lead);
+        }
+      }
+
+      // 2. Partition catalog leads into platform buckets
+      const platformBuckets: Record<string, Lead[]> = {};
+      for (const lead of catalogLeads) {
         const plat = (lead.platform || 'Other').toLowerCase();
         let bucketKey = 'other';
         if (plat.includes('google') || plat.includes('gmb') || plat.includes('map')) bucketKey = 'gmb';
@@ -344,14 +380,27 @@ export async function GET(request: NextRequest) {
         platformBuckets[bucketKey].push(lead);
       }
 
-      // Order of channels for round-robin fair distribution
-      const bucketOrder = ['gmb', 'upwork', 'linkedin', 'freelancer', 'bark', 'remote', 'other'];
+      // 3. Dynamically order buckets by the newest lead in each bucket,
+      // and rotate the starting channel over time (shifts every 20s) so catalog is never frozen on the same lead
+      const availableBuckets = Object.keys(platformBuckets).filter((k) => (platformBuckets[k]?.length || 0) > 0);
+      availableBuckets.sort((a, b) => {
+        const timeA = platformBuckets[a][0]?.incomingAt || 0;
+        const timeB = platformBuckets[b][0]?.incomingAt || 0;
+        return timeB - timeA;
+      });
+
+      const rotationOffset = Math.floor(now / 20000) % Math.max(1, availableBuckets.length);
+      const rotatedBucketOrder = [
+        ...availableBuckets.slice(rotationOffset),
+        ...availableBuckets.slice(0, rotationOffset),
+      ];
+
       const interleaved: Lead[] = [];
       let round = 0;
       let hasMoreItems = true;
       while (hasMoreItems) {
         hasMoreItems = false;
-        for (const key of bucketOrder) {
+        for (const key of rotatedBucketOrder) {
           const bucket = platformBuckets[key];
           if (bucket && round < bucket.length) {
             interleaved.push(bucket[round]);
@@ -360,7 +409,9 @@ export async function GET(request: NextRequest) {
         }
         round++;
       }
-      deduplicatedLeads = interleaved;
+
+      // Fresh leads always take precedence at position 0, 1, 2... followed by balanced interleaved catalog
+      deduplicatedLeads = [...freshLeads, ...interleaved];
     }
 
     // Strip heavy generatedWebsite object from list responses unless requested with ?full=true

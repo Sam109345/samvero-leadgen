@@ -124,7 +124,9 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
   const fetchLeads = useCallback(async (forceRefresh = false) => {
     if (forceRefresh) setIsRefreshingLive(true);
     try {
-      const url = forceRefresh ? '/api/leads?refresh=live&limit=100' : '/api/leads?limit=100';
+      const url = forceRefresh
+        ? `/api/leads?refresh=live&stream=true&limit=100&t=${Date.now()}`
+        : `/api/leads?stream=true&limit=100&t=${Date.now()}`;
       const res = await fetch(url);
       const data = await res.json();
       if (data.success && Array.isArray(data.leads)) {
@@ -138,12 +140,12 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
     }
   }, []);
 
-  // Fetch leads immediately on mount, and poll every 40 seconds
+  // Fetch leads immediately on mount, and poll every 30 seconds
   useEffect(() => {
     fetchLeads(false);
     const interval = setInterval(() => {
       fetchLeads(false);
-    }, 40000);
+    }, 30000);
     return () => clearInterval(interval);
   }, [fetchLeads]);
 

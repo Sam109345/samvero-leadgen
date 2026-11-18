@@ -172,10 +172,10 @@ export function persistDiscoveredLeads(newLeads: Lead[]): { savedCount: number; 
     let matchIdx: number | undefined;
     if (idKey && idMap.has(idKey)) matchIdx = idMap.get(idKey);
     else if (sourceKey && sourceListingMap.has(sourceKey)) matchIdx = sourceListingMap.get(sourceKey);
-    else if (emailKey && emailMap.has(emailKey)) matchIdx = emailMap.get(emailKey);
-    else if (domainKey && domainMap.has(domainKey)) matchIdx = domainMap.get(domainKey);
-    else if (phoneKey && phoneMap.has(phoneKey)) matchIdx = phoneMap.get(phoneKey);
-    else if (businessKey && businessKeyMap.has(businessKey)) matchIdx = businessKeyMap.get(businessKey);
+    else if (lead.type !== 'job' && emailKey && emailMap.has(emailKey)) matchIdx = emailMap.get(emailKey);
+    else if (lead.type !== 'job' && domainKey && domainMap.has(domainKey)) matchIdx = domainMap.get(domainKey);
+    else if (lead.type !== 'job' && phoneKey && phoneMap.has(phoneKey)) matchIdx = phoneMap.get(phoneKey);
+    else if (lead.type !== 'job' && businessKey && businessKeyMap.has(businessKey)) matchIdx = businessKeyMap.get(businessKey);
 
     if (matchIdx !== undefined) {
       duplicatesSkipped++;

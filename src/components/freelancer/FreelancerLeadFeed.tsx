@@ -157,7 +157,8 @@ export default function FreelancerLeadFeed({
     try {
       const countryParam = selectedCountry !== 'all' ? `&country=${encodeURIComponent(selectedCountry)}` : '';
       const categoryParam = categoryFilter !== 'all' ? `&category=${encodeURIComponent(categoryFilter)}` : '';
-      const res = await fetch(`/api/leads?refresh=live&limit=30&t=${Date.now()}${countryParam}${categoryParam}`);
+      const platformParam = selectedPlatform !== 'all' ? `&platform=${encodeURIComponent(selectedPlatform)}` : '';
+      const res = await fetch(`/api/leads?refresh=live&stream=true&limit=30&t=${Date.now()}${countryParam}${categoryParam}${platformParam}`);
       if (res.ok) {
         const data = await res.json();
         if (data.success && Array.isArray(data.leads) && data.leads.length > 0) {
@@ -186,7 +187,18 @@ export default function FreelancerLeadFeed({
                 incomingAt: Date.now(),
                 postedAt: 'Just now',
                 timeAgo: 'Just now',
+                isBrandNew: true,
               }));
+
+              const firstNew = stampedNew[0];
+              const titleToShow = firstNew.businessName || firstNew.title || 'Enterprise Opportunity';
+              const platToShow = firstNew.platform || 'Verified Radar';
+              setNearMeToast({
+                message: `⚡ Live Ingestion: Received "${titleToShow}" from ${platToShow}!`,
+                type: 'info',
+              });
+              setTimeout(() => setNearMeToast(null), 4000);
+
               return [...pinned, ...stampedNew, ...unpinned];
             }
 
@@ -198,6 +210,7 @@ export default function FreelancerLeadFeed({
                 incomingAt: Date.now() - idx * 1000,
                 postedAt: 'Just now',
                 timeAgo: 'Just now',
+                isBrandNew: true,
               }));
               const remaining = unpinned.slice(0, -rotatedCount);
               return [...pinned, ...cycledItems, ...remaining];

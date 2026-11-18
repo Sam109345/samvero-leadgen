@@ -536,19 +536,43 @@ export default function LuxuryLandingPage() {
 
   const [liveDbLeads, setLiveDbLeads] = useState<Lead[]>([]);
 
-  /* Fetch live leads from master database */
+  /* Fetch live leads from master database with real-time stream ingestion */
   useEffect(() => {
     let isMounted = true;
-    fetch('/api/leads?limit=60')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.leads) && data.leads.length > 0 && isMounted) {
-          setLiveDbLeads(data.leads);
-        }
-      })
-      .catch((err) => console.warn('Could not load live CRM leads:', err));
+    const fetchDbLeads = (isStream = false) => {
+      const url = isStream
+        ? `/api/leads?refresh=live&stream=true&limit=60&t=${Date.now()}`
+        : `/api/leads?stream=true&limit=60&t=${Date.now()}`;
+
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success && Array.isArray(data.leads) && data.leads.length > 0 && isMounted) {
+            setLiveDbLeads((prev) => {
+              if (prev.length === 0) return data.leads;
+              const prevIds = new Set(prev.map((l) => l.id.toLowerCase()));
+              const freshArrivals = data.leads.filter((l: Lead) => !prevIds.has(l.id.toLowerCase()));
+              if (freshArrivals.length > 0) {
+                return [...freshArrivals, ...prev];
+              }
+              return data.leads;
+            });
+          }
+        })
+        .catch((err) => console.warn('Could not load live CRM leads:', err));
+    };
+
+    // Initial immediate fetch
+    fetchDbLeads(false);
+
+    // Continuous 12-second live streaming polling ticker
+    const streamInterval = setInterval(() => {
+      fetchDbLeads(true);
+    }, 12000);
+
     return () => {
       isMounted = false;
+      clearInterval(streamInterval);
     };
   }, []);
 
@@ -563,6 +587,16 @@ export default function LuxuryLandingPage() {
       else if (platLower.includes('bark')) platformName = 'Bark Direct';
       else if (platLower.includes('google') || platLower.includes('map') || platLower.includes('gmb')) platformName = 'Google My Business';
 
+      const isFresh = (l as any).isBrandNew || (typeof l.incomingAt === 'number' && Date.now() - l.incomingAt < 180000) || l.timeAgo === 'Just now';
+      const tag = isFresh
+        ? '⚡ Live Ingested Opportunity'
+        : l.tags?.[0] || (l.contact?.hasWebsite ? 'Verified Enterprise' : 'Missing Responsive Site (Hot Pitch)');
+      const tagColor = isFresh
+        ? 'text-[#00AAFF] bg-[#0057FF]/20 border-[#00AAFF]/50'
+        : l.contact?.hasWebsite
+        ? 'text-[#00AAFF] bg-[#0057FF]/15 border-[#0057FF]/30'
+        : 'text-amber-400 bg-amber-500/10 border-amber-500/30';
+
       return {
         id: l.id,
         title: l.businessName || l.title,
@@ -572,10 +606,8 @@ export default function LuxuryLandingPage() {
         platform: platformName,
         phone: l.contact?.phone || '+971 4 883 2222',
         whatsapp: l.contact?.phone ? 'Validated Mobile' : 'Direct Available',
-        tag: l.tags?.[0] || (l.contact?.hasWebsite ? 'Verified Enterprise' : 'Missing Responsive Site (Hot Pitch)'),
-        tagColor: l.contact?.hasWebsite
-          ? 'text-[#00AAFF] bg-[#0057FF]/15 border-[#0057FF]/30'
-          : 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+        tag,
+        tagColor,
         budget: l.budget || '$1,500 - $4,500',
         score: l.scoreBreakdown?.leadQualityScore || 96,
         contactName: l.contact?.contactPerson || 'Executive Decision Maker',
@@ -588,7 +620,15 @@ export default function LuxuryLandingPage() {
   const combinedLeadsPool = useMemo(() => {
     const seen = new Set<string>();
     const pool: MockLead[] = [];
-    for (const item of [...mappedDbLeads, ...CRM_LIVE_LEADS]) {
+
+    // Dynamically rotate fallback leads so they never always start with the same card
+    const rotationOffset = Math.floor(Date.now() / 15000) % Math.max(1, CRM_LIVE_LEADS.length);
+    const rotatedFallbacks = [
+      ...CRM_LIVE_LEADS.slice(rotationOffset),
+      ...CRM_LIVE_LEADS.slice(0, rotationOffset),
+    ];
+
+    for (const item of [...mappedDbLeads, ...rotatedFallbacks]) {
       const key = `${(item.title || '').trim().toLowerCase()}::${(item.platform || '').toLowerCase()}`;
       if (!seen.has(key)) {
         seen.add(key);

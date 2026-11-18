@@ -44,7 +44,7 @@ export default function CustomerLeadsPage() {
   // Fetch live available leads
   const fetchLiveLeads = () => {
     setLoading(true);
-    fetch('/api/leads?limit=60')
+    fetch(`/api/leads?stream=true&limit=60&t=${Date.now()}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.leads)) {
@@ -58,10 +58,10 @@ export default function CustomerLeadsPage() {
   useEffect(() => {
     fetchSavedLeads();
     fetchLiveLeads();
-    // Automatically poll real-time platforms every 40 seconds
+    // Automatically poll real-time platforms every 30 seconds
     const interval = setInterval(() => {
       fetchLiveLeads();
-    }, 40000);
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 

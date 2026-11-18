@@ -160,10 +160,13 @@ export default function FreelancerJobCard({
   };
 
   const isNearMe = (lead as any).isNearMe || (lead.tags || []).some((t) => t.includes('Near Me')) || lead.businessAge?.label?.includes('Near Me');
+  const isBrandNew = (lead as any).isBrandNew || lead.timeAgo === 'Just now' || (typeof lead.incomingAt === 'number' && Date.now() - lead.incomingAt < 90000);
 
   return (
-    <article className={`freelancer-project-card p-5 sm:p-5.5 bg-white dark:bg-[#141d2b] rounded-xl hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-200 flex flex-col justify-between gap-3.5 group ${
-      isNearMe
+    <article className={`freelancer-project-card p-5 sm:p-5.5 bg-white dark:bg-[#141d2b] rounded-xl hover:shadow-xl hover:shadow-blue-500/5 transition-all duration-200 flex flex-col justify-between gap-3.5 group relative ${
+      isBrandNew
+        ? 'border-2 border-[#00AAFF] dark:border-[#00AAFF] shadow-lg shadow-[#0057FF]/15 ring-2 ring-[#00AAFF]/30'
+        : isNearMe
         ? 'border-2 border-emerald-500 dark:border-emerald-500 shadow-md shadow-emerald-500/10'
         : 'border border-slate-200/90 dark:border-[#223147] hover:border-[#007FED] dark:hover:border-[#007FED]'
     }`}>
@@ -172,12 +175,19 @@ export default function FreelancerJobCard({
       <div className="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-slate-100 dark:border-[#24334a]">
         
         {/* Platform Origin Badge & Job ID */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded text-xs font-bold border ${platformStyle.bg}`}>
             <span className={`w-2 h-2 rounded-full ${platformStyle.dot}`}></span>
             <span>{spec.platformSource}</span>
             <span className="font-mono text-[10px] opacity-75">#{spec.jobId}</span>
           </span>
+
+          {isBrandNew && (
+            <span className="inline-flex items-center gap-1 bg-[#0057FF]/15 text-[#00AAFF] border border-[#00AAFF]/40 text-[10px] font-extrabold px-2 py-0.5 rounded-full animate-pulse shadow-xs">
+              <Sparkles className="w-2.5 h-2.5 text-[#00AAFF] fill-current" />
+              <span>LIVE ARRIVAL</span>
+            </span>
+          )}
 
           {/* Job Discipline Badge */}
           <span className="inline-flex items-center gap-1 bg-slate-100 dark:bg-[#24334a] text-slate-700 dark:text-slate-200 text-xs font-semibold px-2.5 py-0.5 rounded">

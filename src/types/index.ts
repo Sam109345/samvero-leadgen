@@ -427,6 +427,7 @@ export interface Lead {
   pipelineStage?: PipelineStage;
   status?: 'new' | 'contacted' | 'pitch_sent' | 'closed';
   incomingAt?: number; // timestamp
+  isBrandNew?: boolean;
   requirementSpec?: JobRequirementSpec;
   // Assignment & Staff Allocation
   assignedToUserId?: string;
