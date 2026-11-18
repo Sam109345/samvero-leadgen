@@ -161,18 +161,12 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // If streaming, prioritize fresh leads (last 5 minutes) and limit to recent batch
-  if (isStreamParam) {
-    const now = Date.now();
-    const FIVE_MIN = 5 * 60 * 1000;
-    allLeads = allLeads.filter(l => (l.incomingAt ?? 0) >= (now - FIVE_MIN));
-    // Fallback: if too few recent leads, keep existing list
-    if (allLeads.length < 10) {
-      // no change, retain full list
-    }
-    // Sort newest first
-    allLeads.sort((a, b) => (b.incomingAt ?? 0) - (a.incomingAt ?? 0));
-  }
+    // Prioritize newest and brand-new incoming leads
+    allLeads.sort((a, b) => {
+      if (b.isBrandNew && !a.isBrandNew) return 1;
+      if (!b.isBrandNew && a.isBrandNew) return -1;
+      return (b.incomingAt ?? 0) - (a.incomingAt ?? 0);
+    });
     allLeads = allLeads.map((lead) => {
       const assignedUser = getLeadAssignedUser(lead.id) || (lead.assignedToUserId ? getPortalUserById(lead.assignedToUserId) : undefined);
       const uState = userStates[lead.id];
