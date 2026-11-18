@@ -5,35 +5,50 @@ import { enrichLeadContact } from './contact-enricher';
 
 const LEADS_FILE = path.join(process.cwd(), 'data', 'leads-store.json');
 
+// In-memory runtime cache: prevents leads from disappearing on read-only serverless platforms like Vercel
+let memoryLeadsCache: Lead[] | null = null;
+
 function ensureDataDir(): void {
-  const dir = path.join(process.cwd(), 'data');
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  try {
+    const dir = path.join(process.cwd(), 'data');
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch {
+    // Ignore in read-only filesystems
   }
 }
 
 export function loadAllStoredLeads(): Lead[] {
+  if (memoryLeadsCache !== null && Array.isArray(memoryLeadsCache) && memoryLeadsCache.length > 0) {
+    return memoryLeadsCache;
+  }
+
   ensureDataDir();
   if (fs.existsSync(LEADS_FILE)) {
     try {
       const raw = fs.readFileSync(LEADS_FILE, 'utf8');
       const leads: Lead[] = JSON.parse(raw);
       if (Array.isArray(leads)) {
-        return leads.map(enrichLeadContact);
+        const enriched = leads.map(enrichLeadContact);
+        memoryLeadsCache = enriched;
+        return enriched;
       }
     } catch (err) {
       console.warn('Error reading leads-store.json:', err);
     }
   }
-  return [];
+  return memoryLeadsCache || [];
 }
 
 export function saveAllStoredLeads(leads: Lead[]): void {
+  memoryLeadsCache = leads;
   ensureDataDir();
   try {
     fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf8');
   } catch (err) {
-    console.error('Failed to write leads-store.json:', err);
+    // Expected on serverless Vercel lambdas (read-only filesystem)
+    // memoryLeadsCache preserves the leads throughout the runtime lifecycle!
   }
 }
 

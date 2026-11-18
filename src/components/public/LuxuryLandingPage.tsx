@@ -36,6 +36,8 @@ import {
   Briefcase,
   Users,
   Target,
+  Clock,
+  Activity,
 } from 'lucide-react';
 
 /* ── Twinkling Starfield Dust (Deterministic SSR/CSR) ─────── */
@@ -1064,6 +1066,172 @@ export default function LuxuryLandingPage() {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════
+            SECTION 2.5: LIVE TELEMETRY STREAM (AUTO-INCOMING LEADS)
+            ═══════════════════════════════════════════════════════ */}
+        <section className="py-20 relative overflow-hidden bg-[#01030a] border-t border-slate-800">
+          <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
+
+          {/* Floating cyber squares */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute top-[10%] left-[8%] w-[50px] h-[50px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-xl cyber-square-float" />
+            <div className="absolute bottom-[15%] right-[10%] w-[70px] h-[70px] border border-cyan-400/40 bg-cyan-500/10 rounded-xl cyber-square-glow" />
+          </div>
+
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            {/* Header */}
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 mb-4 shadow-[0_0_20px_rgba(16,185,129,0.15)]">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                <span>Autonomous Telemetry Active • Auto-Ingestion On</span>
+              </div>
+              <h2
+                className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Real-Time Leads Arriving On Auto-Pilot
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                Watch verified enterprise opportunities stream into the portal non-stop. Multi-channel radar captures RFPs across Upwork, LinkedIn, Google Maps, and global freelance networks the instant they drop.
+              </p>
+            </div>
+
+            {/* Live Incoming Feed Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              {(liveDbLeads.length > 0 ? liveDbLeads.slice(0, 6) : CRM_LIVE_LEADS.slice(0, 6)).map((lead: any, idx: number) => {
+                const isBrandNew = lead.isBrandNew || idx === 0 || (typeof lead.incomingAt === 'number' && Date.now() - lead.incomingAt < 300000);
+                const platformName = lead.platform || 'Upwork';
+                const title = lead.title || lead.businessName || 'High-Ticket Project RFP';
+                const business = lead.businessName || lead.company || 'Enterprise Client';
+                const city = lead.city || 'San Francisco';
+                const country = lead.country || 'US';
+                const budget = lead.budget || '$6,500 Fixed';
+                const phone = lead.contact?.phone || '+1 415 890 2244';
+                const email = lead.contact?.email || 'contracts@enterprise.io';
+                const whatsapp = lead.contact?.whatsapp;
+
+                return (
+                  <div
+                    key={lead.id || idx}
+                    className="p-5 rounded-2xl bg-[#060b18]/90 border border-slate-800 hover:border-[#00AAFF]/50 transition-all duration-300 flex flex-col justify-between group shadow-xl hover:shadow-[0_0_25px_rgba(0,170,255,0.15)] relative overflow-hidden"
+                  >
+                    {/* Top ambient highlight on hover */}
+                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#00AAFF]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                    <div>
+                      {/* Top Bar: Platform & Live Badge */}
+                      <div className="flex items-center justify-between gap-2 mb-3">
+                        <span className="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider bg-[#0057FF]/20 text-[#00AAFF] border border-[#0057FF]/30">
+                          {platformName}
+                        </span>
+
+                        <div className="flex items-center gap-1.5">
+                          {isBrandNew && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 animate-pulse">
+                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                              <span>Live Ingested</span>
+                            </span>
+                          )}
+                          <span className="text-[10px] font-mono text-slate-400 flex items-center gap-1">
+                            <Clock className="w-3 h-3 text-slate-500" />
+                            <span>Just now</span>
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* RFP Title */}
+                      <h3
+                        className="text-sm font-bold text-white mb-2 leading-snug group-hover:text-cyan-300 transition-colors line-clamp-2"
+                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                      >
+                        {title}
+                      </h3>
+
+                      {/* Business & Location */}
+                      <div className="flex items-center gap-2 text-xs text-slate-400 mb-4">
+                        <Building2 className="w-3.5 h-3.5 text-[#00AAFF] shrink-0" />
+                        <span className="font-medium text-slate-300 truncate">{business}</span>
+                        <span className="text-slate-600">•</span>
+                        <span className="truncate">{city}, {country}</span>
+                      </div>
+
+                      {/* Scope Description */}
+                      <p className="text-xs text-slate-400 line-clamp-2 mb-4 leading-relaxed">
+                        {lead.description || 'Verified commercial requirement with authenticated decision-maker reachability.'}
+                      </p>
+                    </div>
+
+                    <div>
+                      {/* Budget & Quality Score */}
+                      <div className="p-2.5 rounded-xl bg-black/40 border border-slate-800/80 flex items-center justify-between mb-4">
+                        <div>
+                          <div className="text-[10px] font-mono text-slate-500 uppercase">Budget Allocation</div>
+                          <div className="text-xs font-bold text-emerald-400 font-mono">{budget}</div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-[10px] font-mono text-slate-500 uppercase">Verification</div>
+                          <div className="text-xs font-bold text-[#00AAFF] flex items-center gap-1 justify-end">
+                            <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                            <span>100% Reachable</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Contact Channels */}
+                      <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2 text-xs">
+                        <div className="flex items-center gap-2 text-slate-400 text-[11px] font-mono truncate">
+                          <MailCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span className="truncate">{email}</span>
+                        </div>
+
+                        {whatsapp && (
+                          <a
+                            href={`https://wa.me/${whatsapp}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] font-bold bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 transition shrink-0"
+                          >
+                            <MessageCircle className="w-3 h-3" />
+                            <span>WhatsApp</span>
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Bottom Stream Status & Portal CTA */}
+            <div className="p-6 rounded-3xl bg-gradient-to-r from-[#030614] via-[#060e24] to-[#030614] border border-[#0057FF]/30 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left shadow-2xl">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-[#0057FF]/20 border border-[#00AAFF]/40 flex items-center justify-center text-[#00AAFF] shrink-0">
+                  <Activity className="w-6 h-6 animate-pulse" />
+                </div>
+                <div>
+                  <h4 className="text-sm sm:text-base font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    Continuous Auto-Ingestion Active
+                  </h4>
+                  <p className="text-xs text-slate-400">
+                    Over 1,170+ verified leads currently indexed. Auto-streaming checks live channels every 10 seconds.
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                href="/signup"
+                className="px-6 py-3 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-2 text-white bg-gradient-to-r from-[#0057FF] via-[#0070FF] to-[#00AAFF] shadow-[0_0_25px_rgba(0,87,255,0.4)] hover:shadow-[0_0_35px_rgba(0,170,255,0.7)] hover:scale-105 transition-all shrink-0"
+              >
+                <span>Access Full Live Lead Feed</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>

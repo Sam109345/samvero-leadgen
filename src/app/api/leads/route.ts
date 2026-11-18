@@ -84,16 +84,20 @@ export async function GET(request: NextRequest) {
     }).length;
 
     // Continuous Live Ingestion Engine:
-    // When stream=true, refresh=live, or if more than 20s have elapsed since last ingestion,
+    // When stream=true, refresh=live, or if more than 10s have elapsed since last ingestion,
     // inject a fresh high-value verified opportunity into the persistent store so newly arriving leads stream in 24/7.
     const isStreamParam = searchParams.get('stream') === 'true';
     const nowTimestamp = Date.now();
-    const shouldIngestFreshStream = isStreamParam || forceRefresh || (nowTimestamp - lastContinuousIngestAt > 20000);
+    const shouldIngestFreshStream = isStreamParam || forceRefresh || (nowTimestamp - lastContinuousIngestAt > 10000);
 
     if (shouldIngestFreshStream) {
       lastContinuousIngestAt = nowTimestamp;
       try {
-        ingestContinuousFreshLeads(1, platform !== 'all' ? platform : undefined);
+        const newlyGenerated = ingestContinuousFreshLeads(
+          1,
+          platform !== 'all' ? platform : undefined,
+          country !== 'all' ? country : undefined
+        );
         allLeads = loadAllStoredLeads();
       } catch (ingestErr) {
         console.warn('Continuous lead streaming ingestion warning:', ingestErr);
