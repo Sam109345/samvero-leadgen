@@ -838,3 +838,17 @@ body {
 .cyber-square-float {
   animation: floatSquare 6s ease-in-out infinite;
 }
+
+/* Light Mode Grid & Cyber Matrix */
+.cyber-grid-light {
+  background-image: 
+    linear-gradient(to right, rgba(0, 87, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 87, 255, 0.12) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+.cyber-square-light {
+  animation: pulseSquare 4s ease-in-out infinite;
+}
+
