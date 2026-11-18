@@ -789,8 +789,52 @@ body {
 }
 
 
-/* Animated square grid lines for hero banner background */
+/* ─── Animated Modern Grid Matrix & Floating Cyber Squares ─── */
 @keyframes gridMove {
-  0%   { background-position: 0 0; }
-  100% { background-position: 52px 52px; }
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
+}
+
+@keyframes pulseSquare {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(0, 170, 255, 0.2);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+    box-shadow: 0 0 25px rgba(0, 170, 255, 0.8), inset 0 0 15px rgba(0, 87, 255, 0.6);
+  }
+}
+
+@keyframes floatSquare {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-25px) rotate(8deg);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.2;
+  }
+}
+
+.cyber-grid-bg {
+  background-image: 
+    linear-gradient(to right, rgba(0, 87, 255, 0.22) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 87, 255, 0.22) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+.cyber-square-glow {
+  animation: pulseSquare 4s ease-in-out infinite;
+}
+
+.cyber-square-float {
+  animation: floatSquare 6s ease-in-out infinite;
 }

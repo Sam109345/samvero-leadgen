@@ -717,88 +717,86 @@ export default function LuxuryLandingPage() {
       <main className="flex-1">
 
         {/* ═══════════════════════════════════════════════════════
-            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
-            1. HERO BANNER — Clean, Centered, No Bubbles
-            Animated square grid lines in background
+            1. HERO BANNER — Clean, Centered, No Leads Panel, No Bubbles
+            High-tech animated square grid & glowing cyber boxes
             ═══════════════════════════════════════════════════════ */}
         <section
           id="hero-portal"
-          className="relative flex items-center justify-center overflow-hidden select-none bg-[#02040a]"
-          style={{ height: '100vh', minHeight: '100vh' }}
+          className="relative min-h-screen flex items-center justify-center overflow-hidden select-none bg-[#02040a] px-4"
         >
-          {/* Animated Square Grid Lines Background */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-[0.18]"
+          {/* Animated 50px Grid Lines */}
+          <div className="absolute inset-0 cyber-grid-bg pointer-events-none" />
+
+          {/* High-Tech Animated Floating Square Boxes Across the Banner */}
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            {/* Glowing Accent Squares aligned to grid */}
+            <div className="absolute top-[15%] left-[10%] w-[50px] h-[50px] border border-[#00AAFF]/60 bg-[#0057FF]/15 rounded-lg cyber-square-glow" style={{ animationDelay: '0s' }} />
+            <div className="absolute top-[25%] right-[15%] w-[100px] h-[100px] border border-[#00AAFF]/50 bg-[#0070FF]/10 rounded-xl cyber-square-float" style={{ animationDelay: '1s' }} />
+            <div className="absolute bottom-[20%] left-[18%] w-[75px] h-[75px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-lg cyber-square-float" style={{ animationDelay: '2.5s' }} />
+            <div className="absolute bottom-[28%] right-[22%] w-[50px] h-[50px] border border-cyan-400/60 bg-cyan-500/15 rounded-lg cyber-square-glow" style={{ animationDelay: '1.8s' }} />
+            <div className="absolute top-[60%] left-[8%] w-[60px] h-[60px] border border-[#0057FF]/50 bg-[#00AAFF]/10 rounded-lg cyber-square-glow" style={{ animationDelay: '3.2s' }} />
+            <div className="absolute top-[18%] right-[35%] w-[45px] h-[45px] border border-cyan-300/40 bg-cyan-400/10 rounded-md cyber-square-float" style={{ animationDelay: '0.7s' }} />
+            <div className="absolute bottom-[15%] right-[8%] w-[90px] h-[90px] border border-[#00AAFF]/45 bg-[#0057FF]/15 rounded-xl cyber-square-glow" style={{ animationDelay: '2.1s' }} />
+            <div className="absolute top-[40%] right-[6%] w-[50px] h-[50px] border border-[#00AAFF]/35 bg-[#0057FF]/10 rounded-lg cyber-square-float" style={{ animationDelay: '4s' }} />
+          </div>
+
+          {/* Vignette mask so grid smoothly fades out on perimeter */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
             style={{
-              backgroundImage: 'linear-gradient(to right, rgba(0, 87, 255, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 87, 255, 0.25) 1px, transparent 1px)',
-              backgroundSize: '52px 52px',
-              animation: 'gridMove 18s linear infinite',
+              background: 'radial-gradient(circle at 50% 50%, transparent 40%, #02040a 90%)'
             }}
           />
 
-          {/* Subtle radial glow behind center text */}
+          {/* Electric Blue Central Ambient Flare */}
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[420px] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.20) 0%, rgba(0, 170, 255, 0.06) 50%, transparent 75%)',
-              filter: 'blur(80px)',
+              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.28) 0%, rgba(0, 170, 255, 0.1) 45%, transparent 75%)',
+              filter: 'blur(90px)',
             }}
           />
 
-          {/* Hero Header Content — CENTERED */}
-          <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6">
+          {/* Hero Header Content — 100% CENTERED MIDDLE ALIGNED */}
+          <div className="relative z-30 text-center max-w-4xl mx-auto py-12">
             
-            {/* Pill Badge: Electric Blue Brand & Deep Obsidian Black */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-2.5 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-[#020512]/90 border border-[#0057FF]/50 backdrop-blur-xl shadow-[0_0_25px_rgba(0,87,255,0.35)] text-cyan-300">
-              <Sparkles className="w-3.5 h-3.5 text-[#00AAFF] animate-pulse" />
+            {/* Pill Badge: Electric Blue Brand */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs sm:text-sm font-semibold tracking-wider uppercase bg-[#020512]/90 border border-[#0057FF]/60 backdrop-blur-xl shadow-[0_0_30px_rgba(0,87,255,0.4)] text-cyan-300">
+              <Sparkles className="w-4 h-4 text-[#00AAFF] animate-pulse" />
               <span>Next-Gen Outbound Intelligence • Portal 2026</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
 
-            {/* Main Headline: Bold, Electric Blue to Cyan (Matches Screenshot 1 Lines) */}
+            {/* Main Headline: Bold, Electric Blue to Cyan */}
             <h1
-              className="text-3xl sm:text-5xl md:text-[3.5rem] font-bold tracking-tight text-white mb-2.5 sm:mb-3 leading-[1.08]"
+              className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white mb-6 leading-[1.08]"
               style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
               Step Into The Future Of <br />
-              <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent drop-shadow-[0_0_35px_rgba(0,87,255,0.45)]">
-                High-Ticket Lead <br className="hidden sm:inline" /> Discovery
+              <span className="bg-gradient-to-r from-[#0057FF] via-[#00AAFF] to-[#38bdf8] bg-clip-text text-transparent drop-shadow-[0_0_40px_rgba(0,87,255,0.5)]">
+                High-Ticket Lead Discovery
               </span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xs sm:text-sm md:text-base text-slate-300 max-w-2xl mx-auto mb-3.5 sm:mb-4 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base md:text-lg text-slate-300 max-w-2xl mx-auto mb-8 leading-relaxed font-normal">
               Autonomous multi-platform radar crawling Google Maps, Upwork, LinkedIn and international registers with 100% verified emails, validated mobile numbers, and direct WhatsApp pitching.
             </p>
 
             {/* Primary Action Buttons */}
-            <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+            <div className="flex items-center justify-center gap-4 flex-wrap">
               <Link
                 href="/signup"
-                className="px-6 sm:px-7 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm flex items-center gap-2 text-white bg-gradient-to-r from-[#0057FF] via-[#0070FF] to-[#00AAFF] shadow-[0_0_35px_rgba(0,87,255,0.6),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_0_50px_rgba(0,170,255,0.8)] hover:scale-[1.02] transition-all"
+                className="px-8 py-3.5 rounded-full font-semibold text-sm sm:text-base flex items-center gap-2 text-white bg-gradient-to-r from-[#0057FF] via-[#0070FF] to-[#00AAFF] shadow-[0_0_35px_rgba(0,87,255,0.6),inset_0_1px_1px_rgba(255,255,255,0.4)] hover:shadow-[0_0_55px_rgba(0,170,255,0.9)] hover:scale-[1.03] transition-all"
               >
                 <Zap className="w-4 h-4 text-white" />
                 <span>Get Started Free</span>
                 <ArrowRight className="w-4 h-4 text-white" />
               </Link>
 
-              {/* Interactive Walk-In Camera Toggle Button */}
-              <button
-                type="button"
-                onClick={() => {
-                  setIsWalkedIn(!isWalkedIn);
-                  const el = document.getElementById('crm-portal');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm bg-[#020512]/90 hover:bg-[#0057FF]/15 text-[#00AAFF] hover:text-white border border-[#0057FF]/50 hover:border-[#00AAFF] backdrop-blur-xl shadow-[0_0_25px_rgba(0,87,255,0.25)] hover:scale-[1.02] transition-all flex items-center gap-2"
-              >
-                {isWalkedIn ? <Minimize2 className="w-4 h-4 text-cyan-400" /> : <Maximize2 className="w-4 h-4 text-cyan-400" />}
-                <span>{isWalkedIn ? 'Exit Walk-In' : 'Step Inside CRM (Walk-In View)'}</span>
-              </button>
-
               <a
                 href="#pricing"
-                className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-xs sm:text-sm bg-black/50 hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 hover:border-[#0057FF]/40 backdrop-blur-md transition-all"
+                className="px-7 py-3.5 rounded-full font-semibold text-sm sm:text-base bg-black/60 hover:bg-white/[0.1] text-slate-300 hover:text-white border border-white/15 hover:border-[#0057FF]/60 backdrop-blur-md transition-all hover:scale-[1.03]"
               >
                 View Plans
               </a>
@@ -808,202 +806,7 @@ export default function LuxuryLandingPage() {
 
         {/* ═══════════════════════════════════════════════════════
             2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
-            CRM WALK-IN COMMAND CENTER (Moved below hero banner)
-            ═══════════════════════════════════════════════════════ */}
-        <section className="relative bg-[#02040a] pb-12 pt-8">
-          <div
-            id="crm-portal"
-            ref={walkinStageRef}
-            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage"
-          >
-            {/* The Cosmic Horizon Glowing Eclipse Arc (Electric Blue / Cyan) */}
-            <div className="portal-horizon-arc -top-16" />
-            <div className="portal-horizon-line -top-1 sm:top-2" />
-
-            {/* 3D CRM Window Shell */}
-            <div
-              ref={walkinCardRef}
-              className={`crm-walkin-card ${isWalkedIn ? 'walked-in' : ''} rounded-[1.75rem] sm:rounded-[2.5rem] p-2.5 sm:p-4 relative bg-[#020512]/95 border border-[#0057FF]/45 backdrop-blur-3xl shadow-[0_30px_120px_rgba(0,87,255,0.45),0_0_60px_rgba(0,170,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.25)]`}
-            >
-              {/* Downward Volumetric Horizon Reflection Highlight */}
-              <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#0057FF]/25 via-[#00AAFF]/8 to-transparent rounded-t-[2.5rem] pointer-events-none" />
-
-              {/* CRM Top Chrome Bar */}
-              <div className="flex items-center justify-between px-4 py-2.5 rounded-2xl bg-[#01030a] border border-white/10 mb-2.5 relative z-10 shadow-inner">
-                {/* Traffic Lights */}
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block shadow-[0_0_8px_rgba(244,63,94,0.5)]" />
-                  <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block shadow-[0_0_8px_rgba(245,158,11,0.5)]" />
-                  <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                  
-                  {/* Address Pill */}
-                  <span className="ml-3 text-xs font-mono text-slate-400 hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#0057FF]/10 border border-[#0057FF]/30">
-                    <Lock className="w-3 h-3 text-[#00AAFF]" />
-                    <span className="text-cyan-300">samvero.live/mission-control/active-leads</span>
-                  </span>
-                </div>
-
-                {/* Live Sync Status */}
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span>RADAR ACTIVE • 10s PING</span>
-                  </span>
-                  <span className="text-[11px] font-mono text-[#00AAFF] font-semibold hidden md:inline">
-                    50,000+ VERIFIED LEADS
-                  </span>
-                </div>
-              </div>
-
-              {/* CRM Live Feed Navigation Tabs */}
-              <div className="flex items-center justify-between gap-3 mb-2.5 px-1 flex-wrap relative z-10">
-                {/* Platform Filter Buttons */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-                  {[
-                    'All Sources',
-                    'Google Maps GMB',
-                    'Upwork Radar',
-                    'LinkedIn Live',
-                    'Freelancer.com',
-                    'Bark Direct',
-                  ].map((tab) => {
-                    const active = activePlatformFilter === tab;
-                    return (
-                      <button
-                        key={tab}
-                        type="button"
-                        onClick={() => setActivePlatformFilter(tab)}
-                        className={`px-3 py-1.5 rounded-xl font-medium transition whitespace-nowrap text-xs ${
-                          active
-                            ? 'bg-gradient-to-r from-[#0057FF] to-[#00AAFF] text-white shadow-md shadow-[#0057FF]/40 border border-[#00AAFF]/50'
-                            : 'bg-black/60 text-slate-400 hover:text-white border border-white/10 hover:border-[#0057FF]/40'
-                        }`}
-                      >
-                        {tab}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Quick Search Input */}
-                <div className="relative min-w-[200px] max-w-xs flex-1">
-                  <input
-                    type="text"
-                    value={leadSearchQuery}
-                    onChange={(e) => setLeadSearchQuery(e.target.value)}
-                    placeholder="Search leads, cities, niches..."
-                    className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-black/60 border border-white/10 text-xs text-white placeholder-slate-500 focus:border-[#00AAFF] focus:shadow-[0_0_15px_rgba(0,170,255,0.3)] transition-all"
-                  />
-                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
-                </div>
-              </div>
-
-              {/* CRM Live Lead Cards Stream */}
-              <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1 relative z-10">
-                {filteredLeads.length === 0 ? (
-                  <div className="p-8 rounded-2xl bg-[#030716]/95 border border-[#0057FF]/30 text-center space-y-3">
-                    <p className="text-slate-300 text-xs font-medium">No verified leads found matching your search or filter.</p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setActivePlatformFilter('All Sources');
-                        setLeadSearchQuery('');
-                      }}
-                      className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-[#0057FF]/20 hover:bg-[#0057FF]/30 text-[#00AAFF] border border-[#00AAFF]/40 transition"
-                    >
-                      Reset Filter to All Sources
-                    </button>
-                  </div>
-                ) : (
-                  filteredLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="p-3.5 rounded-2xl bg-[#030716]/95 border border-[#0057FF]/30 hover:border-[#00AAFF]/60 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_0_30px_rgba(0,87,255,0.25)]"
-                    >
-                      {/* Lead Info */}
-                      <div className="space-y-1.5 flex-1">
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-bold text-white text-sm tracking-tight">{lead.title}</span>
-                          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30">
-                            {lead.platform}
-                          </span>
-                          <span className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${lead.tagColor}`}>
-                            {lead.tag}
-                          </span>
-                          <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                            {lead.score}% Score
-                          </span>
-                        </div>
-
-                        <div className="flex items-center gap-4 text-[11px] text-slate-400 flex-wrap">
-                          <span className="flex items-center gap-1">
-                            📍 {lead.location}
-                          </span>
-                          <span className="flex items-center gap-1 font-mono text-slate-300">
-                            📞 {lead.phone}
-                          </span>
-                          <span className="flex items-center gap-1 text-[#00AAFF]">
-                            ✉️ {lead.verifiedEmail}
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Action Hub */}
-                      <div className="flex items-center gap-2.5 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
-                        <span className="font-mono font-bold text-cyan-300 text-sm px-2">
-                          {lead.budget}
-                        </span>
-
-                        {/* Copy / Direct Action */}
-                        <button
-                          type="button"
-                          onClick={() => handleCopyLead(lead.id, lead.phone)}
-                          className="px-3 py-1.5 rounded-xl font-medium text-[11px] bg-white/[0.04] hover:bg-white/[0.1] text-slate-200 border border-white/15 transition flex items-center gap-1.5"
-                        >
-                          {copiedLeadId === lead.id ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
-                              <span>Copied!</span>
-                            </>
-                          ) : (
-                            <>
-                              <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                              <span>WhatsApp Pitch</span>
-                            </>
-                          )}
-                        </button>
-
-                        <Link
-                          href="/signup"
-                          className="px-3.5 py-1.5 rounded-xl font-semibold text-[11px] glass-pill-btn flex items-center gap-1 text-white"
-                        >
-                          <span>Claim Lead</span>
-                          <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-
-              {/* Bottom CRM Telemetry Status Bar */}
-              <div className="mt-2.5 pt-2.5 border-t border-white/10 flex items-center justify-between text-[11px] text-slate-400 px-2 flex-wrap gap-2">
-                <div className="flex items-center gap-3 font-mono">
-                  <span className="text-emerald-400">● 15 CRAWL ENGINES ONLINE</span>
-                  <span className="hidden sm:inline">LATENCY: 14ms</span>
-                  <span className="hidden md:inline">MX ACCURACY: 99.8%</span>
-                </div>
-                <div className="font-mono text-[#00AAFF]">
-                  PRESS <kbd className="px-1.5 py-0.5 rounded bg-white/10 text-white font-bold">/</kbd> TO SEARCH LEADS
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ═══════════════════════════════════════════════════════
-            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
-            Lists ALL 15 supported channels required by user
+            Lists ALL 15 supported channels
             ═══════════════════════════════════════════════════════ */}
         <section id="marquee-slider" className="py-4 border-y border-[#0057FF]/35 bg-[#01030a] overflow-hidden select-none shadow-[inset_0_1px_20px_rgba(0,87,255,0.1)]">
           <div className="animate-marquee-continuous flex items-center gap-8">
