@@ -717,225 +717,36 @@ export default function LuxuryLandingPage() {
       <main className="flex-1">
 
         {/* ═══════════════════════════════════════════════════════
-            1. HERO & CRM WALK-IN COMMAND CENTER (EXACT SCREENSHOT 1 INITIAL VIEW)
-            In 100vh: Badge + Headline + Subheadline + CTA buttons +
-            Glowing Horizon Arc + Top Half of CRM Dashboard ALL VISIBLE AT ONCE!
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
+            1. HERO BANNER — Clean, Centered, No Bubbles
+            Animated square grid lines in background
             ═══════════════════════════════════════════════════════ */}
         <section
           id="hero-portal"
-          onMouseMove={handleBannerMouseMove}
-          className="relative min-h-screen pt-14 sm:pt-16 pb-8 overflow-hidden select-none bg-[#02040a]"
+          className="relative flex items-center justify-center overflow-hidden select-none bg-[#02040a]"
+          style={{ height: '100vh', minHeight: '100vh' }}
         >
-          {/* Exact 100vh Initial Viewport Canvas Anchor */}
-          <div className="absolute inset-0 pointer-events-none" style={{ minHeight: '100vh', height: '100vh' }} />
-
-          {/* Technical Enterprise Cyber Grid Overlay (Linear & Huly style) */}
+          {/* Animated Square Grid Lines Background */}
           <div
-            className="absolute inset-0 pointer-events-none opacity-[0.14]"
+            className="absolute inset-0 pointer-events-none opacity-[0.18]"
             style={{
-              backgroundImage: 'linear-gradient(to right, rgba(0, 87, 255, 0.22) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 87, 255, 0.22) 1px, transparent 1px)',
-              backgroundSize: '48px 48px',
-              maskImage: 'radial-gradient(ellipse 75% 65% at 50% 35%, black 40%, transparent 85%)',
-              WebkitMaskImage: 'radial-gradient(ellipse 75% 65% at 50% 35%, black 40%, transparent 85%)',
+              backgroundImage: 'linear-gradient(to right, rgba(0, 87, 255, 0.25) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 87, 255, 0.25) 1px, transparent 1px)',
+              backgroundSize: '52px 52px',
+              animation: 'gridMove 18s linear infinite',
             }}
           />
 
-          {/* Cosmic Space Background Dust & Starfield */}
-          <Starfield count={55} />
-
-          {/* Top Subtle Electric Blue Ambient Light Header Bleed */}
-          <div className="absolute top-0 left-0 right-0 h-48 bg-gradient-to-b from-[#0057FF]/12 via-transparent to-transparent pointer-events-none" />
-
-          {/* Deep Ambient Brand Glow Orbs (Deep Obsidian Black & Electric Blue) */}
+          {/* Subtle radial glow behind center text */}
           <div
-            className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none transition-transform duration-500 ease-out"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(0, 87, 255, 0.18) 0%, transparent 70%)',
-              filter: 'blur(90px)',
-              transform: `translate3d(${mousePos.x * -25}px, ${mousePos.y * -20}px, 0)`,
-            }}
-          />
-          <div
-            className="absolute top-1/3 right-1/4 w-[450px] h-[450px] rounded-full pointer-events-none transition-transform duration-500 ease-out"
-            style={{
-              background: 'radial-gradient(circle, rgba(0, 170, 255, 0.14) 0%, transparent 70%)',
+              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.20) 0%, rgba(0, 170, 255, 0.06) 50%, transparent 75%)',
               filter: 'blur(80px)',
-              transform: `translate3d(${mousePos.x * 30}px, ${mousePos.y * 25}px, 0)`,
-            }}
-          />
-          <div
-            className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[750px] h-[380px] rounded-full pointer-events-none"
-            style={{
-              background: 'radial-gradient(ellipse at center, rgba(0, 87, 255, 0.22) 0%, rgba(0, 170, 255, 0.08) 50%, transparent 75%)',
-              filter: 'blur(85px)',
             }}
           />
 
-          {/* 3D Prismatic Glass Torus Ring centered behind Hero Headline (Screenshot 1 Match) */}
-          <div
-            className="absolute top-8 sm:top-12 left-1/2 -translate-x-1/2 w-[480px] sm:w-[580px] h-[300px] sm:h-[350px] torus-ring-iridescent pointer-events-none opacity-45 transition-transform duration-500 ease-out hidden sm:block"
-            style={{
-              transform: `translateX(-50%) rotate(-18deg) rotateX(62deg) translate3d(${mousePos.x * 25}px, ${mousePos.y * 20}px, 0)`,
-            }}
-          />
-
-          {/* Side Ambient Iridescent Torus Accents */}
-          <div
-            className="absolute top-16 -left-20 w-60 h-60 torus-ring-iridescent pointer-events-none opacity-25 hidden lg:block transition-transform duration-500 ease-out"
-            style={{ transform: `rotate(25deg) rotateX(45deg) translate3d(${mousePos.x * -20}px, ${mousePos.y * -20}px, 0)` }}
-          />
-          <div
-            className="absolute top-28 -right-24 w-64 h-64 torus-ring-iridescent pointer-events-none opacity-20 hidden lg:block transition-transform duration-500 ease-out"
-            style={{ transform: `rotate(-30deg) rotateX(55deg) translate3d(${mousePos.x * 20}px, ${mousePos.y * 20}px, 0)` }}
-          />
-
-          {/* Left Flank Enterprise Status Pill (Huly / Scale AI style) */}
-          <div
-            className="absolute left-3 lg:left-8 top-32 z-20 hidden lg:flex items-center gap-3 px-4 py-2 rounded-2xl bg-[#020512]/90 border border-[#0057FF]/40 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.85),0_0_25px_rgba(0,87,255,0.25)] transition-transform duration-300 ease-out pointer-events-none"
-            style={{ transform: `translate3d(${mousePos.x * -16}px, ${mousePos.y * -12}px, 0)` }}
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#0057FF]/20 border border-[#00AAFF]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,87,255,0.4)]">
-              <ShieldCheck className="w-4 h-4 text-[#00AAFF]" />
-            </div>
-            <div className="text-left">
-              <div className="text-[11px] font-semibold text-white flex items-center gap-1.5">
-                <span>50,000+ Verified</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              </div>
-              <div className="text-[10px] text-slate-400 font-mono">100% Deliverability Validated</div>
-            </div>
-          </div>
-
-          {/* Right Flank Enterprise Status Pill */}
-          <div
-            className="absolute right-3 lg:right-8 top-32 z-20 hidden lg:flex items-center gap-3 px-4 py-2 rounded-2xl bg-[#020512]/90 border border-[#0057FF]/40 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.85),0_0_25px_rgba(0,87,255,0.25)] transition-transform duration-300 ease-out pointer-events-none"
-            style={{ transform: `translate3d(${mousePos.x * 16}px, ${mousePos.y * 12}px, 0)` }}
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#00AAFF]/20 border border-[#00AAFF]/40 flex items-center justify-center shrink-0 shadow-[0_0_15px_rgba(0,170,255,0.4)]">
-              <Radar className="w-4 h-4 text-[#00AAFF]" />
-            </div>
-            <div className="text-left">
-              <div className="text-[11px] font-semibold text-white flex items-center gap-1.5">
-                <span>15 Outbound Sources</span>
-                <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">LIVE</span>
-              </div>
-              <div className="text-[10px] text-slate-400 font-mono">Direct WhatsApp & SOW Radar</div>
-            </div>
-          </div>
-
-          {/* ── Dynamic Floating 3D Obsidian-Glass Lenses with Mouse-Tracking & Click-To-Pop Burst ── */}
-          {HERO_CIRCLES.map((c) => {
-            const poppedState = poppedMap[c.id];
-            const isPopping = poppedState?.isPopping;
-            const isPopped = poppedState?.isPopped;
-
-            // Follower circles dynamically follow mouse cursor wherever it goes ("jahan jahan mouse cursor jaaye")
-            const posX = c.isFollower
-              ? `calc(${c.baseLeft + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`
-              : `calc(${c.baseLeft + mousePos.x * c.followFactorX}% + ${c.offsetX}px)`;
-            const posY = c.isFollower
-              ? `calc(${c.baseTop + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`
-              : `calc(${c.baseTop + mousePos.y * c.followFactorY}% + ${c.offsetY}px)`;
-
-            return (
-              <div
-                key={c.id}
-                className="absolute transition-all duration-300 ease-out pointer-events-none"
-                style={{
-                  left: posX,
-                  top: posY,
-                  width: `${c.size}px`,
-                  height: `${c.size}px`,
-                  transform: `translate3d(${mousePos.x * c.factorX}px, ${mousePos.y * c.factorY}px, 0)`,
-                  zIndex: 12,
-                }}
-              >
-                {/* Popping explosion state */}
-                {isPopping && (
-                  <div className="relative w-full h-full pointer-events-none">
-                    {/* Expanding Shockwave Ring */}
-                    <div
-                      className="absolute inset-0 rounded-full animate-bubble-shockwave pointer-events-none"
-                      style={{
-                        border: '2px solid rgba(0, 220, 255, 0.95)',
-                        boxShadow: '0 0 35px rgba(0, 170, 255, 0.9)',
-                      }}
-                    />
-                    {/* 12 Radiant Burst Particles */}
-                    {Array.from({ length: 12 }).map((_, pi) => {
-                      const angle = (pi * 30 * Math.PI) / 180;
-                      const dist = c.size * 0.75;
-                      const tx = Math.cos(angle) * dist;
-                      const ty = Math.sin(angle) * dist;
-                      return (
-                        <div
-                          key={pi}
-                          className="absolute rounded-full pointer-events-none animate-bubble-particle"
-                          style={{
-                            top: '50%',
-                            left: '50%',
-                            width: '6px',
-                            height: '6px',
-                            marginTop: '-3px',
-                            marginLeft: '-3px',
-                            background: pi % 2 === 0 ? '#38bdf8' : '#0057FF',
-                            boxShadow: '0 0 10px #00AAFF',
-                            '--tx': `${tx}px`,
-                            '--ty': `${ty}px`,
-                          } as React.CSSProperties}
-                        />
-                      );
-                    })}
-                    {/* Flash Expanding Core */}
-                    <div
-                      className="w-full h-full rounded-full animate-bubble-pop pointer-events-none"
-                      style={{
-                        background: 'radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.95) 0%, rgba(0, 170, 255, 0.85) 50%, rgba(0, 87, 255, 0.4) 100%)',
-                        boxShadow: '0 0 45px rgba(0, 220, 255, 1)',
-                      }}
-                    />
-                  </div>
-                )}
-
-                {/* Normal Interactive Floating Obsidian-Glass Circle */}
-                {!isPopped && !isPopping && (
-                  <div
-                    onClick={(e) => handleCircleClick(e, c.id, c.size)}
-                    role="button"
-                    tabIndex={0}
-                    title="Click to pop!"
-                    aria-label="Interactive floating circle - click to pop"
-                    className={`w-full h-full rounded-full animate-float cursor-pointer pointer-events-auto transition-all duration-300 relative group ${c.floatClass} animate-bubble-respawn hover:scale-105`}
-                    style={{
-                      background:
-                        c.colorTheme === 'cyan'
-                          ? 'radial-gradient(circle at 35% 28%, rgba(0, 220, 255, 0.3) 0%, rgba(0, 140, 255, 0.14) 35%, rgba(2, 6, 23, 0.88) 68%, rgba(1, 3, 10, 0.98) 100%)'
-                          : c.colorTheme === 'electric-blue'
-                          ? 'radial-gradient(circle at 35% 28%, rgba(0, 140, 255, 0.35) 0%, rgba(0, 87, 255, 0.18) 35%, rgba(2, 6, 23, 0.9) 68%, rgba(1, 3, 10, 0.98) 100%)'
-                          : 'radial-gradient(circle at 35% 28%, rgba(56, 189, 248, 0.3) 0%, rgba(0, 170, 255, 0.15) 35%, rgba(2, 6, 23, 0.88) 68%, rgba(1, 3, 10, 0.98) 100%)',
-                      border: '1.5px solid rgba(0, 170, 255, 0.55)',
-                      boxShadow:
-                        'inset 0 1px 1px rgba(255, 255, 255, 0.5), inset 0 0 25px rgba(0, 170, 255, 0.28), inset 0 0 50px rgba(0, 87, 255, 0.2), 0 0 35px rgba(0, 87, 255, 0.35)',
-                      backdropFilter: 'blur(16px)',
-                      WebkitBackdropFilter: 'blur(16px)',
-                    }}
-                  >
-                    {/* Specular glass reflection on top-left */}
-                    <div className="absolute top-2 left-3 w-1/3 h-1/4 rounded-full bg-gradient-to-br from-white/60 via-cyan-300/30 to-transparent blur-[1px] pointer-events-none group-hover:from-white/80" />
-                    
-                    {/* Inner glowing pulse */}
-                    <div className="absolute inset-2 rounded-full bg-radial from-cyan-400/25 to-transparent pointer-events-none opacity-60 group-hover:opacity-100 transition-opacity" />
-
-                    {/* Hover highlight border ring */}
-                    <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-[#00AAFF] group-hover:shadow-[0_0_35px_rgba(0,170,255,0.8),inset_0_0_20px_rgba(0,220,255,0.6)] transition-all pointer-events-none" />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-
-          {/* Hero Header Content (Compact, Perfectly Vertically Spaced) */}
-          <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6 mb-3 sm:mb-4">
+          {/* Hero Header Content — CENTERED */}
+          <div className="relative z-30 text-center max-w-4xl mx-auto px-4 sm:px-6">
             
             {/* Pill Badge: Electric Blue Brand & Deep Obsidian Black */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-2.5 text-[11px] sm:text-xs font-semibold tracking-wider uppercase bg-[#020512]/90 border border-[#0057FF]/50 backdrop-blur-xl shadow-[0_0_25px_rgba(0,87,255,0.35)] text-cyan-300">
@@ -993,15 +804,17 @@ export default function LuxuryLandingPage() {
               </a>
             </div>
           </div>
+        </section>
 
-          {/* ═══════════════════════════════════════════════════════
-              THE PORTAL HORIZON GLOW & 3D CRM WALK-IN COMMAND CENTER
-              Directly beneath the hero buttons so top half is visible in 100vh!
-              ═══════════════════════════════════════════════════════ */}
+        {/* ═══════════════════════════════════════════════════════
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
+            CRM WALK-IN COMMAND CENTER (Moved below hero banner)
+            ═══════════════════════════════════════════════════════ */}
+        <section className="relative bg-[#02040a] pb-12 pt-8">
           <div
             id="crm-portal"
             ref={walkinStageRef}
-            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage mt-4 sm:mt-6"
+            className="w-full max-w-6xl mx-auto px-3 sm:px-6 relative z-20 crm-walkin-stage"
           >
             {/* The Cosmic Horizon Glowing Eclipse Arc (Electric Blue / Cyan) */}
             <div className="portal-horizon-arc -top-16" />
@@ -1212,6 +1025,7 @@ export default function LuxuryLandingPage() {
 
 
         {/* ═══════════════════════════════════════════════════════
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
             4. CORPORATE MEETING & MODERN OFFICE SHOWCASE
             Demonstrates real CRM workflow in enterprise boardrooms
             ═══════════════════════════════════════════════════════ */}
@@ -1388,6 +1202,7 @@ export default function LuxuryLandingPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
             4. PRICING SECTION: STRICT ELECTRIC BLUE TO CYAN THEME
             ═══════════════════════════════════════════════════════ */}
         <section id="pricing" className="py-24 relative overflow-hidden bg-[#060b18] smooth-scroll-perf">
@@ -1631,6 +1446,7 @@ export default function LuxuryLandingPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
             5. FAQ ACCORDION SECTION
             ═══════════════════════════════════════════════════════ */}
         <section className="py-24 relative overflow-hidden bg-[#030712] border-t border-slate-800">
@@ -1683,6 +1499,7 @@ export default function LuxuryLandingPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════
+            2. LOGOS MARQUEE SLIDER (STRICTLY NO STOP ON HOVER)
             6. FINAL CALL TO ACTION
             ═══════════════════════════════════════════════════════ */}
         <section className="py-24 relative overflow-hidden bg-[#060b18] border-t border-slate-800">

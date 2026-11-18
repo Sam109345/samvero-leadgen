@@ -787,3 +787,10 @@ body {
   background: #030712;
   color: #e2e8f0;
 }
+
+
+/* Animated square grid lines for hero banner background */
+@keyframes gridMove {
+  0%   { background-position: 0 0; }
+  100% { background-position: 52px 52px; }
+}
