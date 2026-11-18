@@ -93,6 +93,15 @@ export default function ContactPage() {
       <PublicNavbar />
 
       <main className="flex-1 pt-32 pb-24 relative overflow-hidden">
+        {/* Animated Cyber Grid Matrix */}
+        <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
+
+        {/* Floating Cyber Squares */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[18%] left-[10%] w-[50px] h-[50px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-lg cyber-square-float" />
+          <div className="absolute bottom-[22%] right-[12%] w-[70px] h-[70px] border border-cyan-400/40 bg-cyan-500/10 rounded-xl cyber-square-glow" />
+        </div>
+
         <Stars />
         
         {/* Ambient Brand Color Orbs */}

@@ -8,6 +8,15 @@ import SubscriptionPricingView from '@/components/subscription/SubscriptionPrici
 export default function PricingPage() {
   return (
     <div className="min-h-screen bg-[#030712] text-slate-100 flex flex-col font-sans selection:bg-[#0057FF] selection:text-white relative overflow-hidden">
+      {/* Animated Cyber Grid Matrix */}
+      <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
+
+      {/* Floating Cyber Squares */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[20%] left-[6%] w-[60px] h-[60px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-lg cyber-square-float" />
+        <div className="absolute bottom-[25%] right-[10%] w-[80px] h-[80px] border border-cyan-400/40 bg-cyan-500/10 rounded-xl cyber-square-glow" />
+      </div>
+
       {/* Background radial space glow (Strict Electric Blue to Cyan Theme) */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-[#0057FF]/15 via-[#00AAFF]/5 to-transparent blur-[140px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-10 w-96 h-96 bg-[#00AAFF]/10 blur-[130px] pointer-events-none" />

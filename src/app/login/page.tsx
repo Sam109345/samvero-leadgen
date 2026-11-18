@@ -130,6 +130,15 @@ function LoginForm() {
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4 sm:p-6 md:p-10 bg-[#030712] text-slate-100 overflow-hidden font-sans select-none">
+      {/* Animated Cyber Grid Matrix */}
+      <div className="absolute inset-0 cyber-grid-bg opacity-[0.15] pointer-events-none" />
+
+      {/* Floating Cyber Squares */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[15%] left-[10%] w-[50px] h-[50px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-lg cyber-square-float" />
+        <div className="absolute bottom-[18%] right-[12%] w-[65px] h-[65px] border border-cyan-400/40 bg-cyan-500/10 rounded-xl cyber-square-glow" />
+      </div>
+
       {/* ── Atmospheric Ambient Satin Lights (Electric Blue & Cyan Theme) ── */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Electric blue specular glow at top-left */}

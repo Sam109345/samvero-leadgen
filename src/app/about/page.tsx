@@ -57,6 +57,15 @@ export default function AboutPage() {
       <PublicNavbar />
 
       <main className="flex-1 pt-32 pb-24 relative overflow-hidden">
+        {/* Animated Cyber Grid Matrix */}
+        <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
+
+        {/* Ambient Floating Cyber Squares */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[15%] left-[8%] w-[60px] h-[60px] border border-[#00AAFF]/40 bg-[#0057FF]/10 rounded-lg cyber-square-float" />
+          <div className="absolute bottom-[20%] right-[10%] w-[75px] h-[75px] border border-cyan-400/40 bg-cyan-500/10 rounded-xl cyber-square-glow" />
+        </div>
+
         <Stars />
         
         {/* Ambient Brand Color Orbs (Electric Blue & Cyan) */}
