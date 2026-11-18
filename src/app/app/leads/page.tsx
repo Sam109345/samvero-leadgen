@@ -44,7 +44,7 @@ export default function CustomerLeadsPage() {
   // Fetch live available leads
   const fetchLiveLeads = () => {
     setLoading(true);
-    fetch('/api/leads?refresh=live')
+    fetch('/api/leads?limit=60')
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.leads)) {

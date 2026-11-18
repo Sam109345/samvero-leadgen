@@ -120,11 +120,11 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
     }
   }, [theme]);
 
-  // Fetch leads from master database
+  // Fetch leads from master database with fast response limit
   const fetchLeads = useCallback(async (forceRefresh = false) => {
     if (forceRefresh) setIsRefreshingLive(true);
     try {
-      const url = forceRefresh ? '/api/leads?refresh=live' : '/api/leads';
+      const url = forceRefresh ? '/api/leads?refresh=live&limit=100' : '/api/leads?limit=100';
       const res = await fetch(url);
       const data = await res.json();
       if (data.success && Array.isArray(data.leads)) {
@@ -138,11 +138,11 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
     }
   }, []);
 
-  // Fetch live leads immediately on mount, and automatically poll every 40 seconds
+  // Fetch leads immediately on mount, and poll every 40 seconds
   useEffect(() => {
-    fetchLeads(true);
+    fetchLeads(false);
     const interval = setInterval(() => {
-      fetchLeads(true);
+      fetchLeads(false);
     }, 40000);
     return () => clearInterval(interval);
   }, [fetchLeads]);

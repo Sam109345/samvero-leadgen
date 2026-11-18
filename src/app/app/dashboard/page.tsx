@@ -43,7 +43,7 @@ export default function CustomerDashboardPage() {
   };
 
   const fetchLiveOpportunities = () => {
-    fetch('/api/leads')
+    fetch('/api/leads?limit=10')
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.leads)) {

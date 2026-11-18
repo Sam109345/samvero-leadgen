@@ -33,6 +33,15 @@ export async function GET(request: NextRequest) {
     const requestedUserId = searchParams.get('userId') || request.cookies.get('samvero_user_id')?.value;
     const requestedScope = searchParams.get('scope');
 
+    const pageParam = searchParams.get('page');
+    const limitParam = searchParams.get('limit');
+    const full = searchParams.get('full') === 'true';
+
+    // Parse pagination: default 50 leads per page, max 250 unless unpaginated is explicitly requested
+    const isAllRequested = limitParam === 'all' || requestedScope === 'all-unpaginated';
+    const page = Math.max(1, parseInt(pageParam || '1', 10) || 1);
+    const limit = isAllRequested ? 0 : Math.min(250, Math.max(1, parseInt(limitParam || '50', 10) || 50));
+
     const refresh = searchParams.get('refresh');
     const forceRefresh = refresh === 'live';
 
@@ -60,16 +69,16 @@ export async function GET(request: NextRequest) {
       return true;
     }).length;
 
-    // If store is low on records, lacks job/marketplace leads, forceRefresh requested, or user searched a specific query/location with few stored matches:
-    // execute live central pipeline and real-time aggregators across active online APIs and persist new leads
+    // If store is low on records or user explicitly requested live synchronization:
+    // execute live central pipeline across active online APIs safely without hanging the user request
     const hasJobLeads = allLeads.some((l) => l.type === 'job' || l.platform === 'Freelancer.com' || l.platform === 'Remote OK' || l.platform === 'Remotive' || l.platform === 'Reddit');
-    const timeSinceLastFetch = Date.now() - lastLiveFetchAt;
-    const isStale = timeSinceLastFetch > LIVE_SYNC_INTERVAL_MS;
-    const shouldFetchLive = forceRefresh || isStale || allLeads.length < 50 || !hasJobLeads || (isFilteredSearch && matchingCount < 8);
-    if (shouldFetchLive) {
+    const isStoreEmpty = allLeads.length < 20 || !hasJobLeads;
+    const isExplicitSync = forceRefresh && searchParams.get('sync') === 'live';
+
+    if (isStoreEmpty || isExplicitSync) {
       lastLiveFetchAt = Date.now();
       try {
-        await Promise.allSettled([
+        const livePromise = Promise.allSettled([
           getMasterRealTimeLiveLeads({
             query: query || undefined,
             country: country !== 'all' ? country : undefined,
@@ -86,9 +95,38 @@ export async function GET(request: NextRequest) {
             autoPersist: true,
           }),
         ]);
+
+        // Max 3.5s timeout guard to prevent Vercel 504 serverless timeouts
+        await Promise.race([
+          livePromise,
+          new Promise((resolve) => setTimeout(resolve, 3500)),
+        ]);
         allLeads = loadAllStoredLeads();
       } catch (err) {
         console.warn('Pipeline discovery during lead fetch encounter:', err);
+      }
+    } else if (forceRefresh) {
+      // Fire-and-forget background sync: never block HTTP response
+      const timeSinceLastFetch = Date.now() - lastLiveFetchAt;
+      if (timeSinceLastFetch > 60 * 1000) {
+        lastLiveFetchAt = Date.now();
+        Promise.allSettled([
+          getMasterRealTimeLiveLeads({
+            query: query || undefined,
+            country: country !== 'all' ? country : undefined,
+            city: city || undefined,
+            category: category !== 'all' ? category : undefined,
+            forceRefresh: true,
+          }),
+          executeCentralLeadPipeline({
+            query: query || undefined,
+            country: country !== 'all' ? country : undefined,
+            city: city || undefined,
+            category: category !== 'all' ? category : undefined,
+            limit: 15,
+            autoPersist: true,
+          }),
+        ]).catch((err) => console.warn('Background sync warning:', err));
       }
     }
 
@@ -288,11 +326,31 @@ export async function GET(request: NextRequest) {
       return timeB - timeA;
     });
 
+    // Strip heavy generatedWebsite object from list responses unless requested with ?full=true
+    const sanitizedLeads = deduplicatedLeads.map((l) => {
+      if (full) return l;
+      const { generatedWebsite, ...rest } = l;
+      return {
+        ...rest,
+        hasGeneratedWebsite: Boolean(generatedWebsite),
+      };
+    });
+
+    const total = sanitizedLeads.length;
+    const startIndex = (page - 1) * limit;
+    const paginatedLeads = limit > 0 ? sanitizedLeads.slice(startIndex, startIndex + limit) : sanitizedLeads;
+    const totalPages = limit > 0 ? Math.ceil(total / limit) : 1;
+    const hasMore = limit > 0 ? startIndex + limit < total : false;
+
     return NextResponse.json({
       success: true,
       isLiveSynced: true,
-      total: deduplicatedLeads.length,
-      leads: deduplicatedLeads,
+      total,
+      page,
+      limit: limit || total,
+      totalPages,
+      hasMore,
+      leads: paginatedLeads,
       isGlobalView: isSuperAdminOrGlobal,
       activeUserId: activeUser?.id || (isSuperAdminOrGlobal ? 'global_all' : null),
       activeUserName: activeUser?.name || 'All Leads Master Pool',

@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Link from 'next/link';
 import PublicNavbar from './PublicNavbar';
 import PublicFooter from './PublicFooter';
 import { PlanConfig, BillingCycle } from '@/lib/saas-store';
+import { Lead } from '@/types';
 import {
   Sparkles,
   ArrowRight,
@@ -151,6 +152,70 @@ const CRM_LIVE_LEADS: MockLead[] = [
     score: 92,
     contactName: 'David K. Hoffman (CTO)',
     verifiedEmail: 'dhoffman@nexus-auto.ca',
+  },
+  {
+    id: 'lead-5',
+    title: 'AI Workflow Automation & Agent Integration',
+    company: 'Veloce Data Systems Inc',
+    location: 'San Francisco, CA, USA',
+    country: 'USA',
+    platform: 'Freelancer.com',
+    phone: '+1 415 890 2244',
+    whatsapp: 'Direct Available',
+    tag: 'Verified Client • Escrow Funded',
+    tagColor: 'text-[#00AAFF] bg-[#0057FF]/15 border-[#0057FF]/30',
+    budget: '$3,500 - $7,500',
+    score: 97,
+    contactName: 'Sarah Jenkins (Ops VP)',
+    verifiedEmail: 's.jenkins@velocesystems.com',
+  },
+  {
+    id: 'lead-6',
+    title: 'Full-Stack Multi-Tenant SaaS Modernization',
+    company: 'Synergy Cloud Technologies',
+    location: 'Sydney, NSW, Australia',
+    country: 'Australia',
+    platform: 'Freelancer.com',
+    phone: '+61 2 9123 4567',
+    whatsapp: 'Commercial Direct',
+    tag: 'Urgent RFP • High Rep Client',
+    tagColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+    budget: '$4,500 - $9,800',
+    score: 95,
+    contactName: 'Liam O’Connor (Engineering Lead)',
+    verifiedEmail: 'liam@synergycloud.com.au',
+  },
+  {
+    id: 'lead-7',
+    title: 'Commercial Office Fitout & HVAC Infrastructure',
+    company: 'Emirates Facilities Engineering Ltd',
+    location: 'Business Bay & DIFC, Dubai, UAE',
+    country: 'UAE',
+    platform: 'Bark Direct',
+    phone: '+971 4 456 7890',
+    whatsapp: 'Direct Available',
+    tag: 'Phone Confirmed • Immediate RFP',
+    tagColor: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+    budget: '$6,500 - $18,000',
+    score: 99,
+    contactName: 'Hamdan Al-Zaabi (Managing Partner)',
+    verifiedEmail: 'h.zaabi@emirates-facilities.ae',
+  },
+  {
+    id: 'lead-8',
+    title: 'Boutique Hotel Corporate Branding & Web Engine',
+    company: 'The Kensington Heritage Hotel Group',
+    location: 'Kensington & Chelsea, London, UK',
+    country: 'UK',
+    platform: 'Bark Direct',
+    phone: '+44 20 7123 9876',
+    whatsapp: 'Business Verified',
+    tag: 'Decision Maker Live • RFP Open',
+    tagColor: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30',
+    budget: '$5,000 - $11,000',
+    score: 96,
+    contactName: 'Charlotte Beaumont (Brand Director)',
+    verifiedEmail: 'cbeaumont@kensingtonheritage.co.uk',
   },
 ];
 
@@ -373,20 +438,105 @@ export default function LuxuryLandingPage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, [isWalkedIn]);
 
-  /* Filter live leads in command center */
-  const filteredLeads = CRM_LIVE_LEADS.filter((lead) => {
-    const matchesPlatform =
-      activePlatformFilter === 'All Sources' ||
-      lead.platform.toLowerCase().includes(activePlatformFilter.toLowerCase().replace(' gmb', '').replace(' radar', '').replace(' direct', '').replace(' live', ''));
-    
-    const matchesSearch =
-      leadSearchQuery === '' ||
-      lead.title.toLowerCase().includes(leadSearchQuery.toLowerCase()) ||
-      lead.location.toLowerCase().includes(leadSearchQuery.toLowerCase()) ||
-      lead.tag.toLowerCase().includes(leadSearchQuery.toLowerCase());
+  const [liveDbLeads, setLiveDbLeads] = useState<Lead[]>([]);
 
-    return matchesPlatform && matchesSearch;
-  });
+  /* Fetch live leads from master database */
+  useEffect(() => {
+    let isMounted = true;
+    fetch('/api/leads?limit=30')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.leads) && data.leads.length > 0 && isMounted) {
+          setLiveDbLeads(data.leads);
+        }
+      })
+      .catch((err) => console.warn('Could not load live CRM leads:', err));
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  /* Map live database leads to the interactive CRM card format */
+  const mappedDbLeads: MockLead[] = useMemo(() => {
+    return liveDbLeads.map((l) => {
+      let platformName: MockLead['platform'] = 'Google My Business';
+      const platLower = (l.platform || '').toLowerCase();
+      if (platLower.includes('upwork')) platformName = 'Upwork Radar';
+      else if (platLower.includes('linkedin')) platformName = 'LinkedIn Live';
+      else if (platLower.includes('freelancer')) platformName = 'Freelancer.com';
+      else if (platLower.includes('bark')) platformName = 'Bark Direct';
+      else if (platLower.includes('google') || platLower.includes('map') || platLower.includes('gmb')) platformName = 'Google My Business';
+
+      return {
+        id: l.id,
+        title: l.businessName || l.title,
+        company: l.businessName || l.title,
+        location: l.city ? `${l.city}, ${l.country}` : l.address || l.country || 'Global Outbound',
+        country: l.country || 'Global',
+        platform: platformName,
+        phone: l.contact?.phone || '+971 4 883 2222',
+        whatsapp: l.contact?.phone ? 'Validated Mobile' : 'Direct Available',
+        tag: l.tags?.[0] || (l.contact?.hasWebsite ? 'Verified Enterprise' : 'Missing Responsive Site (Hot Pitch)'),
+        tagColor: l.contact?.hasWebsite
+          ? 'text-[#00AAFF] bg-[#0057FF]/15 border-[#0057FF]/30'
+          : 'text-amber-400 bg-amber-500/10 border-amber-500/30',
+        budget: l.budget || '$1,500 - $4,500',
+        score: l.scoreBreakdown?.leadQualityScore || 96,
+        contactName: l.contact?.contactPerson || 'Executive Decision Maker',
+        verifiedEmail: l.contact?.email || 'contact@verified-enterprise.com',
+      };
+    });
+  }, [liveDbLeads]);
+
+  /* Combined leads pool: live DB leads prepended with guaranteed multi-source fallback leads */
+  const combinedLeadsPool = useMemo(() => {
+    const seen = new Set<string>();
+    const pool: MockLead[] = [];
+    for (const item of [...mappedDbLeads, ...CRM_LIVE_LEADS]) {
+      const key = `${(item.title || '').trim().toLowerCase()}::${(item.platform || '').toLowerCase()}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        pool.push(item);
+      }
+    }
+    return pool;
+  }, [mappedDbLeads]);
+
+  /* Filter live leads in command center */
+  const filteredLeads = useMemo(() => {
+    return combinedLeadsPool.filter((lead) => {
+      let matchesPlatform = true;
+      if (activePlatformFilter !== 'All Sources') {
+        const filterStr = activePlatformFilter.toLowerCase();
+        const leadPlat = lead.platform.toLowerCase();
+        if (filterStr.includes('google') || filterStr.includes('gmb')) {
+          matchesPlatform = leadPlat.includes('google') || leadPlat.includes('gmb') || leadPlat.includes('map');
+        } else if (filterStr.includes('upwork')) {
+          matchesPlatform = leadPlat.includes('upwork');
+        } else if (filterStr.includes('linkedin')) {
+          matchesPlatform = leadPlat.includes('linkedin');
+        } else if (filterStr.includes('freelancer')) {
+          matchesPlatform = leadPlat.includes('freelancer');
+        } else if (filterStr.includes('bark')) {
+          matchesPlatform = leadPlat.includes('bark');
+        } else {
+          matchesPlatform = leadPlat.includes(filterStr);
+        }
+      }
+
+      const q = leadSearchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        lead.title.toLowerCase().includes(q) ||
+        lead.company.toLowerCase().includes(q) ||
+        lead.location.toLowerCase().includes(q) ||
+        lead.platform.toLowerCase().includes(q) ||
+        lead.tag.toLowerCase().includes(q) ||
+        lead.verifiedEmail.toLowerCase().includes(q);
+
+      return matchesPlatform && matchesSearch;
+    });
+  }, [combinedLeadsPool, activePlatformFilter, leadSearchQuery]);
 
   const handleCopyLead = (id: string, phone: string) => {
     navigator.clipboard?.writeText(phone);
@@ -801,74 +951,90 @@ export default function LuxuryLandingPage() {
 
               {/* CRM Live Lead Cards Stream */}
               <div className="space-y-2.5 max-h-[380px] overflow-y-auto pr-1 relative z-10">
-                {filteredLeads.map((lead) => (
-                  <div
-                    key={lead.id}
-                    className="p-3.5 rounded-2xl bg-[#030716]/95 border border-[#0057FF]/30 hover:border-[#00AAFF]/60 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_0_30px_rgba(0,87,255,0.25)]"
-                  >
-                    {/* Lead Info */}
-                    <div className="space-y-1.5 flex-1">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-bold text-white text-sm tracking-tight">{lead.title}</span>
-                        <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30">
-                          {lead.platform}
-                        </span>
-                        <span className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${lead.tagColor}`}>
-                          {lead.tag}
-                        </span>
-                        <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                          {lead.score}% Score
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-4 text-[11px] text-slate-400 flex-wrap">
-                        <span className="flex items-center gap-1">
-                          📍 {lead.location}
-                        </span>
-                        <span className="flex items-center gap-1 font-mono text-slate-300">
-                          📞 {lead.phone}
-                        </span>
-                        <span className="flex items-center gap-1 text-[#00AAFF]">
-                          ✉️ {lead.verifiedEmail}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Action Hub */}
-                    <div className="flex items-center gap-2.5 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
-                      <span className="font-mono font-bold text-cyan-300 text-sm px-2">
-                        {lead.budget}
-                      </span>
-
-                      {/* Copy / Direct Action */}
-                      <button
-                        type="button"
-                        onClick={() => handleCopyLead(lead.id, lead.phone)}
-                        className="px-3 py-1.5 rounded-xl font-medium text-[11px] bg-white/[0.04] hover:bg-white/[0.1] text-slate-200 border border-white/15 transition flex items-center gap-1.5"
-                      >
-                        {copiedLeadId === lead.id ? (
-                          <>
-                            <Check className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>Copied!</span>
-                          </>
-                        ) : (
-                          <>
-                            <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>WhatsApp Pitch</span>
-                          </>
-                        )}
-                      </button>
-
-                      <Link
-                        href="/signup"
-                        className="px-3.5 py-1.5 rounded-xl font-semibold text-[11px] glass-pill-btn flex items-center gap-1 text-white"
-                      >
-                        <span>Claim Lead</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </Link>
-                    </div>
+                {filteredLeads.length === 0 ? (
+                  <div className="p-8 rounded-2xl bg-[#030716]/95 border border-[#0057FF]/30 text-center space-y-3">
+                    <p className="text-slate-300 text-xs font-medium">No verified leads found matching your search or filter.</p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActivePlatformFilter('All Sources');
+                        setLeadSearchQuery('');
+                      }}
+                      className="px-4 py-1.5 rounded-xl text-xs font-semibold bg-[#0057FF]/20 hover:bg-[#0057FF]/30 text-[#00AAFF] border border-[#00AAFF]/40 transition"
+                    >
+                      Reset Filter to All Sources
+                    </button>
                   </div>
-                ))}
+                ) : (
+                  filteredLeads.map((lead) => (
+                    <div
+                      key={lead.id}
+                      className="p-3.5 rounded-2xl bg-[#030716]/95 border border-[#0057FF]/30 hover:border-[#00AAFF]/60 transition flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs shadow-sm hover:shadow-[0_0_30px_rgba(0,87,255,0.25)]"
+                    >
+                      {/* Lead Info */}
+                      <div className="space-y-1.5 flex-1">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-white text-sm tracking-tight">{lead.title}</span>
+                          <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-[#0057FF]/15 text-[#00AAFF] border border-[#0057FF]/30">
+                            {lead.platform}
+                          </span>
+                          <span className={`text-[11px] font-mono px-2 py-0.5 rounded-md border ${lead.tagColor}`}>
+                            {lead.tag}
+                          </span>
+                          <span className="text-[11px] font-mono font-semibold px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                            {lead.score}% Score
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-4 text-[11px] text-slate-400 flex-wrap">
+                          <span className="flex items-center gap-1">
+                            📍 {lead.location}
+                          </span>
+                          <span className="flex items-center gap-1 font-mono text-slate-300">
+                            📞 {lead.phone}
+                          </span>
+                          <span className="flex items-center gap-1 text-[#00AAFF]">
+                            ✉️ {lead.verifiedEmail}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Action Hub */}
+                      <div className="flex items-center gap-2.5 shrink-0 pt-2 md:pt-0 border-t md:border-t-0 border-white/10">
+                        <span className="font-mono font-bold text-cyan-300 text-sm px-2">
+                          {lead.budget}
+                        </span>
+
+                        {/* Copy / Direct Action */}
+                        <button
+                          type="button"
+                          onClick={() => handleCopyLead(lead.id, lead.phone)}
+                          className="px-3 py-1.5 rounded-xl font-medium text-[11px] bg-white/[0.04] hover:bg-white/[0.1] text-slate-200 border border-white/15 transition flex items-center gap-1.5"
+                        >
+                          {copiedLeadId === lead.id ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-400" />
+                              <span>Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                              <span>WhatsApp Pitch</span>
+                            </>
+                          )}
+                        </button>
+
+                        <Link
+                          href="/signup"
+                          className="px-3.5 py-1.5 rounded-xl font-semibold text-[11px] glass-pill-btn flex items-center gap-1 text-white"
+                        >
+                          <span>Claim Lead</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </Link>
+                      </div>
+                    </div>
+                  ))
+                )}
               </div>
 
               {/* Bottom CRM Telemetry Status Bar */}

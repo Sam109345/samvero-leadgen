@@ -4,19 +4,19 @@
     "huggingface": {
       "id": "huggingface",
       "status": "operational",
-      "totalRecordsFetched": 2304,
+      "totalRecordsFetched": 6060,
       "totalRecordsSaved": 1,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.528Z",
+      "lastSyncAt": "2026-11-18T08:40:42.103Z",
       "lastError": null
     },
     "wikidata": {
       "id": "wikidata",
       "status": "operational",
-      "totalRecordsFetched": 17392,
+      "totalRecordsFetched": 45592,
       "totalRecordsSaved": 23,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.772Z",
+      "lastSyncAt": "2026-11-18T08:40:42.200Z",
       "lastError": null
     },
     "opencorporates": {
@@ -25,34 +25,34 @@
       "totalRecordsFetched": 0,
       "totalRecordsSaved": 0,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.532Z",
+      "lastSyncAt": "2026-11-18T08:40:42.206Z",
       "lastError": null
     },
     "github": {
       "id": "github",
       "status": "operational",
-      "totalRecordsFetched": 11596,
+      "totalRecordsFetched": 30396,
       "totalRecordsSaved": 21,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.702Z",
+      "lastSyncAt": "2026-11-18T08:40:42.472Z",
       "lastError": null
     },
     "osm": {
       "id": "osm",
       "status": "operational",
-      "totalRecordsFetched": 2485,
+      "totalRecordsFetched": 6247,
       "totalRecordsSaved": 38,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.435Z",
+      "lastSyncAt": "2026-11-18T08:40:42.009Z",
       "lastError": null
     },
     "remotive": {
       "id": "remotive",
       "status": "operational",
-      "totalRecordsFetched": 16159,
+      "totalRecordsFetched": 42485,
       "totalRecordsSaved": 10,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.351Z",
+      "lastSyncAt": "2026-11-18T08:40:41.903Z",
       "lastError": null
     },
     "reddit": {
@@ -61,25 +61,25 @@
       "totalRecordsFetched": 0,
       "totalRecordsSaved": 0,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.777Z",
+      "lastSyncAt": "2026-11-18T08:40:42.203Z",
       "lastError": null
     },
     "freelancer": {
       "id": "freelancer",
       "status": "operational",
-      "totalRecordsFetched": 17340,
-      "totalRecordsSaved": 155,
+      "totalRecordsFetched": 44595,
+      "totalRecordsSaved": 290,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.619Z",
+      "lastSyncAt": "2026-11-18T08:40:42.357Z",
       "lastError": null
     },
     "remoteok": {
       "id": "remoteok",
       "status": "operational",
-      "totalRecordsFetched": 17220,
+      "totalRecordsFetched": 45420,
       "totalRecordsSaved": 29,
       "configuredKeys": [],
-      "lastSyncAt": "2026-11-13T06:50:05.851Z",
+      "lastSyncAt": "2026-11-18T08:40:42.583Z",
       "lastError": null
     }
   }
