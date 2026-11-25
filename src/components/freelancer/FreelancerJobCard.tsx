@@ -342,7 +342,7 @@ export default function FreelancerJobCard({
         {lead.description}
       </p>
 
-      {/* 4. Client Job Demands Callout Box (Answering user request: "Pata chalna chahiye k client kis job k liye lead daali hai") */}
+      {/* 4. Client Job Demands Callout Box (Explicit Scope & Deliverables Required by Client) */}
       <div className="p-3 bg-slate-50 dark:bg-[#0d141e] border border-slate-200/80 dark:border-[#24334a] rounded-lg text-xs space-y-2">
         <div className="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           <span className="flex items-center gap-1.5">

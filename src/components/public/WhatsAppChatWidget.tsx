@@ -40,9 +40,9 @@ export default function WhatsAppChatWidget() {
   };
 
   const quickPrompts = [
-    'Hi! I want to learn more about Samvero Lead Generation.',
-    'I want to inquire about subscription packages & pricing.',
-    'I need help with live client RFPs & multi-platform leads.',
+    'Hi! I want to explore high-intent commercial leads for my agency.',
+    'I want to inquire about VIP enterprise packages & custom quotas.',
+    'Can you show me a live demo of your 10-second lead radar?',
   ];
 
   return (
@@ -89,9 +89,9 @@ export default function WhatsAppChatWidget() {
                 SV
               </div>
               <div className="p-3 rounded-2xl rounded-tl-sm bg-[#0e1a36] border border-slate-800 text-slate-200 leading-relaxed shadow-sm">
-                <p className="font-semibold text-white mb-1">Assalam-o-Alaikum &amp; Welcome! 👋</p>
+                <p className="font-semibold text-white mb-1">Welcome to Samvero VIP Support! 👋</p>
                 <p className="text-slate-300">
-                  Type your message below. Clicking send will open WhatsApp directly with your message pre-filled to our official support team (<span className="text-emerald-400 font-mono font-semibold">+92 312 2557564</span>).
+                  Have questions about verified leads, automated outreach, or enterprise plans? Type your inquiry below to connect directly with our executive team on WhatsApp (<span className="text-emerald-400 font-mono font-semibold">+92 312 2557564</span>).
                 </p>
               </div>
             </div>

@@ -268,7 +268,7 @@ export default function HowItWorksPage() {
                   </div>
                 </div>
 
-                {/* 5. USER VIEWS PROJECT (TUM PROJECT DEKHTE HO) */}
+                {/* 5. USER VIEWS PROJECT (DEEP SCOPE INSPECTION) */}
                 <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
@@ -278,13 +278,13 @@ export default function HowItWorksPage() {
                   </div>
                   <h4 className="text-base font-bold text-white flex items-center gap-2">
                     <Search className="w-4 h-4 text-blue-400" />
-                    <span>User Project Inspection</span>
+                    <span>Project Inspection &amp; Scope Review</span>
                   </h4>
                   <p className="text-xs text-slate-300 leading-relaxed">
-                    You inspect full scope: client budget, stated pain points, demanded deliverables, and pre-generated live website preview.
+                    Inspect the verified opportunity dossier: client budget, demanded deliverables, timeline constraints, and automated website prototypes.
                   </p>
                   <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-blue-300">
-                    🔍 Tum Project Dekhte Ho
+                    🔍 Deep Scope &amp; Budget Analysis
                   </div>
                 </div>
 
@@ -344,7 +344,7 @@ export default function HowItWorksPage() {
                     Client reviews incoming bids prioritized by relevance and verified proof. Your submission stands out at the top of their inbox.
                   </p>
                   <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-indigo-300">
-                    📥 Client Ko Ranked Proposals
+                    📥 Top-Tier Client Inbox Placement
                   </div>
                 </div>
 
@@ -390,22 +390,22 @@ export default function HowItWorksPage() {
               <div className="space-y-2">
                 <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/15 border border-amber-500/30 text-amber-400">
                   <HelpCircle className="w-3.5 h-3.5" />
-                  ARCHITECTURAL DEEP-DIVE
+                  ARCHITECTURAL INTELLIGENCE
                 </span>
                 <h3
                   className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
-                  Agar Project Miss Ho Gaya To Kya Hota Hai?
+                  What Happens If You Miss A Project Notification?
                 </h3>
                 <p className="text-sm text-slate-400">
-                  Yahan <span className="text-amber-400 font-semibold">&quot;Missed Lead&quot;</span> aur <span className="text-rose-400 font-semibold">&quot;Lost Lead&quot;</span> ko alag samjho — marketplace physics &amp; bidding opportunities explained.
+                  Understanding the vital distinction between a <span className="text-amber-400 font-semibold">&quot;Missed Notification&quot;</span> and a true <span className="text-rose-400 font-semibold">&quot;Lost Opportunity&quot;</span> — marketplace mechanics &amp; revenue recovery explained.
                 </p>
               </div>
               <div className="flex items-center gap-2">
                 <span className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400 flex items-center gap-2">
                   <Compass className="w-3.5 h-3.5" />
-                  Official Freelancer Flow
+                  Official Marketplace Flow
                 </span>
               </div>
             </div>
@@ -416,25 +416,25 @@ export default function HowItWorksPage() {
               <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0c1836] to-[#081024] border border-amber-500/30 space-y-4 relative overflow-hidden">
                 <div className="flex items-center justify-between">
                   <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                    CASE A: NOTIFICATION MISS HUI
+                    SCENARIO A: NOTIFICATION MISSED WHILE OFFLINE
                   </span>
                   <BellOff className="w-5 h-5 text-amber-400" />
                 </div>
                 <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span>What is a Missed Lead?</span>
+                  <span>What is a Missed Notification?</span>
                 </h4>
                 <div className="space-y-2 text-xs text-slate-300 leading-relaxed bg-[#050b18]/60 p-3.5 rounded-xl border border-slate-800">
-                  <p className="font-semibold text-amber-200">Example Scenario:</p>
-                  <p>1. Client ne WordPress project post kiya.</p>
-                  <p>2. Tumhari skills us project se perfectly match karti hain.</p>
-                  <p>3. Notification ya Project Feed mein project show hua.</p>
-                  <p>4. Tum online nahi thay ya busy thay aur notification nahi dekhi.</p>
-                  <p>5. Project abhi bhi platform per open aur active hai.</p>
+                  <p className="font-semibold text-amber-200">How It Plays Out:</p>
+                  <p>1. A client publishes a high-budget WordPress or custom development contract.</p>
+                  <p>2. Your agency skill profile matches the scope and technology stack perfectly.</p>
+                  <p>3. An automated alert is routed to your Project Feed and Notification Hub.</p>
+                  <p>4. You were temporarily offline, asleep, or focused on other client work.</p>
+                  <p>5. The client listing remains open, actively accepting pitches on the marketplace.</p>
                 </div>
                 <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-xs text-emerald-300 flex items-start gap-2.5 font-medium">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-white">Ye lead necessarily lost nahi hui!</strong> Tum manually project feed, search, ya Browse se us project ko baad mein find karke bid kar sakte ho, jab tak project active/open ho.
+                    <strong className="text-white">This opportunity is NOT lost!</strong> You can retrieve the project at any time via the live feed, category search, or marketplace directory and submit a high-converting proposal while it remains active.
                   </span>
                 </div>
               </div>
@@ -443,24 +443,24 @@ export default function HowItWorksPage() {
               <div className="p-6 rounded-2xl bg-gradient-to-br from-[#1e0f18] to-[#12080f] border border-rose-500/30 space-y-4 relative overflow-hidden">
                 <div className="flex items-center justify-between">
                   <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
-                    CASE B: CONTRACT AWARDED / CLOSED
+                    SCENARIO B: CONTRACT AWARDED OR CLOSED
                   </span>
                   <XCircle className="w-5 h-5 text-rose-400" />
                 </div>
                 <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                  <span>What is a Lost Lead?</span>
+                  <span>When is a Lead Actually Lost?</span>
                 </h4>
                 <div className="space-y-2 text-xs text-slate-300 leading-relaxed bg-[#10050b]/60 p-3.5 rounded-xl border border-slate-800">
-                  <p className="font-semibold text-rose-200">Terminal Conditions:</p>
-                  <p>1. Client ne kisi doosre freelancer ka bid accept/award kar diya.</p>
-                  <p>2. Milestone escrow deposit initiate ho gaya aur project close hua.</p>
-                  <p>3. Client ne project ko cancel ya delete kar diya.</p>
-                  <p>4. Standard bidding window (typically 30 days) expire ho gayi.</p>
+                  <p className="font-semibold text-rose-200">Definitive Closing Conditions:</p>
+                  <p>1. The client officially awards the contract and hires another applicant.</p>
+                  <p>2. The escrow milestone deposit is funded and the room is sealed.</p>
+                  <p>3. The client explicitly withdraws or cancels the job posting.</p>
+                  <p>4. The official 30-day marketplace bidding duration expires.</p>
                 </div>
                 <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/40 text-xs text-rose-300 flex items-start gap-2.5 font-medium">
                   <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                   <span>
-                    <strong className="text-white">Sirf is condition mein lead lost hoti hai.</strong> Notification na dekhne se lead delete nahi hoti.
+                    <strong className="text-white">Only under these terminal events is a lead closed.</strong> Simply missing a push alert never disqualifies you from submitting a winning pitch.
                   </span>
                 </div>
               </div>
@@ -470,14 +470,14 @@ export default function HowItWorksPage() {
             <div className="p-6 rounded-2xl bg-[#081022] border border-blue-500/30 space-y-4">
               <div className="flex items-center gap-2.5 text-cyan-400 font-mono text-xs font-bold uppercase tracking-wider">
                 <ShieldCheck className="w-4 h-4" />
-                <span>Agar Tumne Project Dekha Hi Nahi? Official Marketplace Truth</span>
+                <span>What If You Never Saw The Notification? The Marketplace Reality</span>
               </div>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Freelancer ka system publicly aur officially ye <strong className="text-white">kabhi nahi kehta</strong> ke: 
-                <span className="text-amber-300 italic font-medium"> &quot;Agar freelancer ne notification miss ki to project automatically special &apos;Missed Leads&apos; folder mein chala jayega.&quot;</span>
+                Global freelancing platforms like Freelancer.com <strong className="text-white">never penalize or hide active projects</strong> when an alert is missed: 
+                <span className="text-amber-300 italic font-medium"> &quot;There is no documented penalty, lockout mechanism, or hidden &apos;Missed Leads&apos; penalty folder.&quot;</span>
               </p>
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                Aisa koi shadow ya penalty feature official Freelancer documentation mein exist nahi karta. Freelancer officially projects ko <strong className="text-white font-mono">Browse → Projects</strong> se bhi find karne deta hai.
+                Every project remains continuously searchable in the public marketplace directory under <strong className="text-white font-mono">Browse → Projects</strong>. Samvero taps into this live stream continuously, ensuring you can discover and pitch every qualified lead whenever you log in.
               </p>
             </div>
 

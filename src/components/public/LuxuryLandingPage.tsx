@@ -1172,7 +1172,7 @@ export default function LuxuryLandingPage() {
                 </div>
               </div>
 
-              {/* 4. Project Feed & Discovery (Tum Project Dekhte Ho) */}
+              {/* 4. Project Feed & Discovery (Deep Scope Review) */}
               <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-blue-500/30 hover:border-cyan-400/60 transition group space-y-3 shadow-lg">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-500/40">
@@ -1182,13 +1182,13 @@ export default function LuxuryLandingPage() {
                 </div>
                 <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                   <Eye className="w-4 h-4 text-blue-400" />
-                  <span>User Project Inspection</span>
+                  <span>Deep Scope Inspection</span>
                 </h3>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Tum project dekhte ho: Review verified client budgets, pain points, demanded deliverables, and the pre-synthesized deliverable prototype.
+                  Inspect the complete client opportunity dossier: verified enterprise budgets, stated pain points, required deliverables, and instant live interactive prototypes.
                 </p>
                 <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-blue-300">
-                  🔍 Comprehensive Scope Review
+                  🔍 Comprehensive Scope Transparency
                 </div>
               </div>
 

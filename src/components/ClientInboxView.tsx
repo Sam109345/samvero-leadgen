@@ -1629,7 +1629,7 @@ export default function ClientInboxView({
                   </span>
                 </div>
                 <p className="text-xs text-slate-600 mt-0.5">
-                  Wrongly sent message ko client ke chat se recall / delete karein.
+                  Instantly recall or remove mistakenly sent messages from the client's conversation view.
                 </p>
               </div>
               <button
@@ -1671,7 +1671,7 @@ export default function ClientInboxView({
               <div className="rounded-xl bg-amber-50 border border-amber-200/80 p-3 text-xs text-amber-900 leading-relaxed flex items-start gap-2.5">
                 <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span>
-                  <strong>Delete for Everyone</strong> karne se client ke pass se text, audio voice note, aur attached files foran gayab ho jayengi aur chat me sirf <em>"This message was deleted"</em> reh jayega.
+                  Selecting <strong>Delete for Everyone</strong> immediately revokes all text, voice notes, and attachments from the client's screen, replacing them with a discreet <em>"This message was deleted"</em> placeholder.
                 </span>
               </div>
 

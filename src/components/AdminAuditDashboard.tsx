@@ -754,7 +754,7 @@ export default function AdminAuditDashboard() {
       )}
 
       {/* ========================================================================= */}
-      {/* SUB-VIEW 2: DEVICE & IP LOGIN SECURITY AUDIT ("Portal is waqt and history me kahan kahan login hua hai") */}
+      {/* SUB-VIEW 2: DEVICE & IP LOGIN SECURITY AUDIT (Active sessions, geographic breakdown, and device login history) */}
       {/* ========================================================================= */}
       {activeSubTab === 'devices' && (
         <div className="space-y-6 animate-in fade-in">
@@ -1054,7 +1054,7 @@ export default function AdminAuditDashboard() {
                 Staff User Management &amp; Exclusive Lead Assignment
               </h2>
               <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-                Naye users banayein, unhe specific leads assign karein ya random distribute karein. Har staff member ko alag leads milti hain taake koi lead overlap na ho. Global User ko tamam leads nazar aati hain.
+                Provision team members, assign targeted accounts, or automate round-robin lead distribution. Each sales agent receives exclusive, dedicated opportunities to eliminate territorial overlap. Global Users maintain full visibility across all leads.
               </p>
             </div>
 
@@ -1468,7 +1468,7 @@ export default function AdminAuditDashboard() {
                   </span>
                 </label>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 pl-6.5 leading-relaxed">
-                  Agar ye checked hoga toh is user ke paas portal ki saari leads show hongi. Agar uncheck hoga toh sirf wahi leads show hongi jo ise assign ki jayengi.
+                  When enabled, this user gains unrestricted visibility across all portal leads. When unchecked, they will strictly see leads explicitly assigned to them.
                 </p>
               </div>
 
@@ -1532,7 +1532,7 @@ export default function AdminAuditDashboard() {
                 <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 text-emerald-900 dark:text-emerald-200 text-xs space-y-1">
                   <p className="font-extrabold text-sm">👑 Global User Active</p>
                   <p>
-                    Ye user portal ka Global Supervisor hai. Iske paas tamaam {allLeadsPool.length} leads bina kisi boundary ke automatically show hoti hain.
+                    This user holds Global Supervisor privileges. All {allLeadsPool.length} leads across the enterprise are visible without restrictions.
                   </p>
                 </div>
               ) : (
