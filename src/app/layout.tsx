@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import VisitorTrackingBeacon from '@/components/analytics/VisitorTrackingBeacon';
+import WhatsAppChatWidget from '@/components/public/WhatsAppChatWidget';
 
 export const metadata: Metadata = {
   title: 'SAMVERO – AI-Powered Lead Generation Platform',
@@ -52,6 +53,7 @@ export default function RootLayout({
         <div id="cursor-glow" aria-hidden="true" />
         <VisitorTrackingBeacon />
         {children}
+        <WhatsAppChatWidget />
         <script
           dangerouslySetInnerHTML={{
             __html: `

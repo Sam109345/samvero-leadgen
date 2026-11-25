@@ -29,6 +29,7 @@ interface TopNavigationProps {
   theme?: 'light' | 'dark';
   onToggleTheme?: () => void;
   onOpenMobileMenu?: () => void;
+  onSelectView?: (view: any) => void;
 }
 
 export default function TopNavigation({
@@ -42,6 +43,7 @@ export default function TopNavigation({
   theme = 'light',
   onToggleTheme,
   onOpenMobileMenu,
+  onSelectView,
 }: TopNavigationProps) {
   const { userName, role, logout } = useAuth();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -216,14 +218,28 @@ export default function TopNavigation({
                   </Link>
                 )}
 
-                <Link
-                  href="/profile"
-                  onClick={() => setShowProfileMenu(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition"
-                >
-                  <User className="w-3.5 h-3.5 text-slate-400" />
-                  <span className="font-medium">Account Profile</span>
-                </Link>
+                {onSelectView ? (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowProfileMenu(false);
+                      onSelectView('profile');
+                    }}
+                    className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition text-left cursor-pointer"
+                  >
+                    <User className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="font-medium">Account Profile</span>
+                  </button>
+                ) : (
+                  <Link
+                    href="/profile"
+                    onClick={() => setShowProfileMenu(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 transition"
+                  >
+                    <User className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="font-medium">Account Profile</span>
+                  </Link>
+                )}
 
                 <Link
                   href="/how-it-works"

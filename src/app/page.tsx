@@ -411,6 +411,7 @@ function InternalLeadGenWorkbench({ initialView = 'dashboard' }: HomePageProps) 
           theme={theme}
           onToggleTheme={handleToggleTheme}
           onOpenMobileMenu={() => setMobileMenuOpen(true)}
+          onSelectView={handleSelectView}
         />
 
         {/* Main Workbench Body with Sidebar & Content */}

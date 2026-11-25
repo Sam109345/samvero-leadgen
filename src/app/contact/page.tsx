@@ -173,21 +173,33 @@ export default function ContactPage() {
                       <Mail className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-slate-400 font-medium">Executive Onboarding & Billing</div>
-                      <a href="mailto:admin@samvero.live" className="font-bold text-white hover:text-[#00AAFF] transition font-mono">
-                        admin@samvero.live
+                      <div className="text-slate-400 font-medium">Official Corporate Email Desk</div>
+                      <a href="mailto:samverodigital@gmail.com" className="font-bold text-white hover:text-[#00AAFF] transition font-mono">
+                        samverodigital@gmail.com
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 rounded-xl bg-blue-500/15 text-blue-400 shrink-0 mt-0.5">
+                      <Phone className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <div className="text-slate-400 font-medium">Direct Telephone &amp; Hotline</div>
+                      <a href="tel:+923052607448" className="font-bold text-white hover:text-cyan-400 transition font-mono">
+                        +92 305 2607448
                       </a>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-3">
                     <div className="p-2 rounded-xl bg-emerald-500/15 text-emerald-400 shrink-0 mt-0.5">
-                      <Phone className="w-4 h-4" />
+                      <MessageSquare className="w-4 h-4" />
                     </div>
                     <div>
-                      <div className="text-slate-400 font-medium">Direct WhatsApp Settlement Desk</div>
-                      <a href="https://wa.me/923000000000" target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-emerald-400 transition font-mono">
-                        +92 300 0000000 (Priority Chat)
+                      <div className="text-slate-400 font-medium">Official WhatsApp Chat &amp; Settlement Desk</div>
+                      <a href="https://wa.me/923122557564" target="_blank" rel="noopener noreferrer" className="font-bold text-white hover:text-emerald-400 transition font-mono">
+                        +92 312 2557564 (Instant Priority Chat)
                       </a>
                     </div>
                   </div>

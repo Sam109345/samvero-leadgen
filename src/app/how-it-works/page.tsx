@@ -28,6 +28,12 @@ import {
   Eye,
   FileCheck2,
   Filter,
+  AlertTriangle,
+  BellOff,
+  Clock,
+  ArrowDown,
+  HelpCircle,
+  Compass,
 } from 'lucide-react';
 
 export default function HowItWorksPage() {
@@ -376,6 +382,216 @@ export default function HowItWorksPage() {
               </div>
 
             </div>
+          </div>
+
+          {/* MISSED LEAD VS. LOST LEAD ARCHITECTURAL GUIDE */}
+          <div className="glass-card neon-border rounded-3xl p-6 sm:p-10 relative overflow-hidden space-y-8">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+              <div className="space-y-2">
+                <span className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/15 border border-amber-500/30 text-amber-400">
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  ARCHITECTURAL DEEP-DIVE
+                </span>
+                <h3
+                  className="text-2xl sm:text-3xl font-bold text-white tracking-tight"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Agar Project Miss Ho Gaya To Kya Hota Hai?
+                </h3>
+                <p className="text-sm text-slate-400">
+                  Yahan <span className="text-amber-400 font-semibold">&quot;Missed Lead&quot;</span> aur <span className="text-rose-400 font-semibold">&quot;Lost Lead&quot;</span> ko alag samjho — marketplace physics &amp; bidding opportunities explained.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400 flex items-center gap-2">
+                  <Compass className="w-3.5 h-3.5" />
+                  Official Freelancer Flow
+                </span>
+              </div>
+            </div>
+
+            {/* Side-by-Side Comparison: Missed vs Lost */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Missed Lead Card */}
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-[#0c1836] to-[#081024] border border-amber-500/30 space-y-4 relative overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                    CASE A: NOTIFICATION MISS HUI
+                  </span>
+                  <BellOff className="w-5 h-5 text-amber-400" />
+                </div>
+                <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                  <span>What is a Missed Lead?</span>
+                </h4>
+                <div className="space-y-2 text-xs text-slate-300 leading-relaxed bg-[#050b18]/60 p-3.5 rounded-xl border border-slate-800">
+                  <p className="font-semibold text-amber-200">Example Scenario:</p>
+                  <p>1. Client ne WordPress project post kiya.</p>
+                  <p>2. Tumhari skills us project se perfectly match karti hain.</p>
+                  <p>3. Notification ya Project Feed mein project show hua.</p>
+                  <p>4. Tum online nahi thay ya busy thay aur notification nahi dekhi.</p>
+                  <p>5. Project abhi bhi platform per open aur active hai.</p>
+                </div>
+                <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-xs text-emerald-300 flex items-start gap-2.5 font-medium">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong className="text-white">Ye lead necessarily lost nahi hui!</strong> Tum manually project feed, search, ya Browse se us project ko baad mein find karke bid kar sakte ho, jab tak project active/open ho.
+                  </span>
+                </div>
+              </div>
+
+              {/* Lost Lead Card */}
+              <div className="p-6 rounded-2xl bg-gradient-to-br from-[#1e0f18] to-[#12080f] border border-rose-500/30 space-y-4 relative overflow-hidden">
+                <div className="flex items-center justify-between">
+                  <span className="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40">
+                    CASE B: CONTRACT AWARDED / CLOSED
+                  </span>
+                  <XCircle className="w-5 h-5 text-rose-400" />
+                </div>
+                <h4 className="text-lg font-bold text-white flex items-center gap-2">
+                  <span>What is a Lost Lead?</span>
+                </h4>
+                <div className="space-y-2 text-xs text-slate-300 leading-relaxed bg-[#10050b]/60 p-3.5 rounded-xl border border-slate-800">
+                  <p className="font-semibold text-rose-200">Terminal Conditions:</p>
+                  <p>1. Client ne kisi doosre freelancer ka bid accept/award kar diya.</p>
+                  <p>2. Milestone escrow deposit initiate ho gaya aur project close hua.</p>
+                  <p>3. Client ne project ko cancel ya delete kar diya.</p>
+                  <p>4. Standard bidding window (typically 30 days) expire ho gayi.</p>
+                </div>
+                <div className="p-3 rounded-xl bg-rose-950/40 border border-rose-500/40 text-xs text-rose-300 flex items-start gap-2.5 font-medium">
+                  <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+                  <span>
+                    <strong className="text-white">Sirf is condition mein lead lost hoti hai.</strong> Notification na dekhne se lead delete nahi hoti.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Official Freelancer.com Documentation Facts */}
+            <div className="p-6 rounded-2xl bg-[#081022] border border-blue-500/30 space-y-4">
+              <div className="flex items-center gap-2.5 text-cyan-400 font-mono text-xs font-bold uppercase tracking-wider">
+                <ShieldCheck className="w-4 h-4" />
+                <span>Agar Tumne Project Dekha Hi Nahi? Official Marketplace Truth</span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Freelancer ka system publicly aur officially ye <strong className="text-white">kabhi nahi kehta</strong> ke: 
+                <span className="text-amber-300 italic font-medium"> &quot;Agar freelancer ne notification miss ki to project automatically special &apos;Missed Leads&apos; folder mein chala jayega.&quot;</span>
+              </p>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                Aisa koi shadow ya penalty feature official Freelancer documentation mein exist nahi karta. Freelancer officially projects ko <strong className="text-white font-mono">Browse → Projects</strong> se bhi find karne deta hai.
+              </p>
+            </div>
+
+            {/* Practical Step-by-Step Flowchart */}
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs uppercase font-mono font-bold text-cyan-400 tracking-wider">
+                  PRACTICAL STEP-BY-STEP RECOVERY FLOW
+                </span>
+                <span className="text-xs font-mono text-slate-500">
+                  Missed Notification ➔ Still Biddable
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-7 gap-3 relative">
+                {[
+                  {
+                    step: '01',
+                    title: 'PROJECT POSTED',
+                    desc: 'Client posts WordPress or Web development project',
+                    icon: Database,
+                  },
+                  {
+                    step: '02',
+                    title: 'MATCHING / FEED',
+                    desc: 'Algorithmic matching tags your relevant skill profile',
+                    icon: Cpu,
+                  },
+                  {
+                    step: '03',
+                    title: 'NOTIFICATION',
+                    desc: 'Push chime & feed badge generated in real-time',
+                    icon: Radio,
+                  },
+                  {
+                    step: '04',
+                    title: 'YOU MISS IT',
+                    desc: 'You were offline, asleep, or away from workstation',
+                    icon: BellOff,
+                  },
+                  {
+                    step: '05',
+                    title: 'REMAINS AVAILABLE',
+                    desc: 'Project stays public & open in marketplace catalog',
+                    icon: Clock,
+                  },
+                  {
+                    step: '06',
+                    title: 'SEARCH / FEED',
+                    desc: 'You browse or search project feed later at your convenience',
+                    icon: Search,
+                  },
+                  {
+                    step: '07',
+                    title: 'YOU CAN STILL BID',
+                    desc: 'Submit winning proposal + live demo preview URL',
+                    icon: CheckCircle2,
+                  },
+                ].map((item, idx) => {
+                  const StepIcon = item.icon;
+                  return (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-xl bg-[#091124] border border-blue-500/20 hover:border-cyan-400/50 transition flex flex-col justify-between space-y-2 group"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-[10px] font-mono font-bold text-cyan-400">
+                            {item.step}
+                          </span>
+                          <StepIcon className="w-3.5 h-3.5 text-slate-400 group-hover:text-cyan-300 transition" />
+                        </div>
+                        <h5 className="text-xs font-bold text-white tracking-tight">
+                          {item.title}
+                        </h5>
+                        <p className="text-[11px] text-slate-400 mt-1 leading-normal">
+                          {item.desc}
+                        </p>
+                      </div>
+                      {idx < 6 && (
+                        <div className="pt-2 flex justify-end text-slate-600 group-hover:text-cyan-400 transition">
+                          <ArrowRight className="w-3 h-3 hidden lg:block" />
+                          <ArrowDown className="w-3 h-3 block lg:hidden" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Bottom Insight Takeaway */}
+            <div className="p-4 rounded-xl bg-gradient-to-r from-blue-900/30 via-[#0057FF]/20 to-cyan-900/30 border border-[#00AAFF]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-[#0057FF]/30 border border-[#00AAFF]/40 flex items-center justify-center shrink-0">
+                  <Sparkles className="w-4 h-4 text-[#00AAFF]" />
+                </div>
+                <div>
+                  <p className="font-bold text-white">
+                    Samvero 10-Second Telemetry Sync Ensures Zero Missed Windows
+                  </p>
+                  <p className="text-slate-400 text-[11px]">
+                    Even if you were away for hours, Samvero keeps all active projects cached and sorted so you can bid on every legitimate lead before it closes.
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="/#opportunities"
+                className="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold transition shrink-0 shadow-lg shadow-blue-500/25"
+              >
+                Browse Live Feed
+              </Link>
+            </div>
+
           </div>
 
           {/* 4 Steps Detail */}

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Mail, Globe, Lock, ArrowUpRight, Zap } from 'lucide-react';
+import { ShieldCheck, Mail, Globe, Lock, ArrowUpRight, Zap, Phone, MessageCircle } from 'lucide-react';
 import SamveroBrandLogo from '@/components/SamveroBrandLogo';
 
 export default function PublicFooter() {
@@ -143,6 +143,24 @@ export default function PublicFooter() {
               >
                 <Mail className="w-3.5 h-3.5" style={{ color: '#00AAFF' }} />
                 <span>samverodigital@gmail.com</span>
+              </a>
+              <a
+                href="tel:+923052607448"
+                className="flex items-center gap-2 transition-colors duration-200 hover:text-white"
+                style={{ color: '#94a3b8' }}
+              >
+                <Phone className="w-3.5 h-3.5 text-blue-400" />
+                <span>+92 305 2607448</span>
+              </a>
+              <a
+                href="https://wa.me/923122557564"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 transition-colors duration-200 hover:text-emerald-400"
+                style={{ color: '#94a3b8' }}
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-emerald-400" />
+                <span>WhatsApp: +92 312 2557564</span>
               </a>
               <div className="flex items-center gap-2" style={{ color: '#64748b' }}>
                 <Globe className="w-3.5 h-3.5" style={{ color: '#475569' }} />
