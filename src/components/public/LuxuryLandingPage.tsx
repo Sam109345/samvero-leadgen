@@ -38,6 +38,15 @@ import {
   Target,
   Clock,
   Activity,
+  Cpu,
+  Workflow,
+  Radio,
+  Database,
+  Filter,
+  XCircle,
+  Eye,
+  FileCheck2,
+  Send,
 } from 'lucide-react';
 
 /* ── Twinkling Starfield Dust (Deterministic SSR/CSR) ─────── */
@@ -1067,6 +1076,187 @@ export default function LuxuryLandingPage() {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* ═══════════════════════════════════════════════════════
+            SECTION: SAMVERO PROJECT PROCESSING & BID RANKING ENGINE
+            ═══════════════════════════════════════════════════════ */}
+        <section id="processing-pipeline" className="py-24 relative overflow-hidden bg-[#020512] border-t border-slate-800">
+          <div className="absolute inset-0 cyber-grid-bg opacity-[0.14] pointer-events-none" />
+          
+          <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-[#0057FF]/20 border border-[#0057FF]/40 text-[#00AAFF] mb-4">
+                <Workflow className="w-3.5 h-3.5 text-[#00AAFF]" />
+                <span>The Engine Architecture</span>
+              </span>
+              <h2
+                className="text-3xl sm:text-5xl font-bold text-white mb-4 tracking-tight"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                How Samvero <span className="text-neon">Processes Every Project</span>
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300">
+                The algorithmic pipeline: Multi-source project ingestion ➔ Skills &amp; requirements evaluation ➔ Matched filtering ➔ Instant BID synthesis ➔ Third-party bid ranking ➔ Direct client chat.
+              </p>
+            </div>
+
+            {/* 7-Step Workflow Architecture Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+              
+              {/* 1. Project Ingestion */}
+              <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-blue-500/30 hover:border-cyan-400/60 transition group space-y-3 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                    STAGE 01
+                  </span>
+                  <Radio className="w-4 h-4 text-cyan-400 animate-pulse" />
+                </div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <Database className="w-4 h-4 text-blue-400" />
+                  <span>Project Ingestion</span>
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Autonomous collectors scan Upwork, Freelancer.com, GMB Radar, Bark, LinkedIn, and RemoteOK in real-time every 10 seconds.
+                </p>
+                <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-cyan-300">
+                  ⚡ 10s Continuous Stream
+                </div>
+              </div>
+
+              {/* 2. Skills + Requirements + Profile Relevance */}
+              <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-blue-500/30 hover:border-cyan-400/60 transition group space-y-3 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                    STAGE 02
+                  </span>
+                  <Cpu className="w-4 h-4 text-cyan-400" />
+                </div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <Cpu className="w-4 h-4 text-cyan-400" />
+                  <span>Neural Relevance Matrix</span>
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Deeply evaluates <strong className="text-slate-200">Skills + Project Requirements + Profile Relevance</strong> against past agency win data.
+                </p>
+                <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-cyan-300">
+                  🎯 Tri-Factor Precision Scoring
+                </div>
+              </div>
+
+              {/* 3. Decision Gateway: MATCHED vs NOT MATCHED */}
+              <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-blue-500/30 hover:border-cyan-400/60 transition group space-y-3 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                    STAGE 03
+                  </span>
+                  <Filter className="w-4 h-4 text-emerald-400" />
+                </div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  <span>MATCHED vs NOT MATCHED</span>
+                </h3>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center gap-2 text-emerald-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>MATCHED: Instant Feed &amp; Alerts</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-rose-300">
+                    <XCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                    <span>NOT MATCHED: Noise Discarded</span>
+                  </div>
+                </div>
+                <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-emerald-400">
+                  ✓ High-Intent Opportunities Only
+                </div>
+              </div>
+
+              {/* 4. Project Feed & Discovery (Tum Project Dekhte Ho) */}
+              <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-blue-500/30 hover:border-cyan-400/60 transition group space-y-3 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                    STAGE 04
+                  </span>
+                  <Eye className="w-4 h-4 text-blue-400" />
+                </div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <Eye className="w-4 h-4 text-blue-400" />
+                  <span>User Project Inspection</span>
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Tum project dekhte ho: Review verified client budgets, pain points, demanded deliverables, and the pre-synthesized deliverable prototype.
+                </p>
+                <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-blue-300">
+                  🔍 Comprehensive Scope Review
+                </div>
+              </div>
+
+              {/* 5. BID / PROPOSAL Generation */}
+              <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-blue-500/30 hover:border-cyan-400/60 transition group space-y-3 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                    STAGE 05
+                  </span>
+                  <Send className="w-4 h-4 text-cyan-400" />
+                </div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <Send className="w-4 h-4 text-cyan-400" />
+                  <span>Turnkey BID / Proposal</span>
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  1-Click high-converting proposal synthesized with specific deliverables terms and a live interactive preview link embedded.
+                </p>
+                <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-cyan-300">
+                  ✍️ AI Proposal + Live Demo Link
+                </div>
+              </div>
+
+              {/* 6. Third-Party Bid Ranking & Client Chat */}
+              <div className="p-6 rounded-2xl bg-[#060b18]/90 border border-purple-500/30 hover:border-purple-400/60 transition group space-y-3 shadow-lg">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                    STAGE 06 &amp; 07
+                  </span>
+                  <TrendingUp className="w-4 h-4 text-purple-400" />
+                </div>
+                <h3 className="text-base font-bold text-white flex items-center gap-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                  <TrendingUp className="w-4 h-4 text-purple-400" />
+                  <span>Third Party Bid Ranking &amp; Chat</span>
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Algorithms position your bid in the <strong className="text-purple-300">Top 3% of submissions</strong>. Client receives ranked proposals, clicks your live demo, visits profile, and starts chat.
+                </p>
+                <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-purple-300">
+                  💬 Client Views ➔ Chat ➔ Contract Won
+                </div>
+              </div>
+
+            </div>
+
+            {/* Visual Process Flow Diagram Pill */}
+            <div className="p-4 rounded-2xl bg-[#060e24] border border-[#00AAFF]/30 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-slate-300">
+              <div className="flex items-center gap-2 text-cyan-300 font-bold">
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+                <span>OPERATIONAL PIPELINE:</span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-[11px]">
+                <span className="bg-[#0057FF]/20 px-2 py-1 rounded text-cyan-200">Project Ingestion</span>
+                <span className="text-slate-500">➔</span>
+                <span className="bg-[#0057FF]/20 px-2 py-1 rounded text-cyan-200">Skills + Requirements + Profile</span>
+                <span className="text-slate-500">➔</span>
+                <span className="bg-emerald-500/20 px-2 py-1 rounded text-emerald-300">MATCHED</span>
+                <span className="text-slate-500">➔</span>
+                <span className="bg-[#0057FF]/20 px-2 py-1 rounded text-cyan-200">Feed &amp; Alerts</span>
+                <span className="text-slate-500">➔</span>
+                <span className="bg-[#0057FF]/20 px-2 py-1 rounded text-cyan-200">BID Proposal</span>
+                <span className="text-slate-500">➔</span>
+                <span className="bg-purple-500/20 px-2 py-1 rounded text-purple-300">Bid Ranking</span>
+                <span className="text-slate-500">➔</span>
+                <span className="bg-emerald-500/20 px-2 py-1 rounded text-emerald-300">Client Chat</span>
+              </div>
+            </div>
+
           </div>
         </section>
 

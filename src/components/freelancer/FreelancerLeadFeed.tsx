@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useMemo, useEffect } from 'react';
+import Link from 'next/link';
 import { Lead, PipelineStage } from '@/types';
 import { matchesCountry } from '@/lib/country-matcher';
 import FreelancerSubNav, { LeadCategoryTab } from './FreelancerSubNav';
@@ -596,7 +597,10 @@ export default function FreelancerLeadFeed({
   const filteredLeads = useMemo(() => {
     return feedLeads.filter((lead) => {
       // 1. Sub-nav Category Tab
-      if (activeCategoryTab === 'hot') {
+      if (activeCategoryTab === 'matched') {
+        const matchScore = lead.scoreBreakdown?.businessMatchConfidence ?? (lead as any).requirementSpec?.matchScore ?? 85;
+        if (matchScore < 75) return false;
+      } else if (activeCategoryTab === 'hot') {
         const isHot =
           lead.pipelineStage === 'hot' ||
           (!lead.contact?.hasWebsite && lead.type === 'gmb') ||
@@ -760,9 +764,9 @@ export default function FreelancerLeadFeed({
       if (sortBy === 'budget_asc') {
         return parseBudgetValue(a.budget) - parseBudgetValue(b.budget);
       }
-      if (sortBy === 'relevance') {
-        const relA = a.scoreBreakdown?.businessMatchConfidence ?? 80;
-        const relB = b.scoreBreakdown?.businessMatchConfidence ?? 80;
+      if (sortBy === 'ranked_bid' || sortBy === 'relevance') {
+        const relA = a.scoreBreakdown?.businessMatchConfidence ?? (a as any).requirementSpec?.matchScore ?? 85;
+        const relB = b.scoreBreakdown?.businessMatchConfidence ?? (b as any).requirementSpec?.matchScore ?? 85;
         return relB - relA;
       }
       // Default: Newest first by incomingAt numerical timestamp
@@ -818,6 +822,9 @@ export default function FreelancerLeadFeed({
 
     return {
       total: scoped.length,
+      matched: scoped.filter(
+        (l) => (l.scoreBreakdown?.businessMatchConfidence ?? (l as any).requirementSpec?.matchScore ?? 85) >= 75
+      ).length,
       hot: scoped.filter(
         (l) =>
           l.pipelineStage === 'hot' ||
@@ -865,6 +872,7 @@ export default function FreelancerLeadFeed({
       {/* 1. Freelancer Category Sub-Navigation Bar */}
       <FreelancerSubNav
         totalLeadsCount={tabCounts.total}
+        matchedCount={tabCounts.matched}
         hotCount={tabCounts.hot}
         qualifiedCount={tabCounts.qualified}
         extraCount={tabCounts.extra}
@@ -1203,6 +1211,32 @@ export default function FreelancerLeadFeed({
                       </span>
                     )}
                   </button>
+                </div>
+              </div>
+
+              {/* Samvero Neural Processing & Bid Ranking Pipeline Ribbon */}
+              <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-50/80 via-indigo-50/60 to-purple-50/80 dark:from-[#0d1627] dark:via-[#11192e] dark:to-[#17122e] border border-blue-200/80 dark:border-blue-900/50 text-xs">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="flex items-center gap-1.5 font-bold text-blue-700 dark:text-cyan-400">
+                    <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" />
+                    <span>Samvero Process:</span>
+                  </span>
+                  <span className="text-slate-600 dark:text-slate-300 font-medium hidden sm:inline">
+                    Ingestion ➔ Skills + Scope Scored ➔ MATCHED ➔ Feed ➔ Proposal ➔ Third-Party Bid Ranking (#1) ➔ Client Chat
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
+                    <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                    <span>100% Matched Leads</span>
+                  </span>
+                  <Link
+                    href="/how-it-works"
+                    className="text-[11px] font-bold text-[#3B6FF5] hover:underline flex items-center gap-1"
+                  >
+                    <span>Architecture</span>
+                    <span>↗</span>
+                  </Link>
                 </div>
               </div>
 

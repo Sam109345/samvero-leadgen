@@ -12,13 +12,15 @@ import {
   Globe2, 
   LayoutGrid, 
   AlignJustify,
-  BarChart3
+  BarChart3,
+  Sparkles
 } from 'lucide-react';
 
-export type LeadCategoryTab = 'all' | 'hot' | 'qualified' | 'extra' | 'needs_verification' | 'saved';
+export type LeadCategoryTab = 'all' | 'matched' | 'hot' | 'qualified' | 'extra' | 'needs_verification' | 'saved';
 
 interface FreelancerSubNavProps {
   totalLeadsCount: number;
+  matchedCount?: number;
   hotCount: number;
   qualifiedCount: number;
   extraCount: number;
@@ -38,6 +40,7 @@ interface FreelancerSubNavProps {
 
 export default function FreelancerSubNav({
   totalLeadsCount,
+  matchedCount = 0,
   hotCount,
   qualifiedCount,
   extraCount,
@@ -77,6 +80,27 @@ export default function FreelancerSubNav({
                 : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
             }`}>
               {totalLeadsCount}
+            </span>
+          </button>
+
+          {/* Matched (Pipeline Pass) Leads */}
+          <button
+            onClick={() => onSelectCategoryTab('matched')}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer ${
+              activeCategoryTab === 'matched'
+                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs font-bold'
+                : 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-cyan-300 border border-blue-200 dark:border-blue-800/60 hover:bg-blue-100'
+            }`}
+            title="Projects that passed the Samvero Tri-Factor Ingestion Pipeline (Skills + Requirements + Profile)"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-blue-500 dark:text-cyan-400" />
+            <span>Matched Leads</span>
+            <span className={`px-1.5 py-0.2 rounded-full text-[10px] font-bold ${
+              activeCategoryTab === 'matched'
+                ? 'bg-white/20 text-white'
+                : 'bg-blue-200/60 dark:bg-blue-900/60 text-blue-900 dark:text-cyan-200'
+            }`}>
+              {matchedCount}
             </span>
           </button>
 
@@ -230,10 +254,11 @@ export default function FreelancerSubNav({
               className="bg-transparent font-semibold text-slate-800 dark:text-slate-200 focus:outline-none cursor-pointer border-b border-transparent hover:border-slate-300"
             >
               <option value="newest" className="dark:bg-[#161f2e]">Newest First</option>
+              <option value="relevance" className="dark:bg-[#161f2e]">Matched Relevance (Skills + Fit)</option>
+              <option value="ranked_bid" className="dark:bg-[#161f2e]">Top Third-Party Bid Rank (#1 Bids)</option>
               <option value="quality_desc" className="dark:bg-[#161f2e]">Lead Quality (High to Low)</option>
               <option value="budget_desc" className="dark:bg-[#161f2e]">Highest Budget</option>
               <option value="budget_asc" className="dark:bg-[#161f2e]">Lowest Budget</option>
-              <option value="relevance" className="dark:bg-[#161f2e]">Relevance</option>
             </select>
           </div>
 

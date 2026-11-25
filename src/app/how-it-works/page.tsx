@@ -19,6 +19,15 @@ import {
   Database,
   Radio,
   Workflow,
+  Send,
+  TrendingUp,
+  MessageSquare,
+  Users,
+  Check,
+  XCircle,
+  Eye,
+  FileCheck2,
+  Filter,
 } from 'lucide-react';
 
 export default function HowItWorksPage() {
@@ -139,6 +148,233 @@ export default function HowItWorksPage() {
                   <span>10s INTERVAL</span>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* SAMVERO PROJECT PROCESSING & BID RANKING ENGINE (User Architectural Flow) */}
+          <div className="space-y-8 pt-4">
+            <div className="text-center max-w-3xl mx-auto space-y-3">
+              <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold bg-[#0057FF]/20 border border-[#00AAFF]/40 text-[#00AAFF]">
+                <Cpu className="w-3.5 h-3.5" />
+                END-TO-END PROJECT PROCESSING &amp; BID RANKING
+              </span>
+              <h2
+                className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                How Samvero <span className="text-neon">Processes Projects</span>
+              </h2>
+              <p className="text-sm sm:text-base text-slate-300">
+                The algorithmic pipeline connecting multi-source project ingestion to ranked client proposal delivery.
+              </p>
+            </div>
+
+            {/* Visual Step-by-Step Flow Matrix */}
+            <div className="glass-card border border-blue-500/30 rounded-3xl p-6 sm:p-10 relative overflow-hidden bg-gradient-to-b from-[#060e24] to-[#020512] shadow-2xl">
+              
+              {/* Flow Steps Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                
+                {/* 1. PROJECT INGESTION */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 01
+                    </span>
+                    <Radio className="w-4 h-4 text-cyan-400 animate-pulse" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <Database className="w-4 h-4 text-blue-400" />
+                    <span>Project Ingestion</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Samvero continuously queries Upwork, Freelancer.com, GMB, Bark, LinkedIn, and RemoteOK live feeds every 10 seconds.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-cyan-300">
+                    ⚡ 10s Ingestion Frequency
+                  </div>
+                </div>
+
+                {/* 2. SKILLS + REQUIREMENTS + RELEVANCE */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 02
+                    </span>
+                    <Cpu className="w-4 h-4 text-cyan-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <Workflow className="w-4 h-4 text-cyan-400" />
+                    <span>Relevance Evaluation</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Processes <strong className="text-white">Skills + Project Requirements + Profile Relevance</strong> to compute multi-factor suitability score.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-cyan-300">
+                    🎯 3-Pillar Relevance Scoring
+                  </div>
+                </div>
+
+                {/* 3. MATCHED vs NOT MATCHED GATEWAY */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 03
+                    </span>
+                    <Filter className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                    <span>MATCHED / NOT MATCHED</span>
+                  </h4>
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex items-center gap-2 text-emerald-300 font-semibold">
+                      <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                      <span>MATCHED: Pushed to Live Feed</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-rose-300 font-semibold">
+                      <XCircle className="w-3.5 h-3.5 text-rose-400 shrink-0" />
+                      <span>NOT MATCHED: Noise Discarded</span>
+                    </div>
+                  </div>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-emerald-400">
+                    ✓ 90%+ Precision Pass Filter
+                  </div>
+                </div>
+
+                {/* 4. PROJECT FEED & NOTIFICATIONS */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 04
+                    </span>
+                    <Radio className="w-4 h-4 text-amber-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-amber-400" />
+                    <span>Feed &amp; Notifications</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Qualified projects arrive in real-time. Instant alerts trigger via Audio Chime, WhatsApp, and Dashboard Notification Hub.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-amber-400">
+                    🔔 Zero-Delay Push Routing
+                  </div>
+                </div>
+
+                {/* 5. USER VIEWS PROJECT (TUM PROJECT DEKHTE HO) */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 05
+                    </span>
+                    <Eye className="w-4 h-4 text-blue-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <Search className="w-4 h-4 text-blue-400" />
+                    <span>User Project Inspection</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    You inspect full scope: client budget, stated pain points, demanded deliverables, and pre-generated live website preview.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-blue-300">
+                    🔍 Tum Project Dekhte Ho
+                  </div>
+                </div>
+
+                {/* 6. BID / PROPOSAL GENERATION */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 06
+                    </span>
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <Send className="w-4 h-4 text-cyan-400" />
+                    <span>BID / Proposal Synthesis</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    1-Click tailored proposal is generated with deliverables checklist, scope terms, and live interactive prototype URL link.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-cyan-300">
+                    ✍️ AI Proposal + Live Demo Link
+                  </div>
+                </div>
+
+                {/* 7. THIRD PARTY BID RANKING */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 07
+                    </span>
+                    <TrendingUp className="w-4 h-4 text-purple-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-purple-400" />
+                    <span>Third Party Bid Ranking</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Proposal is algorithmically calibrated against competitor bids. Having an interactive preview propels your pitch into the <strong className="text-purple-300">Top 3% of bids</strong>.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-purple-300">
+                    🏆 #1 - #3 Top Tier Ranking
+                  </div>
+                </div>
+
+                {/* 8. CLIENT RECEIVES RANKED PROPOSALS */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-blue-500/30 hover:border-cyan-400/60 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-blue-500/20 text-cyan-300 border border-blue-500/40">
+                      STEP 08
+                    </span>
+                    <Users className="w-4 h-4 text-indigo-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <FileCheck2 className="w-4 h-4 text-indigo-400" />
+                    <span>Client Receives Ranked Proposals</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Client reviews incoming bids prioritized by relevance and verified proof. Your submission stands out at the top of their inbox.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-indigo-300">
+                    📥 Client Ko Ranked Proposals
+                  </div>
+                </div>
+
+                {/* 9. CLIENT ENGAGEMENT: VIEWS / PROFILE / CHAT */}
+                <div className="p-5 rounded-2xl bg-[#091124] border border-emerald-500/40 hover:border-emerald-400 transition space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      STEP 09
+                    </span>
+                    <MessageSquare className="w-4 h-4 text-emerald-400" />
+                  </div>
+                  <h4 className="text-base font-bold text-white flex items-center gap-2">
+                    <MessageSquare className="w-4 h-4 text-emerald-400" />
+                    <span>Client Views, Profile Visit &amp; Chat</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    Client clicks the live demo link, reviews your credentials, and opens direct communication via WhatsApp, Phone, or Portal Chat.
+                  </p>
+                  <div className="pt-2 border-t border-slate-800 text-[11px] font-mono text-emerald-400 font-bold">
+                    🚀 Closed Deal &amp; Contract Award
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Bottom Visual Flow Banner */}
+              <div className="mt-8 pt-6 border-t border-slate-800 flex flex-wrap items-center justify-between gap-4 text-xs font-mono text-slate-400">
+                <span className="flex items-center gap-2 text-cyan-400 font-bold">
+                  <Workflow className="w-4 h-4" />
+                  <span>Continuous 9-Stage Execution Cycle</span>
+                </span>
+                <span className="text-slate-300">
+                  Ingestion ➔ Scoring ➔ Matched ➔ Feed ➔ Proposal ➔ Bid Ranking ➔ Client Chat
+                </span>
+              </div>
+
             </div>
           </div>
 

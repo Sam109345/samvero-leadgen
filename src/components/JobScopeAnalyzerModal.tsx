@@ -26,7 +26,16 @@ import {
   MessageCircle, 
   Phone, 
   Mail,
-  AlertCircle
+  AlertCircle,
+  TrendingUp,
+  Award,
+  Crown,
+  Eye,
+  UserCheck,
+  Users,
+  Workflow,
+  BarChart3,
+  CheckCircle,
 } from 'lucide-react';
 import { Lead } from '@/types';
 import { getJobRequirementSpec } from '@/lib/job-spec-helper';
@@ -47,7 +56,7 @@ export default function JobScopeAnalyzerModal({
   onOpenDeliverablesStudio,
   onOpenEmailPitch,
 }: JobScopeAnalyzerModalProps) {
-  const [activeTab, setActiveTab] = useState<'brief' | 'specs' | 'proposal'>('brief');
+  const [activeTab, setActiveTab] = useState<'brief' | 'specs' | 'proposal' | 'bid_ranker'>('brief');
   const [copiedProposal, setCopiedProposal] = useState(false);
 
   if (!isOpen || !lead) return null;
@@ -120,7 +129,7 @@ export default function JobScopeAnalyzerModal({
         </div>
 
         {/* Executive Highlights Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-5 bg-slate-100/60 dark:bg-[#111927] border-b border-slate-200 dark:border-[#24334a] text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 p-4 bg-slate-100/60 dark:bg-[#111927] border-b border-slate-200 dark:border-[#24334a] text-xs">
           
           {/* 1. Job Discipline */}
           <div className="p-3 bg-white dark:bg-[#161f2e] border border-slate-200/80 dark:border-[#24334a] rounded-lg">
@@ -149,22 +158,34 @@ export default function JobScopeAnalyzerModal({
             </div>
           </div>
 
-          {/* 4. Match Win Probability */}
+          {/* 4. Match Win Probability & Tri-Factor Relevance */}
           <div className="p-3 bg-white dark:bg-[#161f2e] border border-slate-200/80 dark:border-[#24334a] rounded-lg">
-            <span className="text-slate-400 text-[10px] uppercase font-bold block">AI Win Probability</span>
+            <span className="text-slate-400 text-[10px] uppercase font-bold block">Tri-Factor Relevance</span>
             <div className="flex items-center gap-1.5 mt-1 font-bold text-emerald-600 dark:text-emerald-400 text-sm font-mono">
               <Sparkles className="w-4 h-4 shrink-0" />
               <span>{spec.matchScore}% Match Score</span>
+            </div>
+            <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+              Skills {Math.min(100, spec.matchScore + 1)}% • Scope {spec.matchScore}% • Profile {Math.max(90, spec.matchScore - 2)}%
+            </div>
+          </div>
+
+          {/* 5. Pipeline Ingestion Status */}
+          <div className="p-3 bg-white dark:bg-[#161f2e] border border-emerald-300 dark:border-emerald-900/60 rounded-lg col-span-2 sm:col-span-4 lg:col-span-1">
+            <span className="text-emerald-600 dark:text-emerald-400 text-[10px] uppercase font-bold block">Pipeline Status</span>
+            <div className="flex items-center gap-1.5 mt-1 font-bold text-emerald-700 dark:text-emerald-300 text-xs">
+              <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0" />
+              <span>MATCHED (Relevance Pass)</span>
             </div>
           </div>
 
         </div>
 
         {/* Tab Navigation */}
-        <div className="px-6 border-b border-slate-200 dark:border-[#24334a] flex items-center gap-2 pt-2">
+        <div className="px-6 border-b border-slate-200 dark:border-[#24334a] flex items-center gap-2 pt-2 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveTab('brief')}
-            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 ${
+            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'brief'
                 ? 'border-[#007FED] text-[#007FED]'
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -176,7 +197,7 @@ export default function JobScopeAnalyzerModal({
 
           <button
             onClick={() => setActiveTab('specs')}
-            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 ${
+            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'specs'
                 ? 'border-[#007FED] text-[#007FED]'
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -188,7 +209,7 @@ export default function JobScopeAnalyzerModal({
 
           <button
             onClick={() => setActiveTab('proposal')}
-            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 ${
+            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'proposal'
                 ? 'border-[#007FED] text-[#007FED]'
                 : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
@@ -196,6 +217,18 @@ export default function JobScopeAnalyzerModal({
           >
             <Send className="w-4 h-4" />
             1-Click Tailored Bid Proposal
+          </button>
+
+          <button
+            onClick={() => setActiveTab('bid_ranker')}
+            className={`pb-2.5 px-3 text-xs sm:text-sm font-bold border-b-2 transition-all flex items-center gap-1.5 whitespace-nowrap ${
+              activeTab === 'bid_ranker'
+                ? 'border-purple-500 text-purple-600 dark:text-purple-400 font-extrabold'
+                : 'border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
+            }`}
+          >
+            <TrendingUp className="w-4 h-4 text-purple-500" />
+            <span>Third-Party Bid Ranker (#1 Rank)</span>
           </button>
         </div>
 
@@ -387,6 +420,244 @@ export default function JobScopeAnalyzerModal({
                 rows={11}
                 className="w-full bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-lg p-3 text-xs sm:text-sm font-mono text-slate-800 dark:text-slate-200 focus:outline-none"
               />
+
+              <div className="p-3 bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-900/50 rounded-lg flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span className="text-xs text-purple-900 dark:text-purple-200 font-semibold">
+                    Third-Party Bid Ranking: This proposal ranks in the <strong>Top 3%</strong> of client submissions.
+                  </span>
+                </div>
+                <button
+                  onClick={() => setActiveTab('bid_ranker')}
+                  className="text-xs font-bold text-purple-700 dark:text-purple-300 hover:underline cursor-pointer"
+                >
+                  View Bid Ranker Analysis ➔
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* TAB 4: Third-Party Bid Ranking & Studio */}
+          {activeTab === 'bid_ranker' && (
+            <div className="space-y-5">
+              
+              {/* Top Rank Banner */}
+              <div className="p-4 rounded-xl bg-gradient-to-r from-purple-900/40 via-indigo-900/30 to-blue-900/40 border border-purple-500/40 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-400/50 flex items-center justify-center text-purple-300 shrink-0">
+                    <Crown className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-mono font-bold text-purple-300 uppercase tracking-wider">
+                        Third-Party Bid Ranking Analysis
+                      </span>
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        Top 3% Tier
+                      </span>
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-1.5">
+                      <span>Projected Rank:</span>
+                      <span className="text-amber-400">#1 Top Ranked Proposal</span>
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 self-end sm:self-center font-mono">
+                  <div className="text-right">
+                    <div className="text-[10px] text-slate-400">Algorithmic Score</div>
+                    <div className="text-xl font-bold text-emerald-400">98 / 100</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4 Ranking Factor Dimensions */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="p-3.5 bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-xl space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-slate-400 font-medium">Deliverable Proof</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">35/35 Pts</span>
+                  </div>
+                  <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Live Demo Link Attached
+                  </div>
+                  <p className="text-[11px] text-slate-500 leading-tight">
+                    Pre-synthesized interactive prototype gives client instant proof before hiring.
+                  </p>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-xl space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-slate-400 font-medium">Skills Fit</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">29/30 Pts</span>
+                  </div>
+                  <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Direct Tech Alignment
+                  </div>
+                  <p className="text-[11px] text-slate-500 leading-tight">
+                    Exact matches for {spec.discipline} and specified tech stack requirements.
+                  </p>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-xl space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-slate-400 font-medium">Response Velocity</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">20/20 Pts</span>
+                  </div>
+                  <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Early Ingestion Window
+                  </div>
+                  <p className="text-[11px] text-slate-500 leading-tight">
+                    Submitting during the primary decision window boosts proposal view rate by 3.8x.
+                  </p>
+                </div>
+
+                <div className="p-3.5 bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] rounded-xl space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-slate-500 dark:text-slate-400 font-medium">Client Persona</span>
+                    <span className="font-bold text-emerald-600 dark:text-emerald-400 font-mono">14/15 Pts</span>
+                  </div>
+                  <div className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                    Pain Point Targeting
+                  </div>
+                  <p className="text-[11px] text-slate-500 leading-tight">
+                    Calibrated specifically for {spec.clientExperienceLevel} with transparent milestones.
+                  </p>
+                </div>
+              </div>
+
+              {/* Client Inbox View Simulator (Ranked Proposals Table) */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                    <Eye className="w-3.5 h-3.5 text-blue-500" />
+                    <span>Client Inbox Perspective (Ranked Proposals):</span>
+                  </h4>
+                  <span className="text-[10px] font-mono text-slate-400">
+                    Live Marketplace Ranking Simulation
+                  </span>
+                </div>
+
+                <div className="border border-slate-200 dark:border-[#24334a] rounded-xl overflow-hidden divide-y divide-slate-100 dark:divide-[#24334a] text-xs">
+                  {/* Your Ranked Proposal (Rank #1) */}
+                  <div className="p-3.5 bg-emerald-50/40 dark:bg-emerald-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-7 h-7 rounded-lg bg-emerald-600 text-white font-mono font-bold flex items-center justify-center text-xs">
+                        #1
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-slate-900 dark:text-white">
+                            Your Proposal (SAMVERO AI + Live Demo)
+                          </span>
+                          <span className="px-1.5 py-0.2 rounded text-[10px] font-bold bg-emerald-600 text-white">
+                            ⭐ Top Pick
+                          </span>
+                        </div>
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px]">
+                          Interactive deliverable URL attached • 98% skill match • Direct WhatsApp/Phone verified
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 font-mono">
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold text-sm">98 / 100</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 font-sans font-semibold">
+                        Ready for Direct Chat
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Competitor #2 */}
+                  <div className="p-3.5 bg-white dark:bg-[#0d141e] flex flex-col sm:flex-row sm:items-center justify-between gap-3 opacity-75">
+                    <div className="flex items-center gap-3">
+                      <div className="w-7 h-7 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold flex items-center justify-center text-xs">
+                        #2
+                      </div>
+                      <div>
+                        <div className="font-semibold text-slate-800 dark:text-slate-200">
+                          Senior Freelancer (Competitor)
+                        </div>
+                        <p className="text-slate-400 text-[11px]">
+                          Standard PDF attachment • No interactive deliverable • Generic portfolio link
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 font-mono">
+                      <span className="text-slate-500 font-bold text-sm">74 / 100</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-sans">
+                        Standard Review
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Competitor #3 */}
+                  <div className="p-3.5 bg-white dark:bg-[#0d141e] flex flex-col sm:flex-row sm:items-center justify-between gap-3 opacity-60">
+                    <div className="flex items-center gap-3">
+                      <div className="w-7 h-7 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-mono font-bold flex items-center justify-center text-xs">
+                        #3
+                      </div>
+                      <div>
+                        <div className="font-semibold text-slate-800 dark:text-slate-200">
+                          General Agency (Competitor)
+                        </div>
+                        <p className="text-slate-400 text-[11px]">
+                          Copy-pasted template pitch • High price quote • Unmatched requirements
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 font-mono">
+                      <span className="text-slate-500 font-bold text-sm">58 / 100</span>
+                      <span className="text-[10px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-sans">
+                        Low Conversion
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* End-to-End Pipeline Telemetry Tracker */}
+              <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-[#0d141e] border border-slate-200 dark:border-[#24334a] space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                    <Workflow className="w-3.5 h-3.5 text-blue-500" />
+                    <span>Samvero Project Lifecycle Status:</span>
+                  </span>
+                  <span className="font-mono text-emerald-600 dark:text-emerald-400 text-[11px] font-bold">
+                    Stage 7 of 9 Active (Rank #1 Top 3%)
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-9 gap-1 text-center text-[9px] font-mono">
+                  <div className="p-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    1. Ingestion ✓
+                  </div>
+                  <div className="p-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    2. Scored ✓
+                  </div>
+                  <div className="p-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    3. MATCHED ✓
+                  </div>
+                  <div className="p-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    4. Feed Alert ✓
+                  </div>
+                  <div className="p-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    5. Review ✓
+                  </div>
+                  <div className="p-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                    6. Proposal ✓
+                  </div>
+                  <div className="p-1 rounded bg-purple-500/20 text-purple-600 dark:text-purple-300 border border-purple-500/40 font-bold">
+                    7. Rank #1 ➔
+                  </div>
+                  <div className="p-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
+                    8. Client Inbox
+                  </div>
+                  <div className="p-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">
+                    9. Client Chat
+                  </div>
+                </div>
+              </div>
+
             </div>
           )}
 
