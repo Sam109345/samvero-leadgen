@@ -9,7 +9,7 @@ import { executeCentralLeadPipeline } from '@/lib/pipeline/central-lead-pipeline
 import { getMasterRealTimeLiveLeads } from '@/lib/live-lead-aggregator';
 import { calculateExplainableLeadScore } from '@/lib/explainable-scoring';
 import { matchesCountry } from '@/lib/country-matcher';
-import { ingestContinuousFreshLeads } from '@/lib/lead-stream';
+import { ingestContinuousFreshLeads, ingestContinuousFreshLeadsAsync } from '@/lib/lead-stream';
 
 export const dynamic = 'force-dynamic';
 
@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
     if (shouldIngestFreshStream) {
       lastContinuousIngestAt = nowTimestamp;
       try {
-        const newlyGenerated = ingestContinuousFreshLeads(
+        const newlyGenerated = await ingestContinuousFreshLeadsAsync(
           1,
           platform !== 'all' ? platform : undefined,
           country !== 'all' ? country : undefined

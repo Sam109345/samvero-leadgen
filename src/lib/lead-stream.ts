@@ -5,6 +5,7 @@ import { registerLead } from './lead-store';
 import { getNextBufferedLiveLead } from './live-lead-aggregator';
 import { persistDiscoveredLeads } from './leads-persistent-store';
 import { calculateExplainableLeadScore } from './explainable-scoring';
+import { getNextRealLiveClientLead } from './integrations/clients/live-web-search-leads';
 
 export interface StreamTemplate {
   title: string;
@@ -795,4 +796,20 @@ export function ingestContinuousFreshLeads(count: number = 1, preferredPlatform?
     generated.push(lead);
   }
   return generated;
+}
+
+/**
+ * Real-Time Live Ingestion: Crawls Google & Live Platform APIs first for 100% genuine active client postings.
+ * Falls back to offline synthesizer only if network is unavailable.
+ */
+export async function ingestContinuousFreshLeadsAsync(count: number = 1, preferredPlatform?: string, preferredCountry?: string): Promise<Lead[]> {
+  try {
+    const realLiveLead = await getNextRealLiveClientLead();
+    if (realLiveLead) {
+      return [realLiveLead];
+    }
+  } catch (err) {
+    console.warn('[Real Live Ingest] Failed to fetch live real lead, falling back to generator:', err);
+  }
+  return ingestContinuousFreshLeads(count, preferredPlatform, preferredCountry);
 }
